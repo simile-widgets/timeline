@@ -1,0 +1,59 @@
+<html>
+<head>
+    <title>Timeline Test</title>
+    <link rel="stylesheet" href="../styles/timeline.css" type="text/css"/>
+    <style>
+        body {
+            font-family: Trebuchet MS, Helvetica, Arial, sans serif;
+            font-size: 8pt;
+        }
+    </style>
+    <script src="../scripts/timeline.js" type="text/javascript"></script>
+    <script src="../scripts/timeline-ethers.js" type="text/javascript"></script>
+    <script src="../scripts/timeline-sources.js" type="text/javascript"></script>
+    <script src="../scripts/timeline-painters.js" type="text/javascript"></script>
+    <script>
+        var tl;
+        function onLoad() {
+            var eventSource = new Timeline.DefaultEventSource();
+            var bandInfos = [
+                {   width: "70%",
+                    eventSource: eventSource,
+                    ether: Timeline.LinearEther,
+                    etherParams: { duration: 12 * Timeline.GregorianUnitLengths[Timeline.MONTH], centersOn: "Mon Jun 30 1997 00:00:00 GMT" },
+                    etherPainter: Timeline.GregorianEtherPainter,
+                    etherPainterParams: { unit: Timeline.MONTH, cssClass: "timeline-band0" },
+                    eventPainter: Timeline.DurationEventPainter,
+                    eventPainterParams: { showText: true, textWidth: "20em" }
+                },
+                {   width: "30%",
+                    eventSource: eventSource,
+                    highlight: 0,
+                    ether: Timeline.LinearEther,
+                    etherParams: { duration: 7 * Timeline.GregorianUnitLengths[Timeline.YEAR], centersOn: "Mon Jun 30 1997 00:00:00 GMT" },
+                    etherPainter: Timeline.GregorianEtherPainter,
+                    etherPainterParams: { unit: Timeline.YEAR, cssClass: "timeline-band1" },
+                    eventPainter: Timeline.DurationEventPainter,
+                    eventPainterParams: { showText: false }
+                }
+            ];
+            tl = new Timeline(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
+            Timeline.loadXML("canada-1990-2000.xml", function(xml) {
+                eventSource.loadXML(xml);
+            });
+        }
+        function debug(msg) {
+            document.getElementById("debug").innerHTML = msg;
+        }
+        function onResize() {
+            tl.layout();
+        }
+    </script>
+</head>
+<body onload="onLoad();" onresize="onResize();">
+Testing
+<div id="tl" style="width: 100%; height: 400px; border: 1px solid #aaa; position: relative;">
+</div>
+<div id="debug"></div>
+</body>
+</html>

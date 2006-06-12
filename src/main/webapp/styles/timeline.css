@@ -1,0 +1,94 @@
+.timeline-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.timeline-band {
+    position: absolute;
+    background: #eee;
+}
+
+.timeline-band-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #eee;
+}
+
+.timeline-band-layer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.timeline-band-layer-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.timeline-band-highlight {
+    position: absolute;
+    background: white;
+    -moz-opacity: 0.3;
+}
+
+.timeline-band0 {
+    background: #eee;
+}
+
+.timeline-band1 {
+    background: #ddd;
+}
+
+.timeline-band2 {
+    background: #ccc;
+}
+
+.timeline-ether-interval-label-horizontal {
+    position: absolute;
+    border-left: 1px solid #aaa;
+    padding-left: 2px;
+    width: 4em;
+    height: 1.5em;
+}
+
+.timeline-ether-interval-label-vertical {
+    position: absolute;
+    border-top: 1px solid #aaa;
+    padding-top: 2px;
+    width: 4em;
+    height: 1.5em;
+}
+
+.timeline-ether-interval-label-horizontal-emphasized {
+    position: absolute;
+    border-left: 1px solid #aaa;
+    padding-left: 2px;
+    width: 4em;
+    height: 2em;
+    font-weight: bold;
+}
+
+.timeline-ether-interval-label-vertical-emphasized {
+    position: absolute;
+    border-top: 1px solid #aaa;
+    padding-top: 2px;
+    width: 5em;
+    height: 1.5em;
+    font-weight: bold;
+}
+
+.timeline-duration-event {
+    position: absolute;
+    overflow: hidden;
+    background: blue;
+}
+
+.timeline-instant-event {
+    position: absolute;
+    overflow: hidden;
+    border-left: 1px solid blue;
+    padding-left: 2px;
+    text-overflow: ellipsis;
+}

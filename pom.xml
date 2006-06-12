@@ -70,7 +70,7 @@
         <artifactId>maven-jetty6-plugin</artifactId>
         <version>6.0.0beta16</version>
         <configuration>
-          <connectors>            <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">              <port>${jetty.port}</port>              <maxIdleTime>60000</maxIdleTime>            </connector>          </connectors>        
+          <connectors>            <connector implementation="org.mortbay.jetty.bio.SocketConnector">              <port>8888</port>              <maxIdleTime>60000</maxIdleTime>            </connector>          </connectors>        
           <scanIntervalSeconds>5</scanIntervalSeconds>
           <contextPath>/</contextPath>
           <webAppSourceDirectory>src/main/webapp</webAppSourceDirectory>

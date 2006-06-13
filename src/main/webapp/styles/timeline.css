@@ -82,7 +82,7 @@
 .timeline-duration-event {
     position: absolute;
     overflow: hidden;
-    background: blue;
+    border: 1px solid blue;
 }
 
 .timeline-instant-event {
@@ -92,3 +92,4 @@
     padding-left: 2px;
     text-overflow: ellipsis;
 }
+

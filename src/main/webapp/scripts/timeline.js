@@ -316,9 +316,25 @@ Timeline._Band.prototype.getMaxVisibleDate = function() {
     return this._ether.pixelOffsetToDate(this._viewLength);
 };
 
+Timeline._Band.prototype.getCenterVisibleDate = function() {
+    return this._ether.pixelOffsetToDate(this._viewLength / 2);
+};
+
 Timeline._Band.prototype.setMinVisibleDate = function(date) {
     if (!this._changing) {
         this._moveEther(Math.round(-this._ether.dateToPixelOffset(date)));
+    }
+};
+
+Timeline._Band.prototype.setMaxVisibleDate = function(date) {
+    if (!this._changing) {
+        this._moveEther(Math.round(this._viewLength - this._ether.dateToPixelOffset(date)));
+    }
+};
+
+Timeline._Band.prototype.setCenterVisibleDate = function(date) {
+    if (!this._changing) {
+        this._moveEther(Math.round(this._viewLength / 2 - this._ether.dateToPixelOffset(date)));
     }
 };
 
@@ -408,21 +424,19 @@ Timeline._Band.prototype._fireOnScroll = function() {
 Timeline._Band.prototype._setHighlightBandDate = function() {
     if (this._highlightBand) {
         var centerDate = this._ether.pixelOffsetToDate(this.getViewLength() / 2);
-        var startDate = new Date(centerDate.getTime() - this._highlightBand.getEther().getDuration() / 2);
-        
-        this._highlightBand.setMinVisibleDate(startDate);
+        this._highlightBand.setCenterVisibleDate(centerDate);
     }
 };
 
 Timeline._Band.prototype._onHighlightBandScroll = function() {
     if (this._highlightBand) {
-        var startDate = this._highlightBand.getMinVisibleDate();
-        var endDate = this._highlightBand.getMaxVisibleDate();
-        var centerDate = new Date(Math.round((startDate.getTime() + endDate.getTime()) / 2));
+        var centerDate = this._highlightBand.getCenterVisibleDate();
         var centerPixelOffset = this._ether.dateToPixelOffset(centerDate);
         
         this._moveEther(Math.round(this._viewLength / 2 - centerPixelOffset));
-        this._etherPainter.setHighlight(startDate, endDate);
+        this._etherPainter.setHighlight(
+            this._highlightBand.getMinVisibleDate(), 
+            this._highlightBand.getMaxVisibleDate());
     }
 };
 

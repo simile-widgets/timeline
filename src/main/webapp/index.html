@@ -17,28 +17,41 @@
         function onLoad() {
             var eventSource = new Timeline.DefaultEventSource();
             var bandInfos = [
-                {   width: "70%",
+                {   width: "85%",
                     eventSource: eventSource,
-                    ether: Timeline.LinearEther,
-                    etherParams: { duration: 12 * Timeline.GregorianUnitLengths[Timeline.MONTH], centersOn: "Mon Jun 30 1997 00:00:00 GMT" },
+                    ether: Timeline.HotZoneEther,
+                    etherParams: { 
+                        duration: 3 * Timeline.GregorianUnitLengths[Timeline.WEEK], 
+                        centersOn: "Wed Nov 20 1963 00:00:00 GMT-0600",
+                        zones: [
+                            {   start:    "Fri Nov 22 1963 00:00:00 GMT-0600",
+                                end:      "Mon Nov 25 1963 00:00:00 GMT-0600",
+                                magnify:  5
+                            },
+                            {   start:    "Fri Nov 22 1963 09:00:00 GMT-0600",
+                                end:      "Sat Nov 23 1963 00:00:00 GMT-0600",
+                                magnify:  6
+                            }
+                        ]
+                    },
                     etherPainter: Timeline.GregorianEtherPainter,
-                    etherPainterParams: { unit: Timeline.MONTH, cssClass: "timeline-band0" },
+                    etherPainterParams: { unit: Timeline.WEEK, cssClass: "timeline-band0" },
                     eventPainter: Timeline.DurationEventPainter,
                     eventPainterParams: { showText: true, textWidth: "20em" }
                 },
-                {   width: "30%",
+                {   width: "15%",
                     eventSource: eventSource,
                     highlight: 0,
                     ether: Timeline.LinearEther,
-                    etherParams: { duration: 7 * Timeline.GregorianUnitLengths[Timeline.YEAR], centersOn: "Mon Jun 30 1997 00:00:00 GMT" },
+                    etherParams: { duration: 5 * Timeline.GregorianUnitLengths[Timeline.MONTH], centersOn: "Wed Nov 20 1963 00:00:00 GMT-0600" },
                     etherPainter: Timeline.GregorianEtherPainter,
-                    etherPainterParams: { unit: Timeline.YEAR, cssClass: "timeline-band1" },
+                    etherPainterParams: { unit: Timeline.MONTH, cssClass: "timeline-band1" },
                     eventPainter: Timeline.DurationEventPainter,
                     eventPainterParams: { showText: false }
                 }
             ];
             tl = new Timeline(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
-            Timeline.loadXML("content/canada-1990-2000.xml", function(xml) {
+            Timeline.loadXML("content/jfk.xml", function(xml) {
                 eventSource.loadXML(xml);
             });
         }

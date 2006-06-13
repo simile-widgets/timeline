@@ -55,7 +55,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
             div.style.height = "1.5em";
             
             div.style.left = startPixel + "px";
-            if (startPixel == endPixel && this._showText) {
+            if (instant && this._showText) {
                 div.style.width = this._textWidth;
             } else {
                 div.style.width = length + "px";
@@ -75,9 +75,9 @@ Timeline.DurationEventPainter.prototype.paint = function() {
         this._layerDiv.appendChild(div);
         
         if (this._timeline.isHorizontal()) {
-            streams[streamIndex] = div.offsetLeft + div.offsetWidth;
+            streams[streamIndex] = div.offsetLeft + (instant && !this._showText ? -1 : div.offsetWidth);
         } else {
-            streams[streamIndex] = div.offsetTop + div.offsetHeight;
+            streams[streamIndex] = div.offsetTop + (instant && !this._showText ? -1 : div.offsetHeight);
         }
     }
     this._layerDiv.style.visibility = "visible";

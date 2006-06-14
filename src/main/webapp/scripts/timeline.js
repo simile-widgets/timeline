@@ -55,6 +55,19 @@ Timeline.parseGregorianDateTime = function(o) {
     }
 }
 
+Timeline.createSimpleBandInfo = function(width, intervalUnit, intervalCount, eventSource, date, etherCssClass, showEventText) {
+    return {   
+        width:          width,
+        eventSource:    eventSource,
+        etherParams: { 
+            duration: intervalCount * Timeline.GregorianUnitLengths[intervalUnit], 
+            centersOn: date 
+        },
+        etherPainterParams: { unit: intervalUnit, cssClass: etherCssClass },
+        eventPainterParams: { showText: showEventText }
+    };
+};
+
 Timeline._isIE = (navigator.appName.indexOf("Microsoft") != -1);
 
 Timeline.prototype.layout = function() {
@@ -204,13 +217,11 @@ Timeline._Band = function(timeline, bandInfo) {
     this._innerDiv.className = "timeline-band-inner";
     this._div.appendChild(this._innerDiv);
     
-    this._ether = (bandInfo.ether) ? 
-        new bandInfo.ether(bandInfo.etherParams, timeline) : 
-        new Timeline.LinearEther(bandInfo.etherParams, timeline);
+    var etherConstructor = (bandInfo.ether) ? bandInfo.ether : Timeline.LinearEther;
+    this._ether = new etherConstructor(bandInfo.etherParams, timeline);
         
-    this._etherPainter = (bandInfo.etherPainter) ? 
-        new bandInfo.etherPainter(bandInfo.etherPainterParams, this, timeline) : 
-        new Timeline.GregorianEtherPainter(bandInfo.etherPainterParams, this, timeline);
+    var etherPainterConstructor = (bandInfo.etherPainter)? bandInfo.etherPainter : etherConstructor.getDefaultEtherPainter();
+    this._etherPainter = new etherPainterConstructor(bandInfo.etherPainterParams, this, timeline);
         
     this._eventSource = bandInfo.eventSource;
     if (this._eventSource) {
@@ -222,7 +233,7 @@ Timeline._Band = function(timeline, bandInfo) {
     
     this._eventPainter = (bandInfo.eventPainter) ? 
         new bandInfo.eventPainter(bandInfo.eventPainterParams, this, timeline) : 
-        new Timeline.DurationEventPainter(bandInfo.etherPainterParams, this, timeline);
+        new Timeline.DurationEventPainter(bandInfo.eventPainterParams, this, timeline);
 };
 
 Timeline._Band.SCROLL_MULTIPLES = 5;

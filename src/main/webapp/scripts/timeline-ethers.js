@@ -253,6 +253,7 @@ Timeline.GregorianUtilities.monthNames = [
 ];
 
 Timeline.GregorianUtilities.roundDownToInterval = function(date, intervalUnit) {
+    var originalTime = date.getTime();
     var clearInDay = function(d) {
         d.setUTCMilliseconds(0);
         d.setUTCSeconds(0);
@@ -286,7 +287,7 @@ Timeline.GregorianUtilities.roundDownToInterval = function(date, intervalUnit) {
     case Timeline.WEEK:
         // TODO: a week starts on different days in different locales.
         clearInDay(date);
-        date.setDate(date.getDate() - date.getDay());
+        date.setTime(date.getTime() - date.getUTCDay() * Timeline.GregorianUnitLengths[Timeline.DAY]);
         break;
     case Timeline.MONTH:
         clearInDay(date);
@@ -297,16 +298,24 @@ Timeline.GregorianUtilities.roundDownToInterval = function(date, intervalUnit) {
         break;
     case Timeline.DECADE:
         clearInYear(date);
-        date.setUTCFullYear(Math.floor(date.getFullYear() / 10) * 10);
+        date.setUTCFullYear(Math.floor(date.getUTCFullYear() / 10) * 10);
         break;
     case Timeline.CENTURY:
         clearInYear(date);
-        date.setUTCFullYear(Math.floor(date.getFullYear() / 100) * 100);
+        date.setUTCFullYear(Math.floor(date.getUTCFullYear() / 100) * 100);
         break;
     case Timeline.MILLENNIUM:
         clearInYear(date);
-        date.setUTCFullYear(Math.floor(date.getFullYear() / 1000) * 1000);
+        date.setUTCFullYear(Math.floor(date.getUTCFullYear() / 1000) * 1000);
         break;
+    }
+};
+
+Timeline.GregorianUtilities.roundUpToInterval = function(date, intervalUnit) {
+    var originalTime = date.getTime();
+    Timeline.GregorianUtilities.roundDownToInterval(date, intervalUnit);
+    if (date.getTime() < originalTime) {
+        date.setTime(date.getTime() + Timeline.GregorianUnitLengths[intervalUnit]);
     }
 };
 
@@ -372,10 +381,10 @@ Timeline.GregorianUtilities.labelInterval = function(date, intervalUnit) {
         text = date.getUTCHours() + "hr";
         break;
     case Timeline.DAY:
-        text = Timeline.GregorianUtilities.monthNames[date.getMonth()] + " " + date.getUTCDate();
+        text = Timeline.GregorianUtilities.monthNames[date.getUTCMonth()] + " " + date.getUTCDate();
         break;
     case Timeline.WEEK:
-        text = Timeline.GregorianUtilities.monthNames[date.getMonth()] + " " + date.getUTCDate();
+        text = Timeline.GregorianUtilities.monthNames[date.getUTCMonth()] + " " + date.getUTCDate();
         break;
     case Timeline.MONTH:
         var m = date.getUTCMonth();
@@ -432,14 +441,15 @@ Timeline.GregorianEtherPainter.prototype.setHighlight = function(startDate, endD
     
     var startPixel = Math.round(this._band.dateToPixelOffset(startDate));
     var endPixel = Math.round(this._band.dateToPixelOffset(endDate));
+    var length = Math.max(endPixel - startPixel, 3);
     if (this._timeline.isHorizontal()) {
         this._highlightDiv.style.left = startPixel + "px";
-        this._highlightDiv.style.width = (endPixel - startPixel) + "px";
+        this._highlightDiv.style.width = length + "px";
         this._highlightDiv.style.top = "2px";
         this._highlightDiv.style.height = (this._band.getViewWidth() - 4) + "px";
     } else {
         this._highlightDiv.style.top = startPixel + "px";
-        this._highlightDiv.style.height = (endPixel - startPixel) + "px";
+        this._highlightDiv.style.height = length + "px";
         this._highlightDiv.style.left = "2px";
         this._highlightDiv.style.width = (this._band.getViewWidth() - 4) + "px";
     }
@@ -592,14 +602,15 @@ Timeline.HotZoneGregorianEtherPainter.prototype.setHighlight = function(startDat
     
     var startPixel = Math.round(this._band.dateToPixelOffset(startDate));
     var endPixel = Math.round(this._band.dateToPixelOffset(endDate));
+    var length = Math.max(endPixel - startPixel, 3);
     if (this._timeline.isHorizontal()) {
         this._highlightDiv.style.left = startPixel + "px";
-        this._highlightDiv.style.width = (endPixel - startPixel) + "px";
+        this._highlightDiv.style.width = length + "px";
         this._highlightDiv.style.top = "2px";
         this._highlightDiv.style.height = (this._band.getViewWidth() - 4) + "px";
     } else {
         this._highlightDiv.style.top = startPixel + "px";
-        this._highlightDiv.style.height = (endPixel - startPixel) + "px";
+        this._highlightDiv.style.height = length + "px";
         this._highlightDiv.style.left = "2px";
         this._highlightDiv.style.width = (this._band.getViewWidth() - 4) + "px";
     }
@@ -613,8 +624,6 @@ Timeline.HotZoneGregorianEtherPainter.prototype.paint = function() {
     
     var minDate = this._band.getMinDate();
     var maxDate = this._band.getMaxDate();
-    
-    Timeline.GregorianUtilities.roundDownToInterval(minDate, this._unit);
     
     var p = this;
     var incrementDate = function(date, zone) {
@@ -667,8 +676,12 @@ Timeline.HotZoneGregorianEtherPainter.prototype.paint = function() {
     
     for (var z = zStart; z <= zEnd; z++) {
         var zone = this._zones[z];
+        
         var minDate2 = new Date(Math.max(minDate.getTime(), zone.startTime));
         var maxDate2 = new Date(Math.min(maxDate.getTime(), zone.endTime));
+        
+        Timeline.GregorianUtilities.roundDownToInterval(minDate2, zone.unit);
+        Timeline.GregorianUtilities.roundUpToInterval(maxDate2, zone.unit);
         
         while (minDate2.getTime() < maxDate2.getTime()) {
             createDiv(minDate2, zone);

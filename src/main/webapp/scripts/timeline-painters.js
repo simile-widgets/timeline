@@ -33,7 +33,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
         
         var startPixel = Math.round(this._band.dateToPixelOffset(startDate));
         var endPixel = Math.round(this._band.dateToPixelOffset(endDate));
-        var length = Math.max(0, endPixel - startPixel);
+        var length = Math.max(1, endPixel - startPixel);
         
         var div = this._timeline.getDocument().createElement("div");
         div.className = instant ? "timeline-instant-event" : "timeline-duration-event";

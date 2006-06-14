@@ -100,7 +100,7 @@ Timeline.DefaultEventSource.prototype.removeListener = function(listener) {
 Timeline.DefaultEventSource.prototype.loadXML = function(xml) {
     var node = xml.documentElement.firstChild;
     var added = false;
-    while (node) {
+    while (node != null) {
         if (node.nodeType == 1) {
             var evt = new Timeline.DefaultEventSource.Event(
                 Timeline.parseGregorianDateTime(node.getAttribute("starts")),
@@ -115,7 +115,7 @@ Timeline.DefaultEventSource.prototype.loadXML = function(xml) {
         }
         node = node.nextSibling;
     }
-    
+
     if (added) {
         for (var i = 0; i < this._listeners.length; i++) {
             this._listeners[i].onAddMany();

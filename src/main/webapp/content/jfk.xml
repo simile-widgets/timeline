@@ -3,7 +3,7 @@
         title="'Bay of Pigs' Invasion"
         >
         </event>
-    <event starts="Wed May 01 1963 00:00:00 GMT-0600" ends="Fri May 31 1963 00:00:00 GMT-0600"
+    <event starts="Wed May 01 1963 00:00:00 GMT-0600" ends="Sat Jun 01 1963 00:00:00 GMT-0600"
         title="Oswald moves to New Orleans"
         >
         Oswald moves to New Orleans, and finds employment at the William 
@@ -242,6 +242,233 @@
         >
         A young man suffers some sort of seizure in front of the book depository.
         ref. Crossfire, p 42
+        </event>
+    <event starts="Fri Nov 22 1963 12:19:00 GMT-0600"
+        title="Police radio for ambulance"
+        >
+        Police Radio “code 3” (haste), for ambulance for Dealey Plaza. The 
+        ambulance arrived and picked up a suspected epilectic, departing at 
+        12:25 pm, and was taken to Parkland Hospital where his admittance 
+        was never recorded. ref. Treachery in Dallas, p 137
+        </event>
+    <event starts="Fri Nov 22 1963 12:20:00 GMT-0600"
+        title="Bonnie Ray Williams left 6th floor"
+        >
+        Bonnie Ray Williams, left the 6th floor after finishing his lunch 
+        and using the elevator joined co workers on the 5th floor to watch 
+        the motorcade. ref. Crossfire, p 47.
+        </event>
+    <event starts="Fri Nov 22 1963 12:30:00 GMT-0600"
+        title="Kennedy shot"
+        >
+        President Kennedy shot in Dallas.
+        </event>
+    <event starts="Fri Nov 22 1963 12:00:00 GMT-0600" ends="Fri Nov 22 1963 18:00:00 GMT-0600"
+        title="David Ferrie takes mysterious drive"
+        >
+        David Ferrie takes a mysterious 364 mile drive in the afternoon.
+        ref. Treachery in Dallas, p 131
+        </event>
+    <event starts="Fri Nov 22 1963 12:30:40 GMT-0600"
+        title="Police radio"
+        >
+        Police Radio. Bill Decker orders officers to the “Railroad track 
+        area just North of Elm.” ref, Treachery in Dallas, p 136
+        </event>
+    <event starts="Fri Nov 22 1963 12:32:00 GMT-0600"
+        title="Washington D.C.'s phone system breakdown"
+        >
+        Breakdown of Washington D.C.'s telephone system for almost 1 hour.
+        (Though Hoover's line remains fuctional?) ref. Conspiracy of Silence, p 71.
+        </event>
+    <event starts="Fri Nov 22 1963 12:33:00 GMT-0600"
+        title="Oswald leaves TSBD and boards bus"
+        >
+        Lee Harvey Oswald leaves Depository and boards bus. ref. W.C
+        </event>
+    <event starts="Fri Nov 22 1963 12:37:00 GMT-0600"
+        title="Witness pinpoints window"
+        >
+        Sergent Harkness reports he has a witness who had pinpointed the window. 
+        (Howard Brennan)
+        </event>
+    <event starts="Fri Nov 22 1963 12:38:00 GMT-0600"
+        title="JFK arrives at Parkland Hospital"
+        >
+        JFK arrives at Parkland Hospital. ref. Best Evidence, p 710.
+        </event>
+    <event starts="Fri Nov 22 1963 12:40:00 GMT-0600"
+        title="White male seen running from TSBD"
+        >
+        Police officer Roger Craig sees a white male running down the hill from 
+        the direction of the book depository and climbs into a waiting Rambler 
+        station wagon and drives off. ref. Crossfire, p. 329
+        </event>
+    <event starts="Fri Nov 22 1963 12:40:00 GMT-0600" ends="Fri Nov 22 1963 12:45:00 GMT-0600"
+        title="Oswald gets off bus and boards taxi"
+        >
+        Oswald gets off bus and boards second taxi after allowing a woman 
+        to take first taxi, talls driver William Whaley, “500 North Beckley 
+        Street”. ref. WC
+        </event>
+    <event starts="Fri Nov 22 1963 12:45:00 GMT-0600"
+        title="Description of suspect on police radio"
+        >
+        Description put out about suspect on Dallas police radio. "The wanted 
+        person in this is a slender white male about thirty, five feet ten, 
+        one sixty five, carrying what looked to be a 30.30 or some type of 
+        Winchester".
+        
+        Officer Tippit told by H/Q dispatcher to “go to central Oakcliff area”.
+        ref. Rush to Judgement, p 194.
+        </event>
+    <event starts="Fri Nov 22 1963 12:48:00 GMT-0600"
+        title="Police radio of assassin's location"
+        >
+        Police Radio in refrence to the location of the assassin. “He is 
+        thought to be in the Texas School Book Depository here on the North 
+        West corner of Elm and Houston.” ref. Treachery in Dallas, p 35
+        </event>
+    <event starts="Fri Nov 22 1963 12:49:00 GMT-0600"
+        title="Capt Talbert orders to cut off TSBD"
+        >
+        Capt Talbert giving orders on Police radio. “Have that cut off on 
+        the back side will you? Make sure nobody leaves there”. 
+        (Refering to the Depository). ref. Treachery in Dallas, p 143
+        </event>
+    <event starts="Fri Nov 22 1963 12:51:00 GMT-0600"
+        title="Homicide Chief William Fritz calls"
+        >
+        Homicide Cheif William Fritz calls in to the dispatchers office 
+        from his post at the Trade Mart to ask if JFK will still be going 
+        to the site. He is told, “It’s very doubtful.” DOH!
+        ref. Treachery in Dallas, p 150
+        </event>
+    <event starts="Fri Nov 22 1963 12:54:00 GMT-0600"
+        title="Office Tippit calls H/Q"
+        >
+        Officer Tippit calls into H/Q, and is asked if he is in Oakcliff 
+        area. He replies, "Yes". ref. Rush to Judgement, p.194.
+        </event>
+    <event starts="Fri Nov 22 1963 13:00:00 GMT-0600"
+        title="JFK pronounced dead"
+        >
+        JFK PRONOUNCED DEAD. ref. Best Evidence, p 710.
+        </event>
+    <event starts="Fri Nov 22 1963 13:00:00 GMT-0600"
+        title="Police car outside Oswald's rooming house"
+        >
+        Police car no 207 stops outside Oswalds rooming house, and sounds horn twice. 
+        </event>
+    <event starts="Fri Nov 22 1963 13:00:00 GMT-0600"
+        title="Bullet discovered"
+        >
+        Parkland hospital. Darrell Tomlinson discovers the stretcher bullet 
+        399 which rolls out from under a mat when stretcher bumps the wall.
+        ref. Best Evidence, p 90.
+        </event>
+    <event starts="Fri Nov 22 1963 13:00:00 GMT-0600"
+        title="Oswald seen entering Texas Theater"
+        >
+        Oswald enters the Texas Theater according to theater assistant 
+        manager shortly after 1:00 pm. ref. Crossfire, p 353.
+        </event>
+    <event starts="Fri Nov 22 1963 13:04:00 GMT-0600"
+        title="Oswald seen at bus stop"
+        >
+        Oswald seen standing at bus stop outside his rooming house by 
+        his landlady. ref. Rush to Judgement, p 159.
+        </event>
+    <event starts="Fri Nov 22 1963 13:05:00 GMT-0600"
+        title="Fake Secret Service agent pulled over"
+        >
+        South of Dallas three men pulled over, one identifies himself as a 
+        Secret Service agent and states "We are in a hurry to get to New 
+        Orleans to investigate part of the shooting." However there is no 
+        record of Secret Service being dispatched to New Orleans on the 
+        day of the assassination.
+        </event>
+    <event starts="Fri Nov 22 1963 13:08:00 GMT-0600"
+        title="Officer Tippitt calls H/Q twice"
+        >
+        Officer Tippitt makes two attempts to call H/Q, but dispatcher does 
+        not reply. ref. Rush to Judgement, p 195.
+        </event>
+    <event starts="Fri Nov 22 1963 13:10:00 GMT-0600"
+        title="J.D. Tippit's body discovered"
+        >
+        T.F..Bewley comes upon J.D Tippit’s body in the street. As he gets 
+        out to help he looks at his watch, which reads 1:10pm
+        ref. Conspiracy - Who Killed Kennedy?, p 122
+        </event>
+    <event starts="Fri Nov 22 1963 13:12:00 GMT-0600"
+        title="Hulls found on sixth floor of TSBD"
+        >
+        Policeman Luke Mooney finds hulls on sixth floor of Depository.
+        ref. Treachery in Dallas, p 143
+        </event>
+    <event starts="Fri Nov 22 1963 13:15:00 GMT-0600"
+        title="Oswald inside Texas theatre"
+        >
+        Oswald buys popcorn at concession stand inside Texas theatre, 
+        according to concession stand operator Boroughs.
+        ref. Crossfire, p 353.
+        </event>
+    <event starts="Fri Nov 22 1963 13:16:00 GMT-0600"
+        title="Police says Tippit shot"
+        >
+        Police told “Officer Tippit has been shot.” by civilian Domingo 
+        Benavides using Tippit’s police car radio. ref. Crossfire, p 348.
+        </event>
+    <event starts="Fri Nov 22 1963 13:20:00 GMT-0600"
+        title="Live TV reports shots heard from the Knoll"
+        >
+        Jean Hill in live television report states she heard shots from 
+        the Knoll. ref. Treachery in Dallas, p 153
+        </event>
+    <event starts="Fri Nov 22 1963 13:22:00 GMT-0600"
+        title="Rifle found on sixth floor of TSBD"
+        >
+        Rifle found on sixth floor of Book Depository, first identified 
+        as 7.5 German Mauser.
+        </event>
+    <event starts="Fri Nov 22 1963 13:22:00 GMT-0600"
+        title="Police radio describing Tippit's killer"
+        >
+        Police radio call goes out describing Tippit's killer as about 
+        30, 5ft 8in black hair and slender. ref. Unanswered Questions, p 105.
+        </event>
+    <event starts="Fri Nov 22 1963 13:25:00 GMT-0600"
+        title="Police reports finding of white jacket"
+        >
+        Police radio reports finding of a white jacket in parking lot.
+        ref. Rush to Judgement, p 191.
+        </event>
+    <event starts="Fri Nov 22 1963 13:30:00 GMT-0600"
+        title="Seth Kantor encounters Jack Ruby at Parkland hospital"
+        >
+        Seth Kantor encounters Jack Ruby at Parkland hospital and has brief 
+        conversation with him. ref. Crossfire, p. 366.
+        </event>
+    <event starts="Fri Nov 22 1963 13:35:00 GMT-0600"
+        title="TSBD declared secured"
+        >
+        Police Radio. The TSBD is mentioned, “It’s secure now.”
+        ref. Treachery in Dallas, p 143
+        </event>
+    <event starts="Fri Nov 22 1963 13:36:00 GMT-0600"
+        title="Police radio from Tippit's murder scene"
+        >
+        Police Radio from scene of Tippit’s murder, “I got an eyeball witness 
+        to the getaway man - that suspect in this shooting. He is a white male ... 
+        apparently armed with a .32, dark finish automatic pistol...”
+        ref. Conspiracy - Who Killed Kennedy?, p 119
+        </event>
+    <event starts="Fri Nov 22 1963 13:45:00 GMT-0600"
+        title="Police radio of suspect entering Texas theatre"
+        >
+        Police Radio "Have information, a suspect just went into Texas theatre 
+        on West Jefferson". ref. Unanswered Questions, p 112.
         </event>
 
 </data>

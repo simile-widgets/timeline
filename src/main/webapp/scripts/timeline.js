@@ -494,7 +494,7 @@ Timeline._Band.prototype._softPaintEvents = function() {
  */
 
 Timeline.handleCaughtException = function(e) {
-    alert(e);
+    alert("Caught exception: " + e);
 };
 
 Timeline.loadXML = function(url, f) {

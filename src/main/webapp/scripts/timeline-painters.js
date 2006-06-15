@@ -24,6 +24,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
     
     var streams = [ 0 ];
     
+    var doc = this._timeline.getDocument();
     var iterator = eventSource.getEventIterator(minDate, maxDate);
     while (iterator.hasNext()) {
         var evt = iterator.next();
@@ -33,11 +34,21 @@ Timeline.DurationEventPainter.prototype.paint = function() {
         
         var startPixel = Math.round(this._band.dateToPixelOffset(startDate));
         var endPixel = Math.round(this._band.dateToPixelOffset(endDate));
-        var length = Math.max(1, endPixel - startPixel);
+        var length = Math.max(instant ? 20 : 1, endPixel - startPixel);
         
-        var div = this._timeline.getDocument().createElement("div");
-        div.className = instant ? "timeline-instant-event" : "timeline-duration-event";
+        var div = doc.createElement("div");
+        if (instant) {
+            div.className = "timeline-instant-event";
+            div.appendChild(Timeline.createTranslucentImage(doc, "../images/red-pin.png", 16, 17));
+            if (this._showText) {
+                div.appendChild(doc.createTextNode(evt.getText()));
+            }
+        } else {
+            div.className = "timeline-duration-event";
+            div.innerHTML = evt.getText();
+        }
         div.title = evt.getText();
+        
         
         var streamIndex = 0;
         for (; streamIndex < streams.length; streamIndex++) {
@@ -66,10 +77,6 @@ Timeline.DurationEventPainter.prototype.paint = function() {
             
             div.style.top = startPixel + "px";
             div.style.height = length + "px";
-        }
-        
-        if (!instant || this._showText) {
-            div.innerHTML = evt.getText();
         }
         
         this._layerDiv.appendChild(div);

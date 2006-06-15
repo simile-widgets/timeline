@@ -68,7 +68,40 @@ Timeline.createSimpleBandInfo = function(width, intervalUnit, intervalCount, eve
     };
 };
 
-Timeline._isIE = (navigator.appName.indexOf("Microsoft") != -1);
+Timeline.isIE = false;
+Timeline.isWin = false;
+Timeline.isWin32 = false;
+Timeline.pngIsTranslucent = true;
+(function() {
+    Timeline.isIE= (navigator.appName.indexOf("Microsoft") != -1);
+    
+	var ua = navigator.userAgent.toLowerCase(); 
+	Timeline.isWin = (ua.indexOf('win') != -1);
+	Timeline.isWin32 = Timeline.isWin && (   
+        ua.indexOf('95') != -1 || 
+        ua.indexOf('98') != -1 || 
+        ua.indexOf('nt') != -1 || 
+        ua.indexOf('win32') != -1 || 
+        ua.indexOf('32bit') != -1
+    );
+    Timeline.pngIsTranslucent = !(Timeline.isIE && Timeline.isWin32);
+})();
+
+Timeline.createTranslucentImage = function(doc, url, width, height, verticalAlign) {
+    var elmt;
+    if (Timeline.pngIsTranslucent) {
+        elmt = doc.createElement("img");
+        elmt.setAttribute("src", url);
+        elmt.style.verticalAlign = (verticalAlign != null) ? verticalAlign : "text-top";
+    } else {
+        elmt = doc.createElement("div");
+        elmt.style.display = "inline";
+        elmt.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + url +"', sizingMethod='scale')";
+    }
+    elmt.style.width = width + "px";
+    elmt.style.height = height + "px";
+    return elmt;
+};
 
 Timeline.prototype.layout = function() {
     this._distributeWidths();
@@ -177,7 +210,7 @@ Timeline.registerEvent = function(elmt, eventName, handler) {
         return true;
     }
     
-    if (Timeline._isIE) {
+    if (Timeline.isIE) {
         elmt.attachEvent("on" + eventName, handler2);
     } else {
         elmt.addEventListener(eventName, handler2, true);
@@ -546,7 +579,7 @@ Timeline._xmlHttpRequest_onReadyStateChange = function(xmlhttp, fError, fDone) {
  *  itself with that function.
  */
 Timeline._createXmlHttpRequest = function() {
-    if (Timeline._isIE) {
+    if (Timeline.isIE) {
         var programIDs = [
         "Msxml2.XMLHTTP",
         "Microsoft.XMLHTTP",

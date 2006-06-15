@@ -85,7 +85,7 @@
     border: 1px solid blue;
 }
 
-.timeline-instant-event {
+.timeline-instant-event2 {
     position: absolute;
     overflow: hidden;
     border-left: 1px solid blue;
@@ -93,3 +93,8 @@
     text-overflow: ellipsis;
 }
 
+.timeline-instant-event {
+    position: absolute;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

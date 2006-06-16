@@ -436,6 +436,8 @@ Timeline.GregorianEtherPainter.prototype.setHighlight = function(startDate, endD
     if (!(this._highlightDiv)) {
         this._highlightDiv = this._timeline.getDocument().createElement("div");
         this._highlightDiv.className = "timeline-band-highlight";
+        Timeline.setOpacity(this._highlightDiv, 30);
+        
         this._backgroundLayer.appendChild(this._highlightDiv);
     }
     

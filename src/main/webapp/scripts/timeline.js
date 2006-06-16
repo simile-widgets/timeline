@@ -102,6 +102,15 @@ Timeline.createTranslucentImage = function(doc, url, width, height, verticalAlig
     elmt.style.height = height + "px";
     return elmt;
 };
+Timeline.setOpacity = function(elmt, opacity) {
+    if (Timeline.isIE) {
+        elmt.style.filter = "progid:DXImageTransform.Microsoft.Alpha(Style=0,Opacity=" + opacity + ")";
+    } else {
+        var o = (opacity / 100).toString();
+        elmt.style.opacity = o;
+        elmt.style.MozOpacity = o;
+    }
+};
 
 Timeline.prototype.layout = function() {
     this._distributeWidths();

@@ -254,6 +254,8 @@ Timeline.GregorianEtherPainter = function(params, band, timeline) {
     this._unit = params.unit;
     this._locale = ("locale" in params) ? params.locale : Timeline.Platform.getDefaultLocale();
     this._timeZone = ("timeZone" in params) ? params.timeZone : 0;
+    this._labeller = ("labeller" in params) ? params.labeller : 
+        new Timeline.GregorianDateLabeller(this._locale, this._timeZone);
     
     this._divs = [];
     this._dates = [];
@@ -318,7 +320,7 @@ Timeline.GregorianEtherPainter.prototype.paint = function() {
             "timeline-ether-interval-label-horizontal" :
             "timeline-ether-interval-label-vertical";
         
-        var label = Timeline.DateTime.labelInterval(date, p._unit, p._locale, p._timeZone);
+        var label = p._labeller.label(date, p._unit);
         div.innerHTML = label.text;
         if (label.emphasized) {
             div.className += "-emphasized";
@@ -376,6 +378,8 @@ Timeline.HotZoneGregorianEtherPainter = function(params, band, timeline) {
     
     this._locale = ("locale" in params) ? params.locale : Timeline.Platform.getDefaultLocale();
     this._timeZone = ("timeZone" in params) ? params.timeZone : 0;
+    this._labeller = ("labeller" in params) ? params.labeller : 
+        new Timeline.GregorianDateLabeller(this._locale, this._timeZone);
     
     this._zones = [{
         startTime:  Number.NEGATIVE_INFINITY,
@@ -485,7 +489,7 @@ Timeline.HotZoneGregorianEtherPainter.prototype.paint = function() {
             "timeline-ether-interval-label-horizontal" :
             "timeline-ether-interval-label-vertical";
         
-        var label = Timeline.DateTime.labelInterval(date, zone.unit, p._locale, p._timeZone);
+        var label = p._labeller.label(date, zone.unit);
         div.innerHTML = label.text;
         if (label.emphasized) {
             div.className += "-emphasized";
@@ -530,3 +534,18 @@ Timeline.HotZoneGregorianEtherPainter.prototype.paint = function() {
 
 Timeline.HotZoneGregorianEtherPainter.prototype.softPaint = function() {
 };
+
+/*==================================================
+ *  Gregorian Date Labeller
+ *==================================================
+ */
+
+Timeline.GregorianDateLabeller = function(locale, timeZone) {
+    this._locale = locale;
+    this._timeZone = timeZone;
+};
+
+Timeline.GregorianDateLabeller.prototype.label = function(date, intervalUnit) {
+    return Timeline.DateTime.labelInterval(date, intervalUnit, this._locale, this._timeZone);
+};
+

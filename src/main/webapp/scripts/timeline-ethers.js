@@ -87,7 +87,7 @@ Timeline.HotZoneEther = function(params, timeline) {
                     zone2.startTime = zoneEnd;
                     zoneStart = zoneEnd;
                 } else {
-                    zone2.magnify += zone.magnify;
+                    zone2.magnify *= zone.magnify;
                     zoneStart = zone2.endTime;
                 }
             } // else, try the next existing zone
@@ -252,7 +252,11 @@ Timeline.GregorianUtilities.monthNames = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 ];
 
-Timeline.GregorianUtilities.roundDownToInterval = function(date, intervalUnit) {
+Timeline.GregorianUtilities.roundDownToInterval = function(date, intervalUnit, multiple) {
+    if (multiple == null) {
+        multiple = 1;
+    }
+    
     var originalTime = date.getTime();
     var clearInDay = function(d) {
         d.setUTCMilliseconds(0);
@@ -268,18 +272,29 @@ Timeline.GregorianUtilities.roundDownToInterval = function(date, intervalUnit) {
     
     switch(intervalUnit) {
     case Timeline.MILLISECOND:
+        var x = date.getUTCMilliseconds();
+        date.setUTCMilliseconds(x - (x % multiple));
         break;
     case Timeline.SECOND:
         date.setUTCMilliseconds(0);
+        
+        var x = date.getUTCSeconds();
+        date.setUTCSeconds(x - (x % multiple));
         break;
     case Timeline.MINUTE:
         date.setUTCMilliseconds(0);
         date.setUTCSeconds(0);
+        
+        var x = date.getUTCMinutes();
+        date.setUTCMinutes(x - (x % multiple));
         break;
     case Timeline.HOUR:
         date.setUTCMilliseconds(0);
         date.setUTCSeconds(0);
         date.setUTCMinutes(0);
+        
+        var x = date.getUTCHours();
+        date.setUTCHours(x - (x % multiple));
         break;
     case Timeline.DAY:
         clearInDay(date);
@@ -292,9 +307,15 @@ Timeline.GregorianUtilities.roundDownToInterval = function(date, intervalUnit) {
     case Timeline.MONTH:
         clearInDay(date);
         date.setUTCDate(1);
+        
+        var x = date.getUTCMonth();
+        date.setUTCMonth(x - (x % multiple));
         break;
     case Timeline.YEAR:
         clearInYear(date);
+        
+        var x = date.getUTCFullYear();
+        date.setUTCFullYear(x - (x % multiple));
         break;
     case Timeline.DECADE:
         clearInYear(date);
@@ -311,11 +332,15 @@ Timeline.GregorianUtilities.roundDownToInterval = function(date, intervalUnit) {
     }
 };
 
-Timeline.GregorianUtilities.roundUpToInterval = function(date, intervalUnit) {
+Timeline.GregorianUtilities.roundUpToInterval = function(date, intervalUnit, multiple) {
+    if (multiple == null) {
+        multiple = 1;
+    }
+    
     var originalTime = date.getTime();
-    Timeline.GregorianUtilities.roundDownToInterval(date, intervalUnit);
+    Timeline.GregorianUtilities.roundDownToInterval(date, intervalUnit, multiple);
     if (date.getTime() < originalTime) {
-        date.setTime(date.getTime() + Timeline.GregorianUnitLengths[intervalUnit]);
+        date.setTime(date.getTime() + Timeline.GregorianUnitLengths[intervalUnit] * multiple);
     }
 };
 
@@ -436,7 +461,7 @@ Timeline.GregorianEtherPainter.prototype.setHighlight = function(startDate, endD
     if (!(this._highlightDiv)) {
         this._highlightDiv = this._timeline.getDocument().createElement("div");
         this._highlightDiv.className = "timeline-band-highlight";
-        Timeline.setOpacity(this._highlightDiv, 30);
+        Timeline.setOpacity(this._highlightDiv, 50);
         
         this._backgroundLayer.appendChild(this._highlightDiv);
     }
@@ -581,7 +606,7 @@ Timeline.HotZoneGregorianEtherPainter = function(params, band, timeline) {
                     zone2.startTime = zoneEnd;
                     zoneStart = zoneEnd;
                 } else {
-                    zone2.magnify += zone.magnify;
+                    zone2.multiple = zone.multiple;
                     zoneStart = zone2.endTime;
                 }
             } // else, try the next existing zone
@@ -599,6 +624,8 @@ Timeline.HotZoneGregorianEtherPainter.prototype.setHighlight = function(startDat
     if (!(this._highlightDiv)) {
         this._highlightDiv = this._timeline.getDocument().createElement("div");
         this._highlightDiv.className = "timeline-band-highlight";
+        Timeline.setOpacity(this._highlightDiv, 50);
+        
         this._backgroundLayer.appendChild(this._highlightDiv);
     }
     
@@ -682,8 +709,8 @@ Timeline.HotZoneGregorianEtherPainter.prototype.paint = function() {
         var minDate2 = new Date(Math.max(minDate.getTime(), zone.startTime));
         var maxDate2 = new Date(Math.min(maxDate.getTime(), zone.endTime));
         
-        Timeline.GregorianUtilities.roundDownToInterval(minDate2, zone.unit);
-        Timeline.GregorianUtilities.roundUpToInterval(maxDate2, zone.unit);
+        Timeline.GregorianUtilities.roundDownToInterval(minDate2, zone.unit, zone.multiple);
+        Timeline.GregorianUtilities.roundUpToInterval(maxDate2, zone.unit, zone.multiple);
         
         while (minDate2.getTime() < maxDate2.getTime()) {
             createDiv(minDate2, zone);

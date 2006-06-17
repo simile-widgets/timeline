@@ -35,7 +35,7 @@
                     multiple: 10
                 },
                 {   start:    "Fri Nov 22 1963 12:00:00 GMT",
-                    end:      "Fri Nov 22 1963 14:00:00 GMT",
+                    end:      "Fri Nov 22 1963 15:00:00 GMT",
                     magnify:  3,
                     unit:     Timeline.MINUTE,
                     multiple: 5
@@ -43,7 +43,6 @@
             ];
             
             var d = new Date(Date.parse("Fri Nov 22 1963 13:00:00 GMT"));
-            d.setFullYear(1);
             var bandInfos = [
                 Timeline.createSimpleBandInfo(
                     "75%", Timeline.WEEK,  5, eventSource, d, "timeline-band0", true),

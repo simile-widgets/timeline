@@ -239,23 +239,22 @@ Timeline.DateTime.defaultLabelInterval = function(date, intervalUnit, locale, ti
     case Timeline.DateTime.MONTH:
         var m = date.getUTCMonth();
         if (m == 0) {
-            text = date.getUTCFullYear();
+            text = Timeline.DateTime.labelInterval(date, Timeline.DateTime.YEAR, locale, timeZone).text;
             emphasized = true;
         } else {
             text = Timeline.DateTime.getGregorianMonthName(m, locale);
         }
         break;
     case Timeline.DateTime.YEAR:
-        text = date.getUTCFullYear();
-        break;
     case Timeline.DateTime.DECADE:
-        text = date.getUTCFullYear();
-        break;
     case Timeline.DateTime.CENTURY:
-        text = date.getUTCFullYear();
-        break;
     case Timeline.DateTime.MILLENNIUM:
-        text = date.getUTCFullYear();
+        var y = date.getUTCFullYear();
+        if (y > 0) {
+            text = date.getUTCFullYear();
+        } else {
+            text = (1 - y) + "BC";
+        }
         break;
     }
     return { text: text, emphasized: emphasized };

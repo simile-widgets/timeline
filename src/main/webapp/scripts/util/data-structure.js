@@ -3,8 +3,8 @@
  *==================================================
  */
 
-Timeline.SortedArray = function(compare) {
-    this._a = [];
+Timeline.SortedArray = function(compare, initialArray) {
+    this._a = (initialArray instanceof Array) ? initialArray : [];
     this._compare = compare;
 };
 

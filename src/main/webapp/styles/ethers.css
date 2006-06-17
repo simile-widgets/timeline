@@ -1,0 +1,33 @@
+.timeline-ether-interval-label-horizontal {
+    position: absolute;
+    border-left: 1px solid #aaa;
+    padding-left: 2px;
+    width: 5em;
+    height: 1.5em;
+}
+
+.timeline-ether-interval-label-vertical {
+    position: absolute;
+    border-top: 1px solid #aaa;
+    padding-top: 2px;
+    width: 5em;
+    height: 1.5em;
+}
+
+.timeline-ether-interval-label-horizontal-emphasized {
+    position: absolute;
+    border-left: 1px solid #aaa;
+    padding-left: 2px;
+    width: 4em;
+    height: 2em;
+    font-weight: bold;
+}
+
+.timeline-ether-interval-label-vertical-emphasized {
+    position: absolute;
+    border-top: 1px solid #aaa;
+    padding-top: 2px;
+    width: 5em;
+    height: 1.5em;
+    font-weight: bold;
+}

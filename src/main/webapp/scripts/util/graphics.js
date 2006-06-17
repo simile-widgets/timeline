@@ -23,7 +23,7 @@ Timeline.Graphics.createTranslucentImage = function(doc, url, width, height, ver
 };
 
 Timeline.Graphics.setOpacity = function(elmt, opacity) {
-    if (Timeline.Graphics.isIE) {
+    if (Timeline.Platform.isIE) {
         elmt.style.filter = "progid:DXImageTransform.Microsoft.Alpha(Style=0,Opacity=" + opacity + ")";
     } else {
         var o = (opacity / 100).toString();

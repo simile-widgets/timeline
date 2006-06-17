@@ -269,7 +269,6 @@ Timeline.GregorianEtherPainter.prototype.setHighlight = function(startDate, endD
     if (!(this._highlightDiv)) {
         this._highlightDiv = this._timeline.getDocument().createElement("div");
         this._highlightDiv.className = "timeline-band-highlight";
-        Timeline.Graphics.setOpacity(this._highlightDiv, 50);
         
         this._backgroundLayer.appendChild(this._highlightDiv);
     }
@@ -435,7 +434,6 @@ Timeline.HotZoneGregorianEtherPainter.prototype.setHighlight = function(startDat
     if (!(this._highlightDiv)) {
         this._highlightDiv = this._timeline.getDocument().createElement("div");
         this._highlightDiv.className = "timeline-band-highlight";
-        Timeline.Graphics.setOpacity(this._highlightDiv, 50);
         
         this._backgroundLayer.appendChild(this._highlightDiv);
     }

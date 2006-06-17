@@ -30,16 +30,18 @@
 .timeline-band-highlight {
     position: absolute;
     background: white;
+    -moz-opacity: 0.5;
+    filter:progid:DXImageTransform.Microsoft.Alpha(Style=0,Opacity=50);
 }
 
 .timeline-band0 {
-    background: #eee;
+    background: #FFFFE0;
 }
 
 .timeline-band1 {
-    background: #ddd;
+    background: #BFBFA8;
 }
 
 .timeline-band2 {
-    background: #ccc;
+    background: #8F8F7E;
 }

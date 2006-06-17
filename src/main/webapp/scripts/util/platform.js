@@ -2,8 +2,6 @@
  *  Platform Utility Functions and Constants
  *==================================================
  */
- 
-Timeline.Platform = new Object();
 
 Timeline.Platform.isIE = false;
 Timeline.Platform.isWin = false;
@@ -22,3 +20,7 @@ Timeline.Platform.isWin32 = false;
         ua.indexOf('32bit') != -1
     );
 })();
+
+Timeline.Platform.getDefaultLocale = function() {
+    return Timeline.Platform.clientLocale;
+};

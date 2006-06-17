@@ -35,9 +35,8 @@ Timeline.DateTime.gregorianUnitLengths = [];
         a[d.MILLENNIUM]  = a[d.YEAR] * 1000;
     })();
 
-Timeline.DateTime.gregorianMonthNames = [
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-];
+Timeline.DateTime.gregorianMonthNames = [];
+Timeline.DateTime.labelIntervalFunctions = [];
 
 Timeline.DateTime.parseGregorianDateTime = function(o) {
     if (o == null) {
@@ -51,6 +50,10 @@ Timeline.DateTime.parseGregorianDateTime = function(o) {
             return null;
         }
     }
+};
+
+Timeline.DateTime.getGregorianMonthName = function(month, locale) {
+    return Timeline.DateTime.gregorianMonthNames[locale][month];
 };
 
 Timeline.DateTime.roundDownToInterval = function(date, intervalUnit, timeZone, multiple) {
@@ -193,12 +196,20 @@ Timeline.DateTime.incrementByInterval = function(date, intervalUnit) {
     }
 };
 
-Timeline.DateTime.labelInterval = function(date, intervalUnit, timeZone) {
+Timeline.DateTime.removeTimeZoneOffset = function(date, timeZone) {
+    return new Date(date.getTime() + 
+        timeZone * Timeline.DateTime.gregorianUnitLengths[Timeline.DateTime.HOUR]);
+};
+
+Timeline.DateTime.labelInterval = function(date, intervalUnit, locale, timeZone) {
+    return Timeline.DateTime.labelIntervalFunctions[locale](date, intervalUnit, locale, timeZone);
+};
+
+Timeline.DateTime.defaultLabelInterval = function(date, intervalUnit, locale, timeZone) {
     var text;
     var emphasized = false;
     
-    date = new Date(date.getTime() + 
-        timeZone * Timeline.DateTime.gregorianUnitLengths[Timeline.DateTime.HOUR]);
+    date = Timeline.DateTime.removeTimeZoneOffset(date, timeZone);
     
     switch(intervalUnit) {
     case Timeline.DateTime.MILLISECOND:
@@ -220,10 +231,10 @@ Timeline.DateTime.labelInterval = function(date, intervalUnit, timeZone) {
         text = date.getUTCHours() + "hr";
         break;
     case Timeline.DateTime.DAY:
-        text = Timeline.DateTime.gregorianMonthNames[date.getUTCMonth()] + " " + date.getUTCDate();
+        text = Timeline.DateTime.getGregorianMonthName(date.getUTCMonth(), locale) + " " + date.getUTCDate();
         break;
     case Timeline.DateTime.WEEK:
-        text = Timeline.DateTime.gregorianMonthNames[date.getUTCMonth()] + " " + date.getUTCDate();
+        text = Timeline.DateTime.getGregorianMonthName(date.getUTCMonth(), locale) + " " + date.getUTCDate();
         break;
     case Timeline.DateTime.MONTH:
         var m = date.getUTCMonth();
@@ -231,7 +242,7 @@ Timeline.DateTime.labelInterval = function(date, intervalUnit, timeZone) {
             text = date.getUTCFullYear();
             emphasized = true;
         } else {
-            text = Timeline.DateTime.gregorianMonthNames[m];
+            text = Timeline.DateTime.getGregorianMonthName(m, locale);
         }
         break;
     case Timeline.DateTime.YEAR:

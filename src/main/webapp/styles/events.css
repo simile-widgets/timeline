@@ -1,0 +1,19 @@
+.timeline-duration-event {
+    position: absolute;
+    overflow: hidden;
+    border: 1px solid blue;
+}
+
+.timeline-instant-event2 {
+    position: absolute;
+    overflow: hidden;
+    border-left: 1px solid blue;
+    padding-left: 2px;
+    text-overflow: ellipsis;
+}
+
+.timeline-instant-event {
+    position: absolute;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

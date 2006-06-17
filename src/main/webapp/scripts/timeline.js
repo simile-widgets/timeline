@@ -2,12 +2,8 @@
  *  Timeline
  *==================================================
  */
-function Timeline(elmt, bandInfos, orientation) {
-    this._containerDiv = elmt;
-    this._orientation = orientation == null ? Timeline.HORIZONTAL : orientation;
-    this._bandInfos = bandInfos;
-    
-    this._initialize();
+Timeline.create = function(elmt, bandInfos, orientation) {
+    return new Timeline._Impl(elmt, bandInfos, orientation);
 };
 
 Timeline.HORIZONTAL = 0;
@@ -36,41 +32,49 @@ Timeline.loadXML = function(url, f) {
     Timeline.XmlHttp.get(url, fError, fDone);
 };
 
-Timeline.prototype.layout = function() {
+Timeline._Impl = function(elmt, bandInfos, orientation) {
+    this._containerDiv = elmt;
+    this._orientation = orientation == null ? Timeline.HORIZONTAL : orientation;
+    this._bandInfos = bandInfos;
+    
+    this._initialize();
+};
+
+Timeline._Impl.prototype.layout = function() {
     this._distributeWidths();
 };
 
-Timeline.prototype.getDocument = function() {
+Timeline._Impl.prototype.getDocument = function() {
     return this._containerDiv.ownerDocument;
 };
 
-Timeline.prototype.addDiv = function(div) {
+Timeline._Impl.prototype.addDiv = function(div) {
     this._containerDiv.appendChild(div);
 };
 
-Timeline.prototype.removeDiv = function(div) {
+Timeline._Impl.prototype.removeDiv = function(div) {
     this._containerDiv.removeChild(div);
 };
 
-Timeline.prototype.isHorizontal = function() {
+Timeline._Impl.prototype.isHorizontal = function() {
     return this._orientation == Timeline.HORIZONTAL;
 };
 
-Timeline.prototype.isVertical = function() {
+Timeline._Impl.prototype.isVertical = function() {
     return this._orientation == Timeline.VERTICAL;
 };
 
-Timeline.prototype.getPixelLength = function() {
+Timeline._Impl.prototype.getPixelLength = function() {
     return this._orientation == Timeline.HORIZONTAL ? 
         this._containerDiv.offsetWidth : this._containerDiv.offsetHeight;
 };
 
-Timeline.prototype.getPixelWidth = function() {
+Timeline._Impl.prototype.getPixelWidth = function() {
     return this._orientation == Timeline.VERTICAL ? 
         this._containerDiv.offsetWidth : this._containerDiv.offsetHeight;
 };
 
-Timeline.prototype._initialize = function() {
+Timeline._Impl.prototype._initialize = function() {
     var containerDiv = this._containerDiv;
     var doc = containerDiv.ownerDocument;
     
@@ -96,7 +100,7 @@ Timeline.prototype._initialize = function() {
     }
 };
 
-Timeline.prototype._distributeWidths = function() {
+Timeline._Impl.prototype._distributeWidths = function() {
     var length = this.getPixelLength();
     var width = this.getPixelWidth();
     var cumulativeWidth = 0;

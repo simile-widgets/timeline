@@ -252,6 +252,7 @@ Timeline.GregorianEtherPainter = function(params, band, timeline) {
     this._timeline = timeline;
     
     this._unit = params.unit;
+    this._locale = ("locale" in params) ? params.locale : Timeline.Platform.getDefaultLocale();
     this._timeZone = ("timeZone" in params) ? params.timeZone : 0;
     
     this._divs = [];
@@ -318,7 +319,7 @@ Timeline.GregorianEtherPainter.prototype.paint = function() {
             "timeline-ether-interval-label-horizontal" :
             "timeline-ether-interval-label-vertical";
         
-        var label = Timeline.DateTime.labelInterval(date, p._unit, p._timeZone);
+        var label = Timeline.DateTime.labelInterval(date, p._unit, p._locale, p._timeZone);
         div.innerHTML = label.text;
         if (label.emphasized) {
             div.className += "-emphasized";
@@ -374,6 +375,7 @@ Timeline.HotZoneGregorianEtherPainter = function(params, band, timeline) {
     this._band = band;
     this._timeline = timeline;
     
+    this._locale = ("locale" in params) ? params.locale : Timeline.Platform.getDefaultLocale();
     this._timeZone = ("timeZone" in params) ? params.timeZone : 0;
     
     this._zones = [{
@@ -485,7 +487,7 @@ Timeline.HotZoneGregorianEtherPainter.prototype.paint = function() {
             "timeline-ether-interval-label-horizontal" :
             "timeline-ether-interval-label-vertical";
         
-        var label = Timeline.DateTime.labelInterval(date, zone.unit, p._timeZone);
+        var label = Timeline.DateTime.labelInterval(date, zone.unit, p._locale, p._timeZone);
         div.innerHTML = label.text;
         if (label.emphasized) {
             div.className += "-emphasized";

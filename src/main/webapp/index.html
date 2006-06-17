@@ -9,10 +9,18 @@
         }
     </style>
     <script src="scripts/timeline.js" type="text/javascript"></script>
-    <script src="scripts/timeline-utilities.js" type="text/javascript"></script>
-    <script src="scripts/timeline-ethers.js" type="text/javascript"></script>
-    <script src="scripts/timeline-sources.js" type="text/javascript"></script>
-    <script src="scripts/timeline-painters.js" type="text/javascript"></script>
+    
+    <script src="scripts/util/platform.js" type="text/javascript"></script>
+    <script src="scripts/util/debug.js" type="text/javascript"></script>
+    <script src="scripts/util/xmlhttp.js" type="text/javascript"></script>
+    <script src="scripts/util/date-time.js" type="text/javascript"></script>
+    <script src="scripts/util/data-structure.js" type="text/javascript"></script>
+    <script src="scripts/util/dom.js" type="text/javascript"></script>
+    <script src="scripts/util/graphics.js" type="text/javascript"></script>
+    
+    <script src="scripts/ethers.js" type="text/javascript"></script>
+    <script src="scripts/sources.js" type="text/javascript"></script>
+    <script src="scripts/painters.js" type="text/javascript"></script>
     <script>
         var tl;
         function onLoad() {
@@ -22,23 +30,23 @@
                 {   start:    "Fri Nov 22 1963 00:00:00 GMT-0600",
                     end:      "Mon Nov 25 1963 00:00:00 GMT-0600",
                     magnify:  5,
-                    unit:     Timeline.DAY
+                    unit:     Timeline.DateTime.DAY
                 },
                 {   start:    "Fri Nov 22 1963 09:00:00 GMT-0600",
                     end:      "Sat Nov 23 1963 00:00:00 GMT-0600",
                     magnify:  5,
-                    unit:     Timeline.HOUR
+                    unit:     Timeline.DateTime.HOUR
                 },
                 {   start:    "Fri Nov 22 1963 11:00:00 GMT-0600",
                     end:      "Fri Nov 22 1963 15:00:00 GMT-0600",
                     magnify:  10,
-                    unit:     Timeline.MINUTE,
+                    unit:     Timeline.DateTime.MINUTE,
                     multiple: 10
                 },
                 {   start:    "Fri Nov 22 1963 12:00:00 GMT-0600",
                     end:      "Fri Nov 22 1963 15:00:00 GMT-0600",
                     magnify:  3,
-                    unit:     Timeline.MINUTE,
+                    unit:     Timeline.DateTime.MINUTE,
                     multiple: 5
                 }
             ];
@@ -46,9 +54,9 @@
             var d = new Date(Date.parse("Fri Nov 22 1963 13:00:00 GMT-0600"));
             var bandInfos = [
                 Timeline.createSimpleBandInfo(
-                    "75%", Timeline.WEEK,  5, eventSource, d, "timeline-band0", true),
+                    "75%", Timeline.DateTime.WEEK,  5, eventSource, d, "timeline-band0", true),
                 Timeline.createSimpleBandInfo(
-                    "25%", Timeline.MONTH, 5, eventSource, d, "timeline-band1", false)
+                    "25%", Timeline.DateTime.MONTH, 5, eventSource, d, "timeline-band1", false)
             ];
             bandInfos[0].ether = Timeline.HotZoneEther;
             bandInfos[0].etherParams.zones = zones;

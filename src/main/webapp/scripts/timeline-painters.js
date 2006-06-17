@@ -22,7 +22,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
     var minDate = this._band.getMinDate();
     var maxDate = this._band.getMaxDate();
     
-    var streams = [ 0 ];
+    var streams = [ Number.NEGATIVE_INFINITY ];
     
     var doc = this._timeline.getDocument();
     var iterator = eventSource.getEventIterator(minDate, maxDate);
@@ -57,7 +57,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
             }
         }
         if (streamIndex >= streams.length) {
-            streams.push(0);
+            streams.push(Number.NEGATIVE_INFINITY);
         }
         
         var streamOffset = (0.5 + streamIndex * 2) + "em";

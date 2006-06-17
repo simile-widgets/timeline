@@ -1,0 +1,176 @@
+/*==================================================
+ *  Sorted Array
+ *==================================================
+ */
+
+Timeline.SortedArray = function(compare) {
+    this._a = [];
+    this._compare = compare;
+};
+
+Timeline.SortedArray.prototype.add = function(elmt) {
+    var sa = this;
+    var index = this.find(function(elmt2) {
+        return sa._compare(elmt2, elmt);
+    });
+    
+    if (index < this._a.length) {
+        this._a.splice(index, 0, elmt);
+    } else {
+        this._a.push(elmt);
+    }
+};
+
+Timeline.SortedArray.prototype.remove = function(elmt) {
+    var sa = this;
+    var index = this.find(function(elmt2) {
+        return sa._compare(elmt2, elmt);
+    });
+    
+    while (index < this._a.length && this._compare(this._a[index], elmt) == 0) {
+        if (this._a[index] == elmt) {
+            this._a.splice(index, 1);
+            return true;
+        } else {
+            index++;
+        }
+    }
+    return false;
+};
+
+Timeline.SortedArray.prototype.removeAll = function() {
+    this._a = [];
+};
+
+Timeline.SortedArray.prototype.elementAt = function(index) {
+    return this._a[index];
+};
+
+Timeline.SortedArray.prototype.length = function() {
+    return this._a.length;
+};
+
+Timeline.SortedArray.prototype.find = function(compare) {
+    var a = 0;
+    var b = this._a.length;
+    
+    while (a < b) {
+        var mid = Math.floor((a + b) / 2);
+        var c = compare(this._a[mid]);
+        if (mid == a) {
+            return c < 0 ? a+1 : a;
+        } else if (c < 0) {
+            a = mid;
+        } else {
+            b = mid;
+        }
+    }
+    return a;
+};
+
+/*==================================================
+ *  Event Index
+ *==================================================
+ */
+
+Timeline.EventIndex = function() {
+    this._events = new Timeline.SortedArray(Timeline.EventIndex.compare);
+    this._indexed = true;
+};
+
+Timeline.EventIndex.compare = function(event1, event2) {
+    return event1.getStart().getTime() - event2.getStart().getTime();
+};
+
+Timeline.EventIndex.prototype.add = function(evt) {
+    this._events.add(evt);
+    this._indexed = false;
+};
+
+Timeline.EventIndex.prototype.getIterator = function(startDate, endDate) {
+    if (!this._indexed) {
+        this._index();
+    }
+    return new Timeline.EventIndex._Iterator(this._events, startDate, endDate);
+};
+
+Timeline.EventIndex.prototype._index = function() {
+    /*
+     *  For each event, we want to find the earliest preceding
+     *  event that overlaps with it, if any.
+     */
+    
+    this._events.elementAt(0)._earliestOverlapIndex = 0;
+    
+    var toIndex = 1;
+    
+    var l = this._events.length();
+    for (var i = 0; i < l; i++) {
+        var evt = this._events.elementAt(i);
+        var end = evt.getEnd().getTime();
+        
+        while (toIndex < l) {
+            var evt2 = this._events.elementAt(toIndex);
+            var start2 = evt2.getStart().getTime();
+            
+            if (start2 < end) {
+                evt2._earliestOverlapIndex = i;
+                toIndex++;
+            } else {
+                evt2._earliestOverlapIndex = toIndex;
+                break;
+            }
+        }
+    }
+};
+
+Timeline.EventIndex._Iterator = function(events, startDate, endDate) {
+    this._events = events;
+    this._startDate = startDate;
+    this._endDate = endDate;
+    
+    this._currentIndex = events.find(function(evt) {
+        return evt.getStart().getTime() - startDate.getTime();
+    });
+    if (this._currentIndex - 1 >= 0) {
+        this._currentIndex = this._events.elementAt(this._currentIndex - 1)._earliestOverlapIndex;
+    }
+    this._currentIndex--;
+    
+    this._maxIndex = events.find(function(evt) {
+        return evt.getStart().getTime() - endDate.getTime();
+    });
+    
+    this._hasNext = false;
+    this._next = null;
+    this._findNext();
+};
+
+Timeline.EventIndex._Iterator.prototype = {
+    hasNext: function() { return this._hasNext; },
+    next: function() {
+        if (this._hasNext) {
+            var next = this._next;
+            this._findNext();
+            
+            return next;
+        } else {
+            return null;
+        }
+    },
+    _findNext: function() {
+        while ((++this._currentIndex) < this._maxIndex) {
+            var evt = this._events.elementAt(this._currentIndex);
+            if (evt.getStart().getTime() < this._endDate.getTime() &&
+                evt.getEnd().getTime() > this._startDate.getTime()) {
+                
+                this._next = evt;
+                this._hasNext = true;
+                return;
+            }
+        }
+        this._next = null;
+        this._hasNext = false;
+    }
+};
+

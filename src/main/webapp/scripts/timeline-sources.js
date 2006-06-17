@@ -74,14 +74,9 @@ Timeline.SortedArray.prototype.find = function(compare) {
  */
 
 
-Timeline.DefaultEventSource = function(timeZoneOffset) {
+Timeline.DefaultEventSource = function() {
     this._events = new Timeline.SortedArray(Timeline.DefaultEventSource.compare);
     this._listeners = [];
-    if (timeZoneOffset) {
-        this._timeZoneShift = timeZoneOffset * Timeline.GregorianUnitLengths[Timeline.HOUR];
-    } else {
-        this._timeZoneShift = 0;
-    }
 };
 
 Timeline.DefaultEventSource.prototype.addListener = function(listener) {
@@ -106,8 +101,7 @@ Timeline.DefaultEventSource.prototype.loadXML = function(xml) {
                 Timeline.parseGregorianDateTime(node.getAttribute("starts")),
                 Timeline.parseGregorianDateTime(node.getAttribute("ends")),
                 node.getAttribute("title"),
-                node.getAttribute("description"),
-                this._timeZoneShift
+                node.getAttribute("description")
             );
             this._events.add(evt);
             
@@ -181,17 +175,12 @@ Timeline.DefaultEventSource.compare = function(event1, event2) {
     return event1.getStart().getTime() - event2.getStart().getTime();
 };
 
-Timeline.DefaultEventSource.Event = function(start, end, text, description, timeZoneShift) {
+Timeline.DefaultEventSource.Event = function(start, end, text, description) {
     this._start = start;
     this._end = (end != null) ? end : start;
     this._text = text;
     this._description = description;
     this._id = "e" + Math.floor(Math.random() * 1000000);
-    
-    if (timeZoneShift != 0) {
-        this._start = new Date(this._start.getTime() + timeZoneShift);
-        this._end = new Date(this._end.getTime() + timeZoneShift);
-    }
 };
 
 Timeline.DefaultEventSource.Event.prototype = {

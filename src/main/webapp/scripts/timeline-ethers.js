@@ -252,12 +252,13 @@ Timeline.GregorianUtilities.monthNames = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 ];
 
-Timeline.GregorianUtilities.roundDownToInterval = function(date, intervalUnit, multiple) {
+Timeline.GregorianUtilities.roundDownToInterval = function(date, intervalUnit, timeZone, multiple) {
     if (multiple == null) {
         multiple = 1;
     }
     
-    var originalTime = date.getTime();
+    var timeShift = timeZone * Timeline.GregorianUnitLengths[Timeline.HOUR];
+    var date2 = new Date(date.getTime() + timeShift);
     var clearInDay = function(d) {
         d.setUTCMilliseconds(0);
         d.setUTCSeconds(0);
@@ -272,73 +273,75 @@ Timeline.GregorianUtilities.roundDownToInterval = function(date, intervalUnit, m
     
     switch(intervalUnit) {
     case Timeline.MILLISECOND:
-        var x = date.getUTCMilliseconds();
-        date.setUTCMilliseconds(x - (x % multiple));
+        var x = date2.getUTCMilliseconds();
+        date2.setUTCMilliseconds(x - (x % multiple));
         break;
     case Timeline.SECOND:
-        date.setUTCMilliseconds(0);
+        date2.setUTCMilliseconds(0);
         
-        var x = date.getUTCSeconds();
-        date.setUTCSeconds(x - (x % multiple));
+        var x = date2.getUTCSeconds();
+        date2.setUTCSeconds(x - (x % multiple));
         break;
     case Timeline.MINUTE:
-        date.setUTCMilliseconds(0);
-        date.setUTCSeconds(0);
+        date2.setUTCMilliseconds(0);
+        date2.setUTCSeconds(0);
         
-        var x = date.getUTCMinutes();
-        date.setUTCMinutes(x - (x % multiple));
+        var x = date2.getUTCMinutes();
+        date2.setTime(date2.getTime() - (x % multiple) * Timeline.GregorianUnitLengths[Timeline.MINUTE]);
         break;
     case Timeline.HOUR:
-        date.setUTCMilliseconds(0);
-        date.setUTCSeconds(0);
-        date.setUTCMinutes(0);
+        date2.setUTCMilliseconds(0);
+        date2.setUTCSeconds(0);
+        date2.setUTCMinutes(0);
         
-        var x = date.getUTCHours();
-        date.setUTCHours(x - (x % multiple));
+        var x = date2.getUTCHours();
+        date2.setUTCHours(x - (x % multiple));
         break;
     case Timeline.DAY:
-        clearInDay(date);
+        clearInDay(date2);
         break;
     case Timeline.WEEK:
         // TODO: a week starts on different days in different locales.
-        clearInDay(date);
-        date.setTime(date.getTime() - date.getUTCDay() * Timeline.GregorianUnitLengths[Timeline.DAY]);
+        clearInDay(date2);
+        date2.setTime(date2.getTime() - date2.getUTCDay() * Timeline.GregorianUnitLengths[Timeline.DAY]);
         break;
     case Timeline.MONTH:
-        clearInDay(date);
-        date.setUTCDate(1);
+        clearInDay(date2);
+        date2.setUTCDate(1);
         
-        var x = date.getUTCMonth();
-        date.setUTCMonth(x - (x % multiple));
+        var x = date2.getUTCMonth();
+        date2.setUTCMonth(x - (x % multiple));
         break;
     case Timeline.YEAR:
-        clearInYear(date);
+        clearInYear(date2);
         
-        var x = date.getUTCFullYear();
-        date.setUTCFullYear(x - (x % multiple));
+        var x = date2.getUTCFullYear();
+        date2.setUTCFullYear(x - (x % multiple));
         break;
     case Timeline.DECADE:
-        clearInYear(date);
-        date.setUTCFullYear(Math.floor(date.getUTCFullYear() / 10) * 10);
+        clearInYear(date2);
+        date2.setUTCFullYear(Math.floor(date2.getUTCFullYear() / 10) * 10);
         break;
     case Timeline.CENTURY:
-        clearInYear(date);
-        date.setUTCFullYear(Math.floor(date.getUTCFullYear() / 100) * 100);
+        clearInYear(date2);
+        date2.setUTCFullYear(Math.floor(date2.getUTCFullYear() / 100) * 100);
         break;
     case Timeline.MILLENNIUM:
-        clearInYear(date);
-        date.setUTCFullYear(Math.floor(date.getUTCFullYear() / 1000) * 1000);
+        clearInYear(date2);
+        date2.setUTCFullYear(Math.floor(date2.getUTCFullYear() / 1000) * 1000);
         break;
     }
+    
+    date.setTime(date2.getTime() - timeShift);
 };
 
-Timeline.GregorianUtilities.roundUpToInterval = function(date, intervalUnit, multiple) {
+Timeline.GregorianUtilities.roundUpToInterval = function(date, intervalUnit, timeZone, multiple) {
     if (multiple == null) {
         multiple = 1;
     }
     
     var originalTime = date.getTime();
-    Timeline.GregorianUtilities.roundDownToInterval(date, intervalUnit, multiple);
+    Timeline.GregorianUtilities.roundDownToInterval(date, intervalUnit, timeZone, multiple);
     if (date.getTime() < originalTime) {
         date.setTime(date.getTime() + Timeline.GregorianUnitLengths[intervalUnit] * multiple);
     }
@@ -382,9 +385,11 @@ Timeline.GregorianUtilities.incrementByInterval = function(date, intervalUnit) {
     }
 };
 
-Timeline.GregorianUtilities.labelInterval = function(date, intervalUnit) {
+Timeline.GregorianUtilities.labelInterval = function(date, intervalUnit, timeZone) {
     var text;
     var emphasized = false;
+    
+    date = new Date(date.getTime() + timeZone * Timeline.GregorianUnitLengths[Timeline.HOUR]);
     
     switch(intervalUnit) {
     case Timeline.MILLISECOND:
@@ -446,6 +451,7 @@ Timeline.GregorianEtherPainter = function(params, band, timeline) {
     this._timeline = timeline;
     
     this._unit = params.unit;
+    this._timeZone = ("timeZone" in params) ? params.timeZone : 0;
     
     this._divs = [];
     this._dates = [];
@@ -486,7 +492,7 @@ Timeline.GregorianEtherPainter.prototype.paint = function() {
     var minDate = this._band.getMinDate();
     var maxDate = this._band.getMaxDate();
     
-    Timeline.GregorianUtilities.roundDownToInterval(minDate, this._unit);
+    Timeline.GregorianUtilities.roundDownToInterval(minDate, this._unit, this._timeZone);
     
     var newDivs = [];
     var newDates = [];
@@ -511,7 +517,7 @@ Timeline.GregorianEtherPainter.prototype.paint = function() {
             "timeline-ether-interval-label-horizontal" :
             "timeline-ether-interval-label-vertical";
         
-        var label = Timeline.GregorianUtilities.labelInterval(date, p._unit);
+        var label = Timeline.GregorianUtilities.labelInterval(date, p._unit, p._timeZone);
         div.innerHTML = label.text;
         if (label.emphasized) {
             div.className += "-emphasized";
@@ -566,6 +572,8 @@ Timeline.GregorianEtherPainter.prototype.softPaint = function() {
 Timeline.HotZoneGregorianEtherPainter = function(params, band, timeline) {
     this._band = band;
     this._timeline = timeline;
+    
+    this._timeZone = ("timeZone" in params) ? params.timeZone : 0;
     
     this._zones = [{
         startTime:  Number.NEGATIVE_INFINITY,
@@ -676,7 +684,7 @@ Timeline.HotZoneGregorianEtherPainter.prototype.paint = function() {
             "timeline-ether-interval-label-horizontal" :
             "timeline-ether-interval-label-vertical";
         
-        var label = Timeline.GregorianUtilities.labelInterval(date, zone.unit);
+        var label = Timeline.GregorianUtilities.labelInterval(date, zone.unit, p._timeZone);
         div.innerHTML = label.text;
         if (label.emphasized) {
             div.className += "-emphasized";
@@ -709,8 +717,8 @@ Timeline.HotZoneGregorianEtherPainter.prototype.paint = function() {
         var minDate2 = new Date(Math.max(minDate.getTime(), zone.startTime));
         var maxDate2 = new Date(Math.min(maxDate.getTime(), zone.endTime));
         
-        Timeline.GregorianUtilities.roundDownToInterval(minDate2, zone.unit, zone.multiple);
-        Timeline.GregorianUtilities.roundUpToInterval(maxDate2, zone.unit, zone.multiple);
+        Timeline.GregorianUtilities.roundDownToInterval(minDate2, zone.unit, this._timeZone, zone.multiple);
+        Timeline.GregorianUtilities.roundUpToInterval(maxDate2, zone.unit, this._timeZone, zone.multiple);
         
         while (minDate2.getTime() < maxDate2.getTime()) {
             createDiv(minDate2, zone);

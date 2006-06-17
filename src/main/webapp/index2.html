@@ -18,48 +18,48 @@
             var eventSource = new Timeline.DefaultEventSource(-6);
             
             var zones = [
-                {   start:    "Fri Nov 22 1963 00:00:00 GMT",
-                    end:      "Mon Nov 25 1963 00:00:00 GMT",
+                {   start:    "Fri Nov 22 1963 00:00:00 GMT-0600",
+                    end:      "Mon Nov 25 1963 00:00:00 GMT-0600",
                     magnify:  5,
                     unit:     Timeline.DAY
                 },
-                {   start:    "Fri Nov 22 1963 09:00:00 GMT",
-                    end:      "Sat Nov 23 1963 00:00:00 GMT",
+                {   start:    "Fri Nov 22 1963 09:00:00 GMT-0600",
+                    end:      "Sat Nov 23 1963 00:00:00 GMT-0600",
                     magnify:  5,
                     unit:     Timeline.HOUR
                 },
-                {   start:    "Fri Nov 22 1963 11:00:00 GMT",
-                    end:      "Fri Nov 22 1963 15:00:00 GMT",
+                {   start:    "Fri Nov 22 1963 11:00:00 GMT-0600",
+                    end:      "Fri Nov 22 1963 15:00:00 GMT-0600",
                     magnify:  10,
                     unit:     Timeline.MINUTE,
                     multiple: 10
                 },
-                {   start:    "Fri Nov 22 1963 12:00:00 GMT",
-                    end:      "Fri Nov 22 1963 14:00:00 GMT",
+                {   start:    "Fri Nov 22 1963 12:00:00 GMT-0600",
+                    end:      "Fri Nov 22 1963 14:00:00 GMT-0600",
                     magnify:  3,
                     unit:     Timeline.MINUTE,
                     multiple: 5
                 }
             ];
             var zones2 = [
-                {   start:    "Fri Nov 22 1963 00:00:00 GMT",
-                    end:      "Mon Nov 25 1963 00:00:00 GMT",
+                {   start:    "Fri Nov 22 1963 00:00:00 GMT-0600",
+                    end:      "Mon Nov 25 1963 00:00:00 GMT-0600",
                     magnify:  5,
                     unit:     Timeline.WEEK
                 },
-                {   start:    "Fri Nov 22 1963 09:00:00 GMT",
-                    end:      "Sat Nov 23 1963 00:00:00 GMT",
+                {   start:    "Fri Nov 22 1963 09:00:00 GMT-0600",
+                    end:      "Sat Nov 23 1963 00:00:00 GMT-0600",
                     magnify:  5,
                     unit:     Timeline.DAY
                 },
-                {   start:    "Fri Nov 22 1963 11:00:00 GMT",
-                    end:      "Fri Nov 22 1963 15:00:00 GMT",
+                {   start:    "Fri Nov 22 1963 11:00:00 GMT-0600",
+                    end:      "Fri Nov 22 1963 15:00:00 GMT-0600",
                     magnify:  15,
                     unit:     Timeline.MINUTE,
                     multiple: 15
                 },
-                {   start:    "Fri Nov 22 1963 12:00:00 GMT",
-                    end:      "Fri Nov 22 1963 14:00:00 GMT",
+                {   start:    "Fri Nov 22 1963 12:00:00 GMT-0600",
+                    end:      "Fri Nov 22 1963 14:00:00 GMT-0600",
                     magnify:  3,
                     unit:     Timeline.MINUTE,
                     multiple: 10
@@ -68,17 +68,19 @@
             
             var bandInfos = [
                 Timeline.createSimpleBandInfo(
-                    "75%", Timeline.WEEK,  5, eventSource, "Fri Nov 22 1963 13:00:00 GMT", "timeline-band0", true),
+                    "75%", Timeline.WEEK,  5, eventSource, "Fri Nov 22 1963 13:00:00 GMT-0600", "timeline-band0", true),
                 Timeline.createSimpleBandInfo(
-                    "25%", Timeline.MONTH, 5, eventSource, "Fri Nov 22 1963 13:00:00 GMT", "timeline-band1", false)
+                    "25%", Timeline.MONTH, 5, eventSource, "Fri Nov 22 1963 13:00:00 GMT-0600", "timeline-band1", false)
             ];
             bandInfos[0].ether = Timeline.HotZoneEther;
             bandInfos[0].etherParams.zones = zones;
+            bandInfos[0].etherPainterParams.timeZone = -6;
             bandInfos[0].etherPainterParams.zones = zones;
             bandInfos[0].eventPainterParams.textWidth = "20em";
             
             bandInfos[1].ether = Timeline.HotZoneEther;
             bandInfos[1].etherParams.zones = zones2;
+            bandInfos[1].etherPainterParams.timeZone = -6;
             bandInfos[1].etherPainterParams.zones = zones2;
             bandInfos[1].highlight = 0;
             

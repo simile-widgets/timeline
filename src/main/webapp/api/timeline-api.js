@@ -63,7 +63,6 @@ Timeline.Platform = new Object();
     ];
     
     try {
-        var urlPrefix;
         var desiredLocales = [ "en" ];
         var defaultServerLocale = "en";
         
@@ -75,7 +74,7 @@ Timeline.Platform = new Object();
                     var url = scripts[s].src;
                     var i = url.indexOf("timeline-api.js");
                     if (i >= 0) {
-                        urlPrefix = url.substr(0, i);
+                        Timeline.urlPrefix = url.substr(0, i);
                         
                         // Parse parameters
                         var q = url.indexOf("?");
@@ -99,10 +98,10 @@ Timeline.Platform = new Object();
         })();
         
         var includeJavascriptFile = function(filename) {
-            document.write("<script src='" + urlPrefix + "scripts/" + filename + "' type='text/javascript'></script>");
+            document.write("<script src='" + Timeline.urlPrefix + "scripts/" + filename + "' type='text/javascript'></script>");
         };
         var includeCssFile = function(filename) {
-            document.write("<link rel='stylesheet' href='" + urlPrefix + "styles/" + filename + "' type='text/css'/>");
+            document.write("<link rel='stylesheet' href='" + Timeline.urlPrefix + "styles/" + filename + "' type='text/css'/>");
         }
         
         /*

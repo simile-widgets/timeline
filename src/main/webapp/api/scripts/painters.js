@@ -40,7 +40,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
         if (instant) {
             div.className = "timeline-instant-event";
             div.appendChild(Timeline.Graphics.createTranslucentImage(
-                doc, "../images/red-pin.png", 16, 17));
+                doc, Timeline.urlPrefix + "images/red-pin.png", 16, 17));
             if (this._showText) {
                 div.appendChild(doc.createTextNode(evt.getText()));
             }

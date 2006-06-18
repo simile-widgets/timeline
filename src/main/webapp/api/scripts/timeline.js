@@ -9,7 +9,19 @@ Timeline.create = function(elmt, bandInfos, orientation) {
 Timeline.HORIZONTAL = 0;
 Timeline.VERTICAL = 1;
 
-Timeline.createSimpleBandInfo = function(width, intervalUnit, intervalCount, eventSource, date, etherCssClass, showEventText) {
+Timeline._defaultTheme = null;
+
+Timeline.createSimpleBandInfo = function(
+    width, 
+    intervalUnit, 
+    intervalCount, 
+    eventSource, 
+    date, 
+    showEventText,
+    theme
+    ) {
+    theme = (theme != null) ? theme : Timeline.getDefaultTheme();
+    
     return {   
         width:          width,
         eventSource:    eventSource,
@@ -17,9 +29,20 @@ Timeline.createSimpleBandInfo = function(width, intervalUnit, intervalCount, eve
             duration: intervalCount * Timeline.DateTime.gregorianUnitLengths[intervalUnit], 
             centersOn: date 
         },
-        etherPainterParams: { unit: intervalUnit, cssClass: etherCssClass },
-        eventPainterParams: { showText: showEventText }
+        etherPainterParams: { unit: intervalUnit, theme: theme },
+        eventPainterParams: { theme: theme, showText: showEventText }
     };
+};
+
+Timeline.getDefaultTheme = function() {
+    if (Timeline._defaultTheme == null) {
+        Timeline._defaultTheme = Timeline.ClassicTheme.create(Timeline.Platform.getDefaultLocale());
+    }
+    return Timeline._defaultTheme;
+};
+
+Timeline.setDefaultTheme = function(theme) {
+    Timeline._defaultTheme = theme;
 };
 
 Timeline.loadXML = function(url, f) {
@@ -87,7 +110,7 @@ Timeline._Impl.prototype._initialize = function() {
     
     this._bands = [];
     for (var i = 0; i < this._bandInfos.length; i++) {
-        var band = new Timeline._Band(this, this._bandInfos[i]);
+        var band = new Timeline._Band(this, this._bandInfos[i], i);
         this._bands.push(band);
     }
     this._distributeWidths();
@@ -129,9 +152,10 @@ Timeline._Impl.prototype._distributeWidths = function() {
  *  Band
  *==================================================
  */
-Timeline._Band = function(timeline, bandInfo) {
+Timeline._Band = function(timeline, bandInfo, index) {
     this._timeline = timeline;
     this._bandInfo = bandInfo;
+    this._index = index;
     
     this._dragging = false;
     this._changing = false;
@@ -200,6 +224,10 @@ Timeline._Band.prototype.setHighlightBand = function(band) {
     this._highlightBand = band;
     this._highlightBand.addOnScrollListener(this._highlightBandHandler);
     this._positionHighlight();
+};
+
+Timeline._Band.prototype.getIndex = function() {
+    return this._index;
 };
 
 Timeline._Band.prototype.getEther = function() {

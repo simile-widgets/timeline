@@ -38,6 +38,7 @@ Timeline.Platform = new Object();
         "util/date-time.js",
         "util/data-structure.js",
         
+        "themes.js",
         "ethers.js",
         "labellers.js",
         "sources.js",
@@ -45,7 +46,6 @@ Timeline.Platform = new Object();
     ];
     var cssFiles = [
         "timeline.css",
-        "ethers.css",
         "events.css"
     ];
     

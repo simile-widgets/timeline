@@ -3,13 +3,19 @@
  *==================================================
  */
 
-Timeline.JapaneseEraDateLabeller = function(locale, timeZone, useRomanizedName) {
-    this._locale = locale;
-    this._timeZone = timeZone;
-    this._useRomanizedName = (useRomanizedName);
+Timeline.JapaneseEraDateLabeller = new Object();
+
+Timeline.JapaneseEraDateLabeller.create = function(locale, timeZone, useRomanizedName) {
+    var o = Timeline.GregorianDateLabeller.create(locale, timeZone);
+    
+    o._useRomanizedName = (useRomanizedName);
+    o._oldLabel = o.label;
+    o.label = Timeline.JapaneseEraDateLabeller._label;
+    
+    return o;
 };
 
-Timeline.JapaneseEraDateLabeller.prototype.label = function(date, intervalUnit) {
+Timeline.JapaneseEraDateLabeller._label = function(date, intervalUnit) {
     var text;
     var emphasized = false;
     
@@ -31,12 +37,12 @@ Timeline.JapaneseEraDateLabeller.prototype.label = function(date, intervalUnit) 
                 era = Timeline.JapaneseEraDateLabeller._eras.elementAt(eraIndex - 1);
             }
             
-            text = (era._useRomanizedName ? era.romanizedName : era.japaneseName) + " " + (y - era.startingYear + 1);
+            text = (this._useRomanizedName ? era.romanizedName : era.japaneseName) + " " + (y - era.startingYear + 1);
             emphasized = intervalUnit == Timeline.DateTime.YEAR && y == era.startingYear;
             break;
         } // else, fall through
     default:
-        return Timeline.DateTime.labelInterval(date, intervalUnit, this._locale, this._timeZone);
+        return this._oldLabel(date, intervalUnit);
     }
     
     return { text: text, emphasized: emphasized };

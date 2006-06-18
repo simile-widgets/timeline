@@ -17,6 +17,9 @@ Timeline.DateTime.DECADE         = 8;
 Timeline.DateTime.CENTURY        = 9;
 Timeline.DateTime.MILLENNIUM     = 10;
 
+Timeline.DateTime.EPOCH          = -1;
+Timeline.DateTime.ERA            = -2;
+
 Timeline.DateTime.gregorianUnitLengths = [];
     (function() {
         var d = Timeline.DateTime;
@@ -35,9 +38,6 @@ Timeline.DateTime.gregorianUnitLengths = [];
         a[d.MILLENNIUM]  = a[d.YEAR] * 1000;
     })();
 
-Timeline.DateTime.gregorianMonthNames = [];
-Timeline.DateTime.labelIntervalFunctions = [];
-
 Timeline.DateTime.parseGregorianDateTime = function(o) {
     if (o == null) {
         return null;
@@ -50,10 +50,6 @@ Timeline.DateTime.parseGregorianDateTime = function(o) {
             return null;
         }
     }
-};
-
-Timeline.DateTime.getGregorianMonthName = function(month, locale) {
-    return Timeline.DateTime.gregorianMonthNames[locale][month];
 };
 
 Timeline.DateTime.roundDownToInterval = function(date, intervalUnit, timeZone, multiple) {
@@ -200,63 +196,4 @@ Timeline.DateTime.removeTimeZoneOffset = function(date, timeZone) {
     return new Date(date.getTime() + 
         timeZone * Timeline.DateTime.gregorianUnitLengths[Timeline.DateTime.HOUR]);
 };
-
-Timeline.DateTime.labelInterval = function(date, intervalUnit, locale, timeZone) {
-    return Timeline.DateTime.labelIntervalFunctions[locale](date, intervalUnit, locale, timeZone);
-};
-
-Timeline.DateTime.defaultLabelInterval = function(date, intervalUnit, locale, timeZone) {
-    var text;
-    var emphasized = false;
-    
-    date = Timeline.DateTime.removeTimeZoneOffset(date, timeZone);
-    
-    switch(intervalUnit) {
-    case Timeline.DateTime.MILLISECOND:
-        text = date.getUTCMilliseconds();
-        break;
-    case Timeline.DateTime.SECOND:
-        text = date.getUTCSeconds();
-        break;
-    case Timeline.DateTime.MINUTE:
-        var m = date.getUTCMinutes();
-        if (m == 0) {
-            text = date.getUTCHours() + ":00";
-            emphasized = true;
-        } else {
-            text = m;
-        }
-        break;
-    case Timeline.DateTime.HOUR:
-        text = date.getUTCHours() + "hr";
-        break;
-    case Timeline.DateTime.DAY:
-        text = Timeline.DateTime.getGregorianMonthName(date.getUTCMonth(), locale) + " " + date.getUTCDate();
-        break;
-    case Timeline.DateTime.WEEK:
-        text = Timeline.DateTime.getGregorianMonthName(date.getUTCMonth(), locale) + " " + date.getUTCDate();
-        break;
-    case Timeline.DateTime.MONTH:
-        var m = date.getUTCMonth();
-        if (m == 0) {
-            text = Timeline.DateTime.labelInterval(date, Timeline.DateTime.YEAR, locale, timeZone).text;
-            emphasized = true;
-        } else {
-            text = Timeline.DateTime.getGregorianMonthName(m, locale);
-        }
-        break;
-    case Timeline.DateTime.YEAR:
-    case Timeline.DateTime.DECADE:
-    case Timeline.DateTime.CENTURY:
-    case Timeline.DateTime.MILLENNIUM:
-        var y = date.getUTCFullYear();
-        if (y > 0) {
-            text = date.getUTCFullYear();
-        } else {
-            text = (1 - y) + "BC";
-        }
-        break;
-    }
-    return { text: text, emphasized: emphasized };
-}
 

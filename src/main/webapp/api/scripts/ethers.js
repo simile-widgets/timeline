@@ -301,7 +301,7 @@ Timeline.GregorianEtherPainter.prototype.paint = function() {
         this._intervalMarkerLayout.createIntervalMarker(minDate, this._labeller, this._unit, this._markerLayer);
         incrementDate(minDate);
     }
-    this._markerLayer.style.display = "none";
+    this._markerLayer.style.display = "block";
 };
 
 Timeline.GregorianEtherPainter.prototype.softPaint = function() {

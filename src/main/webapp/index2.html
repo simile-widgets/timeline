@@ -8,6 +8,7 @@
         }
     </style>
     <script src="api/timeline-api.js" type="text/javascript"></script>
+    <script src="api/scripts/ext/japanese-eras.js" type="text/javascript"></script>
     <script>
         var tl;
         function onLoad() {
@@ -78,6 +79,7 @@
             bandInfos[1].etherParams.zones = zones2;
             bandInfos[1].etherPainterParams.timeZone = -6;
             bandInfos[1].etherPainterParams.zones = zones2;
+            bandInfos[1].etherPainterParams.labeller = new Timeline.JapaneseEraDateLabeller.create(Timeline.Platform.getDefaultLocale(), -6, false);
             bandInfos[1].highlight = 0;
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);

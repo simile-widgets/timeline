@@ -17,6 +17,8 @@ Timeline.ClassicTheme.create = function(locale) {
 };
 
 Timeline.ClassicTheme._Impl = function() {
+    this.firstDayOfWeek = 0; // Sunday
+    
     this.ether = {
         backgroundColors: [
             "#EEE",
@@ -29,8 +31,12 @@ Timeline.ClassicTheme._Impl = function() {
         interval: {
             line: {
                 show:       true,
-                color:      "white",
-                opacity:    100
+                color:      "#aaa",
+                opacity:    25
+            },
+            weekend: {
+                color:      "#FFFFE0",
+                opacity:    30
             },
             marker: {
                 hAlign:     "Bottom",

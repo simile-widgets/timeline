@@ -52,11 +52,7 @@ Timeline.DateTime.parseGregorianDateTime = function(o) {
     }
 };
 
-Timeline.DateTime.roundDownToInterval = function(date, intervalUnit, timeZone, multiple) {
-    if (multiple == null) {
-        multiple = 1;
-    }
-    
+Timeline.DateTime.roundDownToInterval = function(date, intervalUnit, timeZone, multiple, firstDayOfWeek) {
     var timeShift = timeZone * 
         Timeline.DateTime.gregorianUnitLengths[Timeline.DateTime.HOUR];
         
@@ -104,10 +100,10 @@ Timeline.DateTime.roundDownToInterval = function(date, intervalUnit, timeZone, m
         clearInDay(date2);
         break;
     case Timeline.DateTime.WEEK:
-        // TODO: a week starts on different days in different locales.
         clearInDay(date2);
+        var d = (date2.getUTCDay() + 7 - firstDayOfWeek) % 7;
         date2.setTime(date2.getTime() - 
-            date2.getUTCDay() * Timeline.DateTime.gregorianUnitLengths[Timeline.DateTime.DAY]);
+            d * Timeline.DateTime.gregorianUnitLengths[Timeline.DateTime.DAY]);
         break;
     case Timeline.DateTime.MONTH:
         clearInDay(date2);
@@ -139,13 +135,9 @@ Timeline.DateTime.roundDownToInterval = function(date, intervalUnit, timeZone, m
     date.setTime(date2.getTime() - timeShift);
 };
 
-Timeline.DateTime.roundUpToInterval = function(date, intervalUnit, timeZone, multiple) {
-    if (multiple == null) {
-        multiple = 1;
-    }
-    
+Timeline.DateTime.roundUpToInterval = function(date, intervalUnit, timeZone, multiple, firstDayOfWeek) {
     var originalTime = date.getTime();
-    Timeline.DateTime.roundDownToInterval(date, intervalUnit, timeZone, multiple);
+    Timeline.DateTime.roundDownToInterval(date, intervalUnit, timeZone, multiple, firstDayOfWeek);
     if (date.getTime() < originalTime) {
         date.setTime(date.getTime() + 
             Timeline.DateTime.gregorianUnitLengths[intervalUnit] * multiple);

@@ -46,6 +46,7 @@ Timeline.Platform = new Object();
     ];
     var cssFiles = [
         "timeline.css",
+        "ethers.css",
         "events.css"
     ];
     

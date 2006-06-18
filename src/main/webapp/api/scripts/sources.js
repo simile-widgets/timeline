@@ -28,8 +28,11 @@ Timeline.DefaultEventSource.prototype.loadXML = function(xml) {
     while (node != null) {
         if (node.nodeType == 1) {
             var evt = new Timeline.DefaultEventSource.Event(
-                Timeline.DateTime.parseGregorianDateTime(node.getAttribute("starts")),
-                Timeline.DateTime.parseGregorianDateTime(node.getAttribute("ends")),
+                Timeline.DateTime.parseGregorianDateTime(node.getAttribute("start")),
+                Timeline.DateTime.parseGregorianDateTime(node.getAttribute("end")),
+                Timeline.DateTime.parseGregorianDateTime(node.getAttribute("latestStart")),
+                Timeline.DateTime.parseGregorianDateTime(node.getAttribute("earliestEnd")),
+                node.getAttribute("isDuration") != "true",
                 node.getAttribute("title"),
                 node.getAttribute("description")
             );
@@ -58,17 +61,29 @@ Timeline.DefaultEventSource.prototype.getEventIterator = function(startDate, end
     return this._events.getIterator(startDate, endDate);
 };
 
-Timeline.DefaultEventSource.Event = function(start, end, text, description) {
+Timeline.DefaultEventSource.Event = function(start, end, latestStart, earliestEnd, instant, text, description) {
+    this._instant = instant;
+    
     this._start = start;
     this._end = (end != null) ? end : start;
+    
+    this._latestStart = (latestStart != null) ? latestStart : (instant ? this._end : this._start);
+    this._earliestEnd = (earliestEnd != null) ? earliestEnd : (instant ? this._start : this._end);
+    
     this._text = text;
     this._description = description;
     this._id = "e" + Math.floor(Math.random() * 1000000);
 };
 
 Timeline.DefaultEventSource.Event.prototype = {
+    isInstant:      function() { return this._instant; },
+    isImprecise:    function() { return this._start != this._latestStart || this._end != this._earliestEnd; },
+    
     getStart:       function() { return this._start; },
     getEnd:         function() { return this._end; },
+    getLatestStart: function() { return this._latestStart; },
+    getEarliestEnd: function() { return this._earliestEnd; },
+    
     getText:        function() { return this._text; },
     getDescription: function() { return this._description; },
     getID:          function() { return this._id; }

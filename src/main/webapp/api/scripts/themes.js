@@ -34,35 +34,61 @@ Timeline.ClassicTheme._Impl = function() {
             },
             marker: {
                 hAlign:     "Bottom",
-                hBottomStyle:
-                    "width: 5em; height: 1.5em; border-left: 1px solid #aaa; padding-left: 2px",
-                hBottomEmphasizedStyle:
-                    "width: 5em; height: 2em; border-left: 1px solid #aaa; padding-left: 2px; font-weight: bold",
-                hTopStyle:
-                    "width: 5em; height: 1.5em; border-left: 1px solid #aaa; padding-left: 2px",
-                hTopEmphasizedStyle:
-                    "width: 5em; height: 4em; border-left: 1px solid #aaa; padding-left: 2px; font-weight: bold",
+                hBottomStyler: function(elmt) {
+                    elmt.className = "timeline-ether-marker-bottom";
+                },
+                hBottomEmphasizedStyler: function(elmt) {
+                    elmt.className = "timeline-ether-marker-bottom-emphasized";
+                },
+                hTopStyler: function(elmt) {
+                    elmt.className = "timeline-ether-marker-top";
+                },
+                hTopEmphasizedStyler: function(elmt) {
+                    elmt.className = "timeline-ether-marker-top-emphasized";
+                },
                     
                 vAlign:     "Right",
-                vRightStyle:
-                    "width: 5em; height: 1.5em; border-top: 1px solid #aaa",
-                vRightEmphasizedStyle:
-                    "width: 7em; height: 1.5em; border-top: 1px solid #aaa; font-weight: bold",
-                vLeftStyle:
-                    "width: 5em; height: 1.5em; border-top: 1px solid #aaa",
-                vLeftEmphasizedStyle:
-                    "width: 7em; height: 1.5em; border-top: 1px solid #aaa; font-weight: bold"
+                vRightStyler: function(elmt) {
+                    elmt.className = "timeline-ether-marker-right";
+                },
+                vRightEmphasizedStyler: function(elmt) {
+                    elmt.className = "timeline-ether-marker-right-emphasized";
+                },
+                vLeftStyler: function(elmt) {
+                    elmt.className = "timeline-ether-marker-left";
+                },
+                vLeftEmphasizedStyler:function(elmt) {
+                    elmt.className = "timeline-ether-marker-left-emphasized";
+                }
             }
         }
     };
     
     this.event = {
-        instantIcon:        Timeline.urlPrefix + "images/red-pin.png",
-        instantLineColor:   "red",
-        spanColor:          "#2080D0",
-        spanOpacity:        100,
-        insideLabelColor:   "white",
-        outsideLabelColor:  "black",
-        labelLength:        "20em"
+        track: {
+            offset:         0.5, // em
+            height:         1.5, // em
+            gap:            0.5  // em
+        },
+        instant: {
+            icon:           Timeline.urlPrefix + "images/red-pin.png",
+            iconWidth:      16,
+            iconHeight:     17,
+            lineColor:      "#2080D0",
+            impreciseColor: "#2080D0",
+            impreciseOpacity: 20,
+            showLineForNoText: true
+        },
+        duration: {
+            color:          "#2080D0",
+            opacity:        100,
+            impreciseColor: "#2080D0",
+            impreciseOpacity: 20
+        },
+        label: {
+            insideColor:    "white",
+            outsideColor:   "black",
+            width:          200 // px
+        }
     };
 };

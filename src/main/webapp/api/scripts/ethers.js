@@ -285,6 +285,7 @@ Timeline.GregorianEtherPainter.prototype.paint = function() {
     }
     this._markerLayer = this._band.createLayerDiv(100);
     this._markerLayer.setAttribute("name", "ether-markers"); // for debugging
+    this._markerLayer.style.display = "none";
     
     var minDate = this._band.getMinDate();
     var maxDate = this._band.getMaxDate();
@@ -300,6 +301,7 @@ Timeline.GregorianEtherPainter.prototype.paint = function() {
         this._intervalMarkerLayout.createIntervalMarker(minDate, this._labeller, this._unit, this._markerLayer);
         incrementDate(minDate);
     }
+    this._markerLayer.style.display = "none";
 };
 
 Timeline.GregorianEtherPainter.prototype.softPaint = function() {
@@ -392,6 +394,7 @@ Timeline.HotZoneGregorianEtherPainter.prototype.paint = function() {
     }
     this._markerLayer = this._band.createLayerDiv(100);
     this._markerLayer.setAttribute("name", "ether-markers"); // for debugging
+    this._markerLayer.style.display = "none";
     
     var minDate = this._band.getMinDate();
     var maxDate = this._band.getMaxDate();
@@ -432,6 +435,7 @@ Timeline.HotZoneGregorianEtherPainter.prototype.paint = function() {
             incrementDate(minDate2, zone);
         }
     }
+    this._markerLayer.style.display = "block";
 };
 
 Timeline.HotZoneGregorianEtherPainter.prototype.softPaint = function() {
@@ -476,16 +480,16 @@ Timeline.EtherIntervalMarkerLayout = function(timeline, band, theme, align) {
     
     var markerTheme = theme.ether.interval.marker;
     var stylePrefix = (horizontal ? "h" : "v") + align;
-    var labelStyle = markerTheme[stylePrefix + "Style"];
-    var emphasizedLabelStyle = markerTheme[stylePrefix + "EmphasizedStyle"];
+    var labelStyler = markerTheme[stylePrefix + "Styler"];
+    var emphasizedLabelStyler = markerTheme[stylePrefix + "EmphasizedStyler"];
     
     this.createIntervalMarker = function(date, labeller, unit, markerDiv) {
         var label = labeller.label(date, unit);
         
         var div = timeline.getDocument().createElement("div");
         div.innerHTML = label.text;
-        div.setAttribute("style", label.emphasized ? emphasizedLabelStyle : labelStyle);
         div.style.position = "absolute";
+        (label.emphasized ? emphasizedLabelStyler : labelStyler)(div);
         
         this.positionDiv(div, date);
         markerDiv.appendChild(div);

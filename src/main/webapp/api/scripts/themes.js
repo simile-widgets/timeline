@@ -71,18 +71,16 @@ Timeline.ClassicTheme._Impl = function() {
             gap:            0.5  // em
         },
         instant: {
-            icon:           Timeline.urlPrefix + "images/red-pin.png",
-            iconWidth:      16,
-            iconHeight:     17,
-            lineColor:      "#2080D0",
-            impreciseColor: "#2080D0",
+            icon:           Timeline.urlPrefix + "images/dull-blue-circle.png",
+            lineColor:      "#58A0DC",
+            impreciseColor: "#58A0DC",
             impreciseOpacity: 20,
             showLineForNoText: true
         },
         duration: {
-            color:          "#2080D0",
+            color:          "#58A0DC",
             opacity:        100,
-            impreciseColor: "#2080D0",
+            impreciseColor: "#58A0DC",
             impreciseOpacity: 20
         },
         label: {

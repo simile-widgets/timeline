@@ -260,6 +260,8 @@
         </event>
     <event start="Fri Nov 22 1963 12:30:00 GMT-0600"
         title="Kennedy shot"
+        icon="api/images/dark-red-circle.png"
+        color="red"
         >
         President Kennedy shot in Dallas.
         </event>

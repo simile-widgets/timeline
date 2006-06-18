@@ -6,19 +6,19 @@
 Timeline.Graphics = new Object();
 Timeline.Graphics.pngIsTranslucent = !(Timeline.Platform.isIE && Timeline.Platform.isWin32);
 
-Timeline.Graphics.createTranslucentImage = function(doc, url, width, height, verticalAlign) {
+Timeline.Graphics.createTranslucentImage = function(doc, url, verticalAlign) {
     var elmt;
     if (Timeline.Graphics.pngIsTranslucent) {
         elmt = doc.createElement("img");
         elmt.setAttribute("src", url);
-        elmt.style.verticalAlign = (verticalAlign != null) ? verticalAlign : "text-top";
     } else {
         elmt = doc.createElement("div");
         elmt.style.display = "inline";
-        elmt.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + url +"', sizingMethod='scale')";
+        elmt.style.width = "1px";  // just so that IE will calculate the size property
+        elmt.style.height = "1px";
+        elmt.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + url +"', sizingMethod='image')";
     }
-    elmt.style.width = width + "px";
-    elmt.style.height = height + "px";
+    elmt.style.verticalAlign = (verticalAlign != null) ? verticalAlign : "middle";
     return elmt;
 };
 

@@ -34,7 +34,10 @@ Timeline.DefaultEventSource.prototype.loadXML = function(xml) {
                 Timeline.DateTime.parseGregorianDateTime(node.getAttribute("earliestEnd")),
                 node.getAttribute("isDuration") != "true",
                 node.getAttribute("title"),
-                node.getAttribute("description")
+                node.getAttribute("description"),
+                node.getAttribute("icon"),
+                node.getAttribute("color"),
+                node.getAttribute("textColor")
             );
             this._events.add(evt);
             
@@ -61,7 +64,9 @@ Timeline.DefaultEventSource.prototype.getEventIterator = function(startDate, end
     return this._events.getIterator(startDate, endDate);
 };
 
-Timeline.DefaultEventSource.Event = function(start, end, latestStart, earliestEnd, instant, text, description) {
+Timeline.DefaultEventSource.Event = function(start, end, latestStart, earliestEnd, instant, text, description, icon, color, textColor) {
+    this._id = "e" + Math.floor(Math.random() * 1000000);
+    
     this._instant = instant;
     
     this._start = start;
@@ -72,10 +77,15 @@ Timeline.DefaultEventSource.Event = function(start, end, latestStart, earliestEn
     
     this._text = text;
     this._description = description;
-    this._id = "e" + Math.floor(Math.random() * 1000000);
+    
+    this._icon = (icon != null && icon != "") ? icon : null;
+    this._color = (color != null && color != "") ? color : null;
+    this._textColor = (textColor != null && textColor != "") ? textColor : null;
 };
 
 Timeline.DefaultEventSource.Event.prototype = {
+    getID:          function() { return this._id; },
+    
     isInstant:      function() { return this._instant; },
     isImprecise:    function() { return this._start != this._latestStart || this._end != this._earliestEnd; },
     
@@ -86,5 +96,8 @@ Timeline.DefaultEventSource.Event.prototype = {
     
     getText:        function() { return this._text; },
     getDescription: function() { return this._description; },
-    getID:          function() { return this._id; }
+    
+    getIcon:        function() { return this._icon; },
+    getColor:       function() { return this._color; },
+    getTextColor:   function() { return this._textColor; }
 };

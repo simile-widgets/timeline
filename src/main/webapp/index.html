@@ -53,8 +53,7 @@
             bandInfos[0].eventPainterParams.textWidth = "20em";
             
             bandInfos[1].etherPainterParams.timeZone = -6;
-            bandInfos[1].etherPainterParams.labeller = new Timeline.JapaneseEraDateLabeller(
-                Timeline.Platform.getDefaultLocale(), -6);
+            bandInfos[1].etherPainterParams.labeller = new Timeline.JapaneseEraDateLabeller.create(Timeline.Platform.getDefaultLocale(), -6, true);
             bandInfos[1].highlight = 0;
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);

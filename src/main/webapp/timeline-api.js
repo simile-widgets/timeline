@@ -39,6 +39,7 @@ Timeline.Platform = new Object();
         "util/data-structure.js",
         
         "ethers.js",
+        "labellers.js",
         "sources.js",
         "painters.js"
     ];
@@ -49,7 +50,7 @@ Timeline.Platform = new Object();
     ];
     
     var localizedJavascriptFiles = [
-        "date-time.js"
+        "labellers.js"
     ];
     var localizedCssFiles = [
     ];

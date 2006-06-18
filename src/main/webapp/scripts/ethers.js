@@ -255,7 +255,7 @@ Timeline.GregorianEtherPainter = function(params, band, timeline) {
     this._locale = ("locale" in params) ? params.locale : Timeline.Platform.getDefaultLocale();
     this._timeZone = ("timeZone" in params) ? params.timeZone : 0;
     this._labeller = ("labeller" in params) ? params.labeller : 
-        new Timeline.GregorianDateLabeller(this._locale, this._timeZone);
+        new Timeline.GregorianDateLabeller.create(this._locale, this._timeZone);
     
     this._divs = [];
     this._dates = [];
@@ -379,7 +379,7 @@ Timeline.HotZoneGregorianEtherPainter = function(params, band, timeline) {
     this._locale = ("locale" in params) ? params.locale : Timeline.Platform.getDefaultLocale();
     this._timeZone = ("timeZone" in params) ? params.timeZone : 0;
     this._labeller = ("labeller" in params) ? params.labeller : 
-        new Timeline.GregorianDateLabeller(this._locale, this._timeZone);
+        new Timeline.GregorianDateLabeller.create(this._locale, this._timeZone);
     
     this._zones = [{
         startTime:  Number.NEGATIVE_INFINITY,

@@ -252,8 +252,6 @@ Timeline.GregorianEtherPainter = function(params, band, timeline) {
     this._timeline = timeline;
     
     this._theme = params.theme;
-    this._align = ("align" in params) ? params.align : 
-        this._theme.ether.interval.marker[timeline.isHorizontal() ? "hAlign" : "vAlign"];
         
     this._unit = params.unit;
     
@@ -267,9 +265,15 @@ Timeline.GregorianEtherPainter = function(params, band, timeline) {
     this._backgroundLayer.style.background = this._theme.ether.backgroundColors[band.getIndex()];
     
     this._markerLayer = null;
+    this._lineLayer = null;
     
+    var align = ("align" in params) ? params.align : 
+        this._theme.ether.interval.marker[timeline.isHorizontal() ? "hAlign" : "vAlign"];
+    var showLine = ("showLine" in params) ? params.showLine : 
+        this._theme.ether.interval.line.show;
+        
     this._intervalMarkerLayout = new Timeline.EtherIntervalMarkerLayout(
-        this._timeline, this._band, this._theme, this._align);
+        this._timeline, this._band, this._theme, align, showLine);
         
     this._highlight = new Timeline.EtherHighlight(
         this._timeline, this._band, this._theme, this._backgroundLayer);
@@ -287,10 +291,17 @@ Timeline.GregorianEtherPainter.prototype.paint = function() {
     this._markerLayer.setAttribute("name", "ether-markers"); // for debugging
     this._markerLayer.style.display = "none";
     
+    if (this._lineLayer) {
+        this._band.removeLayerDiv(this._lineLayer);
+    }
+    this._lineLayer = this._band.createLayerDiv(1);
+    this._lineLayer.setAttribute("name", "ether-lines"); // for debugging
+    this._lineLayer.style.display = "none";
+    
     var minDate = this._band.getMinDate();
     var maxDate = this._band.getMaxDate();
     
-    Timeline.DateTime.roundDownToInterval(minDate, this._unit, this._timeZone);
+    Timeline.DateTime.roundDownToInterval(minDate, this._unit, this._timeZone, 1, this._theme.firstDayOfWeek);
     
     var p = this;
     var incrementDate = function(date) {
@@ -298,10 +309,13 @@ Timeline.GregorianEtherPainter.prototype.paint = function() {
     };
     
     while (minDate.getTime() < maxDate.getTime()) {
-        this._intervalMarkerLayout.createIntervalMarker(minDate, this._labeller, this._unit, this._markerLayer);
+        this._intervalMarkerLayout.createIntervalMarker(
+            minDate, this._labeller, this._unit, this._markerLayer, this._lineLayer);
+            
         incrementDate(minDate);
     }
     this._markerLayer.style.display = "block";
+    this._lineLayer.style.display = "block";
 };
 
 Timeline.GregorianEtherPainter.prototype.softPaint = function() {
@@ -317,8 +331,6 @@ Timeline.HotZoneGregorianEtherPainter = function(params, band, timeline) {
     this._timeline = timeline;
     
     this._theme = params.theme;
-    this._align = ("align" in params) ? params.align : 
-        this._theme.ether.interval.marker[timeline.isHorizontal() ? "hAlign" : "vAlign"];
     
     this._locale = ("locale" in params) ? params.locale : Timeline.Platform.getDefaultLocale();
     this._timeZone = ("timeZone" in params) ? params.timeZone : 0;
@@ -376,9 +388,15 @@ Timeline.HotZoneGregorianEtherPainter = function(params, band, timeline) {
     this._backgroundLayer.style.background = this._theme.ether.backgroundColors[band.getIndex()];
     
     this._markerLayer = null;
+    this._lineLayer = null;
     
+    var align = ("align" in params) ? params.align : 
+        this._theme.ether.interval.marker[timeline.isHorizontal() ? "hAlign" : "vAlign"];
+    var showLine = ("showLine" in params) ? params.showLine : 
+        this._theme.ether.interval.line.show;
+        
     this._intervalMarkerLayout = new Timeline.EtherIntervalMarkerLayout(
-        this._timeline, this._band, this._theme, this._align);
+        this._timeline, this._band, this._theme, align, showLine);
         
     this._highlight = new Timeline.EtherHighlight(
         this._timeline, this._band, this._theme, this._backgroundLayer);
@@ -395,6 +413,13 @@ Timeline.HotZoneGregorianEtherPainter.prototype.paint = function() {
     this._markerLayer = this._band.createLayerDiv(100);
     this._markerLayer.setAttribute("name", "ether-markers"); // for debugging
     this._markerLayer.style.display = "none";
+    
+    if (this._lineLayer) {
+        this._band.removeLayerDiv(this._lineLayer);
+    }
+    this._lineLayer = this._band.createLayerDiv(1);
+    this._lineLayer.setAttribute("name", "ether-lines"); // for debugging
+    this._lineLayer.style.display = "none";
     
     var minDate = this._band.getMinDate();
     var maxDate = this._band.getMaxDate();
@@ -427,15 +452,18 @@ Timeline.HotZoneGregorianEtherPainter.prototype.paint = function() {
         var minDate2 = new Date(Math.max(minDate.getTime(), zone.startTime));
         var maxDate2 = new Date(Math.min(maxDate.getTime(), zone.endTime));
         
-        Timeline.DateTime.roundDownToInterval(minDate2, zone.unit, this._timeZone, zone.multiple);
-        Timeline.DateTime.roundUpToInterval(maxDate2, zone.unit, this._timeZone, zone.multiple);
+        Timeline.DateTime.roundDownToInterval(minDate2, zone.unit, this._timeZone, zone.multiple, this._theme.firstDayOfWeek);
+        Timeline.DateTime.roundUpToInterval(maxDate2, zone.unit, this._timeZone, zone.multiple, this._theme.firstDayOfWeek);
         
         while (minDate2.getTime() < maxDate2.getTime()) {
-            this._intervalMarkerLayout.createIntervalMarker(minDate2, this._labeller, zone.unit, this._markerLayer);
+            this._intervalMarkerLayout.createIntervalMarker(
+                minDate2, this._labeller, zone.unit, this._markerLayer, this._lineLayer);
+                
             incrementDate(minDate2, zone);
         }
     }
     this._markerLayer.style.display = "block";
+    this._lineLayer.style.display = "block";
 };
 
 Timeline.HotZoneGregorianEtherPainter.prototype.softPaint = function() {
@@ -446,32 +474,28 @@ Timeline.HotZoneGregorianEtherPainter.prototype.softPaint = function() {
  *==================================================
  */
  
-Timeline.EtherIntervalMarkerLayout = function(timeline, band, theme, align) {
+Timeline.EtherIntervalMarkerLayout = function(timeline, band, theme, align, showLine) {
     var horizontal = timeline.isHorizontal();
     if (horizontal) {
         if (align == "Top") {
-            this.positionDiv = function(div, date) {
-                var offset = Math.round(band.dateToPixelOffset(date));
+            this.positionDiv = function(div, offset) {
                 div.style.left = offset + "px";
                 div.style.top = "0px";
             };
         } else {
-            this.positionDiv = function(div, date) {
-                var offset = Math.round(band.dateToPixelOffset(date));
+            this.positionDiv = function(div, offset) {
                 div.style.left = offset + "px";
                 div.style.bottom = "0px";
             };
         }
     } else {
         if (align == "Left") {
-            this.positionDiv = function(div, date) {
-                var offset = Math.round(band.dateToPixelOffset(date));
+            this.positionDiv = function(div, offset) {
                 div.style.top = offset + "px";
                 div.style.left = "0px";
             };
         } else {
-            this.positionDiv = function(div, date) {
-                var offset = Math.round(band.dateToPixelOffset(date));
+            this.positionDiv = function(div, offset) {
                 div.style.top = offset + "px";
                 div.style.right = "0px";
             };
@@ -479,11 +503,72 @@ Timeline.EtherIntervalMarkerLayout = function(timeline, band, theme, align) {
     }
     
     var markerTheme = theme.ether.interval.marker;
+    var lineTheme = theme.ether.interval.line;
+    var weekendTheme = theme.ether.interval.weekend;
+    
     var stylePrefix = (horizontal ? "h" : "v") + align;
     var labelStyler = markerTheme[stylePrefix + "Styler"];
     var emphasizedLabelStyler = markerTheme[stylePrefix + "EmphasizedStyler"];
+    var day = Timeline.DateTime.gregorianUnitLengths[Timeline.DateTime.DAY];
     
-    this.createIntervalMarker = function(date, labeller, unit, markerDiv) {
+    this.createIntervalMarker = function(date, labeller, unit, markerDiv, lineDiv) {
+        var offset = Math.round(band.dateToPixelOffset(date));
+
+        if (showLine && unit != Timeline.DateTime.WEEK) {
+            var divLine = timeline.getDocument().createElement("div");
+            divLine.style.position = "absolute";
+            
+            if (lineTheme.opacity < 100) {
+                Timeline.Graphics.setOpacity(divLine, lineTheme.opacity);
+            }
+            
+            if (horizontal) {
+                divLine.style.borderLeft = "1px solid " + lineTheme.color;
+                divLine.style.left = offset + "px";
+                divLine.style.width = "1px";
+                divLine.style.top = "0px";
+                divLine.style.height = "100%";
+            } else {
+                divLine.style.borderTop = "1px solid " + lineTheme.color;
+                divLine.style.top = offset + "px";
+                divLine.style.height = "1px";
+                divLine.style.left = "0px";
+                divLine.style.width = "100%";
+            }
+            lineDiv.appendChild(divLine);
+        }
+        if (unit == Timeline.DateTime.WEEK) {
+            var firstDayOfWeek = theme.firstDayOfWeek;
+            
+            var saturday = new Date(date.getTime() + (6 - firstDayOfWeek - 7) * day);
+            var monday = new Date(saturday.getTime() + 2 * day);
+            
+            var saturdayPixel = Math.round(band.dateToPixelOffset(saturday));
+            var mondayPixel = Math.round(band.dateToPixelOffset(monday));
+            var length = Math.max(1, mondayPixel - saturdayPixel);
+            
+            var divWeekend = timeline.getDocument().createElement("div");
+            divWeekend.style.position = "absolute";
+            
+            divWeekend.style.background = weekendTheme.color;
+            if (weekendTheme.opacity < 100) {
+                Timeline.Graphics.setOpacity(divWeekend, weekendTheme.opacity);
+            }
+            
+            if (horizontal) {
+                divWeekend.style.left = saturdayPixel + "px";
+                divWeekend.style.width = length + "px";
+                divWeekend.style.top = "0px";
+                divWeekend.style.height = "100%";
+            } else {
+                divWeekend.style.top = saturdayPixel + "px";
+                divWeekend.style.bottom = length + "px";
+                divWeekend.style.left = "0px";
+                divWeekend.style.width = "100%";
+            }
+            lineDiv.appendChild(divWeekend);
+        }
+        
         var label = labeller.label(date, unit);
         
         var div = timeline.getDocument().createElement("div");
@@ -491,7 +576,7 @@ Timeline.EtherIntervalMarkerLayout = function(timeline, band, theme, align) {
         div.style.position = "absolute";
         (label.emphasized ? emphasizedLabelStyler : labelStyler)(div);
         
-        this.positionDiv(div, date);
+        this.positionDiv(div, offset);
         markerDiv.appendChild(div);
         
         return div;

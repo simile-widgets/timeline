@@ -19,7 +19,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
     if (this._layerDiv) {
         this._band.removeLayerDiv(this._layerDiv);
     }
-    this._layerDiv = this._band.createLayerDiv(10);
+    this._layerDiv = this._band.createLayerDiv(110);
     this._layerDiv.style.display = "none";
     
     var eventSource = this._band.getEventSource();
@@ -38,10 +38,14 @@ Timeline.DurationEventPainter.prototype.paint = function() {
     //if (this._timeline.isHorizontal()) {
         var appendIcon = function(evt, div) {
             var icon = evt.getIcon();
-            var elmt = Timeline.Graphics.createTranslucentImage(
+            var img = Timeline.Graphics.createTranslucentImage(
                 doc, icon != null ? icon : eventTheme.instant.icon
             );
-            div.appendChild(elmt);
+            div.appendChild(img);
+            
+            Timeline.DOM.registerEvent(div, "mousedown", function(elmt, evt, target) {
+                p._onClickInstantEvent(img, evt);
+            });
         };
         var createInstantDiv = function(evt, startPixel, endPixel, streamOffset) {
             var finalPixel = startPixel - 1;
@@ -69,6 +73,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
             var div = doc.createElement("div");
             div.style.position = "absolute";
             div.style.overflow = "hidden";
+            layerDiv.appendChild(div);
             
             var foreground = evt.getTextColor();
             var background = evt.getColor();
@@ -95,8 +100,6 @@ Timeline.DurationEventPainter.prototype.paint = function() {
             div.style.top = streamOffset;
             div.style.height = eventTheme.track.height + "em";
             div.style.left = (startPixel + realign) + "px";
-            
-            layerDiv.appendChild(div);
             
             return finalPixel;
         };
@@ -213,4 +216,10 @@ Timeline.DurationEventPainter.prototype.paint = function() {
 };
 
 Timeline.DurationEventPainter.prototype.softPaint = function() {
+};
+
+Timeline.DurationEventPainter.prototype._onClickInstantEvent = function(img, evt) {
+    var c = Timeline.DOM.getPageCoordinates(img);
+    Timeline.Graphics.createBubbleForPoint(document, c.left, c.top, 150, 100);
+    evt.cancelBubble = true;
 };

@@ -123,3 +123,4 @@ Timeline.XmlHttp.post = function(url, body, fError, fDone) {
     };
     xmlhttp.send(body);
 };
+

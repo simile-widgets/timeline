@@ -38,9 +38,10 @@ Timeline.DurationEventPainter.prototype.paint = function() {
     //if (this._timeline.isHorizontal()) {
         var appendIcon = function(evt, div) {
             var icon = evt.getIcon();
-            div.appendChild(Timeline.Graphics.createTranslucentImage(
+            var elmt = Timeline.Graphics.createTranslucentImage(
                 doc, icon != null ? icon : eventTheme.instant.icon
-            ));
+            );
+            div.appendChild(elmt);
         };
         var createInstantDiv = function(evt, startPixel, endPixel, streamOffset) {
             var finalPixel = startPixel - 1;
@@ -69,13 +70,10 @@ Timeline.DurationEventPainter.prototype.paint = function() {
             div.style.position = "absolute";
             div.style.overflow = "hidden";
             
-            div.style.top = streamOffset;
-            div.style.height = eventTheme.track.height + "em";
-            div.style.left = startPixel + "px";
-            
             var foreground = evt.getTextColor();
             var background = evt.getColor();
             
+            var realign = -8; // shift left so that icon is centered on startPixel
             if (showText) {
                 div.style.width = eventTheme.label.width + "px";
                 div.style.color = foreground != null ? foreground : eventTheme.label.outsideColor;
@@ -88,10 +86,15 @@ Timeline.DurationEventPainter.prototype.paint = function() {
                 if (p._showLineForNoText) {
                     div.style.width = "1px";
                     div.style.borderLeft = "1px solid " + (background != null ? background : eventTheme.instant.lineColor);
+                    realign = 0; // no shift
                 } else {
                     appendIcon(evt, div);
                 }
             }
+            
+            div.style.top = streamOffset;
+            div.style.height = eventTheme.track.height + "em";
+            div.style.left = (startPixel + realign) + "px";
             
             layerDiv.appendChild(div);
             

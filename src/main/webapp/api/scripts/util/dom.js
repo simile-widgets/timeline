@@ -30,6 +30,23 @@ Timeline.DOM.registerEvent = function(elmt, eventName, handler) {
     if (Timeline.Platform.isIE) {
         elmt.attachEvent("on" + eventName, handler2);
     } else {
-        elmt.addEventListener(eventName, handler2, true);
+        elmt.addEventListener(eventName, handler2, false);
     }
+};
+
+Timeline.DOM.getPageCoordinates = function(elmt) {
+    var left = 0;
+    var top = 0;
+    
+    if (elmt.nodeType != 1) {
+        elmt = elmt.parentNode;
+    }
+    
+    while (elmt != null) {
+        left += elmt.offsetLeft;
+        top += elmt.offsetTop;
+        
+        elmt = elmt.offsetParent;
+    }
+    return { left: left, top: top };
 };

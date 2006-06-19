@@ -562,7 +562,7 @@ Timeline.EtherIntervalMarkerLayout = function(timeline, band, theme, align, show
                 divWeekend.style.height = "100%";
             } else {
                 divWeekend.style.top = saturdayPixel + "px";
-                divWeekend.style.bottom = length + "px";
+                divWeekend.style.height = length + "px";
                 divWeekend.style.left = "0px";
                 divWeekend.style.width = "100%";
             }

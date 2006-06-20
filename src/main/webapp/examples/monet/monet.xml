@@ -67,7 +67,7 @@
         </event>
     <event start="1866" end="1867"
         title="Camille"
-        icon="/api/images/green-circle.png"
+        icon="../../api/images/green-circle.png"
         >
         Monet's 1866 Camille or The Woman in the Green Dress (La Femme à la 
         Robe Verte), which brought him recognition, depicted Camille Doncieux. 
@@ -97,7 +97,7 @@
     <event start="1872" end="1873"
         title="Impression, Sunrise"
         image="impression-sunrise.png"
-        icon="/api/images/green-circle.png"
+        icon="../../api/images/green-circle.png"
         link="http://en.wikipedia.org/wiki/Image:Claude_Monet%2C_Impression%2C_soleil_levant%2C_1872.jpg"
         >
         Upon returning to France, in 1872 (or 1873) he painted Impression, Sunrise 
@@ -114,7 +114,7 @@
         </event>
     <event start="1873" end="1874"
         title="Monet's Garden at Argenteuil"
-        icon="/api/images/green-circle.png"
+        icon="../../api/images/green-circle.png"
         image="http://www.accents-n-art.com/artwork/M00279ss.jpg"
         link="http://www.accents-n-art.com/artists/claude_monet/monets-garden-at-argenteuil.html"
         >
@@ -124,7 +124,7 @@
         </event>
     <event start="1875" end="1879"
         title="The Seine at Argenteuil"
-        icon="/api/images/green-circle.png"
+        icon="../../api/images/green-circle.png"
         image="http://www.accents-n-art.com/artwork/M00506ss.jpg"
         link="http://www.accents-n-art.com/artists/claude_monet/the-seine-at-argenteuil.html"
         >
@@ -172,7 +172,7 @@
         </event>
     <event start="1889" end="1890"
         title="Water Lily Pond"
-        icon="/api/images/green-circle.png"
+        icon="../../api/images/green-circle.png"
         image="water-lily-pond.png"
         link="http://en.wikipedia.org/wiki/Image:Monet.waterlilies.500pix.jpg"
         >
@@ -195,7 +195,7 @@
         </event>
     <event start="1883" end="1884"
         title="The Artist's Garden in Giverny"
-        icon="/api/images/green-circle.png"
+        icon="../../api/images/green-circle.png"
         image="http://www.accents-n-art.com/artwork/M00006ss.jpg"
         link="http://www.accents-n-art.com/artists/claude_monet/monets-garden-the-irises.html"
         >

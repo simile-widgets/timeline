@@ -517,7 +517,8 @@ Timeline.YearCountEtherPainter.prototype.paint = function() {
     
     var minDate = new Date(this._startDate.getTime());
     var maxDate = this._band.getMaxDate();
-    minDate.setUTCFullYear(this._band.getMinDate().getUTCFullYear());
+    var yearDiff = this._band.getMinDate().getUTCFullYear() - this._startDate.getUTCFullYear();
+    minDate.setUTCFullYear(this._band.getMinDate().getUTCFullYear() - yearDiff % this._multiple);
     
     var p = this;
     var incrementDate = function(date) {

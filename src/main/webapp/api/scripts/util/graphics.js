@@ -90,7 +90,7 @@ Timeline.Graphics.createBubbleForPoint = function(doc, pageX, pageY, contentWidt
     div.style.width = bubbleWidth + "px";
     div.style.height = bubbleHeight + "px";
     div.style.position = "absolute";
-    div.style.zIndex = 100;
+    div.style.zIndex = 1000;
     bubble._div = div;
     
     var divInner = doc.createElement("div");

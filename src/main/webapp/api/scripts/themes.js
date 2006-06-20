@@ -9,6 +9,10 @@ Timeline.ClassicTheme = new Object();
 Timeline.ClassicTheme.implementations = [];
 
 Timeline.ClassicTheme.create = function(locale) {
+    if (locale == null) {
+        locale = Timeline.Platform.getDefaultLocale();
+    }
+    
     var f = Timeline.ClassicTheme.implementations[locale];
     if (f == null) {
         f = Timeline.ClassicTheme._Impl;

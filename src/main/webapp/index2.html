@@ -73,14 +73,14 @@
             bandInfos[0].ether = Timeline.HotZoneEther;
             bandInfos[0].etherParams.zones = zones;
             bandInfos[0].etherPainterParams.zones = zones;
-            bandInfos[0].eventPainterParams.textWidth = "20em";
             
             bandInfos[1].timeZone = -6;
             bandInfos[1].labeller = new Timeline.JapaneseEraDateLabeller.create(Timeline.Platform.getDefaultLocale(), -6, false);
             bandInfos[1].ether = Timeline.HotZoneEther;
             bandInfos[1].etherParams.zones = zones2;
             bandInfos[1].etherPainterParams.zones = zones2;
-            bandInfos[1].highlight = 0;
+            bandInfos[1].syncWith = 0;
+            bandInfos[1].highlight = true;
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
             Timeline.loadXML("content/jfk.xml", function(xml) {

@@ -465,6 +465,90 @@ Timeline.HotZoneGregorianEtherPainter.prototype.softPaint = function() {
 };
 
 /*==================================================
+ *  Year Count Ether Painter
+ *==================================================
+ */
+ 
+Timeline.YearCountEtherPainter = function(params, band, timeline) {
+    this._band = band;
+    this._timeline = timeline;
+    
+    this._theme = params.theme;
+    this._startDate = Timeline.DateTime.parseGregorianDateTime(params.startDate);
+    this._multiple = ("multiple" in params) ? params.multiple : 1;
+    
+    this._backgroundLayer = band.createLayerDiv(0);
+    this._backgroundLayer.setAttribute("name", "ether-background"); // for debugging
+    this._backgroundLayer.style.background = this._theme.ether.backgroundColors[band.getIndex()];
+    
+    this._markerLayer = null;
+    this._lineLayer = null;
+    
+    var align = ("align" in params) ? params.align : 
+        this._theme.ether.interval.marker[timeline.isHorizontal() ? "hAlign" : "vAlign"];
+    var showLine = ("showLine" in params) ? params.showLine : 
+        this._theme.ether.interval.line.show;
+        
+    this._intervalMarkerLayout = new Timeline.EtherIntervalMarkerLayout(
+        this._timeline, this._band, this._theme, align, showLine);
+        
+    this._highlight = new Timeline.EtherHighlight(
+        this._timeline, this._band, this._theme, this._backgroundLayer);
+};
+
+Timeline.YearCountEtherPainter.prototype.setHighlight = function(startDate, endDate) {
+    this._highlight.position(startDate, endDate);
+}
+
+Timeline.YearCountEtherPainter.prototype.paint = function() {
+    if (this._markerLayer) {
+        this._band.removeLayerDiv(this._markerLayer);
+    }
+    this._markerLayer = this._band.createLayerDiv(100);
+    this._markerLayer.setAttribute("name", "ether-markers"); // for debugging
+    this._markerLayer.style.display = "none";
+    
+    if (this._lineLayer) {
+        this._band.removeLayerDiv(this._lineLayer);
+    }
+    this._lineLayer = this._band.createLayerDiv(1);
+    this._lineLayer.setAttribute("name", "ether-lines"); // for debugging
+    this._lineLayer.style.display = "none";
+    
+    var minDate = new Date(this._startDate.getTime());
+    var maxDate = this._band.getMaxDate();
+    minDate.setUTCFullYear(this._band.getMinDate().getUTCFullYear());
+    
+    var p = this;
+    var incrementDate = function(date) {
+        for (var i = 0; i < p._multiple; i++) {
+            Timeline.DateTime.incrementByInterval(date, Timeline.DateTime.YEAR);
+        }
+    };
+    var labeller = {
+        labelInterval: function(date, intervalUnit) {
+            var diff = date.getUTCFullYear() - p._startDate.getUTCFullYear();
+            return {
+                text: diff,
+                emphasized: diff == 0
+            };
+        }
+    };
+    
+    while (minDate.getTime() < maxDate.getTime()) {
+        this._intervalMarkerLayout.createIntervalMarker(
+            minDate, labeller, Timeline.DateTime.YEAR, this._markerLayer, this._lineLayer);
+            
+        incrementDate(minDate);
+    }
+    this._markerLayer.style.display = "block";
+    this._lineLayer.style.display = "block";
+};
+
+Timeline.YearCountEtherPainter.prototype.softPaint = function() {
+};
+
+/*==================================================
  *  Ether Interval Marker Layout
  *==================================================
  */
@@ -622,3 +706,4 @@ Timeline.EtherHighlight = function(timeline, band, theme, backgroundLayer) {
         }
     }
 };
+

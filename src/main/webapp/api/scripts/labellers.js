@@ -10,7 +10,7 @@ Timeline.GregorianDateLabeller.create = function(locale, timeZone) {
 };
 
 Timeline.GregorianDateLabeller.monthNames = [];
-Timeline.GregorianDateLabeller.labelFunctions = [];
+Timeline.GregorianDateLabeller.labelIntervalFunctions = [];
 
 Timeline.GregorianDateLabeller.getMonthName = function(month, locale) {
     return Timeline.GregorianDateLabeller.monthNames[locale][month];
@@ -21,12 +21,19 @@ Timeline.GregorianDateLabeller._Impl = function(locale, timeZone) {
     this._timeZone = timeZone;
 };
 
-Timeline.GregorianDateLabeller._Impl.prototype.label = function(date, intervalUnit) {
-    var f = Timeline.GregorianDateLabeller.labelFunctions[this._locale];
+Timeline.GregorianDateLabeller._Impl.prototype.labelInterval = function(date, intervalUnit) {
+    var f = Timeline.GregorianDateLabeller.labelIntervalFunctions[this._locale];
     if (f == null) {
         f = Timeline.GregorianDateLabeller._Impl.prototype.defaultLabel;
     }
     return f.call(this, date, intervalUnit);
+};
+
+Timeline.GregorianDateLabeller._Impl.prototype.labelPrecise = function(date) {
+    return Timeline.DateTime.removeTimeZoneOffset(
+        date, 
+        this._timeZone //+ (new Date().getTimezoneOffset() / 60)
+    ).toUTCString();
 };
 
 Timeline.GregorianDateLabeller._Impl.prototype.defaultLabel = function(date, intervalUnit) {
@@ -63,7 +70,7 @@ Timeline.GregorianDateLabeller._Impl.prototype.defaultLabel = function(date, int
     case Timeline.DateTime.MONTH:
         var m = date.getUTCMonth();
         if (m == 0) {
-            text = this.label(date, Timeline.DateTime.YEAR).text;
+            text = this.labelInterval(date, Timeline.DateTime.YEAR).text;
             emphasized = true;
         } else {
             text = Timeline.GregorianDateLabeller.getMonthName(m, this._locale);

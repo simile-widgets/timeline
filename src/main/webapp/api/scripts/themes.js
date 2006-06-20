@@ -93,6 +93,22 @@ Timeline.ClassicTheme._Impl = function() {
             insideColor:    "white",
             outsideColor:   "black",
             width:          200 // px
+        },
+        bubble: {
+            width:          250, // px
+            height:         125, // px
+            titleStyler: function(elmt) {
+                elmt.className = "timeline-event-bubble-title";
+            },
+            bodyStyler: function(elmt) {
+                elmt.className = "timeline-event-bubble-body";
+            },
+            imageStyler: function(elmt) {
+                elmt.className = "timeline-event-bubble-image";
+            },
+            timeStyler: function(elmt) {
+                elmt.className = "timeline-event-bubble-time";
+            }
         }
     };
 };

@@ -157,6 +157,11 @@ Timeline._Band = function(timeline, bandInfo, index) {
     this._bandInfo = bandInfo;
     this._index = index;
     
+    this._locale = ("locale" in bandInfo) ? bandInfo.locale : Timeline.Platform.getDefaultLocale();
+    this._timeZone = ("timeZone" in bandInfo) ? bandInfo.timeZone : 0;
+    this._labeller = ("labeller" in bandInfo) ? bandInfo.labeller : 
+        new Timeline.GregorianDateLabeller.create(this._locale, this._timeZone);
+        
     this._dragging = false;
     this._changing = false;
     this._onScrollListeners = [];
@@ -199,6 +204,8 @@ Timeline._Band = function(timeline, bandInfo, index) {
     this._eventPainter = (bandInfo.eventPainter) ? 
         new bandInfo.eventPainter(bandInfo.eventPainterParams, this, timeline) : 
         new Timeline.DurationEventPainter(bandInfo.eventPainterParams, this, timeline);
+        
+    this._bubble = null;
 };
 
 Timeline._Band.SCROLL_MULTIPLES = 5;
@@ -224,6 +231,18 @@ Timeline._Band.prototype.setHighlightBand = function(band) {
     this._highlightBand = band;
     this._highlightBand.addOnScrollListener(this._highlightBandHandler);
     this._positionHighlight();
+};
+
+Timeline._Band.prototype.getLocale = function() {
+    return this._locale;
+};
+
+Timeline._Band.prototype.getTimeZone = function() {
+    return this._timeZone;
+};
+
+Timeline._Band.prototype.getLabeller = function() {
+    return this._labeller;
 };
 
 Timeline._Band.prototype.getIndex = function() {
@@ -343,7 +362,25 @@ Timeline._Band.prototype.removeLayerDiv = function(div) {
     this._innerDiv.removeChild(div.parentNode);
 };
 
+Timeline._Band.prototype.closeBubble = function() {
+    if (this._bubble != null) {
+        this._bubble.close();
+        this._bubble = null;
+    }
+};
+
+Timeline._Band.prototype.openBubbleForPoint = function(pageX, pageY, width, height) {
+    this.closeBubble();
+    
+    this._bubble = Timeline.Graphics.createBubbleForPoint(
+        this._timeline.getDocument(), pageX, pageY, width, height);
+        
+    return this._bubble.content;
+};
+
 Timeline._Band.prototype._onMouseDown = function(innerFrame, evt, target) {
+    this.closeBubble();
+    
     this._dragging = true;
     this._dragX = evt.clientX;
     this._dragY = evt.clientY;
@@ -367,6 +404,8 @@ Timeline._Band.prototype._onMouseUp = function(innerFrame, evt, target) {
 };
 
 Timeline._Band.prototype._moveEther = function(shift) {
+    this.closeBubble();
+    
     this._viewOffset += shift;
     this._ether.shiftPixels(-shift);
     if (this._timeline.isHorizontal()) {

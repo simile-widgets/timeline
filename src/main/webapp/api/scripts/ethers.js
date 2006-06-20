@@ -252,13 +252,7 @@ Timeline.GregorianEtherPainter = function(params, band, timeline) {
     this._timeline = timeline;
     
     this._theme = params.theme;
-        
     this._unit = params.unit;
-    
-    this._locale = ("locale" in params) ? params.locale : Timeline.Platform.getDefaultLocale();
-    this._timeZone = ("timeZone" in params) ? params.timeZone : 0;
-    this._labeller = ("labeller" in params) ? params.labeller : 
-        new Timeline.GregorianDateLabeller.create(this._locale, this._timeZone);
     
     this._backgroundLayer = band.createLayerDiv(0);
     this._backgroundLayer.setAttribute("name", "ether-background"); // for debugging
@@ -301,7 +295,10 @@ Timeline.GregorianEtherPainter.prototype.paint = function() {
     var minDate = this._band.getMinDate();
     var maxDate = this._band.getMaxDate();
     
-    Timeline.DateTime.roundDownToInterval(minDate, this._unit, this._timeZone, 1, this._theme.firstDayOfWeek);
+    var timeZone = this._band.getTimeZone();
+    var labeller = this._band.getLabeller();
+    
+    Timeline.DateTime.roundDownToInterval(minDate, this._unit, timeZone, 1, this._theme.firstDayOfWeek);
     
     var p = this;
     var incrementDate = function(date) {
@@ -310,7 +307,7 @@ Timeline.GregorianEtherPainter.prototype.paint = function() {
     
     while (minDate.getTime() < maxDate.getTime()) {
         this._intervalMarkerLayout.createIntervalMarker(
-            minDate, this._labeller, this._unit, this._markerLayer, this._lineLayer);
+            minDate, labeller, this._unit, this._markerLayer, this._lineLayer);
             
         incrementDate(minDate);
     }
@@ -331,11 +328,6 @@ Timeline.HotZoneGregorianEtherPainter = function(params, band, timeline) {
     this._timeline = timeline;
     
     this._theme = params.theme;
-    
-    this._locale = ("locale" in params) ? params.locale : Timeline.Platform.getDefaultLocale();
-    this._timeZone = ("timeZone" in params) ? params.timeZone : 0;
-    this._labeller = ("labeller" in params) ? params.labeller : 
-        new Timeline.GregorianDateLabeller.create(this._locale, this._timeZone);
     
     this._zones = [{
         startTime:  Number.NEGATIVE_INFINITY,
@@ -424,6 +416,9 @@ Timeline.HotZoneGregorianEtherPainter.prototype.paint = function() {
     var minDate = this._band.getMinDate();
     var maxDate = this._band.getMaxDate();
     
+    var timeZone = this._band.getTimeZone();
+    var labeller = this._band.getLabeller();
+    
     var p = this;
     var incrementDate = function(date, zone) {
         for (var i = 0; i < zone.multiple; i++) {
@@ -452,12 +447,12 @@ Timeline.HotZoneGregorianEtherPainter.prototype.paint = function() {
         var minDate2 = new Date(Math.max(minDate.getTime(), zone.startTime));
         var maxDate2 = new Date(Math.min(maxDate.getTime(), zone.endTime));
         
-        Timeline.DateTime.roundDownToInterval(minDate2, zone.unit, this._timeZone, zone.multiple, this._theme.firstDayOfWeek);
-        Timeline.DateTime.roundUpToInterval(maxDate2, zone.unit, this._timeZone, zone.multiple, this._theme.firstDayOfWeek);
+        Timeline.DateTime.roundDownToInterval(minDate2, zone.unit, timeZone, zone.multiple, this._theme.firstDayOfWeek);
+        Timeline.DateTime.roundUpToInterval(maxDate2, zone.unit, timeZone, zone.multiple, this._theme.firstDayOfWeek);
         
         while (minDate2.getTime() < maxDate2.getTime()) {
             this._intervalMarkerLayout.createIntervalMarker(
-                minDate2, this._labeller, zone.unit, this._markerLayer, this._lineLayer);
+                minDate2, labeller, zone.unit, this._markerLayer, this._lineLayer);
                 
             incrementDate(minDate2, zone);
         }
@@ -569,7 +564,7 @@ Timeline.EtherIntervalMarkerLayout = function(timeline, band, theme, align, show
             lineDiv.appendChild(divWeekend);
         }
         
-        var label = labeller.label(date, unit);
+        var label = labeller.labelInterval(date, unit);
         
         var div = timeline.getDocument().createElement("div");
         div.innerHTML = label.text;

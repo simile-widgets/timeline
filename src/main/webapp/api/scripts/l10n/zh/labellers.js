@@ -7,7 +7,7 @@ Timeline.GregorianDateLabeller.monthNames["zh"] = [
     "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"
 ];
 
-Timeline.GregorianDateLabeller.labelFunctions["zh"] = function(date, intervalUnit) {
+Timeline.GregorianDateLabeller.labelIntervalFunctions["zh"] = function(date, intervalUnit) {
     var text;
     var emphasized = false;
     
@@ -20,7 +20,7 @@ Timeline.GregorianDateLabeller.labelFunctions["zh"] = function(date, intervalUni
             date2.getUTCDate() + "日";
         break;
     default:
-        return this.defaultLabel(date, intervalUnit);
+        return this.defaultLabelInterval(date, intervalUnit);
     }
     
     return { text: text, emphasized: emphasized };

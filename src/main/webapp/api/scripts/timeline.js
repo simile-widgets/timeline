@@ -117,8 +117,8 @@ Timeline._Impl.prototype._initialize = function() {
     
     for (var i = 0; i < this._bandInfos.length; i++) {
         var bandInfo = this._bandInfos[i];
-        if ("highlight" in bandInfo) {
-            this._bands[i].setHighlightBand(this._bands[bandInfo.highlight]);
+        if ("syncWith" in bandInfo) {
+            this._bands[i].setSyncWithBand(this._bands[bandInfo.syncWith], (bandInfo.highlight));
         }
     }
 };
@@ -167,8 +167,8 @@ Timeline._Band = function(timeline, bandInfo, index) {
     this._onScrollListeners = [];
     
     var b = this;
-    this._highlightBand = null;
-    this._highlightBandHandler = function(band) {
+    this._syncWithBand = null;
+    this._syncWithBandHandler = function(band) {
         b._onHighlightBandScroll();
     };
     this._selectorListener = function(band) {
@@ -223,13 +223,14 @@ Timeline._Band.prototype.removeOnScrollListener = function(listener) {
     }
 };
 
-Timeline._Band.prototype.setHighlightBand = function(band) {
-    if (this._highlightBand) {
-        this._highlightBand.removeOnScrollListener(this._highlightBandHandler);
+Timeline._Band.prototype.setSyncWithBand = function(band, highlight) {
+    if (this._syncWithBand) {
+        this._syncWithBand.removeOnScrollListener(this._syncWithBandHandler);
     }
     
-    this._highlightBand = band;
-    this._highlightBand.addOnScrollListener(this._highlightBandHandler);
+    this._syncWithBand = band;
+    this._syncWithBand.addOnScrollListener(this._syncWithBandHandler);
+    this._highlight = highlight;
     this._positionHighlight();
 };
 
@@ -429,7 +430,7 @@ Timeline._Band.prototype._onChanging = function() {
     this._changing = true;
 
     this._fireOnScroll();
-    this._setHighlightBandDate();
+    this._setSyncWithBandDate();
     
     this._changing = false;
 };
@@ -440,22 +441,25 @@ Timeline._Band.prototype._fireOnScroll = function() {
     }
 };
 
-Timeline._Band.prototype._setHighlightBandDate = function() {
-    if (this._highlightBand) {
+Timeline._Band.prototype._setSyncWithBandDate = function() {
+    if (this._syncWithBand) {
         var centerDate = this._ether.pixelOffsetToDate(this.getViewLength() / 2);
-        this._highlightBand.setCenterVisibleDate(centerDate);
+        this._syncWithBand.setCenterVisibleDate(centerDate);
     }
 };
 
 Timeline._Band.prototype._onHighlightBandScroll = function() {
-    if (this._highlightBand) {
-        var centerDate = this._highlightBand.getCenterVisibleDate();
+    if (this._syncWithBand) {
+        var centerDate = this._syncWithBand.getCenterVisibleDate();
         var centerPixelOffset = this._ether.dateToPixelOffset(centerDate);
         
         this._moveEther(Math.round(this._viewLength / 2 - centerPixelOffset));
-        this._etherPainter.setHighlight(
-            this._highlightBand.getMinVisibleDate(), 
-            this._highlightBand.getMaxVisibleDate());
+        
+        if (this._highlight) {
+            this._etherPainter.setHighlight(
+                this._syncWithBand.getMinVisibleDate(), 
+                this._syncWithBand.getMaxVisibleDate());
+        }
     }
 };
 
@@ -468,11 +472,13 @@ Timeline._Band.prototype._onClear = function() {
 };
 
 Timeline._Band.prototype._positionHighlight = function() {
-    if (this._highlightBand) {
-        var startDate = this._highlightBand.getMinVisibleDate();
-        var endDate = this._highlightBand.getMaxVisibleDate();
+    if (this._syncWithBand) {
+        var startDate = this._syncWithBand.getMinVisibleDate();
+        var endDate = this._syncWithBand.getMaxVisibleDate();
         
-        this._etherPainter.setHighlight(startDate, endDate);
+        if (this._highlight) {
+            this._etherPainter.setHighlight(startDate, endDate);
+        }
     }
 };
 

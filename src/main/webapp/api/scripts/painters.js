@@ -16,13 +16,17 @@ Timeline.DurationEventPainter = function(params, band, timeline) {
 };
 
 Timeline.DurationEventPainter.prototype.paint = function() {
+    var eventSource = this._band.getEventSource();
+    if (eventSource == null) {
+        return;
+    }
+    
     if (this._layerDiv) {
         this._band.removeLayerDiv(this._layerDiv);
     }
     this._layerDiv = this._band.createLayerDiv(110);
     this._layerDiv.style.display = "none";
     
-    var eventSource = this._band.getEventSource();
     var minDate = this._band.getMinDate();
     var maxDate = this._band.getMaxDate();
     
@@ -168,6 +172,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
             if (showText) {
                 if (length > 100) {
                     div.style.color = foreground != null ? foreground : eventTheme.label.insideColor;
+                    div.style.overflow = "hidden";
                     div.appendChild(doc.createTextNode(evt.getText()));
                 } else {
                     var divLabel = doc.createElement("div");
@@ -178,6 +183,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
                     divLabel.style.left = endPixel2 + "px";
                     divLabel.style.width = eventTheme.label.width + "px";
                     divLabel.style.color = foreground != null ? foreground : eventTheme.label.outsideColor;
+                    divLabel.style.overflow = "hidden";
                     divLabel.appendChild(doc.createTextNode(evt.getText()));
                     
                     layerDiv.appendChild(divLabel);
@@ -273,7 +279,6 @@ Timeline.DurationEventPainter.prototype._showBubble = function(x, y, evt) {
     if (link != null) {
         var a = doc.createElement("a");
         a.href = link;
-        a.innerHTML = title;
         a.appendChild(textTitle);
         divTitle.appendChild(a);
     } else {

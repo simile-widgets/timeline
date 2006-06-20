@@ -54,7 +54,8 @@
             
             bandInfos[1].timeZone = -6;
             bandInfos[1].labeller = new Timeline.JapaneseEraDateLabeller.create(Timeline.Platform.getDefaultLocale(), -6, true);
-            bandInfos[1].highlight = 0;
+            bandInfos[1].syncWith = 0;
+            bandInfos[1].highlight = true;
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
             Timeline.loadXML("content/jfk.xml", function(xml) {

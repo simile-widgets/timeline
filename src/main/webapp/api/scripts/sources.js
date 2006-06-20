@@ -116,7 +116,7 @@ Timeline.DefaultEventSource.Event.prototype = {
     getTextColor:   function() { return this._textColor; },
     
     fillDescription: function(elmt) {
-        elmt.appendChild(elmt.ownerDocument.createTextNode(this._description));
+        elmt.innerHTML = this._description;
     },
     fillTime: function(elmt, labeller) {
         if (this._instant) {

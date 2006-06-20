@@ -138,14 +138,13 @@ Timeline.Graphics.createBubbleForPoint = function(doc, pageX, pageY, contentWidt
     bubble.content = divContent;
     
     (function() {
-        if (pageX - Timeline.Graphics._halfArrowWidth - margins.left > 0 ||
-            pageX + Timeline.Graphics._halfArrowWidth + margins.right < docWidth) {
+        if (pageX - Timeline.Graphics._halfArrowWidth - Timeline.Graphics._bubblePadding > 0 &&
+            pageX + Timeline.Graphics._halfArrowWidth + Timeline.Graphics._bubblePadding < docWidth) {
             
-            var left = Math.max(
-                Timeline.Graphics._bubblePadding - margins.left - Timeline.Graphics._halfArrowWidth, 
-                Math.min(
-                    docWidth + margins.right + Timeline.Graphics._halfArrowWidth - bubbleWidth,
-                    pageX - Math.round(contentWidth / 2) - margins.left));
+            var left = pageX - Math.round(contentWidth / 2) - margins.left;
+            left = pageX < (docWidth / 2) ?
+                Math.max(left, -(margins.left - Timeline.Graphics._bubblePadding)) : 
+                Math.min(left, docWidth + (margins.right - Timeline.Graphics._bubblePadding) - bubbleWidth);
                 
             if (pageY - Timeline.Graphics._bubblePointOffset - bubbleHeight > 0) { // top
                 var divImg = doc.createElement("div");
@@ -176,11 +175,10 @@ Timeline.Graphics.createBubbleForPoint = function(doc, pageX, pageY, contentWidt
             }
         }
         
-        var top = Math.max(
-            -margins.top - Timeline.Graphics._halfArrowWidth, 
-            Math.min(
-                docHeight + margins.bottom + Timeline.Graphics._halfArrowWidth - bubbleHeight,
-                pageY - Math.round(contentHeight / 2) - margins.top));
+        var top = pageY - Math.round(contentHeight / 2) - margins.top;
+        top = pageY < (docHeight / 2) ?
+            Math.max(top, -(margins.top - Timeline.Graphics._bubblePadding)) : 
+            Math.min(top, docHeight + (margins.bottom - Timeline.Graphics._bubblePadding) - bubbleHeight);
                 
         if (pageX - Timeline.Graphics._bubblePointOffset - bubbleWidth > 0) { // left
             var divImg = doc.createElement("div");

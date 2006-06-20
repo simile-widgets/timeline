@@ -7,7 +7,7 @@ Timeline.GregorianDateLabeller.monthNames["vi"] = [
     "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"
 ];
 
-Timeline.GregorianDateLabeller.labelFunctions["vi"] = function(date, intervalUnit) {
+Timeline.GregorianDateLabeller.labelIntervalFunctions["vi"] = function(date, intervalUnit) {
     var text;
     var emphasized = false;
     
@@ -19,7 +19,7 @@ Timeline.GregorianDateLabeller.labelFunctions["vi"] = function(date, intervalUni
         text = date2.getUTCDate() + "/" + (date2.getUTCMonth() + 1);
         break;
     default:
-        return this.defaultLabel(date, intervalUnit);
+        return this.defaultLabelInterval(date, intervalUnit);
     }
     
     return { text: text, emphasized: emphasized };

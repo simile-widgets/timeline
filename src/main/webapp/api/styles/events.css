@@ -15,3 +15,22 @@
     position: absolute;
     overflow: hidden;
 }
+
+.timeline-event-bubble-title {
+    font-weight: bold;
+    border-bottom: 1px solid #888;
+    margin-bottom: 0.5em;
+}
+
+.timeline-event-bubble-body {
+}
+
+.timeline-event-bubble-time {
+    color: #aaa;
+}
+
+.timeline-event-bubble-image {
+    float: right;
+    padding-left: 5px;
+    padding-bottom: 5px;
+}

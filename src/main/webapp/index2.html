@@ -69,17 +69,17 @@
                 Timeline.createSimpleBandInfo(
                     "25%", Timeline.DateTime.MONTH, 5, eventSource, "Fri Nov 22 1963 13:00:00 GMT-0600", false)
             ];
+            bandInfos[0].timeZone = -6;
             bandInfos[0].ether = Timeline.HotZoneEther;
             bandInfos[0].etherParams.zones = zones;
-            bandInfos[0].etherPainterParams.timeZone = -6;
             bandInfos[0].etherPainterParams.zones = zones;
             bandInfos[0].eventPainterParams.textWidth = "20em";
             
+            bandInfos[1].timeZone = -6;
+            bandInfos[1].labeller = new Timeline.JapaneseEraDateLabeller.create(Timeline.Platform.getDefaultLocale(), -6, false);
             bandInfos[1].ether = Timeline.HotZoneEther;
             bandInfos[1].etherParams.zones = zones2;
-            bandInfos[1].etherPainterParams.timeZone = -6;
             bandInfos[1].etherPainterParams.zones = zones2;
-            bandInfos[1].etherPainterParams.labeller = new Timeline.JapaneseEraDateLabeller.create(Timeline.Platform.getDefaultLocale(), -6, false);
             bandInfos[1].highlight = 0;
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);

@@ -38,17 +38,34 @@ Timeline.Graphics._bubbleMargins = {
     left:     33,
     right:    40
 }
-Timeline.Graphics._arrowOffsets = {
-    top:      1,
+
+// pixels from boundary of the whole bubble div to the tip of the arrow
+Timeline.Graphics._arrowOffsets = { 
+    top:      0,
     bottom:   9,
-    left:     2,
+    left:     1,
     right:    8
 }
 
+Timeline.Graphics._bubblePadding = 15;
 Timeline.Graphics._bubblePointOffset = 6;
-Timeline.Graphics._halfArrowWidth = 19;
+Timeline.Graphics._halfArrowWidth = 18;
 
 Timeline.Graphics.createBubbleForPoint = function(doc, pageX, pageY, contentWidth, contentHeight) {
+    var bubble = {
+        _closed:    false,
+        _doc:       doc,
+        close:      function() { 
+            if (!this._closed) {
+                this._doc.body.removeChild(this._div);
+                this._doc = null;
+                this._div = null;
+                this._content = null;
+                this._closed = true;
+            }
+        }
+    };
+    
     var docWidth = doc.body.offsetWidth;
     var docHeight = doc.body.offsetHeight;
     
@@ -74,7 +91,7 @@ Timeline.Graphics.createBubbleForPoint = function(doc, pageX, pageY, contentWidt
     div.style.height = bubbleHeight + "px";
     div.style.position = "absolute";
     div.style.zIndex = 100;
-    div.style.border = "1px solid blue";
+    bubble._div = div;
     
     var divInner = doc.createElement("div");
     divInner.style.width = "100%";
@@ -101,6 +118,14 @@ Timeline.Graphics.createBubbleForPoint = function(doc, pageX, pageY, contentWidt
     createImg(urlPrefix + "images/bubble-bottom.png", margins.left, margins.top + contentHeight, contentWidth, margins.bottom);
     createImg(urlPrefix + "images/bubble-bottom-right.png", margins.left + contentWidth, margins.top + contentHeight, margins.right, margins.bottom);
     
+    var divClose = doc.createElement("div");
+    divClose.style.left = (bubbleWidth - margins.right + Timeline.Graphics._bubblePadding - 16 - 2) + "px";
+    divClose.style.top = (margins.top - Timeline.Graphics._bubblePadding + 1) + "px";
+    divClose.style.cursor = "pointer";
+    setImg(divClose, urlPrefix + "images/close-button.png", 16, 16);
+    Timeline.DOM.registerEventWithObject(divClose, "click", bubble, bubble.close);
+    divInner.appendChild(divClose);
+        
     var divContent = doc.createElement("div");
     divContent.style.position = "absolute";
     divContent.style.left = margins.left + "px";
@@ -110,13 +135,17 @@ Timeline.Graphics.createBubbleForPoint = function(doc, pageX, pageY, contentWidt
     divContent.style.overflow = "auto";
     divContent.style.background = "white";
     divInner.appendChild(divContent);
+    bubble.content = divContent;
     
     (function() {
         if (pageX - Timeline.Graphics._halfArrowWidth - margins.left > 0 ||
             pageX + Timeline.Graphics._halfArrowWidth + margins.right < docWidth) {
             
-            var left = Math.max(0, Math.min(docWidth - bubbleWidth,
-                pageX - Math.round(contentWidth / 2) - margins.left));
+            var left = Math.max(
+                Timeline.Graphics._bubblePadding - margins.left - Timeline.Graphics._halfArrowWidth, 
+                Math.min(
+                    docWidth + margins.right + Timeline.Graphics._halfArrowWidth - bubbleWidth,
+                    pageX - Math.round(contentWidth / 2) - margins.left));
                 
             if (pageY - Timeline.Graphics._bubblePointOffset - bubbleHeight > 0) { // top
                 var divImg = doc.createElement("div");
@@ -127,7 +156,8 @@ Timeline.Graphics.createBubbleForPoint = function(doc, pageX, pageY, contentWidt
                 divInner.appendChild(divImg);
                 
                 div.style.left = left + "px";
-                div.style.top = (pageY - Timeline.Graphics._bubblePointOffset - bubbleHeight) + "px";
+                div.style.top = (pageY - Timeline.Graphics._bubblePointOffset - bubbleHeight + 
+                    Timeline.Graphics._arrowOffsets.bottom) + "px";
                 
                 return;
             } else if (pageY + Timeline.Graphics._bubblePointOffset + bubbleHeight < docHeight) { // bottom
@@ -139,26 +169,20 @@ Timeline.Graphics.createBubbleForPoint = function(doc, pageX, pageY, contentWidt
                 divInner.appendChild(divImg);
                 
                 div.style.left = left + "px";
-                div.style.top = (pageY + Timeline.Graphics._bubblePointOffset) + "px";
+                div.style.top = (pageY + Timeline.Graphics._bubblePointOffset - 
+                    Timeline.Graphics._arrowOffsets.top) + "px";
                 
                 return;
             }
         }
         
-        var top = Math.max(0, Math.min(docHeight - bubbleHeight,
-            pageY - Math.round(contentHeight / 2) - margins.top));
+        var top = Math.max(
+            -margins.top - Timeline.Graphics._halfArrowWidth, 
+            Math.min(
+                docHeight + margins.bottom + Timeline.Graphics._halfArrowWidth - bubbleHeight,
+                pageY - Math.round(contentHeight / 2) - margins.top));
                 
-        if (pageX + Timeline.Graphics._bubblePointOffset + bubbleWidth < docWidth) { // right
-            var divImg = doc.createElement("div");
-            
-            divImg.style.left = "0px";
-            divImg.style.top = (pageY - Timeline.Graphics._halfArrowWidth - top) + "px";
-            setImg(divImg, urlPrefix + "images/bubble-left-arrow.png", margins.left, 37);
-            divInner.appendChild(divImg);
-            
-            div.style.left = (pageX + Timeline.Graphics._bubblePointOffset) + "px";
-            div.style.top = top + "px";
-        } else { // left
+        if (pageX - Timeline.Graphics._bubblePointOffset - bubbleWidth > 0) { // left
             var divImg = doc.createElement("div");
             
             divImg.style.left = (margins.left + contentWidth) + "px";
@@ -166,11 +190,24 @@ Timeline.Graphics.createBubbleForPoint = function(doc, pageX, pageY, contentWidt
             setImg(divImg, urlPrefix + "images/bubble-right-arrow.png", margins.right, 37);
             divInner.appendChild(divImg);
             
-            div.style.left = (pageX - Timeline.Graphics._bubblePointOffset - bubbleWidth) + "px";
+            div.style.left = (pageX - Timeline.Graphics._bubblePointOffset - bubbleWidth +
+                Timeline.Graphics._arrowOffsets.right) + "px";
+            div.style.top = top + "px";
+        } else { // right
+            var divImg = doc.createElement("div");
+            
+            divImg.style.left = "0px";
+            divImg.style.top = (pageY - Timeline.Graphics._halfArrowWidth - top) + "px";
+            setImg(divImg, urlPrefix + "images/bubble-left-arrow.png", margins.left, 37);
+            divInner.appendChild(divImg);
+            
+            div.style.left = (pageX + Timeline.Graphics._bubblePointOffset - 
+                Timeline.Graphics._arrowOffsets.left) + "px";
             div.style.top = top + "px";
         }
     })();
     
-done:
     doc.body.appendChild(div);
+    
+    return bubble;
 };

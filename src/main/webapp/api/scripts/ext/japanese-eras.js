@@ -9,13 +9,13 @@ Timeline.JapaneseEraDateLabeller.create = function(locale, timeZone, useRomanize
     var o = Timeline.GregorianDateLabeller.create(locale, timeZone);
     
     o._useRomanizedName = (useRomanizedName);
-    o._oldLabel = o.label;
-    o.label = Timeline.JapaneseEraDateLabeller._label;
+    o._oldLabelInterval = o.labelInterval;
+    o.labelInterval = Timeline.JapaneseEraDateLabeller._labelInterval;
     
     return o;
 };
 
-Timeline.JapaneseEraDateLabeller._label = function(date, intervalUnit) {
+Timeline.JapaneseEraDateLabeller._labelInterval = function(date, intervalUnit) {
     var text;
     var emphasized = false;
     
@@ -42,7 +42,7 @@ Timeline.JapaneseEraDateLabeller._label = function(date, intervalUnit) {
             break;
         } // else, fall through
     default:
-        return this._oldLabel(date, intervalUnit);
+        return this._oldLabelInterval(date, intervalUnit);
     }
     
     return { text: text, emphasized: emphasized };

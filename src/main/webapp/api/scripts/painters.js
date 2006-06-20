@@ -42,9 +42,10 @@ Timeline.DurationEventPainter.prototype.paint = function() {
                 doc, icon != null ? icon : eventTheme.instant.icon
             );
             div.appendChild(img);
+            div.style.cursor = "pointer";
             
-            Timeline.DOM.registerEvent(div, "mousedown", function(elmt, evt, target) {
-                p._onClickInstantEvent(img, evt);
+            Timeline.DOM.registerEvent(div, "mousedown", function(elmt, domEvt, target) {
+                p._onClickInstantEvent(img, domEvt, evt);
             });
         };
         var createInstantDiv = function(evt, startPixel, endPixel, streamOffset) {
@@ -104,6 +105,13 @@ Timeline.DurationEventPainter.prototype.paint = function() {
             return finalPixel;
         };
         var createDurationDiv = function(evt, startPixel, endPixel, streamOffset) {
+            var attachClickEvent = function(elmt) {
+                elmt.style.cursor = "pointer";
+                Timeline.DOM.registerEvent(elmt, "mousedown", function(elmt, domEvt, target) {
+                    p._onClickDurationEvent(domEvt, evt);
+                });
+            };
+            
             if (evt.isImprecise()) { // imprecise time
                 var length = Math.max(endPixel - startPixel, 1);
             
@@ -155,6 +163,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
                 
                 layerDiv.appendChild(div);
             }
+            attachClickEvent(div);
                 
             if (showText) {
                 if (length > 100) {
@@ -218,8 +227,68 @@ Timeline.DurationEventPainter.prototype.paint = function() {
 Timeline.DurationEventPainter.prototype.softPaint = function() {
 };
 
-Timeline.DurationEventPainter.prototype._onClickInstantEvent = function(img, evt) {
-    var c = Timeline.DOM.getPageCoordinates(img);
-    Timeline.Graphics.createBubbleForPoint(document, c.left, c.top, 150, 100);
-    evt.cancelBubble = true;
+Timeline.DurationEventPainter.prototype._onClickInstantEvent = function(icon, domEvt, evt) {
+    domEvt.cancelBubble = true;
+    
+    var c = Timeline.DOM.getPageCoordinates(icon);
+    this._showBubble(
+        c.left + Math.ceil(icon.offsetWidth / 2), 
+        c.top + Math.ceil(icon.offsetHeight / 2),
+        evt
+    );
+};
+
+Timeline.DurationEventPainter.prototype._onClickDurationEvent = function(domEvt, evt) {
+    domEvt.cancelBubble = true;
+    this._showBubble(
+        domEvt.clientX,
+        domEvt.clientY,
+        evt
+    );
+};
+
+Timeline.DurationEventPainter.prototype._showBubble = function(x, y, evt) {
+    var div = this._band.openBubbleForPoint(
+        x, y,
+        this._theme.event.bubble.width,
+        this._theme.event.bubble.height
+    );
+    
+    var doc = this._timeline.getDocument();
+    
+    var title = evt.getText();
+    var link = evt.getLink();
+    var image = evt.getImage();
+    
+    if (image != null) {
+        var img = doc.createElement("img");
+        img.src = image;
+        
+        this._theme.event.bubble.imageStyler(img);
+        div.appendChild(img);
+    }
+    
+    var divTitle = doc.createElement("div");
+    var textTitle = doc.createTextNode(title);
+    if (link != null) {
+        var a = doc.createElement("a");
+        a.href = link;
+        a.innerHTML = title;
+        a.appendChild(textTitle);
+        divTitle.appendChild(a);
+    } else {
+        divTitle.appendChild(textTitle);
+    }
+    this._theme.event.bubble.titleStyler(divTitle);
+    div.appendChild(divTitle);
+    
+    var divBody = doc.createElement("div");
+    evt.fillDescription(divBody);
+    this._theme.event.bubble.bodyStyler(divBody);
+    div.appendChild(divBody);
+    
+    var divTime = doc.createElement("div");
+    evt.fillTime(divTime, this._band.getLabeller());
+    this._theme.event.bubble.timeStyler(divTime);
+    div.appendChild(divTime);
 };

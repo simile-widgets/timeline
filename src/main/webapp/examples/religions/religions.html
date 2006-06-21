@@ -1,0 +1,92 @@
+<html>
+<head>
+    <title>Timeline Example: Jewish Timeline</title>
+    <link rel='stylesheet' href='../styles.css' type='text/css' />
+    <script src="../../api/timeline-api.js" type="text/javascript"></script>
+    <script>
+        var tl;
+        function onLoad() {
+            var eventSource = new Timeline.DefaultEventSource(0);
+            
+            var theme = Timeline.ClassicTheme.create();
+            theme.event.bubble.width = 320;
+            theme.event.bubble.height = 220;
+            
+            var theme2 = Timeline.ClassicTheme.create();
+            theme2.event.bubble.width = 320;
+            theme2.event.bubble.height = 220;
+            theme2.event.track.height = 0.5;
+            theme2.event.track.gap = 0.2;
+            
+            var zones = [
+                {   start:    "1700",
+                    end:      "2100",
+                    magnify:  5,
+                    unit:     Timeline.DateTime.DECADE
+                },
+                {   start:    "1800",
+                    end:      "2100",
+                    magnify:  3,
+                    unit:     Timeline.DateTime.YEAR,
+                    multiple: 5
+                }
+            ];
+            var zones2 = [
+                {   start:    "1700",
+                    end:      "2100",
+                    magnify:  5,
+                    unit:     Timeline.DateTime.DECADE
+                },
+                {   start:    "1800",
+                    end:      "2100",
+                    magnify:  3,
+                    unit:     Timeline.DateTime.YEAR,
+                    multiple: 10
+                }
+            ];
+            
+            var d = Timeline.DateTime.parseGregorianDateTime("100")
+            var bandInfos = [
+                Timeline.createSimpleBandInfo(
+                    "80%", Timeline.DateTime.CENTURY, 5, eventSource, d, true, theme),
+                Timeline.createSimpleBandInfo(
+                    "20%", Timeline.DateTime.CENTURY, 20, eventSource, d, false, theme2)
+            ];
+            
+            bandInfos[0].ether = Timeline.HotZoneEther;
+            bandInfos[0].etherParams.zones = zones;
+            bandInfos[0].etherPainterParams.zones = zones;
+            
+            bandInfos[1].ether = Timeline.HotZoneEther;
+            bandInfos[1].etherParams.zones = zones2;
+            bandInfos[1].etherPainterParams.zones = zones2;
+            bandInfos[1].syncWith = 0;
+            bandInfos[1].highlight = true;
+            
+            tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
+            Timeline.loadXML("jewish.xml", function(xml) {
+                eventSource.loadXML(xml);
+            });
+        }
+        function onResize() {
+            tl.layout();
+        }
+    </script>
+</head>
+<body onload="onLoad();" onresize="onResize();">
+<div class="header">
+    Timeline Examples
+</div>
+<div class="content">
+    <h1>Jewish Timeline</h1>
+    <p>Sources:
+        <ul>
+            <li><a href="http://en.wikipedia.org/wiki/Monet">http://en.wikipedia.org/wiki/Monet</a></li>
+            <li><a href="http://www.accents-n-art.com/artists/claude-monet-biography.html">http://www.accents-n-art.com/artists/claude-monet-biography.html</a></li>
+        </ul>
+    </p>
+    <div id="tl" style="height: 500px; border: 1px solid #aaa; position: relative;">
+    </div>
+</div>
+</body>
+</html>

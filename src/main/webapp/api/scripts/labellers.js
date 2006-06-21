@@ -36,7 +36,7 @@ Timeline.GregorianDateLabeller._Impl.prototype.labelPrecise = function(date) {
     ).toUTCString();
 };
 
-Timeline.GregorianDateLabeller._Impl.prototype.defaultLabel = function(date, intervalUnit) {
+Timeline.GregorianDateLabeller._Impl.prototype.defaultLabelInterval = function(date, intervalUnit) {
     var text;
     var emphasized = false;
     

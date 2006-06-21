@@ -100,15 +100,18 @@ Timeline.EventIndex.prototype._index = function() {
      *  event that overlaps with it, if any.
      */
     
-    this._events.elementAt(0)._earliestOverlapIndex = 0;
+    var l = this._events.length();
+    for (var i = 0; i < l; i++) {
+        var evt = this._events.elementAt(i);
+        evt._earliestOverlapIndex = i;
+    }
     
     var toIndex = 1;
-    
-    var l = this._events.length();
     for (var i = 0; i < l; i++) {
         var evt = this._events.elementAt(i);
         var end = evt.getEnd().getTime();
         
+        toIndex = Math.max(toIndex, i + 1);
         while (toIndex < l) {
             var evt2 = this._events.elementAt(toIndex);
             var start2 = evt2.getStart().getTime();
@@ -117,11 +120,11 @@ Timeline.EventIndex.prototype._index = function() {
                 evt2._earliestOverlapIndex = i;
                 toIndex++;
             } else {
-                evt2._earliestOverlapIndex = toIndex;
                 break;
             }
         }
     }
+    this._indexed = true;
 };
 
 Timeline.EventIndex._Iterator = function(events, startDate, endDate) {

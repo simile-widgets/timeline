@@ -369,12 +369,12 @@ Timeline.HotZoneGregorianEtherPainter = function(params, band, timeline) {
                     zoneStart = zoneEnd;
                 } else {
                     zone2.multiple = zone.multiple;
+                    zone2.unit = zone.unit;
                     zoneStart = zone2.endTime;
                 }
             } // else, try the next existing zone
         }
     }
-    
     this._backgroundLayer = band.createLayerDiv(0);
     this._backgroundLayer.setAttribute("name", "ether-background"); // for debugging
     this._backgroundLayer.style.background = this._theme.ether.backgroundColors[band.getIndex()];

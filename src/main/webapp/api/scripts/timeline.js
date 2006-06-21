@@ -161,7 +161,7 @@ Timeline._Band = function(timeline, bandInfo, index) {
     this._timeZone = ("timeZone" in bandInfo) ? bandInfo.timeZone : 0;
     this._labeller = ("labeller" in bandInfo) ? bandInfo.labeller : 
         new Timeline.GregorianDateLabeller.create(this._locale, this._timeZone);
-        
+    
     this._dragging = false;
     this._changing = false;
     this._onScrollListeners = [];

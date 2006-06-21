@@ -3,7 +3,6 @@
     height:         1.5em; 
     border-left:    1px solid #aaa; 
     padding-left:   2px; 
-    color:          #aaa;
 }
 
 .timeline-ether-marker-bottom-emphasized {
@@ -11,7 +10,6 @@
     height:         2em; 
     border-left:    1px solid #aaa; 
     padding-left:   2px; 
-    color:          black;
 }
 
 .timeline-ether-marker-top {
@@ -19,7 +17,6 @@
     height:         1.5em; 
     border-left:    1px solid #aaa; 
     padding-left:   2px; 
-    color:          #aaa;
 }
 
 .timeline-ether-marker-top-emphasized {
@@ -27,7 +24,6 @@
     height:         2em; 
     border-left:    1px solid #aaa; 
     padding-left:   2px; 
-    color:          black;
 }
 
 
@@ -36,7 +32,6 @@
     height:         1.5em; 
     border-top:     1px solid #aaa; 
     padding-top:    2px; 
-    color:          #aaa;
 }
 
 .timeline-ether-marker-right-emphasized {
@@ -44,14 +39,12 @@
     height:         1.5em; 
     border-top:     1px solid #aaa; 
     padding-top:    2px; 
-    color:          black;
 }
 .timeline-ether-marker-left {
     width:          5em; 
     height:         1.5em; 
     border-top:     1px solid #aaa; 
     padding-top:    2px; 
-    color:          #aaa;
 }
 
 .timeline-ether-marker-left-emphasized {
@@ -59,5 +52,4 @@
     height:         1.5em; 
     border-top:     1px solid #aaa; 
     padding-top:    2px; 
-    color:          black;
 }

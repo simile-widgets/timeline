@@ -187,10 +187,10 @@ Timeline._Band = function(timeline, bandInfo, index) {
     this._innerDiv.className = "timeline-band-inner";
     this._div.appendChild(this._innerDiv);
     
-    var etherConstructor = (bandInfo.ether) ? bandInfo.ether : Timeline.LinearEther;
+    var etherConstructor = ("ether" in bandInfo) ? bandInfo.ether : Timeline.LinearEther;
     this._ether = new etherConstructor(bandInfo.etherParams, timeline);
         
-    var etherPainterConstructor = (bandInfo.etherPainter)? bandInfo.etherPainter : etherConstructor.getDefaultEtherPainter();
+    var etherPainterConstructor = ("etherPainter" in bandInfo) ? bandInfo.etherPainter : etherConstructor.getDefaultEtherPainter();
     this._etherPainter = new etherPainterConstructor(bandInfo.etherPainterParams, this, timeline);
         
     this._eventSource = bandInfo.eventSource;

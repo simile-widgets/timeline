@@ -48,6 +48,91 @@ Timeline.JapaneseEraDateLabeller._labelInterval = function(date, intervalUnit) {
     return { text: text, emphasized: emphasized };
 };
 
+/*==================================================
+ *  Japanese Era Ether Painter
+ *==================================================
+ */
+ 
+Timeline.JapaneseEraEtherPainter = function(params, band, timeline) {
+    this._band = band;
+    this._timeline = timeline;
+    this._theme = params.theme;
+    
+    this._backgroundLayer = band.createLayerDiv(0);
+    this._backgroundLayer.setAttribute("name", "ether-background"); // for debugging
+    this._backgroundLayer.style.background = this._theme.ether.backgroundColors[band.getIndex()];
+    
+    this._markerLayer = null;
+    this._lineLayer = null;
+    
+    var align = ("align" in params) ? params.align : 
+        this._theme.ether.interval.marker[timeline.isHorizontal() ? "hAlign" : "vAlign"];
+    var showLine = ("showLine" in params) ? params.showLine : 
+        this._theme.ether.interval.line.show;
+        
+    this._intervalMarkerLayout = new Timeline.EtherIntervalMarkerLayout(
+        this._timeline, this._band, this._theme, align, showLine);
+        
+    this._highlight = new Timeline.EtherHighlight(
+        this._timeline, this._band, this._theme, this._backgroundLayer);
+};
+
+Timeline.JapaneseEraEtherPainter.prototype.setHighlight = function(startDate, endDate) {
+    this._highlight.position(startDate, endDate);
+}
+
+Timeline.JapaneseEraEtherPainter.prototype.paint = function() {
+    if (this._markerLayer) {
+        this._band.removeLayerDiv(this._markerLayer);
+    }
+    this._markerLayer = this._band.createLayerDiv(100);
+    this._markerLayer.setAttribute("name", "ether-markers"); // for debugging
+    this._markerLayer.style.display = "none";
+    
+    if (this._lineLayer) {
+        this._band.removeLayerDiv(this._lineLayer);
+    }
+    this._lineLayer = this._band.createLayerDiv(1);
+    this._lineLayer.setAttribute("name", "ether-lines"); // for debugging
+    this._lineLayer.style.display = "none";
+    
+    var minYear = this._band.getMinDate().getUTCFullYear();
+    var maxYear = this._band.getMaxDate().getUTCFullYear();
+    var eraIndex = Timeline.JapaneseEraDateLabeller._eras.find(function(era) {
+            return era.startingYear - minYear;
+        }
+    );
+    
+    var l = Timeline.JapaneseEraDateLabeller._eras.length();
+    for (var i = eraIndex; i < l; i++) {
+        var era = Timeline.JapaneseEraDateLabeller._eras.elementAt(i);
+        if (era.startingYear > maxYear) {
+            break;
+        }
+        
+        var d = new Date(0);
+        d.setUTCFullYear(era.startingYear);
+        
+        var labeller = {
+            labelInterval: function(date, intervalUnit) {
+                return {
+                    text: era.japaneseName,
+                    emphasized: true
+                };
+            }
+        };
+        
+        this._intervalMarkerLayout.createIntervalMarker(
+            d, labeller, Timeline.DateTime.YEAR, this._markerLayer, this._lineLayer);
+    }
+    this._markerLayer.style.display = "block";
+    this._lineLayer.style.display = "block";
+};
+
+Timeline.JapaneseEraEtherPainter.prototype.softPaint = function() {
+};
+
+
 Timeline.JapaneseEraDateLabeller._eras = new Timeline.SortedArray(
     function(e1, e2) {
         return e1.startingYear - e2.startingYear;

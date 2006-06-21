@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <data>
     <event start='200 BC' end='100 AD' isDuration="true"
         title="Canonicalization of Tanakh"
@@ -382,7 +383,7 @@
         Jewish population of Poland reached 450,000 or 4.5% whole population. Bohemia 40,000 and Moravia 25,000. 
         Worldwide population of Jewry is estmated at 750,000.
         </event>
-    <event start='1648–1655'
+    <event start='1648' end='1655' isDuration="true"
         title="Massacre of Polish gentry and Jewry"
         >
         The &lt;a href="http://en.wikipedia.org/wiki/Ukraine" title="Ukraine"&gt;Ukrainian&lt;/a&gt; 
@@ -447,7 +448,7 @@
         of Izmir, to come to the Holy Land. Rabbi Abulafia is to rebuild the city of Tiberias, 
         which has lain desolate for some 70 years. The city's revival is seen by many as a sign 
         of the coming of the Messiah. (Morgenstern, Arie. "&lt;i&gt;Dispersion and Longing for Zion, 
-        &lt;a href="http://en.wikipedia.org/wiki/1240" title="1240"&gt;1240&lt;/a&gt;–&lt;a href="http://en.wikipedia.org/wiki/1840" title="1840"&gt;1840&lt;/a&gt;&lt;/i&gt;". Azure. &lt;a href="http://www.jafi.org.il/education/culture/dispersion.html" class="external autonumber" title="http://www.jafi.org.il/education/culture/dispersion.html"&gt;[2]&lt;/a&gt;)
+        &lt;a href="http://en.wikipedia.org/wiki/1240" title="1240"&gt;1240&lt;/a&gt;-&lt;a href="http://en.wikipedia.org/wiki/1840" title="1840"&gt;1840&lt;/a&gt;&lt;/i&gt;". Azure. &lt;a href="http://www.jafi.org.il/education/culture/dispersion.html" class="external autonumber" title="http://www.jafi.org.il/education/culture/dispersion.html"&gt;[2]&lt;/a&gt;)
         </event>
     <event start='1740' end='1750' isDuration="true"
         title="Thousands moved to Eretz Yisrael"
@@ -455,7 +456,7 @@
         Thousands immigrate to Eretz Yisrael under the influence of Messianic predictions. The 
         large immigration greatly increases the size and strength of the Jewish Settlement in 
         Eretz Yisrael. (Morgenstern, Arie. "&lt;i&gt;Dispersion and Longing for Zion, 
-        &lt;a href="http://en.wikipedia.org/wiki/1240" title="1240"&gt;1240&lt;/a&gt;–&lt;a href="http://en.wikipedia.org/wiki/1840" title="1840"&gt;1840&lt;/a&gt;&lt;/i&gt;". 
+        &lt;a href="http://en.wikipedia.org/wiki/1240" title="1240"&gt;1240&lt;/a&gt;-&lt;a href="http://en.wikipedia.org/wiki/1840" title="1840"&gt;1840&lt;/a&gt;&lt;/i&gt;". 
         Azure. &lt;a href="http://www.jafi.org.il/education/culture/dispersion.html" class="external autonumber" title="http://www.jafi.org.il/education/culture/dispersion.html"&gt;[3]&lt;/a&gt;)
         </event>
     <event start='1742'
@@ -534,7 +535,7 @@
         The Golden Age of Yiddish literature, the revivial of Hebrew as a spoken language, and the 
         revival of Hebrew literature. &lt;a href="http://www.bergen.org/AAST/Projects/Yiddish/English/literature.html" class="external autonumber" title="http://www.bergen.org/AAST/Projects/Yiddish/English/literature.html"&gt;[8]&lt;/a&gt;
         </event>
-    <event start='1820–1860'
+    <event start='1820' end='1860'
         title="Development of Orthodox Judaism"
         >
         The development of &lt;a href="http://en.wikipedia.org/wiki/Orthodox_Judaism" title="Orthodox Judaism"&gt;Orthodox Judaism&lt;/a&gt;, 
@@ -674,7 +675,7 @@
         is founded in &lt;a href="http://en.wikipedia.org/wiki/Cincinnati%2C_Ohio" title="Cincinnati, Ohio"&gt;Cincinnati&lt;/a&gt;. 
         Its founder was Rabbi &lt;a href="http://en.wikipedia.org/wiki/Isaac_Mayer_Wise" title="Isaac Mayer Wise"&gt;Isaac Mayer Wise&lt;/a&gt;, 
         the architect of &lt;a href="/w/index.php?title=American_Reform_Judaism&amp;action=edit" class="new" title="American Reform Judaism"&gt;American Reform Judaism&lt;/a&gt;. 
-        &lt;a href="http://huc.edu/index.html" class="external text" title="http://huc.edu/index.html"&gt;Hebrew Union College—Jewish Institute of Religion&lt;/a&gt;
+        &lt;a href="http://huc.edu/index.html" class="external text" title="http://huc.edu/index.html"&gt;Hebrew Union College-Jewish Institute of Religion&lt;/a&gt;
         </event>
     <event start='1877'
         title="New Hampshire last to give Jews equal political rights"
@@ -691,18 +692,19 @@
         title="First wave of Pogroms"
         >
         Three major waves of &lt;a href="http://en.wikipedia.org/wiki/Pogrom" title="Pogrom"&gt;pogroms&lt;/a&gt; 
-        kill tens of thousands of Jews in Russia and Ukraine. More than two million Jews emigrate in the period 1881–1920.
+        kill tens of thousands of Jews in Russia and Ukraine. More than two million Jews emigrate in the period 1881-1920.
         </event>
     <event start='1903' end='1906' isDuration="true"
         title="Second wave of Pogroms"
         >
         Three major waves of &lt;a href="http://en.wikipedia.org/wiki/Pogrom" title="Pogrom"&gt;pogroms&lt;/a&gt; 
-        kill tens of thousands of Jews in Russia and Ukraine. More than two million Jews emigrate in the period 1881–1920.
+        kill tens of thousands of Jews in Russia and Ukraine. More than two million Jews emigrate in the period 1881-1920.
         </event>
     <event start='1918' end='1920' isDuration="true"
         title="Third wave of Pogroms"
         >
-        Three major waves of &lt;a href="http://en.wikipedia.org/wiki/Pogrom" title="Pogrom"&gt;pogroms&lt;/a&gt; kill tens of thousands of Jews in Russia and Ukraine. More than two million Jews emigrate in the period 1881–1920.
+        Three major waves of &lt;a href="http://en.wikipedia.org/wiki/Pogrom" title="Pogrom"&gt;pogroms&lt;/a&gt; 
+        kill tens of thousands of Jews in Russia and Ukraine. More than two million Jews emigrate in the period 1881-1920.
         </event>
     <event start='1882' end='1903' isDuration="true"
         title="First Aliyah"
@@ -795,7 +797,7 @@
         &lt;a href="/w/index.php?title=Moshe_Koussevitzky&amp;action=edit" class="new" title="Moshe Koussevitzky"&gt;Moshe Koussevitzky&lt;/a&gt;, 
         &lt;a href="/w/index.php?title=Zavel_Kwartin&amp;action=edit" class="new" title="Zavel Kwartin"&gt;Zavel Kwartin&lt;/a&gt; (1874-1953), 
         &lt;a href="http://en.wikipedia.org/wiki/Jan_Peerce" title="Jan Peerce"&gt;Jan Peerce&lt;/a&gt;, &lt;a href="/w/index.php?title=Joseph_Yossele_Rosenblatt&amp;action=edit" class="new" title="Joseph Yossele Rosenblatt"&gt;Joseph Yossele Rosenblatt&lt;/a&gt; 
-        (1880–1933), &lt;a href="http://en.wikipedia.org/wiki/Gershon_Sirota" title="Gershon Sirota"&gt;Gershon Sirota&lt;/a&gt; (1874–1943), and 
+        (1880-1933), &lt;a href="http://en.wikipedia.org/wiki/Gershon_Sirota" title="Gershon Sirota"&gt;Gershon Sirota&lt;/a&gt; (1874-1943), and 
         &lt;a href="/w/index.php?title=Laibale_Waldman&amp;action=edit" class="new" title="Laibale Waldman"&gt;Laibale Waldman&lt;/a&gt;.
         </event>
     <event start='1920'

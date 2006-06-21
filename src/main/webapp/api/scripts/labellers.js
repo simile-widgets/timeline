@@ -24,7 +24,7 @@ Timeline.GregorianDateLabeller._Impl = function(locale, timeZone) {
 Timeline.GregorianDateLabeller._Impl.prototype.labelInterval = function(date, intervalUnit) {
     var f = Timeline.GregorianDateLabeller.labelIntervalFunctions[this._locale];
     if (f == null) {
-        f = Timeline.GregorianDateLabeller._Impl.prototype.defaultLabel;
+        f = Timeline.GregorianDateLabeller._Impl.prototype.defaultLabelInterval;
     }
     return f.call(this, date, intervalUnit);
 };

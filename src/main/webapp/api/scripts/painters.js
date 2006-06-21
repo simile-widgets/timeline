@@ -59,6 +59,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
             
                 var divImprecise = doc.createElement("div");
                 divImprecise.style.position = "absolute";
+                divImprecise.style.overflow = "hidden";
                 
                 divImprecise.style.top = streamOffset;
                 divImprecise.style.height = eventTheme.track.height + "em";
@@ -121,6 +122,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
             
                 var div = doc.createElement("div");
                 div.style.position = "absolute";
+                div.style.overflow = "hidden";
                 
                 div.style.top = streamOffset;
                 div.style.height = eventTheme.track.height + "em";
@@ -152,6 +154,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
                 
                 div = doc.createElement("div");
                 div.style.position = "absolute";
+                div.style.overflow = "hidden";
                 
                 div.style.top = streamOffset;
                 div.style.height = eventTheme.track.height + "em";

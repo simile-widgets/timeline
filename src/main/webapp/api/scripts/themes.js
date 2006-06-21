@@ -46,12 +46,14 @@ Timeline.ClassicTheme._Impl = function() {
                 hAlign:     "Bottom",
                 hBottomStyler: function(elmt) {
                     elmt.className = "timeline-ether-marker-bottom";
+                    Timeline.Graphics.setOpacity(elmt, 50);
                 },
                 hBottomEmphasizedStyler: function(elmt) {
                     elmt.className = "timeline-ether-marker-bottom-emphasized";
                 },
                 hTopStyler: function(elmt) {
                     elmt.className = "timeline-ether-marker-top";
+                    Timeline.Graphics.setOpacity(elmt, 50);
                 },
                 hTopEmphasizedStyler: function(elmt) {
                     elmt.className = "timeline-ether-marker-top-emphasized";
@@ -60,12 +62,14 @@ Timeline.ClassicTheme._Impl = function() {
                 vAlign:     "Right",
                 vRightStyler: function(elmt) {
                     elmt.className = "timeline-ether-marker-right";
+                    Timeline.Graphics.setOpacity(elmt, 50);
                 },
                 vRightEmphasizedStyler: function(elmt) {
                     elmt.className = "timeline-ether-marker-right-emphasized";
                 },
                 vLeftStyler: function(elmt) {
                     elmt.className = "timeline-ether-marker-left";
+                    Timeline.Graphics.setOpacity(elmt, 50);
                 },
                 vLeftEmphasizedStyler:function(elmt) {
                     elmt.className = "timeline-ether-marker-left-emphasized";

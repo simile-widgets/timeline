@@ -3,6 +3,7 @@
     <title>Timeline Example: Jewish Timeline</title>
     <link rel='stylesheet' href='../styles.css' type='text/css' />
     <script src="../../api/timeline-api.js" type="text/javascript"></script>
+    <script src="../../api/scripts/ext/japanese-eras.js" type="text/javascript"></script>
     <script>
         var tl;
         function onLoad() {
@@ -48,20 +49,28 @@
             var d = Timeline.DateTime.parseGregorianDateTime("100");
             var bandInfos = [
                 Timeline.createSimpleBandInfo(
-                    "80%", Timeline.DateTime.CENTURY, 5, eventSource, d, true, theme),
+                    "5%", Timeline.DateTime.CENTURY, 5, eventSource, d, false, theme2),
                 Timeline.createSimpleBandInfo(
-                    "20%", Timeline.DateTime.CENTURY, 20, eventSource, d, false, theme2)
+                    "75%", Timeline.DateTime.CENTURY, 5, eventSource, d, true, theme),
+                Timeline.createSimpleBandInfo(
+                    "20%", Timeline.DateTime.CENTURY, 20, eventSource, d, false, theme2),
             ];
             
-            bandInfos[0].ether = Timeline.HotZoneEther;
-            bandInfos[0].etherParams.zones = zones;
-            bandInfos[0].etherPainterParams.zones = zones;
-            
             bandInfos[1].ether = Timeline.HotZoneEther;
-            bandInfos[1].etherParams.zones = zones2;
-            bandInfos[1].etherPainterParams.zones = zones2;
-            bandInfos[1].syncWith = 0;
-            bandInfos[1].highlight = true;
+            bandInfos[1].etherParams.zones = zones;
+            bandInfos[1].etherPainterParams.zones = zones;
+            
+            bandInfos[2].ether = Timeline.HotZoneEther;
+            bandInfos[2].etherParams.zones = zones2;
+            bandInfos[2].etherPainterParams.zones = zones2;
+            bandInfos[2].syncWith = 1;
+            bandInfos[2].highlight = true;
+            
+            bandInfos[0].eventSource = null;
+            bandInfos[0].ether = Timeline.HotZoneEther;
+            bandInfos[0].etherParams.zones = zones2;
+            bandInfos[0].etherPainter = Timeline.JapaneseEraEtherPainter;
+            bandInfos[0].syncWith = 1;
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
             Timeline.loadXML("jewish.xml", function(xml) {
@@ -81,8 +90,7 @@
     <h1>Jewish Timeline</h1>
     <p>Sources:
         <ul>
-            <li><a href="http://en.wikipedia.org/wiki/Monet">http://en.wikipedia.org/wiki/Monet</a></li>
-            <li><a href="http://www.accents-n-art.com/artists/claude-monet-biography.html">http://www.accents-n-art.com/artists/claude-monet-biography.html</a></li>
+            <li><a href="http://en.wikipedia.org/wiki/Timeline_of_Jewish_history">http://en.wikipedia.org/wiki/Timeline_of_Jewish_history</a></li>
         </ul>
     </p>
     <div id="tl" style="height: 500px; border: 1px solid #aaa; position: relative;">

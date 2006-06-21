@@ -31,7 +31,6 @@ Timeline.DefaultEventSource.prototype.loadXML = function(xml) {
             if (node.firstChild != null && node.firstChild.nodeType == 3) {
                 description = node.firstChild.nodeValue;
             }
-            
             var evt = new Timeline.DefaultEventSource.Event(
                 Timeline.DateTime.parseGregorianDateTime(node.getAttribute("start")),
                 Timeline.DateTime.parseGregorianDateTime(node.getAttribute("end")),

@@ -19,9 +19,11 @@
                     "90%", Timeline.DateTime.DECADE, 8, eventSource, d, true, theme)
             ];
             bandInfos[0].eventSource = null;
-            bandInfos[0].etherPainter = Timeline.YearCountEtherPainter;
-            bandInfos[0].etherPainterParams.multiple = 5;
-            bandInfos[0].etherPainterParams.startDate = "Nov 14 1840 00:00:00 GMT";
+            bandInfos[0].etherPainter = new Timeline.YearCountEtherPainter({
+                startDate:  "Nov 14 1840 00:00:00 GMT",
+                multiple:   5,
+                theme:      theme
+            });
             bandInfos[0].syncWith = 1;
             bandInfos[0].highlight = false;
             

@@ -62,21 +62,15 @@
             theme.event.bubble.width = 250;
             theme.event.bubble.height = 200;
             
+            var date = "Fri Nov 22 1963 13:00:00 GMT-0600"
             var bandInfos = [
-                Timeline.createSimpleBandInfo(
-                    "75%", Timeline.DateTime.WEEK,  5, eventSource, "Fri Nov 22 1963 13:00:00 GMT-0600", true, theme),
-                Timeline.createSimpleBandInfo(
-                    "25%", Timeline.DateTime.MONTH, 5, eventSource, "Fri Nov 22 1963 13:00:00 GMT-0600", false, theme)
+                Timeline.createHotZoneBandInfo(
+                    "75%", Timeline.DateTime.WEEK, 5, zones, eventSource, date, true, theme),
+                Timeline.createHotZoneBandInfo(
+                    "25%", Timeline.DateTime.MONTH, 5, zones2, eventSource, date, false, theme)
             ];
             bandInfos[0].timeZone = -6;
-            bandInfos[0].ether = Timeline.HotZoneEther;
-            bandInfos[0].etherParams.zones = zones;
-            bandInfos[0].etherPainterParams.zones = zones;
-            
             bandInfos[1].timeZone = -6;
-            bandInfos[1].ether = Timeline.HotZoneEther;
-            bandInfos[1].etherParams.zones = zones2;
-            bandInfos[1].etherPainterParams.zones = zones2;
             bandInfos[1].syncWith = 0;
             bandInfos[1].highlight = true;
             

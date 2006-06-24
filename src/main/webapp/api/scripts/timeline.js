@@ -25,12 +25,51 @@ Timeline.createSimpleBandInfo = function(
     return {   
         width:          width,
         eventSource:    eventSource,
-        etherParams: { 
-            duration: intervalCount * Timeline.DateTime.gregorianUnitLengths[intervalUnit], 
-            centersOn: date 
-        },
-        etherPainterParams: { unit: intervalUnit, theme: theme },
-        eventPainterParams: { theme: theme, showText: showEventText }
+        ether: new Timeline.LinearEther({
+            duration:   intervalCount * Timeline.DateTime.gregorianUnitLengths[intervalUnit], 
+            centersOn:  date 
+        }),
+        etherPainter: new Timeline.GregorianEtherPainter({ 
+            unit:       intervalUnit, 
+            theme:      theme 
+        }),
+        eventPainter: new Timeline.DurationEventPainter({
+            showText:   showEventText,
+            theme:      theme
+        })
+    };
+};
+
+Timeline.createHotZoneBandInfo = function(
+    width, 
+    intervalUnit, 
+    intervalCount, 
+    zones,
+    eventSource, 
+    date, 
+    showEventText,
+    theme
+    ) {
+    theme = (theme != null) ? theme : Timeline.getDefaultTheme();
+    
+    return {   
+        width:          width,
+        eventSource:    eventSource,
+        ether: new Timeline.HotZoneEther({
+            duration:   intervalCount * Timeline.DateTime.gregorianUnitLengths[intervalUnit], 
+            centersOn:  date,
+            zones:      zones
+        }),
+        etherPainter: new Timeline.HotZoneGregorianEtherPainter({ 
+            unit:       intervalUnit, 
+            zones:      zones,
+            theme:      theme 
+        }),
+        eventPainter: new Timeline.DurationEventPainter({
+            showText:   showEventText,
+            zones:      zones,
+            theme:      theme
+        })
     };
 };
 
@@ -118,7 +157,10 @@ Timeline._Impl.prototype._initialize = function() {
     for (var i = 0; i < this._bandInfos.length; i++) {
         var bandInfo = this._bandInfos[i];
         if ("syncWith" in bandInfo) {
-            this._bands[i].setSyncWithBand(this._bands[bandInfo.syncWith], (bandInfo.highlight));
+            this._bands[i].setSyncWithBand(
+                this._bands[bandInfo.syncWith], 
+                ("highlight" in bandInfo) ? bandInfo.highlight : false
+            );
         }
     }
 };
@@ -187,11 +229,14 @@ Timeline._Band = function(timeline, bandInfo, index) {
     this._innerDiv.className = "timeline-band-inner";
     this._div.appendChild(this._innerDiv);
     
-    var etherConstructor = ("ether" in bandInfo) ? bandInfo.ether : Timeline.LinearEther;
-    this._ether = new etherConstructor(bandInfo.etherParams, timeline);
+    this._ether = bandInfo.ether;
+    bandInfo.ether.initialize(timeline);
         
-    var etherPainterConstructor = ("etherPainter" in bandInfo) ? bandInfo.etherPainter : etherConstructor.getDefaultEtherPainter();
-    this._etherPainter = new etherPainterConstructor(bandInfo.etherPainterParams, this, timeline);
+    this._etherPainter = bandInfo.etherPainter;
+    bandInfo.etherPainter.initialize(this, timeline);
+    
+    this._eventPainter = bandInfo.eventPainter;
+    bandInfo.eventPainter.initialize(this, timeline);
         
     this._eventSource = bandInfo.eventSource;
     if (this._eventSource) {
@@ -200,10 +245,6 @@ Timeline._Band = function(timeline, bandInfo, index) {
             onClear:   function() { b._onClear(); }
         });
     }
-    
-    this._eventPainter = (bandInfo.eventPainter) ? 
-        new bandInfo.eventPainter(bandInfo.eventPainterParams, this, timeline) : 
-        new Timeline.DurationEventPainter(bandInfo.eventPainterParams, this, timeline);
         
     this._bubble = null;
 };

@@ -5,8 +5,6 @@
  
 Timeline.LinearEther = function(params, timeline) {
     this._duration = params.duration;
-    this._timeline = timeline;
-    
     if (params.startsOn) {
         this._start = Timeline.DateTime.parseGregorianDateTime(params.startsOn);
     } else if (params.endsOn) {
@@ -18,8 +16,8 @@ Timeline.LinearEther = function(params, timeline) {
     }
 };
 
-Timeline.LinearEther.getDefaultEtherPainter = function() {
-    return Timeline.GregorianEtherPainter;
+Timeline.LinearEther.prototype.initialize = function(timeline) {
+    this._timeline = timeline;
 };
 
 Timeline.LinearEther.prototype.setDate = function(date) {
@@ -47,8 +45,8 @@ Timeline.LinearEther.prototype.pixelOffsetToDate = function(pixels) {
  *==================================================
  */
  
-Timeline.HotZoneEther = function(params, timeline) {
-    this._timeline = timeline;
+Timeline.HotZoneEther = function(params) {
+    this._params = params;
     this._duration = params.duration;
     
     this._zones = [{
@@ -93,23 +91,23 @@ Timeline.HotZoneEther = function(params, timeline) {
             } // else, try the next existing zone
         }
     }
+};
+
+Timeline.HotZoneEther.prototype.initialize = function(timeline) {
+    this._timeline = timeline;
     
-    if (params.startsOn) {
-        this._start = Timeline.DateTime.parseGregorianDateTime(params.startsOn);
-    } else if (params.endsOn) {
-        this._start = Timeline.DateTime.parseGregorianDateTime(params.endsOn);
+    if ("startsOn" in this._params) {
+        this._start = Timeline.DateTime.parseGregorianDateTime(this._params.startsOn);
+    } else if ("endsOn" in this._params) {
+        this._start = Timeline.DateTime.parseGregorianDateTime(this._params.endsOn);
         this.shiftPixels(-this._timeline.getPixelLength());
-    } else if (params.centersOn) {
-        this._start = Timeline.DateTime.parseGregorianDateTime(params.centersOn);
+    } else if ("centersOn" in this._params) {
+        this._start = Timeline.DateTime.parseGregorianDateTime(this._params.centersOn);
         this.shiftPixels(-this._timeline.getPixelLength() / 2);
     } else {
         this._start = new Date();
         this.shiftPixels(-this._timeline.getPixelLength() / 2);
     }
-};
-
-Timeline.HotZoneEther.getDefaultEtherPainter = function() {
-    return Timeline.HotZoneGregorianEtherPainter;
 };
 
 Timeline.HotZoneEther.prototype.setDate = function(date) {
@@ -247,12 +245,15 @@ Timeline.HotZoneEther.prototype._getScale = function() {
  *==================================================
  */
  
-Timeline.GregorianEtherPainter = function(params, band, timeline) {
-    this._band = band;
-    this._timeline = timeline;
-    
+Timeline.GregorianEtherPainter = function(params) {
+    this._params = params;
     this._theme = params.theme;
     this._unit = params.unit;
+};
+
+Timeline.GregorianEtherPainter.prototype.initialize = function(band, timeline) {
+    this._band = band;
+    this._timeline = timeline;
     
     this._backgroundLayer = band.createLayerDiv(0);
     this._backgroundLayer.setAttribute("name", "ether-background"); // for debugging
@@ -261,9 +262,9 @@ Timeline.GregorianEtherPainter = function(params, band, timeline) {
     this._markerLayer = null;
     this._lineLayer = null;
     
-    var align = ("align" in params) ? params.align : 
+    var align = ("align" in this._params) ? this._params.align : 
         this._theme.ether.interval.marker[timeline.isHorizontal() ? "hAlign" : "vAlign"];
-    var showLine = ("showLine" in params) ? params.showLine : 
+    var showLine = ("showLine" in this._params) ? this._params.showLine : 
         this._theme.ether.interval.line.show;
         
     this._intervalMarkerLayout = new Timeline.EtherIntervalMarkerLayout(
@@ -271,7 +272,7 @@ Timeline.GregorianEtherPainter = function(params, band, timeline) {
         
     this._highlight = new Timeline.EtherHighlight(
         this._timeline, this._band, this._theme, this._backgroundLayer);
-};
+}
 
 Timeline.GregorianEtherPainter.prototype.setHighlight = function(startDate, endDate) {
     this._highlight.position(startDate, endDate);
@@ -323,10 +324,8 @@ Timeline.GregorianEtherPainter.prototype.softPaint = function() {
  *==================================================
  */
  
-Timeline.HotZoneGregorianEtherPainter = function(params, band, timeline) {
-    this._band = band;
-    this._timeline = timeline;
-    
+Timeline.HotZoneGregorianEtherPainter = function(params) {
+    this._params = params;
     this._theme = params.theme;
     
     this._zones = [{
@@ -375,6 +374,12 @@ Timeline.HotZoneGregorianEtherPainter = function(params, band, timeline) {
             } // else, try the next existing zone
         }
     }
+};
+
+Timeline.HotZoneGregorianEtherPainter.prototype.initialize = function(band, timeline) {
+    this._band = band;
+    this._timeline = timeline;
+    
     this._backgroundLayer = band.createLayerDiv(0);
     this._backgroundLayer.setAttribute("name", "ether-background"); // for debugging
     this._backgroundLayer.style.background = this._theme.ether.backgroundColors[band.getIndex()];
@@ -382,9 +387,9 @@ Timeline.HotZoneGregorianEtherPainter = function(params, band, timeline) {
     this._markerLayer = null;
     this._lineLayer = null;
     
-    var align = ("align" in params) ? params.align : 
+    var align = ("align" in this._params) ? this._params.align : 
         this._theme.ether.interval.marker[timeline.isHorizontal() ? "hAlign" : "vAlign"];
-    var showLine = ("showLine" in params) ? params.showLine : 
+    var showLine = ("showLine" in this._params) ? this._params.showLine : 
         this._theme.ether.interval.line.show;
         
     this._intervalMarkerLayout = new Timeline.EtherIntervalMarkerLayout(
@@ -392,7 +397,7 @@ Timeline.HotZoneGregorianEtherPainter = function(params, band, timeline) {
         
     this._highlight = new Timeline.EtherHighlight(
         this._timeline, this._band, this._theme, this._backgroundLayer);
-};
+}
 
 Timeline.HotZoneGregorianEtherPainter.prototype.setHighlight = function(startDate, endDate) {
     this._highlight.position(startDate, endDate);
@@ -469,13 +474,16 @@ Timeline.HotZoneGregorianEtherPainter.prototype.softPaint = function() {
  *==================================================
  */
  
-Timeline.YearCountEtherPainter = function(params, band, timeline) {
-    this._band = band;
-    this._timeline = timeline;
-    
+Timeline.YearCountEtherPainter = function(params) {
+    this._params = params;
     this._theme = params.theme;
     this._startDate = Timeline.DateTime.parseGregorianDateTime(params.startDate);
     this._multiple = ("multiple" in params) ? params.multiple : 1;
+};
+
+Timeline.YearCountEtherPainter.prototype.initialize = function(band, timeline) {
+    this._band = band;
+    this._timeline = timeline;
     
     this._backgroundLayer = band.createLayerDiv(0);
     this._backgroundLayer.setAttribute("name", "ether-background"); // for debugging
@@ -484,9 +492,9 @@ Timeline.YearCountEtherPainter = function(params, band, timeline) {
     this._markerLayer = null;
     this._lineLayer = null;
     
-    var align = ("align" in params) ? params.align : 
+    var align = ("align" in this._params) ? this._params.align : 
         this._theme.ether.interval.marker[timeline.isHorizontal() ? "hAlign" : "vAlign"];
-    var showLine = ("showLine" in params) ? params.showLine : 
+    var showLine = ("showLine" in this._params) ? this._params.showLine : 
         this._theme.ether.interval.line.show;
         
     this._intervalMarkerLayout = new Timeline.EtherIntervalMarkerLayout(
@@ -498,7 +506,7 @@ Timeline.YearCountEtherPainter = function(params, band, timeline) {
 
 Timeline.YearCountEtherPainter.prototype.setHighlight = function(startDate, endDate) {
     this._highlight.position(startDate, endDate);
-}
+};
 
 Timeline.YearCountEtherPainter.prototype.paint = function() {
     if (this._markerLayer) {

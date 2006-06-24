@@ -202,7 +202,7 @@ Timeline._Band = function(timeline, bandInfo, index) {
     this._locale = ("locale" in bandInfo) ? bandInfo.locale : Timeline.Platform.getDefaultLocale();
     this._timeZone = ("timeZone" in bandInfo) ? bandInfo.timeZone : 0;
     this._labeller = ("labeller" in bandInfo) ? bandInfo.labeller : 
-        new Timeline.GregorianDateLabeller.create(this._locale, this._timeZone);
+        new Timeline.GregorianDateLabeller(this._locale, this._timeZone);
     
     this._dragging = false;
     this._changing = false;
@@ -237,6 +237,11 @@ Timeline._Band = function(timeline, bandInfo, index) {
     
     this._eventPainter = bandInfo.eventPainter;
     bandInfo.eventPainter.initialize(this, timeline);
+    
+    this._decorators = ("decorators" in bandInfo) ? bandInfo.decorators : [];
+    for (var i = 0; i < this._decorators.length; i++) {
+        this._decorators[i].initialize(this, timeline);
+    }
         
     this._eventSource = bandInfo.eventSource;
     if (this._eventSource) {
@@ -301,11 +306,13 @@ Timeline._Band.prototype.getEventSource = function() {
 
 Timeline._Band.prototype.layout = function() {
     this._etherPainter.paint();
+    this._paintDecorators();
     this._paintEvents();
 };
 
 Timeline._Band.prototype.softLayout = function() {
     this._etherPainter.softPaint();
+    this._softPaintDecorators();
     this._softPaintEvents();
 };
 
@@ -541,5 +548,17 @@ Timeline._Band.prototype._paintEvents = function() {
 
 Timeline._Band.prototype._softPaintEvents = function() {
     this._eventPainter.softPaint();
+};
+
+Timeline._Band.prototype._paintDecorators = function() {
+    for (var i = 0; i < this._decorators.length; i++) {
+        this._decorators[i].paint();
+    }
+};
+
+Timeline._Band.prototype._softPaintDecorators = function() {
+    for (var i = 0; i < this._decorators.length; i++) {
+        this._decorators[i].softPaint();
+    }
 };
 

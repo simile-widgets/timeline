@@ -3,10 +3,8 @@
  *==================================================
  */
 
-Timeline.JapaneseEraDateLabeller = new Object();
-
-Timeline.JapaneseEraDateLabeller.create = function(locale, timeZone, useRomanizedName) {
-    var o = Timeline.GregorianDateLabeller.create(locale, timeZone);
+Timeline.JapaneseEraDateLabeller = function(locale, timeZone, useRomanizedName) {
+    var o = new Timeline.GregorianDateLabeller(locale, timeZone);
     
     o._useRomanizedName = (useRomanizedName);
     o._oldLabelInterval = o.labelInterval;
@@ -32,9 +30,13 @@ Timeline.JapaneseEraDateLabeller._labelInterval = function(date, intervalUnit) {
                     return era.startingYear - y;
                 }
             );
-            var era = Timeline.JapaneseEraDateLabeller._eras.elementAt(eraIndex);
-            if (y < era.startingYear) {
-                era = Timeline.JapaneseEraDateLabeller._eras.elementAt(eraIndex - 1);
+            if (eraIndex < Timeline.JapaneseEraDateLabeller._eras.length()) {
+                var era = Timeline.JapaneseEraDateLabeller._eras.elementAt(eraIndex);
+                if (y < era.startingYear) {
+                    era = Timeline.JapaneseEraDateLabeller._eras.elementAt(eraIndex - 1);
+                }
+            } else {
+                var era = Timeline.JapaneseEraDateLabeller._eras.elementAt(eraIndex - 1);
             }
             
             text = (this._useRomanizedName ? era.romanizedName : era.japaneseName) + " " + (y - era.startingYear + 1);

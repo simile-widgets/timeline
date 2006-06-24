@@ -60,6 +60,7 @@
             
             bandInfos[2].syncWith = 1;
             bandInfos[2].highlight = true;
+            bandInfos[2].labeller = new Timeline.JapaneseEraDateLabeller(Timeline.Platform.getDefaultLocale(), 0, true);
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
             Timeline.loadXML("jewish.xml", function(xml) {

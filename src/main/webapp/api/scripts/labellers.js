@@ -3,10 +3,9 @@
  *==================================================
  */
 
-Timeline.GregorianDateLabeller = new Object();
-
-Timeline.GregorianDateLabeller.create = function(locale, timeZone) {
-    return new Timeline.GregorianDateLabeller._Impl(locale, timeZone);
+Timeline.GregorianDateLabeller = function(locale, timeZone) {
+    this._locale = locale;
+    this._timeZone = timeZone;
 };
 
 Timeline.GregorianDateLabeller.monthNames = [];
@@ -16,27 +15,22 @@ Timeline.GregorianDateLabeller.getMonthName = function(month, locale) {
     return Timeline.GregorianDateLabeller.monthNames[locale][month];
 };
 
-Timeline.GregorianDateLabeller._Impl = function(locale, timeZone) {
-    this._locale = locale;
-    this._timeZone = timeZone;
-};
-
-Timeline.GregorianDateLabeller._Impl.prototype.labelInterval = function(date, intervalUnit) {
+Timeline.GregorianDateLabeller.prototype.labelInterval = function(date, intervalUnit) {
     var f = Timeline.GregorianDateLabeller.labelIntervalFunctions[this._locale];
     if (f == null) {
-        f = Timeline.GregorianDateLabeller._Impl.prototype.defaultLabelInterval;
+        f = Timeline.GregorianDateLabeller.prototype.defaultLabelInterval;
     }
     return f.call(this, date, intervalUnit);
 };
 
-Timeline.GregorianDateLabeller._Impl.prototype.labelPrecise = function(date) {
+Timeline.GregorianDateLabeller.prototype.labelPrecise = function(date) {
     return Timeline.DateTime.removeTimeZoneOffset(
         date, 
         this._timeZone //+ (new Date().getTimezoneOffset() / 60)
     ).toUTCString();
 };
 
-Timeline.GregorianDateLabeller._Impl.prototype.defaultLabelInterval = function(date, intervalUnit) {
+Timeline.GregorianDateLabeller.prototype.defaultLabelInterval = function(date, intervalUnit) {
     var text;
     var emphasized = false;
     

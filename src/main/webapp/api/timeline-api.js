@@ -42,7 +42,8 @@ Timeline.Platform = new Object();
         "ethers.js",
         "labellers.js",
         "sources.js",
-        "painters.js"
+        "painters.js",
+        "decorators.js"
     ];
     var cssFiles = [
         "timeline.css",

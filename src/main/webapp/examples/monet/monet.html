@@ -26,6 +26,19 @@
             });
             bandInfos[0].syncWith = 1;
             bandInfos[0].highlight = false;
+            bandInfos[1].decorators = [
+                new Timeline.SpanHighlightDecorator({
+                    startDate:  "Nov 14 1840 00:00:00 GMT",
+                    endDate:    "Dec 05 1926 00:00:00 GMT",
+                    startLabel: "Birth",
+                    endLabel:   "Death",
+                    styler:     function(elmt) {
+                        elmt.style.background = "#FFE0E0";
+                        Timeline.Graphics.setOpacity(elmt, 50);
+                    },
+                    theme:      theme
+                })
+            ];
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
             Timeline.loadXML("monet.xml", function(xml) {

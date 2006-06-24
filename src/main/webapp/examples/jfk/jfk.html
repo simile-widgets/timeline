@@ -23,7 +23,7 @@
                     end:      "Sat Nov 23 1963 00:00:00 GMT-0600",
                     magnify:  5,
                     unit:     Timeline.DateTime.MINUTE,
-                    multiple: 15
+                    multiple: 10
                 },
                 {   start:    "Fri Nov 22 1963 12:00:00 GMT-0600",
                     end:      "Fri Nov 22 1963 14:00:00 GMT-0600",
@@ -47,7 +47,7 @@
                     end:      "Sat Nov 23 1963 00:00:00 GMT-0600",
                     magnify:  5,
                     unit:     Timeline.DateTime.MINUTE,
-                    multiple: 30
+                    multiple: 60
                 },
                 {   start:    "Fri Nov 22 1963 12:00:00 GMT-0600",
                     end:      "Fri Nov 22 1963 14:00:00 GMT-0600",
@@ -73,6 +73,38 @@
             bandInfos[1].timeZone = -6;
             bandInfos[1].syncWith = 0;
             bandInfos[1].highlight = true;
+            
+            for (var i = 0; i < bandInfos.length; i++) {
+                bandInfos[i].decorators = [
+                    new Timeline.SpanHighlightDecorator({
+                        startDate:  "Fri Nov 22 1963 12:30:00 GMT-0600",
+                        endDate:    "Fri Nov 22 1963 13:00:00 GMT-0600",
+                        startLabel: "Shot",
+                        endLabel:   "Death",
+                        styler:     function(elmt) {
+                            elmt.style.background = "#FFC080";
+                            Timeline.Graphics.setOpacity(elmt, 50);
+                        },
+                        theme:      theme
+                    }),
+                    new Timeline.PointHighlightDecorator({
+                        date:       "Fri Nov 22 1963 14:38:00 GMT-0600",
+                        styler:     function(elmt) {
+                            elmt.style.background = "#FFC080";
+                            Timeline.Graphics.setOpacity(elmt, 50);
+                        },
+                        theme:      theme
+                    }),
+                    new Timeline.PointHighlightDecorator({
+                        date:       "Sun Nov 24 1963 13:00:00 GMT-0600",
+                        styler:     function(elmt) {
+                            elmt.style.background = "#FFC080";
+                            Timeline.Graphics.setOpacity(elmt, 50);
+                        },
+                        theme:      theme
+                    })
+                ];
+            }
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
             Timeline.loadXML("jfk.xml", function(xml) { eventSource.loadXML(xml); });

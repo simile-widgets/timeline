@@ -87,6 +87,10 @@ Timeline.EventIndex.prototype.add = function(evt) {
     this._indexed = false;
 };
 
+Timeline.EventIndex.prototype.getCount = function() {
+    return this._events.length();
+};
+
 Timeline.EventIndex.prototype.getIterator = function(startDate, endDate) {
     if (!this._indexed) {
         this._index();

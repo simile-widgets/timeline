@@ -70,6 +70,11 @@ Timeline.DefaultEventSource.prototype.getEventIterator = function(startDate, end
     return this._events.getIterator(startDate, endDate);
 };
 
+Timeline.DefaultEventSource.prototype.getCount = function() {
+    return this._events.getCount();
+};
+
+
 Timeline.DefaultEventSource.Event = function(
         start, end, latestStart, earliestEnd, instant, 
         text, description, image, link,

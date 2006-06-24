@@ -11,65 +11,73 @@ Timeline.VERTICAL = 1;
 
 Timeline._defaultTheme = null;
 
-Timeline.createSimpleBandInfo = function(
-    width, 
-    intervalUnit, 
-    intervalCount, 
-    eventSource, 
-    date, 
-    showEventText,
-    theme
-    ) {
-    theme = (theme != null) ? theme : Timeline.getDefaultTheme();
+Timeline.createBandInfo = function(params) {
+    var theme = ("theme" in params) ? params.theme : Timeline.getDefaultTheme();
+    
+    var etherParams = { 
+        centersOn:  ("date" in params) ? params.date : newDate()
+    };
+    if ("intervalLength" in params) {
+        etherParams.duration = Timeline.DateTime.gregorianUnitLengths[params.intervalUnit];
+        etherParams.durationPixels = params.intervalLength;
+    } else {
+        etherParams.duration = (("intervalCount" in params) ? params.intervalCount : 5) * 
+            Timeline.DateTime.gregorianUnitLengths[params.intervalUnit];
+    }
+    
+    var etherPainterParams = {
+        unit:       params.intervalUnit, 
+        theme:      theme 
+    };
+    
+    var eventPainterParams = {
+        showText:   ("showEventText" in params) ? params.showEventText : true,
+        theme:      theme
+    };
     
     return {   
-        width:          width,
-        eventSource:    eventSource,
-        ether: new Timeline.LinearEther({
-            duration:   intervalCount * Timeline.DateTime.gregorianUnitLengths[intervalUnit], 
-            centersOn:  date 
-        }),
-        etherPainter: new Timeline.GregorianEtherPainter({ 
-            unit:       intervalUnit, 
-            theme:      theme 
-        }),
-        eventPainter: new Timeline.DurationEventPainter({
-            showText:   showEventText,
-            theme:      theme
-        })
+        width:          params.width,
+        eventSource:    ("eventSource" in params) ? params.eventSource : null,
+        timeZone:       ("timeZone" in params) ? params.timeZone : 0,
+        ether:          new Timeline.LinearEther(etherParams),
+        etherPainter:   new Timeline.GregorianEtherPainter(etherPainterParams),
+        eventPainter:   new Timeline.DurationEventPainter(eventPainterParams)
     };
 };
 
-Timeline.createHotZoneBandInfo = function(
-    width, 
-    intervalUnit, 
-    intervalCount, 
-    zones,
-    eventSource, 
-    date, 
-    showEventText,
-    theme
-    ) {
-    theme = (theme != null) ? theme : Timeline.getDefaultTheme();
+Timeline.createHotZoneBandInfo = function(params) {
+    var theme = ("theme" in params) ? params.theme : Timeline.getDefaultTheme();
+    
+    var etherParams = { 
+        centersOn:  ("date" in params) ? params.date : newDate(),
+        zones:      params.zones
+    };
+    if ("intervalLength" in params) {
+        etherParams.duration = Timeline.DateTime.gregorianUnitLengths[params.intervalUnit];
+        etherParams.durationPixels = params.intervalLength;
+    } else {
+        etherParams.duration = (("intervalCount" in params) ? params.intervalCount : 5) * 
+            Timeline.DateTime.gregorianUnitLengths[params.intervalUnit];
+    }
+    
+    var etherPainterParams = {
+        unit:       params.intervalUnit, 
+        theme:      theme,
+        zones:      params.zones
+    };
+    
+    var eventPainterParams = {
+        showText:   ("showEventText" in params) ? params.showEventText : true,
+        theme:      theme
+    };
     
     return {   
-        width:          width,
-        eventSource:    eventSource,
-        ether: new Timeline.HotZoneEther({
-            duration:   intervalCount * Timeline.DateTime.gregorianUnitLengths[intervalUnit], 
-            centersOn:  date,
-            zones:      zones
-        }),
-        etherPainter: new Timeline.HotZoneGregorianEtherPainter({ 
-            unit:       intervalUnit, 
-            zones:      zones,
-            theme:      theme 
-        }),
-        eventPainter: new Timeline.DurationEventPainter({
-            showText:   showEventText,
-            zones:      zones,
-            theme:      theme
-        })
+        width:          params.width,
+        eventSource:    ("eventSource" in params) ? params.eventSource : null,
+        timeZone:       ("timeZone" in params) ? params.timeZone : 0,
+        ether:          new Timeline.HotZoneEther(etherParams),
+        etherPainter:   new Timeline.HotZoneGregorianEtherPainter(etherPainterParams),
+        eventPainter:   new Timeline.DurationEventPainter(eventPainterParams)
     };
 };
 

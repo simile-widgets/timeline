@@ -48,29 +48,18 @@
             
             var d = Timeline.DateTime.parseGregorianDateTime("100");
             var bandInfos = [
-                Timeline.createSimpleBandInfo(
-                    "5%", Timeline.DateTime.CENTURY, 5, eventSource, d, false, theme2),
-                Timeline.createSimpleBandInfo(
-                    "75%", Timeline.DateTime.CENTURY, 5, eventSource, d, true, theme),
-                Timeline.createSimpleBandInfo(
-                    "20%", Timeline.DateTime.CENTURY, 20, eventSource, d, false, theme2)
+                Timeline.createHotZoneBandInfo(
+                    "5%", Timeline.DateTime.CENTURY, 5, zones, null, d, false, theme2),
+                Timeline.createHotZoneBandInfo(
+                    "75%", Timeline.DateTime.CENTURY, 5, zones, eventSource, d, true, theme),
+                Timeline.createHotZoneBandInfo(
+                    "20%", Timeline.DateTime.CENTURY, 20, zones2, eventSource, d, false, theme2)
             ];
+            bandInfos[0].etherPainter = new Timeline.JapaneseEraEtherPainter({ theme: theme2 });
+            bandInfos[0].syncWith = 1;
             
-            bandInfos[1].ether = Timeline.HotZoneEther;
-            bandInfos[1].etherParams.zones = zones;
-            bandInfos[1].etherPainterParams.zones = zones;
-            
-            bandInfos[2].ether = Timeline.HotZoneEther;
-            bandInfos[2].etherParams.zones = zones2;
-            bandInfos[2].etherPainterParams.zones = zones2;
             bandInfos[2].syncWith = 1;
             bandInfos[2].highlight = true;
-            
-            bandInfos[0].eventSource = null;
-            bandInfos[0].ether = Timeline.HotZoneEther;
-            bandInfos[0].etherParams.zones = zones2;
-            bandInfos[0].etherPainter = Timeline.JapaneseEraEtherPainter;
-            bandInfos[0].syncWith = 1;
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
             Timeline.loadXML("jewish.xml", function(xml) {

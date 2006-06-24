@@ -54,9 +54,13 @@ Timeline.JapaneseEraDateLabeller._labelInterval = function(date, intervalUnit) {
  */
  
 Timeline.JapaneseEraEtherPainter = function(params, band, timeline) {
+    this._params = params;
+    this._theme = params.theme;
+};
+
+Timeline.JapaneseEraEtherPainter.prototype.initialize = function(band, timeline) {
     this._band = band;
     this._timeline = timeline;
-    this._theme = params.theme;
     
     this._backgroundLayer = band.createLayerDiv(0);
     this._backgroundLayer.setAttribute("name", "ether-background"); // for debugging
@@ -65,9 +69,9 @@ Timeline.JapaneseEraEtherPainter = function(params, band, timeline) {
     this._markerLayer = null;
     this._lineLayer = null;
     
-    var align = ("align" in params) ? params.align : 
+    var align = ("align" in this._params) ? this._params.align : 
         this._theme.ether.interval.marker[timeline.isHorizontal() ? "hAlign" : "vAlign"];
-    var showLine = ("showLine" in params) ? params.showLine : 
+    var showLine = ("showLine" in this._params) ? this._params.showLine : 
         this._theme.ether.interval.line.show;
         
     this._intervalMarkerLayout = new Timeline.EtherIntervalMarkerLayout(
@@ -75,7 +79,7 @@ Timeline.JapaneseEraEtherPainter = function(params, band, timeline) {
         
     this._highlight = new Timeline.EtherHighlight(
         this._timeline, this._band, this._theme, this._backgroundLayer);
-};
+}
 
 Timeline.JapaneseEraEtherPainter.prototype.setHighlight = function(startDate, endDate) {
     this._highlight.position(startDate, endDate);

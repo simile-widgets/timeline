@@ -3,14 +3,16 @@
  *==================================================
  */
 
-Timeline.DurationEventPainter = function(params, band, timeline) {
-    this._band = band;
-    this._timeline = timeline;
-    
+Timeline.DurationEventPainter = function(params) {
     this._theme = params.theme;
     this._showText = params.showText;
     this._showLineForNoText = ("showLineForNoText" in params) ? 
         params.showLineForNoText : params.theme.event.instant.showLineForNoText;
+};
+
+Timeline.DurationEventPainter.prototype.initialize = function(band, timeline) {
+    this._band = band;
+    this._timeline = timeline;
     
     this._layerDiv = null;
 };
@@ -113,7 +115,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
             var attachClickEvent = function(elmt) {
                 elmt.style.cursor = "pointer";
                 Timeline.DOM.registerEvent(elmt, "mousedown", function(elmt, domEvt, target) {
-                    p._onClickDurationEvent(domEvt, evt);
+                    p._onClickDurationEvent(domEvt, evt, target);
                 });
             };
             
@@ -247,11 +249,12 @@ Timeline.DurationEventPainter.prototype._onClickInstantEvent = function(icon, do
     );
 };
 
-Timeline.DurationEventPainter.prototype._onClickDurationEvent = function(domEvt, evt) {
+Timeline.DurationEventPainter.prototype._onClickDurationEvent = function(domEvt, evt, target) {
+    var body = target.ownerDocument.body;
     domEvt.cancelBubble = true;
     this._showBubble(
-        domEvt.clientX,
-        domEvt.clientY,
+        domEvt.clientX + body.scrollLeft,
+        domEvt.clientY + body.scrollTop,
         evt
     );
 };

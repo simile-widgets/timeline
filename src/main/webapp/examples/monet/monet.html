@@ -13,12 +13,23 @@
             theme.event.bubble.height = 220;
             var d = Timeline.DateTime.parseGregorianDateTime("1870")
             var bandInfos = [
-                Timeline.createSimpleBandInfo(
-                    "10%", Timeline.DateTime.DECADE, 8, eventSource, d, false, theme),
-                Timeline.createSimpleBandInfo(
-                    "90%", Timeline.DateTime.DECADE, 8, eventSource, d, true, theme)
+                Timeline.createBandInfo({
+                    width:          "10%", 
+                    intervalUnit:   Timeline.DateTime.DECADE, 
+                    intervalCount:  8,
+                    date:           d,
+                    showEventText:  false,
+                    theme:          theme
+                }),
+                Timeline.createBandInfo({
+                    width:          "90%", 
+                    intervalUnit:   Timeline.DateTime.DECADE, 
+                    intervalCount:  8,
+                    eventSource:    eventSource,
+                    date:           d,
+                    theme:          theme
+                })
             ];
-            bandInfos[0].eventSource = null;
             bandInfos[0].etherPainter = new Timeline.YearCountEtherPainter({
                 startDate:  "Nov 14 1840 00:00:00 GMT",
                 multiple:   5,

@@ -48,19 +48,40 @@
             
             var d = Timeline.DateTime.parseGregorianDateTime("100");
             var bandInfos = [
-                Timeline.createHotZoneBandInfo(
-                    "5%", Timeline.DateTime.CENTURY, 5, zones, null, d, false, theme2),
-                Timeline.createHotZoneBandInfo(
-                    "75%", Timeline.DateTime.CENTURY, 5, zones, eventSource, d, true, theme),
-                Timeline.createHotZoneBandInfo(
-                    "20%", Timeline.DateTime.CENTURY, 20, zones2, eventSource, d, false, theme2)
+                Timeline.createHotZoneBandInfo({
+                    width:          "5%", 
+                    intervalUnit:   Timeline.DateTime.CENTURY, 
+                    intervalCount:  5,
+                    zones:          zones,
+                    date:           d,
+                    theme:          theme2
+                }),
+                Timeline.createHotZoneBandInfo({
+                    width:          "75%", 
+                    intervalUnit:   Timeline.DateTime.CENTURY, 
+                    intervalCount:  5,
+                    zones:          zones,
+                    eventSource:    eventSource,
+                    date:           d,
+                    timeZone:       -6,
+                    theme:          theme
+                }),
+                Timeline.createHotZoneBandInfo({
+                    width:          "20%", 
+                    intervalUnit:   Timeline.DateTime.CENTURY, 
+                    intervalCount:  20,
+                    zones:          zones2,
+                    eventSource:    eventSource,
+                    date:           d,
+                    showEventText:  false,
+                    theme:          theme2
+                })
             ];
             bandInfos[0].etherPainter = new Timeline.JapaneseEraEtherPainter({ theme: theme2 });
             bandInfos[0].syncWith = 1;
             
             bandInfos[2].syncWith = 1;
             bandInfos[2].highlight = true;
-            bandInfos[2].labeller = new Timeline.JapaneseEraDateLabeller(Timeline.Platform.getDefaultLocale(), 0, true);
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
             Timeline.loadXML("jewish.xml", function(xml) {

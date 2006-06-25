@@ -10,26 +10,17 @@
             var eventSourceJewish = new Timeline.DefaultEventSource(0);
             var eventSourceChristianity = new Timeline.DefaultEventSource(0);
             
-            var backgroundColors = [
-                "#D1CECA",
-                "#E7DFD6",
-                "#E8E8F4",
-                "#D0D0E8"
-            ];
-            
             var theme = Timeline.ClassicTheme.create();
             theme.event.bubble.width = 320;
             theme.event.bubble.height = 220;
             theme.event.track.height = 1.5;
             theme.event.track.gap = 0.1;
-            theme.ether.backgroundColors = backgroundColors;
-            
-            var theme2 = Timeline.ClassicTheme.create();
-            theme2.event.bubble.width = 320;
-            theme2.event.bubble.height = 220;
-            theme2.event.track.height = 0.5;
-            theme2.event.track.gap = 0;
-            theme2.ether.backgroundColors = backgroundColors;
+            theme.ether.backgroundColors = [
+                "#D1CECA",
+                "#E7DFD6",
+                "#E8E8F4",
+                "#D0D0E8"
+            ];
             
             var zones = [
                 {   start:    "0",
@@ -61,17 +52,19 @@
             var d = Timeline.DateTime.parseGregorianDateTime("0");
             var bandInfos = [
                 Timeline.createHotZoneBandInfo({
-                    width:          "13%", 
+                    width:          "10%", 
                     intervalUnit:   Timeline.DateTime.CENTURY, 
                     intervalPixels: 70,
                     zones:          zones2,
                     eventSource:    eventSourceJewish,
                     date:           d,
                     showEventText:  false,
-                    theme:          theme2
+                    trackHeight:    0.5,
+                    trackGap:       0.2,
+                    theme:          theme
                 }),
                 Timeline.createHotZoneBandInfo({
-                    width:          "37%", 
+                    width:          "30%", 
                     intervalUnit:   Timeline.DateTime.CENTURY, 
                     intervalPixels: 250,
                     zones:          zones,
@@ -81,7 +74,7 @@
                     theme:          theme
                 }),
                 Timeline.createHotZoneBandInfo({
-                    width:          "37%", 
+                    width:          "42%", 
                     intervalUnit:   Timeline.DateTime.CENTURY, 
                     intervalPixels: 250,
                     zones:          zones,
@@ -91,14 +84,16 @@
                     theme:          theme
                 }),
                 Timeline.createHotZoneBandInfo({
-                    width:          "13%", 
+                    width:          "18%", 
                     intervalUnit:   Timeline.DateTime.CENTURY, 
                     intervalPixels: 70,
                     zones:          zones2,
                     eventSource:    eventSourceChristianity,
                     date:           d,
                     showEventText:  false,
-                    theme:          theme2
+                    trackHeight:    0.5,
+                    trackGap:       0.2,
+                    theme:          theme
                 })
             ];
             bandInfos[0].syncWith = 1;

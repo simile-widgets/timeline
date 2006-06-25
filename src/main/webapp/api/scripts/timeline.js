@@ -33,11 +33,18 @@ Timeline.createBandInfo = function(params) {
         theme:          theme
     });
     
-    var eventPainter = new Timeline.DurationEventPainter({
+    var eventPainterParams = {
         showText:   ("showEventText" in params) ? params.showEventText : true,
         layout:     layout,
         theme:      theme
-    });
+    };
+    if ("trackHeight" in params) {
+        eventPainterParams.trackHeight = params.trackHeight;
+    }
+    if ("trackGap" in params) {
+        eventPainterParams.trackGap = params.trackGap;
+    }
+    var eventPainter = new Timeline.DurationEventPainter(eventPainterParams);
     
     return {   
         width:          params.width,
@@ -73,11 +80,18 @@ Timeline.createHotZoneBandInfo = function(params) {
         theme:          theme
     });
     
-    var eventPainter = new Timeline.DurationEventPainter({
+    var eventPainterParams = {
         showText:   ("showEventText" in params) ? params.showEventText : true,
         layout:     layout,
         theme:      theme
-    });
+    };
+    if ("trackHeight" in params) {
+        eventPainterParams.trackHeight = params.trackHeight;
+    }
+    if ("trackGap" in params) {
+        eventPainterParams.trackGap = params.trackGap;
+    }
+    var eventPainter = new Timeline.DurationEventPainter(eventPainterParams);
     
     return {   
         width:          params.width,

@@ -13,12 +13,6 @@
             theme.event.bubble.width = 320;
             theme.event.bubble.height = 220;
             
-            var theme2 = Timeline.ClassicTheme.create();
-            theme2.event.bubble.width = 320;
-            theme2.event.bubble.height = 220;
-            theme2.event.track.height = 0.5;
-            theme2.event.track.gap = 0.2;
-            
             var zones = [
                 {   start:    "1700",
                     end:      "2100",
@@ -66,7 +60,9 @@
                     eventSource:    eventSource,
                     date:           d,
                     showEventText:  false,
-                    theme:          theme2
+                    trackHeight:    0.5,
+                    trackGap:       0.2,
+                    theme:          theme
                 })
             ];
             bandInfos[1].syncWith = 0;

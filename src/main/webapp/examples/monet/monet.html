@@ -11,6 +11,7 @@
             var theme = Timeline.ClassicTheme.create();
             theme.event.bubble.width = 320;
             theme.event.bubble.height = 220;
+            theme.ether.backgroundColors[1] = theme.ether.backgroundColors[0];
             var d = Timeline.DateTime.parseGregorianDateTime("1870")
             var bandInfos = [
                 Timeline.createBandInfo({
@@ -37,16 +38,14 @@
             });
             bandInfos[0].syncWith = 1;
             bandInfos[0].highlight = false;
-            bandInfos[1].decorators = [
+            bandInfos[0].decorators = [
                 new Timeline.SpanHighlightDecorator({
                     startDate:  "Nov 14 1840 00:00:00 GMT",
                     endDate:    "Dec 05 1926 00:00:00 GMT",
-                    startLabel: "Birth",
-                    endLabel:   "Death",
-                    styler:     function(elmt) {
-                        elmt.style.background = "#FFE0E0";
-                        Timeline.Graphics.setOpacity(elmt, 50);
-                    },
+                    startLabel: "birth",
+                    endLabel:   "death",
+                    color:      "#FFC080",
+                    opacity:    50,
                     theme:      theme
                 })
             ];

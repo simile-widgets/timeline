@@ -8,7 +8,8 @@ Timeline.SpanHighlightDecorator = function(params) {
     this._endDate = Timeline.DateTime.parseGregorianDateTime(params.endDate);
     this._startLabel = params.startLabel;
     this._endLabel = params.endLabel;
-    this._styler = params.styler;
+    this._color = params.color;
+    this._opacity = ("opacity" in params) ? params.opacity : 100;
 };
 
 Timeline.SpanHighlightDecorator.prototype.initialize = function(band, timeline) {
@@ -39,23 +40,71 @@ Timeline.SpanHighlightDecorator.prototype.paint = function() {
         var maxPixel = this._band.dateToPixelOffset(maxDate);
         
         var doc = this._timeline.getDocument();
+        
+        var createTable = function() {
+            var table = doc.createElement("table");
+            table.insertRow(0).insertCell(0);
+            return table;
+        };
     
         var div = doc.createElement("div");
         div.style.position = "absolute";
         div.style.overflow = "hidden";
-        this._styler(div);
+        div.style.background = this._color;
+        if (this._opacity < 100) {
+            Timeline.Graphics.setOpacity(div, this._opacity);
+        }
         this._layerDiv.appendChild(div);
             
+        var tableStartLabel = createTable();
+        tableStartLabel.style.position = "absolute";
+        tableStartLabel.style.overflow = "hidden";
+        tableStartLabel.style.fontSize = "300%";
+        tableStartLabel.style.fontWeight = "bold";
+        tableStartLabel.style.color = this._color;
+        tableStartLabel.rows[0].cells[0].innerHTML = this._startLabel;
+        this._layerDiv.appendChild(tableStartLabel);
+        
+        var tableEndLabel = createTable();
+        tableEndLabel.style.position = "absolute";
+        tableEndLabel.style.overflow = "hidden";
+        tableEndLabel.style.fontSize = "300%";
+        tableEndLabel.style.fontWeight = "bold";
+        tableEndLabel.style.color = this._color;
+        tableEndLabel.rows[0].cells[0].innerHTML = this._endLabel;
+        this._layerDiv.appendChild(tableEndLabel);
+        
         if (this._timeline.isHorizontal()) {
             div.style.left = minPixel + "px";
             div.style.width = (maxPixel - minPixel) + "px";
             div.style.top = "0px";
             div.style.height = "100%";
+            
+            tableStartLabel.style.right = (this._band.getTotalViewLength() - minPixel) + "px";
+            tableStartLabel.style.width = (this._startLabel.length) + "em";
+            tableStartLabel.style.top = "0px";
+            tableStartLabel.style.height = "100%";
+            tableStartLabel.style.textAlign = "right";
+            
+            tableEndLabel.style.left = maxPixel + "px";
+            tableEndLabel.style.width = (this._endLabel.length) + "em";
+            tableEndLabel.style.top = "0px";
+            tableEndLabel.style.height = "100%";
         } else {
             div.style.top = minPixel + "px";
             div.style.height = (maxPixel - minPixel) + "px";
             div.style.left = "0px";
             div.style.width = "100%";
+            
+            tableStartLabel.style.bottom = minPixel + "px";
+            tableStartLabel.style.height = "1.5px";
+            tableStartLabel.style.left = "0px";
+            tableStartLabel.style.width = "100%";
+            
+            tableEndLabel.style.top = maxPixel + "px";
+            tableEndLabel.style.height = "1.5px";
+            tableEndLabel.style.left = "0px";
+            tableEndLabel.style.width = "100%";
         }
     }
     this._layerDiv.style.display = "block";
@@ -72,7 +121,8 @@ Timeline.SpanHighlightDecorator.prototype.softPaint = function() {
 Timeline.PointHighlightDecorator = function(params) {
     this._date = Timeline.DateTime.parseGregorianDateTime(params.date);
     this._width = ("width" in params) ? params.width : 10;
-    this._styler = params.styler;
+    this._color = params.color;
+    this._opacity = ("opacity" in params) ? params.opacity : 100;
 };
 
 Timeline.PointHighlightDecorator.prototype.initialize = function(band, timeline) {
@@ -104,7 +154,10 @@ Timeline.PointHighlightDecorator.prototype.paint = function() {
         var div = doc.createElement("div");
         div.style.position = "absolute";
         div.style.overflow = "hidden";
-        this._styler(div);
+        div.style.background = this._color;
+        if (this._opacity < 100) {
+            Timeline.Graphics.setOpacity(div, this._opacity);
+        }
         this._layerDiv.appendChild(div);
             
         if (this._timeline.isHorizontal()) {

@@ -132,6 +132,33 @@
         function onResize() {
             tl.layout();
         }
+        
+        var timerID = null;
+        function onFilterTextKeyPress() {
+            if (timerID != null) {
+                window.clearTimeout(timerID);
+            }
+            timerID = window.setTimeout("performFiltering();", 500);
+        }
+        function performFiltering() {
+            timerID = null;
+            
+            var text = document.getElementById("filter-text").value;
+            text = text.replace(/^\s+/, '').replace(/\s+$/, '');
+            
+            var filterMatcher = null;
+            if (text.length > 0) {
+                var regex = new RegExp(text, "i");
+                filterMatcher = function(evt) {
+                    return regex.test(evt.getDescription());
+                };
+            }
+            
+            for (var i = 0; i < tl.getBandCount(); i++) {
+                tl.getBand(i).getEventPainter().setFilterMatcher(filterMatcher);
+            }
+            tl.paint();
+        }
     </script>
 </head>
 <body onload="onLoad();" onresize="onResize();">
@@ -160,6 +187,10 @@
     </div>
     <div class="footnotes">
         All times are in Dallas CST (GMT-0600).
+    </div>
+    
+    <div class="controls">Filter:
+        <input type="text" id="filter-text" onkeypress="onFilterTextKeyPress();"></input>
     </div>
 </div>
 

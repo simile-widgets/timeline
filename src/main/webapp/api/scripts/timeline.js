@@ -118,8 +118,22 @@ Timeline._Impl = function(elmt, bandInfos, orientation) {
     this._initialize();
 };
 
+Timeline._Impl.prototype.getBandCount = function() {
+    return this._bands.length;
+};
+
+Timeline._Impl.prototype.getBand = function(index) {
+    return this._bands[index];
+};
+
 Timeline._Impl.prototype.layout = function() {
     this._distributeWidths();
+};
+
+Timeline._Impl.prototype.paint = function() {
+    for (var i = 0; i < this._bands.length; i++) {
+        this._bands[i].paint();
+    }
 };
 
 Timeline._Impl.prototype.getDocument = function() {
@@ -316,17 +330,33 @@ Timeline._Band.prototype.getEther = function() {
     return this._ether;
 };
 
+Timeline._Band.prototype.getEtherPainter = function() {
+    return this._etherPainter;
+};
+
 Timeline._Band.prototype.getEventSource = function() {
     return this._eventSource;
 };
 
+Timeline._Band.prototype.getEventPainter = function() {
+    return this._eventPainter;
+};
+
 Timeline._Band.prototype.layout = function() {
+    this.paint();
+};
+
+Timeline._Band.prototype.paint = function() {
     this._etherPainter.paint();
     this._paintDecorators();
     this._paintEvents();
 };
 
 Timeline._Band.prototype.softLayout = function() {
+    this.softPaint();
+};
+
+Timeline._Band.prototype.softPaint = function() {
     this._etherPainter.softPaint();
     this._softPaintDecorators();
     this._softPaintEvents();

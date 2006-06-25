@@ -98,6 +98,13 @@ Timeline.ClassicTheme._Impl = function() {
             outsideColor:   "black",
             width:          200 // px
         },
+        highlightColors: [
+            "#FFFF00",
+            "#FFC000",
+            "#FF0000",
+            "#0000FF",
+            "#00FF00"
+        ],
         bubble: {
             width:          250, // px
             height:         125, // px

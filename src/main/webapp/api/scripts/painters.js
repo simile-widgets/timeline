@@ -20,7 +20,8 @@ Timeline.DurationEventPainter.prototype.initialize = function(band, timeline) {
     this._timeline = timeline;
     this._layout.initialize(band, timeline);
     
-    this._layerDiv = null;
+    this._eventLayer = null;
+    this._highlightLayer = null;
 };
 
 Timeline.DurationEventPainter.prototype.getLayout = function() {
@@ -53,11 +54,19 @@ Timeline.DurationEventPainter.prototype.paint = function() {
         return;
     }
     
-    if (this._layerDiv) {
-        this._band.removeLayerDiv(this._layerDiv);
+    if (this._highlightLayer != null) {
+        this._band.removeLayerDiv(this._highlightLayer);
     }
-    this._layerDiv = this._band.createLayerDiv(110);
-    this._layerDiv.style.display = "none";
+    this._highlightLayer = this._band.createLayerDiv(105);
+    this._highlightLayer.setAttribute("name", "event-highlights");
+    this._highlightLayer.style.display = "none";
+    
+    if (this._eventLayer != null) {
+        this._band.removeLayerDiv(this._eventLayer);
+    }
+    this._eventLayer = this._band.createLayerDiv(110);
+    this._eventLayer.setAttribute("name", "events");
+    this._eventLayer.style.display = "none";
     
     var minDate = this._band.getMinDate();
     var maxDate = this._band.getMaxDate();
@@ -65,7 +74,9 @@ Timeline.DurationEventPainter.prototype.paint = function() {
     var doc = this._timeline.getDocument();
     
     var p = this;
-    var layerDiv = this._layerDiv;
+    var eventLayer = this._eventLayer;
+    var highlightLayer = this._highlightLayer;
+    
     var showText = this._showText;
     var theme = this._theme;
     var eventTheme = theme.event;
@@ -83,7 +94,25 @@ Timeline.DurationEventPainter.prototype.paint = function() {
                 p._onClickInstantEvent(img, domEvt, evt);
             });
         };
-        var createInstantDiv = function(evt, startPixel, endPixel, streamOffset) {
+        var createHighlightDiv = function(highlightIndex, startPixel, length, highlightOffset, highlightWidth) {
+            if (highlightIndex >= 0) {
+                var color = eventTheme.highlightColors[Math.min(highlightIndex, eventTheme.highlightColors.length - 1)];
+                
+                var div = doc.createElement("div");
+                div.style.position = "absolute";
+                div.style.overflow = "hidden";
+                div.style.left = (startPixel - 3) + "px";
+                div.style.width = (length + 6) + "px";
+                div.style.top = highlightOffset + "em";
+                div.style.height = highlightWidth + "em";
+                div.style.background = color;
+                //Timeline.Graphics.setOpacity(div, 50);
+                
+                highlightLayer.appendChild(div);
+            }
+        };
+        
+        var createInstantDiv = function(evt, startPixel, endPixel, streamOffset, highlightIndex, highlightOffset, highlightWidth) {
             if (evt.isImprecise()) { // imprecise time
                 var length = Math.max(endPixel - startPixel, 1);
             
@@ -101,18 +130,19 @@ Timeline.DurationEventPainter.prototype.paint = function() {
                     Timeline.Graphics.setOpacity(divImprecise, eventTheme.instant.impreciseOpacity);
                 }
                 
-                layerDiv.appendChild(divImprecise);
+                eventLayer.appendChild(divImprecise);
             }
             
             var div = doc.createElement("div");
             div.style.position = "absolute";
             div.style.overflow = "hidden";
-            layerDiv.appendChild(div);
+            eventLayer.appendChild(div);
             
             var foreground = evt.getTextColor();
             var background = evt.getColor();
             
             var realign = -8; // shift left so that icon is centered on startPixel
+            var length = 16;
             if (showText) {
                 div.style.width = eventTheme.label.width + "px";
                 div.style.color = foreground != null ? foreground : eventTheme.label.outsideColor;
@@ -124,6 +154,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
                     div.style.width = "1px";
                     div.style.borderLeft = "1px solid " + (background != null ? background : eventTheme.instant.lineColor);
                     realign = 0; // no shift
+                    length = 1;
                 } else {
                     appendIcon(evt, div);
                 }
@@ -132,8 +163,10 @@ Timeline.DurationEventPainter.prototype.paint = function() {
             div.style.top = streamOffset;
             div.style.height = eventTheme.track.height + "em";
             div.style.left = (startPixel + realign) + "px";
+            
+            createHighlightDiv(highlightIndex, (startPixel + realign), length, highlightOffset, highlightWidth);
         };
-        var createDurationDiv = function(evt, startPixel, endPixel, streamOffset) {
+        var createDurationDiv = function(evt, startPixel, endPixel, streamOffset, highlightIndex, highlightOffset, highlightWidth) {
             var attachClickEvent = function(elmt) {
                 elmt.style.cursor = "pointer";
                 Timeline.DOM.registerEvent(elmt, "mousedown", function(elmt, domEvt, target) {
@@ -158,7 +191,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
                     Timeline.Graphics.setOpacity(div, eventTheme.duration.impreciseOpacity);
                 }
                 
-                layerDiv.appendChild(div);
+                eventLayer.appendChild(div);
                 
                 var startDate = evt.getLatestStart();
                 var endDate = evt.getEarliestEnd();
@@ -190,7 +223,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
                     Timeline.Graphics.setOpacity(div, eventTheme.duration.opacity);
                 }
                 
-                layerDiv.appendChild(div);
+                eventLayer.appendChild(div);
             }
             attachClickEvent(div);
                 
@@ -211,12 +244,14 @@ Timeline.DurationEventPainter.prototype.paint = function() {
                     divLabel.style.overflow = "hidden";
                     divLabel.appendChild(doc.createTextNode(evt.getText()));
                     
-                    layerDiv.appendChild(divLabel);
+                    eventLayer.appendChild(divLabel);
                 }
             }
+            
+            createHighlightDiv(highlightIndex, startPixel, endPixel - startPixel, highlightOffset, highlightWidth);
         };
     //}
-    var createEventDiv = function(evt) {
+    var createEventDiv = function(evt, highlightIndex) {
         var startDate = evt.getStart();
         var endDate = evt.getEnd();
         
@@ -224,27 +259,34 @@ Timeline.DurationEventPainter.prototype.paint = function() {
         var endPixel = Math.round(p._band.dateToPixelOffset(endDate));
         
         var streamOffset = (eventTheme.track.offset + 
-            p._layout.getTrack(evt) * (eventTheme.track.height + eventTheme.track.gap)) + "em";
+            p._layout.getTrack(evt) * (eventTheme.track.height + eventTheme.track.gap));
             
         if (evt.isInstant()) {
-            createInstantDiv(evt, startPixel, endPixel, streamOffset);
+            createInstantDiv(evt, startPixel, endPixel, streamOffset + "em", 
+                highlightIndex, streamOffset - eventTheme.track.gap, eventTheme.track.height + 2 * eventTheme.track.gap);
         } else {
-            createDurationDiv(evt, startPixel, endPixel, streamOffset);
+            createDurationDiv(evt, startPixel, endPixel, streamOffset + "em",
+                highlightIndex, streamOffset - eventTheme.track.gap, eventTheme.track.height + 2 * eventTheme.track.gap);
         }
     };
     
     var filterMatcher = (this._filterMatcher != null) ? 
         this._filterMatcher :
         function(evt) { return true; };
+    var highlightMatcher = (this._highlightMatcher != null) ? 
+        this._highlightMatcher :
+        function(evt) { return -1; };
     
     var iterator = eventSource.getEventIterator(minDate, maxDate);
     while (iterator.hasNext()) {
         var evt = iterator.next();
         if (filterMatcher(evt)) {
-            createEventDiv(evt);
+            createEventDiv(evt, highlightMatcher(evt));
         }
     }
-    this._layerDiv.style.display = "block";
+    
+    this._highlightLayer.style.display = "block";
+    this._eventLayer.style.display = "block";
 };
 
 Timeline.DurationEventPainter.prototype.softPaint = function() {

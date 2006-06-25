@@ -81,6 +81,33 @@
         function onResize() {
             tl.layout();
         }
+        
+        var timerID = null;
+        function onFilterTextKeyPress() {
+            if (timerID != null) {
+                window.clearTimeout(timerID);
+            }
+            timerID = window.setTimeout("performFiltering();", 500);
+        }
+        function performFiltering() {
+            timerID = null;
+            
+            var text = document.getElementById("filter-text").value;
+            text = text.replace(/^\s+/, '').replace(/\s+$/, '');
+            
+            var filterMatcher = null;
+            if (text.length > 0) {
+                var regex = new RegExp(text, "i");
+                filterMatcher = function(evt) {
+                    return regex.test(evt.getDescription());
+                };
+            }
+            
+            for (var i = 0; i < tl.getBandCount(); i++) {
+                tl.getBand(i).getEventPainter().setFilterMatcher(filterMatcher);
+            }
+            tl.paint();
+        }
     </script>
 </head>
 <body onload="onLoad();" onresize="onResize();">
@@ -95,6 +122,10 @@
         </ul>
     </p>
     <div id="tl" style="height: 500px; border: 1px solid #aaa; position: relative;">
+    </div>
+    
+    <div class="controls">Filter:
+        <input type="text" id="filter-text" onkeypress="onFilterTextKeyPress();"></input>
     </div>
 </div>
 </body>

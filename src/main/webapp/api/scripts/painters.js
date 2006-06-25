@@ -10,6 +10,9 @@ Timeline.DurationEventPainter = function(params) {
     this._showText = params.showText;
     this._showLineForNoText = ("showLineForNoText" in params) ? 
         params.showLineForNoText : params.theme.event.instant.showLineForNoText;
+        
+    this._filterMatcher = null;
+    this._highlightMatcher = null;
 };
 
 Timeline.DurationEventPainter.prototype.initialize = function(band, timeline) {
@@ -26,6 +29,22 @@ Timeline.DurationEventPainter.prototype.getLayout = function() {
 
 Timeline.DurationEventPainter.prototype.setLayout = function(layout) {
     this._layout = layout;
+};
+
+Timeline.DurationEventPainter.prototype.getFilterMatcher = function() {
+    return this._filterMatcher;
+};
+
+Timeline.DurationEventPainter.prototype.setFilterMatcher = function(filterMatcher) {
+    this._filterMatcher = filterMatcher;
+};
+
+Timeline.DurationEventPainter.prototype.getHighlightMatcher = function() {
+    return this._highlightMatcher;
+};
+
+Timeline.DurationEventPainter.prototype.setHighlightMatcher = function(highlightMatcher) {
+    this._highlightMatcher = highlightMatcher;
 };
 
 Timeline.DurationEventPainter.prototype.paint = function() {
@@ -214,10 +233,16 @@ Timeline.DurationEventPainter.prototype.paint = function() {
         }
     };
     
+    var filterMatcher = (this._filterMatcher != null) ? 
+        this._filterMatcher :
+        function(evt) { return true; };
+    
     var iterator = eventSource.getEventIterator(minDate, maxDate);
     while (iterator.hasNext()) {
         var evt = iterator.next();
-        createEventDiv(evt);
+        if (filterMatcher(evt)) {
+            createEventDiv(evt);
+        }
     }
     this._layerDiv.style.display = "block";
 };

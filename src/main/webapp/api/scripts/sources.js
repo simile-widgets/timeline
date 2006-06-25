@@ -116,6 +116,7 @@ Timeline.DefaultEventSource.Event.prototype = {
     getEarliestEnd: function() { return this._earliestEnd; },
     
     getText:        function() { return this._text; },
+    getDescription: function() { return this._description; },
     getImage:       function() { return this._image; },
     getLink:        function() { return this._link; },
     

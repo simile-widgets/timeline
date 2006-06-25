@@ -62,10 +62,6 @@
             theme.event.bubble.width = 250;
             theme.event.bubble.height = 200;
             
-            var theme2 = Timeline.ClassicTheme.create();
-            theme2.event.track.height = 0.5;
-            theme2.event.track.gap = 0.2;
-            
             var date = "Fri Nov 22 1963 13:00:00 GMT-0600"
             var bandInfos = [
                 Timeline.createHotZoneBandInfo({
@@ -87,7 +83,9 @@
                     date:           date, 
                     timeZone:       -6,
                     showEventText:  false, 
-                    theme:          theme2
+                    trackHeight:    0.5,
+                    trackGap:       0.2,
+                    theme:          theme
                 })
             ];
             bandInfos[1].syncWith = 0;

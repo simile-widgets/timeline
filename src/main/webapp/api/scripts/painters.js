@@ -4,6 +4,7 @@
  */
 
 Timeline.DurationEventPainter = function(params) {
+    this._params = params;
     this._theme = params.theme;
     this._layout = params.layout;
     
@@ -78,8 +79,11 @@ Timeline.DurationEventPainter.prototype.paint = function() {
     var highlightLayer = this._highlightLayer;
     
     var showText = this._showText;
-    var theme = this._theme;
+    var theme = this._params.theme;
     var eventTheme = theme.event;
+    var trackOffset = eventTheme.track.offset;
+    var trackHeight = ("trackHeight" in this._params) ? this._params.trackHeight : eventTheme.track.height;
+    var trackGap = ("trackGap" in this._params) ? this._params.trackGap : eventTheme.track.gap;
     
     //if (this._timeline.isHorizontal()) {
         var appendIcon = function(evt, div) {
@@ -121,7 +125,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
                 divImprecise.style.overflow = "hidden";
                 
                 divImprecise.style.top = streamOffset;
-                divImprecise.style.height = eventTheme.track.height + "em";
+                divImprecise.style.height = trackHeight + "em";
                 divImprecise.style.left = startPixel + "px";
                 divImprecise.style.width = length + "px";
                 
@@ -161,7 +165,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
             }
             
             div.style.top = streamOffset;
-            div.style.height = eventTheme.track.height + "em";
+            div.style.height = trackHeight + "em";
             div.style.left = (startPixel + realign) + "px";
             
             createHighlightDiv(highlightIndex, (startPixel + realign), length, highlightOffset, highlightWidth);
@@ -174,15 +178,14 @@ Timeline.DurationEventPainter.prototype.paint = function() {
                 });
             };
             
+            var length = Math.max(endPixel - startPixel, 1);
             if (evt.isImprecise()) { // imprecise time
-                var length = Math.max(endPixel - startPixel, 1);
-            
                 var div = doc.createElement("div");
                 div.style.position = "absolute";
                 div.style.overflow = "hidden";
                 
                 div.style.top = streamOffset;
-                div.style.height = eventTheme.track.height + "em";
+                div.style.height = trackHeight + "em";
                 div.style.left = startPixel + "px";
                 div.style.width = length + "px";
                 
@@ -204,15 +207,17 @@ Timeline.DurationEventPainter.prototype.paint = function() {
             }
             
             var foreground = evt.getTextColor();
+            var outside = true;
             if (startPixel2 <= endPixel2) {
                 length = Math.max(endPixel2 - startPixel2, 1);
+                outside = !(length > eventTheme.label.width);
                 
                 div = doc.createElement("div");
                 div.style.position = "absolute";
                 div.style.overflow = "hidden";
                 
                 div.style.top = streamOffset;
-                div.style.height = eventTheme.track.height + "em";
+                div.style.height = trackHeight + "em";
                 div.style.left = startPixel2 + "px";
                 div.style.width = length + "px";
                 
@@ -224,28 +229,26 @@ Timeline.DurationEventPainter.prototype.paint = function() {
                 }
                 
                 eventLayer.appendChild(div);
+            } else {
+                var temp = startPixel2;
+                startPixel2 = endPixel2;
+                endPixel2 = temp;
             }
             attachClickEvent(div);
                 
             if (showText) {
-                if (length > eventTheme.label.width) {
-                    div.style.color = foreground != null ? foreground : eventTheme.label.insideColor;
-                    div.style.overflow = "hidden";
-                    div.appendChild(doc.createTextNode(evt.getText()));
-                } else {
-                    var divLabel = doc.createElement("div");
-                    divLabel.style.position = "absolute";
-                    
-                    divLabel.style.top = streamOffset;
-                    divLabel.style.height = eventTheme.track.height + "em";
-                    divLabel.style.left = endPixel2 + "px";
-                    divLabel.style.width = eventTheme.label.width + "px";
-                    divLabel.style.color = foreground != null ? foreground : eventTheme.label.outsideColor;
-                    divLabel.style.overflow = "hidden";
-                    divLabel.appendChild(doc.createTextNode(evt.getText()));
-                    
-                    eventLayer.appendChild(divLabel);
-                }
+                var divLabel = doc.createElement("div");
+                divLabel.style.position = "absolute";
+                
+                divLabel.style.top = streamOffset;
+                divLabel.style.height = trackHeight + "em";
+                divLabel.style.left = ((length > eventTheme.label.width) ? startPixel2 : endPixel2) + "px";
+                divLabel.style.width = eventTheme.label.width + "px";
+                divLabel.style.color = foreground != null ? foreground : (outside ? eventTheme.label.outsideColor : eventTheme.label.insideColor);
+                divLabel.style.overflow = "hidden";
+                divLabel.appendChild(doc.createTextNode(evt.getText()));
+                
+                eventLayer.appendChild(divLabel);
             }
             
             createHighlightDiv(highlightIndex, startPixel, endPixel - startPixel, highlightOffset, highlightWidth);
@@ -258,15 +261,15 @@ Timeline.DurationEventPainter.prototype.paint = function() {
         var startPixel = Math.round(p._band.dateToPixelOffset(startDate));
         var endPixel = Math.round(p._band.dateToPixelOffset(endDate));
         
-        var streamOffset = (eventTheme.track.offset + 
-            p._layout.getTrack(evt) * (eventTheme.track.height + eventTheme.track.gap));
+        var streamOffset = (trackOffset + 
+            p._layout.getTrack(evt) * (trackHeight + trackGap));
             
         if (evt.isInstant()) {
             createInstantDiv(evt, startPixel, endPixel, streamOffset + "em", 
-                highlightIndex, streamOffset - eventTheme.track.gap, eventTheme.track.height + 2 * eventTheme.track.gap);
+                highlightIndex, streamOffset - trackGap, trackHeight + 2 * trackGap);
         } else {
             createDurationDiv(evt, startPixel, endPixel, streamOffset + "em",
-                highlightIndex, streamOffset - eventTheme.track.gap, eventTheme.track.height + 2 * eventTheme.track.gap);
+                highlightIndex, streamOffset - trackGap, trackHeight + 2 * trackGap);
         }
     };
     

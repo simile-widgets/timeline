@@ -142,7 +142,7 @@ Timeline.DefaultEventSource.Event.prototype = {
                     labeller.labelPrecise(this._start) + " ~ " + labeller.labelPrecise(this._latestStart)));
                 elmt.appendChild(elmt.ownerDocument.createElement("br"));
                 elmt.appendChild(elmt.ownerDocument.createTextNode(
-                    labeller.labelPrecise(this._end) + " ~ " + labeller.labelPrecise(this._earliestEnd)));
+                    labeller.labelPrecise(this._earliestEnd) + " ~ " + labeller.labelPrecise(this._end)));
             } else {
                 elmt.appendChild(elmt.ownerDocument.createTextNode(labeller.labelPrecise(this._start)));
                 elmt.appendChild(elmt.ownerDocument.createElement("br"));

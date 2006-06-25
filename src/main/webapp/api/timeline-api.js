@@ -42,6 +42,7 @@ Timeline.Platform = new Object();
         "ethers.js",
         "labellers.js",
         "sources.js",
+        "layouts.js",
         "painters.js",
         "decorators.js"
     ];

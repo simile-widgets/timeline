@@ -5,6 +5,8 @@
 
 Timeline.DurationEventPainter = function(params) {
     this._theme = params.theme;
+    this._layout = params.layout;
+    
     this._showText = params.showText;
     this._showLineForNoText = ("showLineForNoText" in params) ? 
         params.showLineForNoText : params.theme.event.instant.showLineForNoText;
@@ -13,8 +15,17 @@ Timeline.DurationEventPainter = function(params) {
 Timeline.DurationEventPainter.prototype.initialize = function(band, timeline) {
     this._band = band;
     this._timeline = timeline;
+    this._layout.initialize(band, timeline);
     
     this._layerDiv = null;
+};
+
+Timeline.DurationEventPainter.prototype.getLayout = function() {
+    return this._layout;
+};
+
+Timeline.DurationEventPainter.prototype.setLayout = function(layout) {
+    this._layout = layout;
 };
 
 Timeline.DurationEventPainter.prototype.paint = function() {
@@ -32,7 +43,6 @@ Timeline.DurationEventPainter.prototype.paint = function() {
     var minDate = this._band.getMinDate();
     var maxDate = this._band.getMaxDate();
     
-    var streams = [ Number.NEGATIVE_INFINITY ];
     var doc = this._timeline.getDocument();
     
     var p = this;
@@ -55,7 +65,6 @@ Timeline.DurationEventPainter.prototype.paint = function() {
             });
         };
         var createInstantDiv = function(evt, startPixel, endPixel, streamOffset) {
-            var finalPixel = startPixel - 1;
             if (evt.isImprecise()) { // imprecise time
                 var length = Math.max(endPixel - startPixel, 1);
             
@@ -74,8 +83,6 @@ Timeline.DurationEventPainter.prototype.paint = function() {
                 }
                 
                 layerDiv.appendChild(divImprecise);
-                
-                finalPixel = endPixel;
             }
             
             var div = doc.createElement("div");
@@ -93,8 +100,6 @@ Timeline.DurationEventPainter.prototype.paint = function() {
                 
                 appendIcon(evt, div);
                 div.appendChild(doc.createTextNode(evt.getText()));
-                
-                finalPixel = Math.max(finalPixel, startPixel + eventTheme.label.width);
             } else {
                 if (p._showLineForNoText) {
                     div.style.width = "1px";
@@ -108,8 +113,6 @@ Timeline.DurationEventPainter.prototype.paint = function() {
             div.style.top = streamOffset;
             div.style.height = eventTheme.track.height + "em";
             div.style.left = (startPixel + realign) + "px";
-            
-            return finalPixel;
         };
         var createDurationDiv = function(evt, startPixel, endPixel, streamOffset) {
             var attachClickEvent = function(elmt) {
@@ -148,9 +151,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
                 var endPixel2 = endPixel;
             }
             
-            var finalPixel = endPixel;
             var foreground = evt.getTextColor();
-            
             if (startPixel2 <= endPixel2) {
                 length = Math.max(endPixel2 - startPixel2, 1);
                 
@@ -192,12 +193,8 @@ Timeline.DurationEventPainter.prototype.paint = function() {
                     divLabel.appendChild(doc.createTextNode(evt.getText()));
                     
                     layerDiv.appendChild(divLabel);
-                    
-                    finalPixel = endPixel2 + eventTheme.label.width;
                 }
             }
-            
-            return finalPixel;
         };
     //}
     var createEventDiv = function(evt) {
@@ -207,23 +204,13 @@ Timeline.DurationEventPainter.prototype.paint = function() {
         var startPixel = Math.round(p._band.dateToPixelOffset(startDate));
         var endPixel = Math.round(p._band.dateToPixelOffset(endDate));
         
-        var streamIndex = 0;
-        for (; streamIndex < streams.length; streamIndex++) {
-            if (streams[streamIndex] < startPixel) {
-                break;
-            }
-        }
-        if (streamIndex >= streams.length) {
-            streams.push(Number.NEGATIVE_INFINITY);
-        }
-        
         var streamOffset = (eventTheme.track.offset + 
-            streamIndex * (eventTheme.track.height + eventTheme.track.gap)) + "em";
-        
+            p._layout.getTrack(evt) * (eventTheme.track.height + eventTheme.track.gap)) + "em";
+            
         if (evt.isInstant()) {
-            streams[streamIndex] = createInstantDiv(evt, startPixel, endPixel, streamOffset);
+            createInstantDiv(evt, startPixel, endPixel, streamOffset);
         } else {
-            streams[streamIndex] = createDurationDiv(evt, startPixel, endPixel, streamOffset);
+            createDurationDiv(evt, startPixel, endPixel, streamOffset);
         }
     };
     

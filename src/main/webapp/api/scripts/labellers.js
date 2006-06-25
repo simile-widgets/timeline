@@ -80,6 +80,8 @@ Timeline.GregorianDateLabeller.prototype.defaultLabelInterval = function(date, i
         } else {
             text = (1 - y) + "BC";
         }
+        emphasized = (intervalUnit == Timeline.DateTime.DECADE && y % 100 == 0) || 
+            (intervalUnit == Timeline.DateTime.CENTURY && y % 1000 == 0);
         break;
     default:
         text = date.toUTCString();

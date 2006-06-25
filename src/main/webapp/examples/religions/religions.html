@@ -47,7 +47,7 @@
             var zones2 = [
                 {   start:    "0",
                     end:      "2100",
-                    magnify:  10,
+                    magnify:  5,
                     unit:     Timeline.DateTime.DECADE
                 },
                 {   start:    "1800",
@@ -61,7 +61,7 @@
             var d = Timeline.DateTime.parseGregorianDateTime("0");
             var bandInfos = [
                 Timeline.createHotZoneBandInfo({
-                    width:          "10%", 
+                    width:          "13%", 
                     intervalUnit:   Timeline.DateTime.CENTURY, 
                     intervalCount:  12,
                     zones:          zones2,
@@ -71,7 +71,7 @@
                     theme:          theme2
                 }),
                 Timeline.createHotZoneBandInfo({
-                    width:          "40%", 
+                    width:          "37%", 
                     intervalUnit:   Timeline.DateTime.CENTURY, 
                     intervalCount:  3,
                     zones:          zones,
@@ -81,7 +81,7 @@
                     theme:          theme
                 }),
                 Timeline.createHotZoneBandInfo({
-                    width:          "40%", 
+                    width:          "37%", 
                     intervalUnit:   Timeline.DateTime.CENTURY, 
                     intervalCount:  3,
                     zones:          zones,
@@ -91,7 +91,7 @@
                     theme:          theme
                 }),
                 Timeline.createHotZoneBandInfo({
-                    width:          "10%", 
+                    width:          "13%", 
                     intervalUnit:   Timeline.DateTime.CENTURY, 
                     intervalCount:  12,
                     zones:          zones2,
@@ -103,9 +103,12 @@
             ];
             bandInfos[0].syncWith = 1;
             bandInfos[0].highlight = true;
+            bandInfos[0].eventPainter.setLayout(bandInfos[1].eventPainter.getLayout());
+            
             bandInfos[2].syncWith = 1;
             bandInfos[3].syncWith = 2;
             bandInfos[3].highlight = true;
+            bandInfos[3].eventPainter.setLayout(bandInfos[2].eventPainter.getLayout());
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
             Timeline.loadXML("jewish.xml", function(xml) {

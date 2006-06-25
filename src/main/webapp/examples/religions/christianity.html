@@ -71,6 +71,7 @@
             ];
             bandInfos[1].syncWith = 0;
             bandInfos[1].highlight = true;
+            bandInfos[1].eventPainter.setLayout(bandInfos[0].eventPainter.getLayout());
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
             Timeline.loadXML("christianity.xml", function(xml) {

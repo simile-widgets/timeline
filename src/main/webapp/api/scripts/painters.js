@@ -249,6 +249,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
                 divLabel.appendChild(doc.createTextNode(evt.getText()));
                 
                 eventLayer.appendChild(divLabel);
+                attachClickEvent(divLabel);
             }
             
             createHighlightDiv(highlightIndex, startPixel, endPixel - startPixel, highlightOffset, highlightWidth);

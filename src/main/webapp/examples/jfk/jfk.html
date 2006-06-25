@@ -97,28 +97,22 @@
                     new Timeline.SpanHighlightDecorator({
                         startDate:  "Fri Nov 22 1963 12:30:00 GMT-0600",
                         endDate:    "Fri Nov 22 1963 13:00:00 GMT-0600",
-                        startLabel: "Shot",
-                        endLabel:   "Death",
-                        styler:     function(elmt) {
-                            elmt.style.background = "#FFC080";
-                            Timeline.Graphics.setOpacity(elmt, 50);
-                        },
+                        color:      "#FFC080",
+                        opacity:    50,
+                        startLabel: "shot",
+                        endLabel:   "dead",
                         theme:      theme
                     }),
                     new Timeline.PointHighlightDecorator({
                         date:       "Fri Nov 22 1963 14:38:00 GMT-0600",
-                        styler:     function(elmt) {
-                            elmt.style.background = "#FFC080";
-                            Timeline.Graphics.setOpacity(elmt, 50);
-                        },
+                        color:      "#FFC080",
+                        opacity:    50,
                         theme:      theme
                     }),
                     new Timeline.PointHighlightDecorator({
                         date:       "Sun Nov 24 1963 13:00:00 GMT-0600",
-                        styler:     function(elmt) {
-                            elmt.style.background = "#FFC080";
-                            Timeline.Graphics.setOpacity(elmt, 50);
-                        },
+                        color:      "#FFC080",
+                        opacity:    50,
                         theme:      theme
                     })
                 ];

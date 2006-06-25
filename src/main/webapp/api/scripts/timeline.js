@@ -404,6 +404,10 @@ Timeline._Band.prototype.getViewLength = function() {
     return this._viewLength;
 };
 
+Timeline._Band.prototype.getTotalViewLength = function() {
+    return Timeline._Band.SCROLL_MULTIPLES * this._viewLength;
+};
+
 Timeline._Band.prototype.getViewOffset = function() {
     return this._viewOffset;
 };

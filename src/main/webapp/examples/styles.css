@@ -4,6 +4,10 @@ body {
     margin: 0;
 }
 
+table {
+    font-size: 100%;
+}
+
 .header {
     background: #ddd;
     padding: 0.5em;

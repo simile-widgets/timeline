@@ -102,8 +102,7 @@ Timeline.ClassicTheme._Impl = function() {
             "#FFFF00",
             "#FFC000",
             "#FF0000",
-            "#0000FF",
-            "#00FF00"
+            "#0000FF"
         ],
         bubble: {
             width:          250, // px

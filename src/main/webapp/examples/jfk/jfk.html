@@ -120,34 +120,103 @@
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
             Timeline.loadXML("jfk.xml", function(xml) { eventSource.loadXML(xml); });
+            
+            var table = document.getElementById("controls-table");
+            var tr = table.rows[1];
+            
+            for (var i = 0; i < theme.event.highlightColors.length; i++) {
+                var td = tr.insertCell(i + 1);
+                
+                var input = document.createElement("input");
+                input.type = "text";
+                input.id = "highlight-text-" + i;
+                Timeline.DOM.registerEvent(input, "keypress", onKeyPress);
+                td.appendChild(input);
+                
+                var divColor = document.createElement("div");
+                divColor.style.height = "0.5em";
+                divColor.style.background = theme.event.highlightColors[i];
+                td.appendChild(divColor);
+            }
         }
         function onResize() {
             tl.layout();
         }
         
         var timerID = null;
-        function onFilterTextKeyPress() {
+        function onKeyPress() {
             if (timerID != null) {
                 window.clearTimeout(timerID);
             }
             timerID = window.setTimeout("performFiltering();", 500);
         }
+        function cleanString(s) {
+            return s.replace(/^\s+/, '').replace(/\s+$/, '');
+        }
         function performFiltering() {
             timerID = null;
             
-            var text = document.getElementById("filter-text").value;
-            text = text.replace(/^\s+/, '').replace(/\s+$/, '');
+            var text = cleanString(document.getElementById("filter-text").value);
             
             var filterMatcher = null;
             if (text.length > 0) {
                 var regex = new RegExp(text, "i");
                 filterMatcher = function(evt) {
-                    return regex.test(evt.getDescription()) ? 0 : -1;
+                    return regex.test(evt.getDescription());
                 };
             }
             
+            var regexes = [];
+            var x = 0;
+            var hasHighlights = false;
+            while (true) {
+                var elmt = document.getElementById("highlight-text-" + x);
+                if (elmt == null) {
+                    break;
+                }
+                
+                var text2 = cleanString(elmt.value);
+                if (text2.length > 0) {
+                    hasHighlights = true;
+                    regexes.push(new RegExp(text2, "i"));
+                } else {
+                    regexes.push(null);
+                }
+                x++;
+            }
+            var highlightMatcher = hasHighlights ? function(evt) {
+                var description = evt.getDescription();
+                for (var x = 0; x < regexes.length; x++) {
+                    var regex = regexes[x];
+                    if (regex != null && regex.test(description)) {
+                        return x;
+                    }
+                }
+                return -1;
+            } : null;
+            
             for (var i = 0; i < tl.getBandCount(); i++) {
-                tl.getBand(i).getEventPainter().setHighlightMatcher(filterMatcher);
+                tl.getBand(i).getEventPainter().setFilterMatcher(filterMatcher);
+                tl.getBand(i).getEventPainter().setHighlightMatcher(highlightMatcher);
+            }
+            tl.paint();
+        }
+        function clearAll() {
+            document.getElementById("filter-text").value = "";
+            
+            var x = 0;
+            while (true) {
+                var elmt = document.getElementById("highlight-text-" + x);
+                if (elmt == null) {
+                    break;
+                }
+                elmt.value = "";
+                x++;
+            }
+            
+            for (var i = 0; i < tl.getBandCount(); i++) {
+                tl.getBand(i).getEventPainter().setFilterMatcher(null);
+                tl.getBand(i).getEventPainter().setHighlightMatcher(null);
             }
             tl.paint();
         }
@@ -181,8 +250,17 @@
         All times are in Dallas CST (GMT-0600).
     </div>
     
-    <div class="controls">Filter:
-        <input type="text" id="filter-text" onkeypress="onFilterTextKeyPress();"></input>
+    <div class="controls" id="controls">
+        <table id="controls-table">
+            <tr>
+                <td>Filter:</td>
+                <td>Highlight:</td>
+            </tr>
+            <tr valign="top">
+                <td><input id="filter-text" onkeypress="onKeyPress();" /></td>
+                <td><button onclick="clearAll();">Clear All</button></td>
+            </tr>
+        </table>
     </div>
 </div>
 

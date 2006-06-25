@@ -12,11 +12,13 @@ Timeline.StaticTrackBasedLayout = function(params) {
     this._laidout = false;
     
     var layout = this;
-    this._eventSource.addListener({
-        onAddMany: function() {
-            layout._laidout = false;
-        }
-    });
+    if (this._eventSource != null) {
+        this._eventSource.addListener({
+            onAddMany: function() {
+                layout._laidout = false;
+            }
+        });
+    }
 };
 
 Timeline.StaticTrackBasedLayout.prototype.initialize = function(timeline) {
@@ -65,6 +67,9 @@ Timeline.StaticTrackBasedLayout.prototype._layout = function() {
     };
     var layoutDuration = function(evt, startPixel, endPixel, streamOffset) {
         if (evt.isImprecise()) { // imprecise time
+            var startDate = evt.getStart();
+            var endDate = evt.getEnd();
+                
             var startPixel2 = Math.round(layout._ether.dateToPixelOffset(startDate));
             var endPixel2 = Math.round(layout._ether.dateToPixelOffset(endDate));
         } else {
@@ -72,13 +77,11 @@ Timeline.StaticTrackBasedLayout.prototype._layout = function() {
             var endPixel2 = endPixel;
         }
         
-        var finalPixel = endPixel;
-        if (startPixel2 <= endPixel2) {
-            length = Math.max(endPixel2 - startPixel2, 1);
-        }
+        var finalPixel = endPixel2;
+        var length = Math.max(endPixel2 - startPixel2, 1);
             
         if (showText) {
-            if (length < 100) {
+            if (length < eventTheme.label.width) {
                 finalPixel = endPixel2 + eventTheme.label.width;
             }
         }

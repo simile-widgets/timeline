@@ -49,14 +49,6 @@
             var d = Timeline.DateTime.parseGregorianDateTime("100");
             var bandInfos = [
                 Timeline.createHotZoneBandInfo({
-                    width:          "5%", 
-                    intervalUnit:   Timeline.DateTime.CENTURY, 
-                    intervalCount:  5,
-                    zones:          zones,
-                    date:           d,
-                    theme:          theme2
-                }),
-                Timeline.createHotZoneBandInfo({
                     width:          "75%", 
                     intervalUnit:   Timeline.DateTime.CENTURY, 
                     intervalCount:  5,
@@ -67,7 +59,7 @@
                     theme:          theme
                 }),
                 Timeline.createHotZoneBandInfo({
-                    width:          "20%", 
+                    width:          "25%", 
                     intervalUnit:   Timeline.DateTime.CENTURY, 
                     intervalCount:  20,
                     zones:          zones2,
@@ -77,11 +69,9 @@
                     theme:          theme2
                 })
             ];
-            bandInfos[0].etherPainter = new Timeline.JapaneseEraEtherPainter({ theme: theme2 });
-            bandInfos[0].syncWith = 1;
-            
-            bandInfos[2].syncWith = 1;
-            bandInfos[2].highlight = true;
+            bandInfos[1].syncWith = 0;
+            bandInfos[1].highlight = true;
+            bandInfos[1].eventPainter.setLayout(bandInfos[0].eventPainter.getLayout());
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
             Timeline.loadXML("jewish.xml", function(xml) {

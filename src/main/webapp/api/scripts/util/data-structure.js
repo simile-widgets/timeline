@@ -98,6 +98,10 @@ Timeline.EventIndex.prototype.getIterator = function(startDate, endDate) {
     return new Timeline.EventIndex._Iterator(this._events, startDate, endDate);
 };
 
+Timeline.EventIndex.prototype.getAllIterator = function() {
+    return new Timeline.EventIndex._AllIterator(this._events);
+};
+
 Timeline.EventIndex.prototype._index = function() {
     /*
      *  For each event, we want to find the earliest preceding
@@ -181,3 +185,17 @@ Timeline.EventIndex._Iterator.prototype = {
     }
 };
 
+Timeline.EventIndex._AllIterator = function(events) {
+    this._events = events;
+    this._index = 0;
+};
+
+Timeline.EventIndex._AllIterator.prototype = {
+    hasNext: function() {
+        return this._index < this._events.length();
+    },
+    next: function() {
+        return this._index < this._events.length() ?
+            this._events.elementAt(this._index++) : null;
+    }
+};

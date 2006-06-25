@@ -150,12 +150,12 @@
             if (text.length > 0) {
                 var regex = new RegExp(text, "i");
                 filterMatcher = function(evt) {
-                    return regex.test(evt.getDescription());
+                    return regex.test(evt.getDescription()) ? 0 : -1;
                 };
             }
             
             for (var i = 0; i < tl.getBandCount(); i++) {
-                tl.getBand(i).getEventPainter().setFilterMatcher(filterMatcher);
+                tl.getBand(i).getEventPainter().setHighlightMatcher(filterMatcher);
             }
             tl.paint();
         }

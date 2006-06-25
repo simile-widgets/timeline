@@ -141,8 +141,8 @@ Timeline.DurationEventPainter.prototype.paint = function() {
                 
                 layerDiv.appendChild(div);
                 
-                var startDate = evt.getStart();
-                var endDate = evt.getEnd();
+                var startDate = evt.getLatestStart();
+                var endDate = evt.getEarliestEnd();
                 
                 var startPixel2 = Math.round(p._band.dateToPixelOffset(startDate));
                 var endPixel2 = Math.round(p._band.dateToPixelOffset(endDate));
@@ -176,7 +176,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
             attachClickEvent(div);
                 
             if (showText) {
-                if (length > 100) {
+                if (length > eventTheme.label.width) {
                     div.style.color = foreground != null ? foreground : eventTheme.label.insideColor;
                     div.style.overflow = "hidden";
                     div.appendChild(doc.createTextNode(evt.getText()));

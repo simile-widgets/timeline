@@ -16,37 +16,28 @@ Timeline.createBandInfo = function(params) {
     
     var eventSource = ("eventSource" in params) ? params.eventSource : null;
     
-    var etherParams = { 
-        centersOn:  ("date" in params) ? params.date : newDate()
-    };
-    if ("intervalLength" in params) {
-        etherParams.duration = Timeline.DateTime.gregorianUnitLengths[params.intervalUnit];
-        etherParams.durationPixels = params.intervalLength;
-    } else {
-        etherParams.duration = (("intervalCount" in params) ? params.intervalCount : 5) * 
-            Timeline.DateTime.gregorianUnitLengths[params.intervalUnit];
-    }
-    var ether = new Timeline.LinearEther(etherParams)
+    var ether = new Timeline.LinearEther({ 
+        centersOn:          ("date" in params) ? params.date : newDate(),
+        duration:           Timeline.DateTime.gregorianUnitLengths[params.intervalUnit],
+        pixelsPerDuration:  params.intervalPixels
+    });
     
-    var etherPainterParams = {
+    var etherPainter = new Timeline.GregorianEtherPainter({
         unit:       params.intervalUnit, 
         theme:      theme 
-    };
-    var etherPainter = new Timeline.GregorianEtherPainter(etherPainterParams);
+    });
     
-    var layoutParams = {
+    var layout = new Timeline.StaticTrackBasedLayout({
         eventSource:    eventSource,
         ether:          ether,
         theme:          theme
-    };
-    var layout = new Timeline.StaticTrackBasedLayout(layoutParams);
+    });
     
-    var eventPainterParams = {
+    var eventPainter = new Timeline.DurationEventPainter({
         showText:   ("showEventText" in params) ? params.showEventText : true,
         layout:     layout,
         theme:      theme
-    };
-    var eventPainter = new Timeline.DurationEventPainter(eventPainterParams);
+    });
     
     return {   
         width:          params.width,
@@ -63,39 +54,30 @@ Timeline.createHotZoneBandInfo = function(params) {
     
     var eventSource = ("eventSource" in params) ? params.eventSource : null;
     
-    var etherParams = { 
-        centersOn:  ("date" in params) ? params.date : newDate(),
-        zones:      params.zones
-    };
-    if ("intervalLength" in params) {
-        etherParams.duration = Timeline.DateTime.gregorianUnitLengths[params.intervalUnit];
-        etherParams.durationPixels = params.intervalLength;
-    } else {
-        etherParams.duration = (("intervalCount" in params) ? params.intervalCount : 5) * 
-            Timeline.DateTime.gregorianUnitLengths[params.intervalUnit];
-    }
-    var ether = new Timeline.HotZoneEther(etherParams)
+    var ether = new Timeline.HotZoneEther({ 
+        centersOn:          ("date" in params) ? params.date : newDate(),
+        duration:           Timeline.DateTime.gregorianUnitLengths[params.intervalUnit],
+        pixelsPerDuration:  params.intervalPixels,
+        zones:              params.zones
+    });
     
-    var etherPainterParams = {
+    var etherPainter = new Timeline.HotZoneGregorianEtherPainter({
         unit:       params.intervalUnit, 
         zones:      params.zones,
         theme:      theme 
-    };
-    var etherPainter = new Timeline.HotZoneGregorianEtherPainter(etherPainterParams);
+    });
     
-    var layoutParams = {
+    var layout = new Timeline.StaticTrackBasedLayout({
         eventSource:    eventSource,
         ether:          ether,
         theme:          theme
-    };
-    var layout = new Timeline.StaticTrackBasedLayout(layoutParams);
+    });
     
-    var eventPainterParams = {
+    var eventPainter = new Timeline.DurationEventPainter({
         showText:   ("showEventText" in params) ? params.showEventText : true,
         layout:     layout,
         theme:      theme
-    };
-    var eventPainter = new Timeline.DurationEventPainter(eventPainterParams);
+    });
     
     return {   
         width:          params.width,

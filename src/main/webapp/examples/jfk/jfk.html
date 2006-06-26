@@ -3,6 +3,7 @@
     <title>Timeline Example: The JFK Assassination</title>
     <link rel='stylesheet' href='../styles.css' type='text/css' />
     <script src="../../api/timeline-api.js" type="text/javascript"></script>
+    <script src="../examples.js" type="text/javascript"></script>
     <script>
         var tl;
         function onLoad() {
@@ -100,7 +101,7 @@
                         color:      "#FFC080",
                         opacity:    50,
                         startLabel: "shot",
-                        endLabel:   "dead",
+                        endLabel:   "t.o.d.",
                         theme:      theme
                     }),
                     new Timeline.PointHighlightDecorator({
@@ -121,104 +122,10 @@
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
             Timeline.loadXML("jfk.xml", function(xml) { eventSource.loadXML(xml); });
             
-            var table = document.getElementById("controls-table");
-            var tr = table.rows[1];
-            
-            for (var i = 0; i < theme.event.highlightColors.length; i++) {
-                var td = tr.insertCell(i + 1);
-                
-                var input = document.createElement("input");
-                input.type = "text";
-                input.id = "highlight-text-" + i;
-                Timeline.DOM.registerEvent(input, "keypress", onKeyPress);
-                td.appendChild(input);
-                
-                var divColor = document.createElement("div");
-                divColor.style.height = "0.5em";
-                divColor.style.background = theme.event.highlightColors[i];
-                td.appendChild(divColor);
-            }
+            setupFilterHighlightControls(document.getElementById("controls"), tl, [0,1], theme);
         }
         function onResize() {
             tl.layout();
-        }
-        
-        var timerID = null;
-        function onKeyPress() {
-            if (timerID != null) {
-                window.clearTimeout(timerID);
-            }
-            timerID = window.setTimeout("performFiltering();", 500);
-        }
-        function cleanString(s) {
-            return s.replace(/^\s+/, '').replace(/\s+$/, '');
-        }
-        function performFiltering() {
-            timerID = null;
-            
-            var text = cleanString(document.getElementById("filter-text").value);
-            
-            var filterMatcher = null;
-            if (text.length > 0) {
-                var regex = new RegExp(text, "i");
-                filterMatcher = function(evt) {
-                    return regex.test(evt.getDescription());
-                };
-            }
-            
-            var regexes = [];
-            var x = 0;
-            var hasHighlights = false;
-            while (true) {
-                var elmt = document.getElementById("highlight-text-" + x);
-                if (elmt == null) {
-                    break;
-                }
-                
-                var text2 = cleanString(elmt.value);
-                if (text2.length > 0) {
-                    hasHighlights = true;
-                    regexes.push(new RegExp(text2, "i"));
-                } else {
-                    regexes.push(null);
-                }
-                x++;
-            }
-            var highlightMatcher = hasHighlights ? function(evt) {
-                var description = evt.getDescription();
-                for (var x = 0; x < regexes.length; x++) {
-                    var regex = regexes[x];
-                    if (regex != null && regex.test(description)) {
-                        return x;
-                    }
-                }
-                return -1;
-            } : null;
-            
-            for (var i = 0; i < tl.getBandCount(); i++) {
-                tl.getBand(i).getEventPainter().setFilterMatcher(filterMatcher);
-                tl.getBand(i).getEventPainter().setHighlightMatcher(highlightMatcher);
-            }
-            tl.paint();
-        }
-        function clearAll() {
-            document.getElementById("filter-text").value = "";
-            
-            var x = 0;
-            while (true) {
-                var elmt = document.getElementById("highlight-text-" + x);
-                if (elmt == null) {
-                    break;
-                }
-                elmt.value = "";
-                x++;
-            }
-            
-            for (var i = 0; i < tl.getBandCount(); i++) {
-                tl.getBand(i).getEventPainter().setFilterMatcher(null);
-                tl.getBand(i).getEventPainter().setHighlightMatcher(null);
-            }
-            tl.paint();
         }
     </script>
 </head>
@@ -229,19 +136,10 @@
 <div class="content">
     <h1>The JFK Assassination</h1>
     <p>Sources:
-        <ul>
-            <li><a href="http://roswell.fortunecity.com/angelic/96/pctime.htm">http://roswell.fortunecity.com/angelic/96/pctime.htm</a></li>
-        </ul>
-        Notes: The short titles for these events have been phrased
-        by us from the information at the sources above in order
-        to fit the timeline below. The phrasing might not be of
-        journalistic quality. 
-    </p>
-    <p>
-        This should not be taken as an official source of this topic.
-        Refer to other sources, such as 
-        <a href="http://en.wikipedia.org/wiki/Kennedy_assassination">Wikipedia</a>, 
-        for more official information.
+        <a href="http://roswell.fortunecity.com/angelic/96/pctime.htm">http://roswell.fortunecity.com/angelic/96/pctime.htm</a>.
+        Titles of events have been phrased by David Huynh, author of this timeline example.
+        The phrasing might not be of journalistic quality. The information in this example
+        should not be taken as an official source of this topic.
     </p>
     
     <div id="tl" style="height: 400px; border: 1px solid #aaa;">
@@ -251,16 +149,6 @@
     </div>
     
     <div class="controls" id="controls">
-        <table id="controls-table">
-            <tr>
-                <td>Filter:</td>
-                <td>Highlight:</td>
-            </tr>
-            <tr valign="top">
-                <td><input id="filter-text" onkeypress="onKeyPress();" /></td>
-                <td><button onclick="clearAll();">Clear All</button></td>
-            </tr>
-        </table>
     </div>
 </div>
 

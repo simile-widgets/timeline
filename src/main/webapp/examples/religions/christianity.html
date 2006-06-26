@@ -3,7 +3,7 @@
     <title>Timeline Example: Christianity Timeline</title>
     <link rel='stylesheet' href='../styles.css' type='text/css' />
     <script src="../../api/timeline-api.js" type="text/javascript"></script>
-    <script src="../../api/scripts/ext/japanese-eras.js" type="text/javascript"></script>
+    <script src="../examples.js" type="text/javascript"></script>
     <script>
         var tl;
         function onLoad() {
@@ -73,36 +73,11 @@
             Timeline.loadXML("christianity.xml", function(xml) {
                 eventSourceChristianity.loadXML(xml);
             });
+            
+            setupFilterHighlightControls(document.getElementById("controls"), tl, [0,1], theme);
         }
         function onResize() {
             tl.layout();
-        }
-        
-        var timerID = null;
-        function onFilterTextKeyPress() {
-            if (timerID != null) {
-                window.clearTimeout(timerID);
-            }
-            timerID = window.setTimeout("performFiltering();", 500);
-        }
-        function performFiltering() {
-            timerID = null;
-            
-            var text = document.getElementById("filter-text").value;
-            text = text.replace(/^\s+/, '').replace(/\s+$/, '');
-            
-            var filterMatcher = null;
-            if (text.length > 0) {
-                var regex = new RegExp(text, "i");
-                filterMatcher = function(evt) {
-                    return regex.test(evt.getDescription());
-                };
-            }
-            
-            for (var i = 0; i < tl.getBandCount(); i++) {
-                tl.getBand(i).getEventPainter().setFilterMatcher(filterMatcher);
-            }
-            tl.paint();
         }
     </script>
 </head>
@@ -112,16 +87,32 @@
 </div>
 <div class="content">
     <h1>Christianity Timeline</h1>
-    <p>Sources:
-        <ul>
-            <li><a href="http://en.wikipedia.org/wiki/Timeline_of_Christianity">http://en.wikipedia.org/wiki/Timeline_of_Christianity</a></li>
-        </ul>
+    <p>Sources: <a href="http://en.wikipedia.org/wiki/Timeline_of_Christianity">Wikipedia</a>.
+        Titles of events have been phrased by David Huynh, author of this timeline example.
+        The phrasing might not be of journalistic quality. The information in this example
+        should not be used as an official source.
     </p>
+    
     <div id="tl" style="height: 600px; border: 1px solid #aaa; position: relative;">
     </div>
     
-    <div class="controls">Filter:
-        <input type="text" id="filter-text" onkeypress="onFilterTextKeyPress();"></input>
+    <div style="width: 100%">
+        <table style="text-align: center; width: 100%">
+            <tr>
+                <td><a href="javascript:centerTimeline(1);">1 AD</a></td>
+                <td><a href="javascript:centerTimeline(250);">250 AD</a></td>
+                <td><a href="javascript:centerTimeline(500);">500 AD</a></td>
+                <td><a href="javascript:centerTimeline(750);">750 AD</a></td>
+                <td><a href="javascript:centerTimeline(1000);">1000 AD</a></td>
+                <td><a href="javascript:centerTimeline(1250);">1250 AD</a></td>
+                <td><a href="javascript:centerTimeline(1500);">1500 AD</a></td>
+                <td><a href="javascript:centerTimeline(1750);">1750 AD</a></td>
+                <td><a href="javascript:centerTimeline(2000);">2000 AD</a></td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="controls" id="controls">
     </div>
 </div>
 </body>

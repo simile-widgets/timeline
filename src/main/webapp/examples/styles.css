@@ -1,22 +1,4 @@
-body {
-    font-family: Trebuchet MS, Helvetica, Arial, sans serif;
-    font-size: 8pt;
-    margin: 0;
-}
-
-table {
-    font-size: 100%;
-}
-
-.header {
-    background: #ddd;
-    padding: 0.5em;
-    font-weight: bold;
-}
-
-.content {
-    margin: 5em;
-}
+@import url("../styles.css");
 
 .footnotes {
     background: #eee;

@@ -17,9 +17,9 @@ Timeline.createBandInfo = function(params) {
     var eventSource = ("eventSource" in params) ? params.eventSource : null;
     
     var ether = new Timeline.LinearEther({ 
-        centersOn:          ("date" in params) ? params.date : newDate(),
-        duration:           Timeline.DateTime.gregorianUnitLengths[params.intervalUnit],
-        pixelsPerDuration:  params.intervalPixels
+        centersOn:          ("date" in params) ? params.date : new Date(),
+        interval:           Timeline.DateTime.gregorianUnitLengths[params.intervalUnit],
+        pixelsPerInterval:  params.intervalPixels
     });
     
     var etherPainter = new Timeline.GregorianEtherPainter({
@@ -62,9 +62,9 @@ Timeline.createHotZoneBandInfo = function(params) {
     var eventSource = ("eventSource" in params) ? params.eventSource : null;
     
     var ether = new Timeline.HotZoneEther({ 
-        centersOn:          ("date" in params) ? params.date : newDate(),
-        duration:           Timeline.DateTime.gregorianUnitLengths[params.intervalUnit],
-        pixelsPerDuration:  params.intervalPixels,
+        centersOn:          ("date" in params) ? params.date : new Date(),
+        interval:           Timeline.DateTime.gregorianUnitLengths[params.intervalUnit],
+        pixelsPerInterval:  params.intervalPixels,
         zones:              params.zones
     });
     

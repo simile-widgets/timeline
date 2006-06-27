@@ -119,7 +119,7 @@ Timeline.loadXML = function(url, f) {
         alert("Failed to load data xml from " + url + "\n" + statusText);
     };
     var fDone = function(xmlhttp) {
-        f(xmlhttp.responseXML);
+        f(xmlhttp.responseXML, url);
     };
     Timeline.XmlHttp.get(url, fError, fDone);
 };

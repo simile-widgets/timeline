@@ -1,14 +1,8 @@
 <html>
 <head>
-    <title>Timeline Test</title>
-    <style>
-        body {
-            font-family: Trebuchet MS, Helvetica, Arial, sans serif;
-            font-size: 8pt;
-        }
-    </style>
+    <title>Timeline Documentation</title>
+    <link rel='stylesheet' href='styles.css' type='text/css' />
     <script src="api/timeline-api.js" type="text/javascript"></script>
-    <script src="api/scripts/ext/japanese-eras.js" type="text/javascript"></script>
     <script>
         var tl;
         function onLoad() {
@@ -17,7 +11,7 @@
             var zones = [
                 {   start:    "Fri Nov 22 1963 00:00:00 GMT-0600",
                     end:      "Mon Nov 25 1963 00:00:00 GMT-0600",
-                    magnify:  5,
+                    magnify:  10,
                     unit:     Timeline.DateTime.DAY
                 },
                 {   start:    "Fri Nov 22 1963 09:00:00 GMT-0600",
@@ -26,44 +20,106 @@
                     unit:     Timeline.DateTime.HOUR
                 },
                 {   start:    "Fri Nov 22 1963 11:00:00 GMT-0600",
-                    end:      "Fri Nov 22 1963 15:00:00 GMT-0600",
-                    magnify:  10,
+                    end:      "Sat Nov 23 1963 00:00:00 GMT-0600",
+                    magnify:  5,
                     unit:     Timeline.DateTime.MINUTE,
                     multiple: 10
                 },
                 {   start:    "Fri Nov 22 1963 12:00:00 GMT-0600",
-                    end:      "Fri Nov 22 1963 15:00:00 GMT-0600",
+                    end:      "Fri Nov 22 1963 14:00:00 GMT-0600",
                     magnify:  3,
                     unit:     Timeline.DateTime.MINUTE,
                     multiple: 5
                 }
             ];
-            
-            var d = new Date(Date.parse("Fri Nov 22 1963 13:00:00 GMT-0600"));
-            var bandInfos = [
-                Timeline.createSimpleBandInfo(
-                    "75%", Timeline.DateTime.WEEK,  5, eventSource, d, true),
-                Timeline.createSimpleBandInfo(
-                    "25%", Timeline.DateTime.MONTH, 5, eventSource, d, false)
+            var zones2 = [
+                {   start:    "Fri Nov 22 1963 00:00:00 GMT-0600",
+                    end:      "Mon Nov 25 1963 00:00:00 GMT-0600",
+                    magnify:  10,
+                    unit:     Timeline.DateTime.WEEK
+                },
+                {   start:    "Fri Nov 22 1963 09:00:00 GMT-0600",
+                    end:      "Sun Nov 24 1963 00:00:00 GMT-0600",
+                    magnify:  5,
+                    unit:     Timeline.DateTime.DAY
+                },
+                {   start:    "Fri Nov 22 1963 11:00:00 GMT-0600",
+                    end:      "Sat Nov 23 1963 00:00:00 GMT-0600",
+                    magnify:  5,
+                    unit:     Timeline.DateTime.MINUTE,
+                    multiple: 60
+                },
+                {   start:    "Fri Nov 22 1963 12:00:00 GMT-0600",
+                    end:      "Fri Nov 22 1963 14:00:00 GMT-0600",
+                    magnify:  3,
+                    unit:     Timeline.DateTime.MINUTE,
+                    multiple: 15
+                }
             ];
-            bandInfos[0].timeZone = -6;
-            bandInfos[0].ether = Timeline.HotZoneEther;
-            bandInfos[0].etherParams.zones = zones;
-            bandInfos[0].etherPainterParams.zones = zones;
-            bandInfos[0].eventPainterParams.textWidth = "20em";
             
-            bandInfos[1].timeZone = -6;
-            bandInfos[1].labeller = new Timeline.JapaneseEraDateLabeller.create(Timeline.Platform.getDefaultLocale(), -6, true);
+            var theme = Timeline.ClassicTheme.create();
+            theme.event.label.width = 250; // px
+            theme.event.bubble.width = 250;
+            theme.event.bubble.height = 200;
+            
+            var date = "Fri Nov 22 1963 13:00:00 GMT-0600"
+            var bandInfos = [
+                Timeline.createHotZoneBandInfo({
+                    width:          "75%", 
+                    intervalUnit:   Timeline.DateTime.WEEK, 
+                    intervalPixels: 200,
+                    zones:          zones,
+                    eventSource:    eventSource,
+                    date:           date,
+                    timeZone:       -6,
+                    theme:          theme
+                }),
+                Timeline.createHotZoneBandInfo({
+                    width:          "25%", 
+                    intervalUnit:   Timeline.DateTime.MONTH, 
+                    intervalPixels: 200,
+                    zones:          zones2, 
+                    eventSource:    eventSource,
+                    date:           date, 
+                    timeZone:       -6,
+                    showEventText:  false, 
+                    trackHeight:    0.5,
+                    trackGap:       0.2,
+                    theme:          theme
+                })
+            ];
             bandInfos[1].syncWith = 0;
             bandInfos[1].highlight = true;
+            bandInfos[1].eventPainter.setLayout(bandInfos[0].eventPainter.getLayout());
+            
+            for (var i = 0; i < bandInfos.length; i++) {
+                bandInfos[i].decorators = [
+                    new Timeline.SpanHighlightDecorator({
+                        startDate:  "Fri Nov 22 1963 12:30:00 GMT-0600",
+                        endDate:    "Fri Nov 22 1963 13:00:00 GMT-0600",
+                        color:      "#FFC080",
+                        opacity:    50,
+                        startLabel: "shot",
+                        endLabel:   "t.o.d.",
+                        theme:      theme
+                    }),
+                    new Timeline.PointHighlightDecorator({
+                        date:       "Fri Nov 22 1963 14:38:00 GMT-0600",
+                        color:      "#FFC080",
+                        opacity:    50,
+                        theme:      theme
+                    }),
+                    new Timeline.PointHighlightDecorator({
+                        date:       "Sun Nov 24 1963 13:00:00 GMT-0600",
+                        color:      "#FFC080",
+                        opacity:    50,
+                        theme:      theme
+                    })
+                ];
+            }
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
-            Timeline.loadXML("content/jfk.xml", function(xml) {
-                eventSource.loadXML(xml);
-            });
-        }
-        function debug(msg) {
-            document.getElementById("debug").innerHTML = msg;
+            Timeline.loadXML("examples/jfk/jfk.xml", function(xml) { eventSource.loadXML(xml); });
         }
         function onResize() {
             tl.layout();
@@ -71,15 +127,45 @@
     </script>
 </head>
 <body onload="onLoad();" onresize="onResize();">
-Testing
-<div id="tl" style="width: 100%; height: 400px; border: 1px solid #aaa; position: relative;">
+<div id="header">
+    <a href="http://simile.mit.edu/">Simile</a> |
+    Timeline
 </div>
-<p>
-    DISCLAIMER: This Timeline web app is not complete yet. Its API
-    is subject to change and the URLs to its code are not permanent.
-    DO NOT CREATE YOUR OWN TIMELINE USING THIS API AT THIS TIME.
-    Contact me if you are interested. Thank you.
-</p>
-<div id="debug"></div>
+<div id="content">
+    <h1>Timeline</h1>
+    <p>Timeline is a DHTML-based AJAXy widget for visualizing time-based events.
+        It is like <a href="http://maps.google.com/">Google Maps</a> for time information.
+        Below is a live example that you can play with. Pan the timeline by
+        dragging it horizontally.
+    </p>
+
+    <div id="tl" style="height: 400px; border: 1px solid #aaa; font-size: 8pt; margin: 2em;">
+    </div>
+    
+    <p>Just like Google Maps, Timeline can be used with zero software installation,
+        server-side or client-side.
+    </p>
+    
+    <h2>Topics:</h2>
+    <ul>
+        <li><a href="examples/">More live examples</a></li>
+        <li><a href="docs/">Documentation</a>, how to use it, how to extend it</li>
+        <br/>
+        <li><a href="http://simile.mit.edu/repository/timeline/">Code on SVN repository</a></li>
+    </ul>
+    
+    <h2>Licensing &amp; Legal Issues</h2>
+    <p>Timeline is open source software and is licensed under the 
+        <a href="http://simile.mit.edu/license.html">BSD license</a>.</p>
+    </p>
+    
+    <h2>Credits</h2>
+    <p>This software is maintained by the SIMILE project and in particular:
+        <ul>
+            <li><a href="http://people.csail.mit.edu/people/dfhuynh/">David Fran&ccedil;ois Huynh</a>,
+                dfhuynh at csail.mit.edu
+            </li>
+        </ul>
+    </p>
 </body>
 </html>

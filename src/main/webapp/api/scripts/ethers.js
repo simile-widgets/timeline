@@ -5,8 +5,8 @@
  
 Timeline.LinearEther = function(params) {
     this._params = params;
-    this._duration = params.duration;
-    this._pixelsPerDuration = params.pixelsPerDuration;
+    this._interval = params.interval;
+    this._pixelsPerInterval = params.pixelsPerInterval;
 };
 
 Timeline.LinearEther.prototype.initialize = function(timeline) {
@@ -30,18 +30,18 @@ Timeline.LinearEther.prototype.setDate = function(date) {
 };
 
 Timeline.LinearEther.prototype.shiftPixels = function(pixels) {
-    var milliseconds = this._duration * pixels / this._pixelsPerDuration;
+    var milliseconds = this._interval * pixels / this._pixelsPerInterval;
     this._start = new Date(this._start.getTime() + milliseconds);
     //debug(this._start.toString());
 };
 
 Timeline.LinearEther.prototype.dateToPixelOffset = function(date) {
     var milliseconds = date.getTime() - this._start.getTime();
-    return this._pixelsPerDuration * milliseconds / this._duration;
+    return this._pixelsPerInterval * milliseconds / this._interval;
 };
 
 Timeline.LinearEther.prototype.pixelOffsetToDate = function(pixels) {
-    var milliseconds = pixels * this._duration / this._pixelsPerDuration;
+    var milliseconds = pixels * this._interval / this._pixelsPerInterval;
     return new Date(this._start.getTime() + milliseconds);
 };
 
@@ -52,8 +52,8 @@ Timeline.LinearEther.prototype.pixelOffsetToDate = function(pixels) {
  
 Timeline.HotZoneEther = function(params) {
     this._params = params;
-    this._duration = params.duration;
-    this._pixelsPerDuration = params.pixelsPerDuration;
+    this._interval = params.interval;
+    this._pixelsPerInterval = params.pixelsPerInterval;
     
     this._zones = [{
         startTime:  Number.NEGATIVE_INFINITY,
@@ -243,7 +243,7 @@ Timeline.HotZoneEther.prototype._pixelOffsetToDate = function(pixels, fromDate) 
 };
 
 Timeline.HotZoneEther.prototype._getScale = function() {
-    return this._duration / this._pixelsPerDuration;
+    return this._interval / this._pixelsPerInterval;
 };
 
 /*==================================================

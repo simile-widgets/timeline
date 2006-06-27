@@ -22,7 +22,9 @@ Timeline.DefaultEventSource.prototype.removeListener = function(listener) {
     }
 };
 
-Timeline.DefaultEventSource.prototype.loadXML = function(xml) {
+Timeline.DefaultEventSource.prototype.loadXML = function(xml, url) {
+    var base = this._getBaseURL(url);
+
     var node = xml.documentElement.firstChild;
     var added = false;
     while (node != null) {
@@ -39,9 +41,9 @@ Timeline.DefaultEventSource.prototype.loadXML = function(xml) {
                 node.getAttribute("isDuration") != "true",
                 node.getAttribute("title"),
                 description,
-                node.getAttribute("image"),
-                node.getAttribute("link"),
-                node.getAttribute("icon"),
+                this._resolveRelativeURL(node.getAttribute("image"), base),
+                this._resolveRelativeURL(node.getAttribute("link"), base),
+                this._resolveRelativeURL(node.getAttribute("icon"), base),
                 node.getAttribute("color"),
                 node.getAttribute("textColor")
             );
@@ -76,6 +78,36 @@ Timeline.DefaultEventSource.prototype.getAllEventIterator = function() {
 
 Timeline.DefaultEventSource.prototype.getCount = function() {
     return this._events.getCount();
+};
+
+Timeline.DefaultEventSource.prototype._getBaseURL = function(url) {
+    if (url.indexOf("://") < 0) {
+        var url2 = this._getBaseURL(document.location.href);
+        if (url.substr(0,1) == "/") {
+            url = url2.substr(0, url2.indexOf("/", url2.indexOf("://") + 3)) + url;
+        } else {
+            url = url2 + url;
+        }
+    }
+    
+    var i = url.lastIndexOf("/");
+    if (i < 0) {
+        return "";
+    } else {
+        return url.substr(0, i+1);
+    }
+};
+
+Timeline.DefaultEventSource.prototype._resolveRelativeURL = function(url, base) {
+    if (url == null || url == "") {
+        return url;
+    } else if (url.indexOf("://") > 0) {
+        return url;
+    } else if (url.substr(0,1) == "/") {
+        return base.substr(0, base.indexOf("/", base.indexOf("://") + 3)) + url;
+    } else {
+        return base + url;
+    }
 };
 
 

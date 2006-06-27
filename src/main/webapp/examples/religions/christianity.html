@@ -70,8 +70,8 @@
             bandInfos[1].eventPainter.setLayout(bandInfos[0].eventPainter.getLayout());
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
-            Timeline.loadXML("christianity.xml", function(xml) {
-                eventSourceChristianity.loadXML(xml);
+            Timeline.loadXML("christianity.xml", function(xml, url) {
+                eventSourceChristianity.loadXML(xml, url);
             });
             
             setupFilterHighlightControls(document.getElementById("controls"), tl, [0,1], theme);

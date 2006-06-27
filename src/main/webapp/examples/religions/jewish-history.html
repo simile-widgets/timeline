@@ -70,8 +70,8 @@
             bandInfos[1].eventPainter.setLayout(bandInfos[0].eventPainter.getLayout());
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
-            Timeline.loadXML("jewish.xml", function(xml) {
-                eventSource.loadXML(xml);
+            Timeline.loadXML("jewish.xml", function(xml, url) {
+                eventSource.loadXML(xml, url);
             });
             
             setupFilterHighlightControls(document.getElementById("controls"), tl, [0,1], theme);

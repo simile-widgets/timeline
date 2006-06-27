@@ -124,8 +124,14 @@
             
             setupFilterHighlightControls(document.getElementById("controls"), tl, [0,1], theme);
         }
+        var resizeTimerID = null;
         function onResize() {
-            tl.layout();
+            if (resizeTimerID == null) {
+                resizeTimerID = window.setTimeout(function() {
+                    resizeTimerID = null;
+                    tl.layout();
+                }, 500);
+            }
         }
     </script>
 </head>

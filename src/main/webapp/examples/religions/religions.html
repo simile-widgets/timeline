@@ -118,8 +118,14 @@
             setupFilterHighlightControls(document.getElementById("jewish-controls"), tl, [0,1], theme);
             setupFilterHighlightControls(document.getElementById("christianity-controls"), tl, [2,3], theme);
         }
+        var resizeTimerID = null;
         function onResize() {
-            tl.layout();
+            if (resizeTimerID == null) {
+                resizeTimerID = window.setTimeout(function() {
+                    resizeTimerID = null;
+                    tl.layout();
+                }, 500);
+            }
         }
     </script>
 </head>

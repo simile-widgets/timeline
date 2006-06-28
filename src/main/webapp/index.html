@@ -1,7 +1,10 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-    <title>Timeline Documentation</title>
+    <title>SIMILE | Timeline</title>
     <link rel='stylesheet' href='styles.css' type='text/css' />
+    <link rel="alternate" type="application/rdf+xml" href="doap.rdf" />
+    
     <script src="api/timeline-api.js" type="text/javascript"></script>
     <script>
         var tl;
@@ -134,11 +137,12 @@
     </script>
 </head>
 <body onload="onLoad();" onresize="onResize();">
-<div id="header">
-    <a href="http://simile.mit.edu/">Simile</a> |
-    Timeline
-</div>
-<div id="content">
+<ul id="path">
+  <li><a href="http://simile.mit.edu/" title="Home">SIMILE</a></li>
+  <li><span>Timeline</span></li>
+</ul>
+
+<div id="body">
     <h1>Timeline</h1>
     <p>Timeline is a DHTML-based AJAXy widget for visualizing time-based events.
         It is like <a href="http://maps.google.com/">Google Maps</a> for time information.
@@ -146,14 +150,14 @@
         dragging it horizontally.
     </p>
 
-    <div id="tl" style="height: 400px; border: 1px solid #aaa; font-size: 8pt; margin: 2em;">
+    <div id="tl" class="timeline-default" style="height: 400px; margin: 2em;">
     </div>
     
     <p>Just like Google Maps, Timeline can be used with zero software installation,
         server-side or client-side.
     </p>
     
-    <h2>Topics:</h2>
+    <h2>Topics</h2>
     <ul>
         <li><a href="examples/">More live examples</a></li>
         <li><a href="docs/">Documentation</a>, how to use it, how to extend it</li>
@@ -161,7 +165,7 @@
         <li><a href="http://simile.mit.edu/repository/timeline/">Code on SVN repository</a></li>
     </ul>
     
-    <h2>Licensing &amp; Legal Issues</h2>
+    <h2>Licensing</h2>
     <p>Timeline is open source software and is licensed under the 
         <a href="http://simile.mit.edu/license.html">BSD license</a>.</p>
     </p>

@@ -1,37 +1,15 @@
+@import url("http://simile.mit.edu/styles/default.css");
+
 body {
-    font-family: Trebuchet MS, Helvetica, Arial, sans serif;
-    font-size: 10pt;
-    margin: 0;
+    margin-bottom: 20em;
 }
 
 table {
     font-size: 100%;
 }
 
-#header {
-    background: #ddd;
-    padding: 0.5em;
-    font-weight: bold;
-}
-
-#content {
-    margin: 5em;
-}
-
-#header {
-    background: #888;
-    padding: 0.25em;
+.timeline-default {
+    font-family: Trebuchet MS, Helvetica, Arial, sans serif;
     font-size: 8pt;
-    color: white;
-}
-
-#header a {
-    color: white;
-    font-weight: bold;
-    text-decoration: none;
-}
-#header a:hover {
-    color: #ccc;
-    font-weight: bold;
-    text-decoration: underline;
+    border: 1px solid #aaa;
 }

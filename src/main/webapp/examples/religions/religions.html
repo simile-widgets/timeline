@@ -1,6 +1,7 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-    <title>Timeline Example: Religion Timelines</title>
+    <title>SIMILE | Timeline | Examples | Religion Timelines</title>
     <link rel='stylesheet' href='../styles.css' type='text/css' />
     <script src="../../api/timeline-api.js" type="text/javascript"></script>
     <script src="../examples.js" type="text/javascript"></script>
@@ -130,17 +131,18 @@
     </script>
 </head>
 <body onload="onLoad();" onresize="onResize();">
-<div id="header">
-    <a href="http://simile.mit.edu/">Simile</a> |
-    <a href="../../">Timeline</a> |
-    <a href="../">Examples</a> |
-    Religion Timelines
-</div>
-<div id="content">
+<ul id="path">
+  <li><a href="http://simile.mit.edu/" title="Home">SIMILE</a></li>
+  <li><a href="../../" title="Timeline">Timeline</a></li>
+  <li><a href="../" title="Examples">Examples</a></li>
+  <li><span>Religion Timelines</span></li>
+</ul>
+
+<div id="body">
     <h1>Religion Timelines: Jewish History + Christianity History</h1>
     <p>Sources:
         <a href="http://en.wikipedia.org/wiki/Timeline_of_Jewish_history">Timeline of Jewish history (Wikipedia)</a>,
-        a href="http://en.wikipedia.org/wiki/Timeline_of_Christianity">Timeline of Christianity</a>.
+        <a href="http://en.wikipedia.org/wiki/Timeline_of_Christianity">Timeline of Christianity</a>.
         The Jewish timeline (top) contains <span id="jewish-event-count"></span> events while 
         the Christianity timeline contains <span id="christianity-event-count"></span> events.
         Titles of events have been phrased by David Huynh, author of this timeline example.
@@ -166,7 +168,7 @@
     
     <div class="controls" id="jewish-controls">
     </div>
-    <div id="tl" style="height: 800px; border: 1px solid #aaa; position: relative; font-size: 8pt">
+    <div id="tl" class="timeline-default" style="height: 800px">
     </div>
     <div class="controls" id="christianity-controls">
     </div>

@@ -1,6 +1,7 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-    <title>Timeline Example: The JFK Assassination Timeline</title>
+    <title>SIMILE | Timeline | Examples | The JFK Assassination Timeline</title>
     <link rel='stylesheet' href='../styles.css' type='text/css' />
     <script src="../../api/timeline-api.js" type="text/javascript"></script>
     <script src="../examples.js" type="text/javascript"></script>
@@ -136,13 +137,14 @@
     </script>
 </head>
 <body onload="onLoad();" onresize="onResize();">
-<div id="header">
-    <a href="http://simile.mit.edu/">Simile</a> |
-    <a href="../../">Timeline</a> |
-    <a href="../">Examples</a> |
-    The JFK Assassination Timeline
-</div>
-<div id="content">
+<ul id="path">
+  <li><a href="http://simile.mit.edu/" title="Home">SIMILE</a></li>
+  <li><a href="../../" title="Timeline">Timeline</a></li>
+  <li><a href="../" title="Examples">Examples</a></li>
+  <li><span>The JFK Assassination Timeline</span></li>
+</ul>
+
+<div id="body">
     <h1>The JFK Assassination Timeline</h1>
     <p>Sources:
         <a href="http://roswell.fortunecity.com/angelic/96/pctime.htm">http://roswell.fortunecity.com/angelic/96/pctime.htm</a>.
@@ -151,7 +153,7 @@
         should not be taken as an official source of this topic.
     </p>
     
-    <div id="tl" style="height: 400px; border: 1px solid #aaa; font-size: 8pt;">
+    <div id="tl" class="timeline-default" style="height: 400px;">
     </div>
     <div class="footnotes">
         All times are in Dallas CST (GMT-0600).

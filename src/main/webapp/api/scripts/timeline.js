@@ -30,6 +30,7 @@ Timeline.createBandInfo = function(params) {
     var layout = new Timeline.StaticTrackBasedLayout({
         eventSource:    eventSource,
         ether:          ether,
+        showText:       ("showEventText" in params) ? params.showEventText : true,
         theme:          theme
     });
     

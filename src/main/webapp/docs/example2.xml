@@ -18,10 +18,28 @@
         </event>
         
     <event 
-        start="Aug 02 2006 00:00:00 GMT"
-        title="Trip to Beijing"
-        link="http://travel.yahoo.com/"
+        start="Aug 02 2006 08:35:00 GMT-0500"
+        title="Board plane in Boston"
         >
-        Woohoo!
+        </event>
+    <event 
+        start="Aug 02 2006 10:35:00 GMT-0500"
+        title="Land in Newwark, New York"
+        >
+        </event>
+    <event 
+        start="Aug 02 2006 11:55:00 GMT-0500"
+        title="Board plane in Newwark, New York"
+        >
+        </event>
+    <event 
+        start="Aug 03 2006 03:30:00 GMT-0500"
+        title="Land in Beijing in China"
+        >
+        </event>
+    <event 
+        start="Aug 03 2006 07:00:00 GMT-0500"
+        title="Dinner with old colleagues"
+        >
         </event>
 </data>

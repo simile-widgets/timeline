@@ -8,6 +8,7 @@ Timeline.StaticTrackBasedLayout = function(params) {
     this._eventSource = params.eventSource;
     this._ether = params.ether;
     this._theme = params.theme;
+    this._showText = ("showText" in params) ? params.showText : true;
     
     this._laidout = false;
     
@@ -50,7 +51,7 @@ Timeline.StaticTrackBasedLayout.prototype._layout = function() {
     
     var streams = [ Number.NEGATIVE_INFINITY ];
     var layout = this;
-    var showText = true;
+    var showText = this._showText;
     var theme = this._theme;
     var eventTheme = theme.event;
     

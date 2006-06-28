@@ -1,0 +1,181 @@
+<html>
+<head>
+    <title>SIMILE | Timeline | Documentation | How to Create Timelines</title>
+    <link rel='stylesheet' href='styles.css' type='text/css' />
+    <style>
+        .timeline-default {
+            margin: 2em;
+        }
+    </style>
+    <script src="../api/timeline-api.js" type="text/javascript"></script>
+    <script>
+        var tl1, tl2, tl3;
+        function createBandInfos() {
+            return [
+                Timeline.createBandInfo({
+                    width:          "70%", 
+                    intervalUnit:   Timeline.DateTime.MONTH, 
+                    intervalPixels: 100
+                }),
+                Timeline.createBandInfo({
+                    width:          "30%", 
+                    intervalUnit:   Timeline.DateTime.YEAR, 
+                    intervalPixels: 200
+                })
+            ];
+        }
+        function createBandInfos2(eventSource) {
+            var bandInfos = [
+                Timeline.createBandInfo({
+                    width:          "70%", 
+                    intervalUnit:   Timeline.DateTime.MONTH, 
+                    intervalPixels: 100,
+                    eventSource:    eventSource
+                }),
+                Timeline.createBandInfo({
+                    width:          "30%", 
+                    intervalUnit:   Timeline.DateTime.YEAR, 
+                    intervalPixels: 200,
+                    eventSource:    eventSource
+                })
+            ];
+            bandInfos[1].syncWith = 0;
+            bandInfos[1].highlight = true;
+            return bandInfos;
+        }
+        function onLoad() {
+            var bandInfos1 = createBandInfos();
+            tl1 = Timeline.create(document.getElementById("tl1"), bandInfos1);
+                
+            var bandInfos2 = createBandInfos();
+            bandInfos2[1].syncWith = 0;
+            bandInfos2[1].highlight = true;
+            tl2 = Timeline.create(document.getElementById("tl2"), bandInfos2);
+            
+            var eventSource3 = new Timeline.DefaultEventSource();
+            var bandInfos3 = createBandInfos2(eventSource3);
+            tl3 = Timeline.create(document.getElementById("tl3"), bandInfos3);
+            
+            Timeline.loadXML("example1.xml", 
+                function(xml, url) { eventSource3.loadXML(xml, url); });
+        }
+    </script>
+</head>
+<body onload="onLoad();">
+<ul id="path">
+  <li><a href="http://simile.mit.edu/" title="Home">SIMILE</a></li>
+  <li><a href="../" title="Timeline">Timeline</a></li>
+  <li><a href="./" title="Documentation">Documentation</a></li>
+  <li><span>How to Create Timelines</span></li>
+</ul>
+
+<div id="body">
+    <h1>How to Create Timelines</h1>
+    
+    <h2>Getting Started</h2>
+    
+    <p>Here are a few easy steps to create a simple timeline. Open up your favorite text
+        or HTML editor and start creating an HTML file.
+    </p>
+    
+    <h3>Step 1. Link to the API</h3>
+    <p>In your HTML code, link to Timeline's Javascript API code as follows:
+<pre>&lt;html&gt;
+  &lt;head&gt;
+    ...
+    <span class="highlight">&lt;script src="<a href="http://simile.mit.edu.nyud.net:8080/timeline/api/timeline-api.js">http://simile.mit.edu.nyud.net:8080/timeline/api/timeline-api.js</a>" type="text/javascript"&gt;&lt;/script&gt;</span>
+    ...
+  &lt;/head&gt;
+  &lt;body&gt;
+    ...
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+        Note that even if Timeline's API is officially hosted at 
+        http://simile.mit.edu/timeline/api/timeline-api.js, we
+        ask that you use the URL above (which goes through the 
+        <a href="http://www.coralcdn.org/">Coral Content Distribution Network</a>) 
+        to help reduce the load on our server. We don't have as much bandwidth as
+        Google :-).
+    </p>
+    
+    <h3>Step 2. Create a DIV Element</h3>
+    <p>Create a <span class="html">div</span> element in your HTML code, e.g.
+<pre>&lt;div id="my-timeline" style="height: 150px; border: 1px solid #aaa" /&gt;</pre>
+        You should give it an ID as well as fix its height. You can
+        optionally set its borders&mdash;this usually makes the timeline
+        look better.
+    </p>
+
+    <h3>Step 3. Call <span class="code">Timeline.create()</span></h3>
+    <p>Add an <span class="code">onload</span> event handler to the 
+        <span class="html">body</span> element (to make sure that when
+        we start to use Timeline's API, all its code has been loaded):
+<pre>  &lt;body onload="onLoad();"&gt;
+    ...
+  &lt;/body&gt;</pre>
+        Then write the event handler in a 
+        <span class="html">script</span> block or a separate Javascript file
+        as follows:
+<pre>function onLoad() {
+  var bandInfos = [
+    Timeline.createBandInfo({
+        width:          "70%", 
+        intervalUnit:   Timeline.DateTime.MONTH, 
+        intervalPixels: 100
+    }),
+    Timeline.createBandInfo({
+        width:          "30%", 
+        intervalUnit:   Timeline.DateTime.YEAR, 
+        intervalPixels: 200
+    })
+  ];
+  var tl = Timeline.create(document.getElementById("my-timeline"), bandInfos);
+}</pre>
+        That code creates a horizontal timeline (below) with 2 bands: 
+        in the top band, a month spans 100 pixels (approximately, since
+        a month here refers to 30 days while not every month is
+        exactly 30 days long); and in the bottom band, a year spans
+        200 pixels. The top band takes up 70% of the timeline's height,
+        and the bottom band 30%. <em>Note that the two bands scroll
+        independently.</em>
+    </p>
+    
+    <p><div id="tl1" class="timeline-default" style="height: 150px;"></div></p>
+    
+    <p>To make the two bands scroll in synchrony, and then to make the
+        bottom band highlights the visible time span of the top band,
+        add the following code:
+<pre>function onLoad() {
+  var bandInfos = [
+    Timeline.createBandInfo({
+        width:          "70%", 
+        intervalUnit:   Timeline.DateTime.MONTH, 
+        intervalPixels: 100
+    }),
+    Timeline.createBandInfo({
+        width:          "30%", 
+        intervalUnit:   Timeline.DateTime.YEAR, 
+        intervalPixels: 200
+    })
+  ];
+<span class="highlight">  bandInfos[1].syncWith = 0;
+  bandInfos[1].highlight = true;</span>
+  
+  var tl = Timeline.create(document.getElementById("my-timeline"), bandInfos);
+}</pre>
+    </p>
+    
+    <p><div id="tl2" class="timeline-default" style="height: 150px;"></div></p>
+    
+    <h3>Step 4. Load Events</h3>
+    
+    <p><div id="tl3" class="timeline-default" style="height: 250px"></div></p>
+    
+    <h2>Related Topics</h2>
+    <ul>
+        <li><a href="create-timelines.html">How to create timelines</a></li>
+        <li><a href="timelines.html">Timeline class</a></li>
+    </ul>
+</div>
+</body>
+</html>

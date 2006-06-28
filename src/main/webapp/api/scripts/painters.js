@@ -308,13 +308,16 @@ Timeline.DurationEventPainter.prototype._onClickInstantEvent = function(icon, do
 };
 
 Timeline.DurationEventPainter.prototype._onClickDurationEvent = function(domEvt, evt, target) {
-    var body = target.ownerDocument.body;
     domEvt.cancelBubble = true;
-    this._showBubble(
-        domEvt.clientX + body.scrollLeft,
-        domEvt.clientY + body.scrollTop,
-        evt
-    );
+    if ("pageX" in domEvt) {
+        var x = domEvt.pageX;
+        var y = domEvt.pageY;
+    } else {
+        var c = Timeline.DOM.getPageCoordinates(target);
+        var x = domEvt.offsetX + c.left;
+        var y = domEvt.offsetY + c.top;
+    }
+    this._showBubble(x, y, evt);
 };
 
 Timeline.DurationEventPainter.prototype._showBubble = function(x, y, evt) {

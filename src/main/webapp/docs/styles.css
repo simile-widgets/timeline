@@ -13,6 +13,10 @@
     margin: 1em;
 }
 
+.highlight {
+    background: #FFFFE0;
+}
+
 .itf-member {
     margin: 1em 0;
     padding: 1em;

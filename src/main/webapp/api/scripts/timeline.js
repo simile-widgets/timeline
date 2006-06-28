@@ -192,6 +192,18 @@ Timeline._Impl.prototype._initialize = function() {
         containerDiv.removeChild(containerDiv.firstChild);
     }
     
+    /*
+     *  inserting copyright and link to simile
+     */
+    var elmtCopyright = Timeline.Graphics.createTranslucentImage(doc, Timeline.urlPrefix + "images/copyright.png");
+    elmtCopyright.className = "timeline-copyright";
+    elmtCopyright.title = "(c) SIMILE (http://simile.mit.edu/)";
+    Timeline.DOM.registerEvent(elmtCopyright, "click", function() { window.location = "http://simile.mit.edu/"; });
+    containerDiv.appendChild(elmtCopyright);
+    
+    /*
+     *  creating bands
+     */
     this._bands = [];
     for (var i = 0; i < this._bandInfos.length; i++) {
         var band = new Timeline._Band(this, this._bandInfos[i], i);
@@ -199,6 +211,9 @@ Timeline._Impl.prototype._initialize = function() {
     }
     this._distributeWidths();
     
+    /*
+     *  sync'ing bands
+     */
     for (var i = 0; i < this._bandInfos.length; i++) {
         var bandInfo = this._bandInfos[i];
         if ("syncWith" in bandInfo) {

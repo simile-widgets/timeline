@@ -195,10 +195,10 @@ Timeline._Impl.prototype._initialize = function() {
     /*
      *  inserting copyright and link to simile
      */
-    var elmtCopyright = Timeline.Graphics.createTranslucentImage(doc, Timeline.urlPrefix + "images/copyright.png");
+    var elmtCopyright = Timeline.Graphics.createTranslucentImage(doc, Timeline.urlPrefix + (this.isHorizontal() ? "images/copyright-vertical.png" : "images/copyright.png"));
     elmtCopyright.className = "timeline-copyright";
-    elmtCopyright.title = "(c) SIMILE (http://simile.mit.edu/)";
-    Timeline.DOM.registerEvent(elmtCopyright, "click", function() { window.location = "http://simile.mit.edu/"; });
+    elmtCopyright.title = "Timeline (c) SIMILE - http://simile.mit.edu/timeline/";
+    Timeline.DOM.registerEvent(elmtCopyright, "click", function() { window.location = "http://simile.mit.edu/timeline/"; });
     containerDiv.appendChild(elmtCopyright);
     
     /*

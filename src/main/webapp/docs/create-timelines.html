@@ -21,10 +21,19 @@
 <div id="body">
     <h1>How to Create Timelines</h1>
     
+    <p>Table of Contents:
+    <ul>
+        <li><a href="#getting-started">Getting Started</a></li>
+        <li><a href="#differentiating-the-two-bands">Differentiating the Two Bands</a></li>
+        <li><a href="#understanding-initialization-settings">Understanding Initialization Settings</a></li>
+        <li><a href="#hot-zones">Hot Zones</a></li>
+    </ul>
+    </p>
+    
     <!--================================================================================
         Getting Started
     -->
-    <h2>Getting Started</h2>
+    <h2><a name="getting-started">Getting Started</a></h2>
     
     <p>Here are a few easy steps to create a simple timeline. Open up your favorite text
         or HTML editor and start creating an HTML file.
@@ -136,7 +145,7 @@ function onResize() {
     
     <h3>Step 4. Add Events</h3>
     
-    <p>To add events to the timeline, create an <a href="event-sources.html">event source</a>
+    <p>To add events to the timeline, create an <a href="../api/scripts/sources.js">event source</a>
         and load it with data from an XML file:
 <pre>function onLoad() {
 <span class="highlight">  var eventSource = new Timeline.DefaultEventSource();</span>
@@ -183,7 +192,7 @@ function onResize() {
     <!--================================================================================
         Differentiating the Two Bands
     -->
-    <h2>Differentiating the Two Bands</h2>
+    <h2><a name="differentiating-the-two-bands">Differentiating the Two Bands</a></h2>
     
     <p>Looking at the previous timeline, it is obvious that the lower band looks
         denser, and it will become a lot denser a lot quicker than the upper band
@@ -230,7 +239,7 @@ function onResize() {
     <!--================================================================================
         Understanding Initialization Settings
     -->
-    <h2>Understanding Initialization Settings</h3>
+    <h2><a name="understanding-initialization-settings">Understanding Initialization Settings</a></h2>
     
     <p>By now you must have realized that <span class="code">Timeline.createBandInfo()</span>
         fills in default settings, which can be overridden, for constructing
@@ -336,7 +345,7 @@ function onResize() {
     <!--================================================================================
         Hot Zones
     -->
-    <h2>Hot Zones</h2>
+    <h2><a name="hot-zones">Hot Zones</a></h2>
     
     <p>Now we load <a href="example2.xml">example2.xml</a>, which contains a few more
         details for "Trip to Beijing" and discover that the days starting on August 2,

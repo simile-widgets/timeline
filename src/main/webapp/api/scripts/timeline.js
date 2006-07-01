@@ -284,6 +284,7 @@ Timeline._Band = function(timeline, bandInfo, index) {
     Timeline.DOM.registerEventWithObject(this._div, "mousedown", this, this._onMouseDown);
     Timeline.DOM.registerEventWithObject(this._div, "mousemove", this, this._onMouseMove);
     Timeline.DOM.registerEventWithObject(this._div, "mouseup", this, this._onMouseUp);
+    Timeline.DOM.registerEventWithObject(this._div, "mouseout", this, this._onMouseOut);
     
     this._innerDiv = this._timeline.getDocument().createElement("div");
     this._innerDiv.className = "timeline-band-inner";
@@ -529,6 +530,10 @@ Timeline._Band.prototype._onMouseMove = function(innerFrame, evt, target) {
 };
 
 Timeline._Band.prototype._onMouseUp = function(innerFrame, evt, target) {
+    this._dragging = false;
+};
+
+Timeline._Band.prototype._onMouseOut = function(innerFrame, evt, target) {
     this._dragging = false;
 };
 

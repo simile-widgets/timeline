@@ -4,8 +4,8 @@
  */
 
 
-Timeline.DefaultEventSource = function() {
-    this._events = new Timeline.EventIndex();
+Timeline.DefaultEventSource = function(eventIndex) {
+    this._events = (eventIndex instanceof Object) ? eventIndex : new Timeline.EventIndex();
     this._listeners = [];
 };
 
@@ -61,6 +61,13 @@ Timeline.DefaultEventSource.prototype.loadXML = function(xml, url) {
     }
 };
 
+Timeline.DefaultEventSource.prototype.add = function(evt) {
+    this._events.add(evt);
+    for (var i = 0; i < this._listeners.length; i++) {
+        this._listeners[i].onAddOne(evt);
+    }
+};
+
 Timeline.DefaultEventSource.prototype.clear = function() {
     this._events.removeAll();
     for (var i = 0; i < this._listeners.length; i++) {
@@ -78,6 +85,14 @@ Timeline.DefaultEventSource.prototype.getAllEventIterator = function() {
 
 Timeline.DefaultEventSource.prototype.getCount = function() {
     return this._events.getCount();
+};
+
+Timeline.DefaultEventSource.prototype.getEarliestDate = function() {
+    return this._events.getEarliestDate();
+};
+
+Timeline.DefaultEventSource.prototype.getLatestDate = function() {
+    return this._events.getLatestDate();
 };
 
 Timeline.DefaultEventSource.prototype._getBaseURL = function(url) {

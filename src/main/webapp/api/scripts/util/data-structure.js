@@ -68,6 +68,14 @@ Timeline.SortedArray.prototype.find = function(compare) {
     return a;
 };
 
+Timeline.SortedArray.prototype.getFirst = function() {
+    return (this._a.length > 0) ? this._a[0] : null;
+};
+
+Timeline.SortedArray.prototype.getLast = function() {
+    return (this._a.length > 0) ? this._a[this._a.length - 1] : null;
+};
+
 /*==================================================
  *  Event Index
  *==================================================
@@ -100,6 +108,30 @@ Timeline.EventIndex.prototype.getIterator = function(startDate, endDate) {
 
 Timeline.EventIndex.prototype.getAllIterator = function() {
     return new Timeline.EventIndex._AllIterator(this._events);
+};
+
+Timeline.EventIndex.prototype.getEarliestDate = function() {
+    var evt = this._events.getFirst();
+    return (evt == null) ? null : evt.getStart();
+};
+
+Timeline.EventIndex.prototype.getLatestDate = function() {
+    var evt = this._events.getLast();
+    if (evt == null) {
+        return null;
+    }
+    
+    if (!this._indexed) {
+        this._index();
+    }
+    
+    var index = evt._earliestOverlapIndex;
+    var date = this._events.elementAt(index).getEnd();
+    for (var i = index + 1; i < this._events.length(); i++) {
+        date = new Date(Math.max(date.getTime(), this._events.elementAt(i).getEnd().getTime()));
+    }
+    
+    return date;
 };
 
 Timeline.EventIndex.prototype._index = function() {

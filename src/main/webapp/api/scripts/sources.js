@@ -70,6 +70,46 @@ Timeline.DefaultEventSource.prototype.loadXML = function(xml, url) {
     }
 };
 
+
+Timeline.DefaultEventSource.prototype.loadJSON = function(data, url) {
+    var base = this._getBaseURL(url);
+    var added = false;  
+   if (data && data.events){
+       dateTimeFormat = (data.dateTimeFormat && data.dateTimeFormat.toLowerCase()) || "iso8601";
+       
+       var parseDateTimeFunction =
+           (dateTimeFormat == "iso8601" || dateTimeFormat == "iso 8601") ?
+           Timeline.DateTime.parseIso8601DateTime : 
+           Timeline.DateTime.parseGregorianDateTime;
+   
+       for (var i=0; i < data.events.length; i++){
+           var event = data.events[i];
+           var evt = new Timeline.DefaultEventSource.Event(
+                   parseDateTimeFunction(event.start),
+                   parseDateTimeFunction(event.end),
+                   parseDateTimeFunction(event.latestStart),
+                   parseDateTimeFunction(event.earliestEnd),
+                   event.isDuration || false,
+                   event.title,
+                    event.description,
+                   this._resolveRelativeURL(event.image, base),
+                   this._resolveRelativeURL(event.link, base),
+                   this._resolveRelativeURL(event.icon, base),
+                   event.color,
+                   event.textColor
+           );
+           this._events.add(evt);
+           added = true;
+       }
+   }
+   
+    if (added) {
+        for (var i = 0; i < this._listeners.length; i++) {
+            this._listeners[i].onAddMany();
+        }
+    }
+};
+
 Timeline.DefaultEventSource.prototype.add = function(evt) {
     this._events.add(evt);
     for (var i = 0; i < this._listeners.length; i++) {
@@ -142,7 +182,7 @@ Timeline.DefaultEventSource.Event = function(
         
     this._id = "e" + Math.floor(Math.random() * 1000000);
     
-    this._instant = instant;
+    this._instant = instant || (end == null);
     
     this._start = start;
     this._end = (end != null) ? end : start;

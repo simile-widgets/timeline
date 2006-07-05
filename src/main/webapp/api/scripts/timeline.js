@@ -125,6 +125,18 @@ Timeline.loadXML = function(url, f) {
     Timeline.XmlHttp.get(url, fError, fDone);
 };
 
+
+Timeline.loadJSON = function(url, f) {
+    var fError = function(statusText, status, xmlhttp) {
+        alert("Failed to load json data from " + url + "\n" + statusText);
+    };
+    var fDone = function(xmlhttp) {
+        f(eval('(' + xmlhttp.responseText + ')'), url);
+    };
+    Timeline.XmlHttp.get(url, fError, fDone);
+};
+
+
 Timeline._Impl = function(elmt, bandInfos, orientation) {
     this._containerDiv = elmt;
     this._orientation = orientation == null ? Timeline.HORIZONTAL : orientation;

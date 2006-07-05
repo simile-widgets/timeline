@@ -24,6 +24,15 @@ Timeline.DefaultEventSource.prototype.removeListener = function(listener) {
 
 Timeline.DefaultEventSource.prototype.loadXML = function(xml, url) {
     var base = this._getBaseURL(url);
+    
+    var dateTimeFormat = xml.documentElement.getAttribute("date-time-format");
+    if (dateTimeFormat != null) {
+        dateTimeFormat = dateTimeFormat.toLowerCase();
+    }
+    var parseDateTimeFunction =
+        (dateTimeFormat == "iso8601" || dateTimeFormat == "iso 8601") ?
+        Timeline.DateTime.parseIso8601DateTime : 
+        Timeline.DateTime.parseGregorianDateTime;
 
     var node = xml.documentElement.firstChild;
     var added = false;
@@ -34,10 +43,10 @@ Timeline.DefaultEventSource.prototype.loadXML = function(xml, url) {
                 description = node.firstChild.nodeValue;
             }
             var evt = new Timeline.DefaultEventSource.Event(
-                Timeline.DateTime.parseGregorianDateTime(node.getAttribute("start")),
-                Timeline.DateTime.parseGregorianDateTime(node.getAttribute("end")),
-                Timeline.DateTime.parseGregorianDateTime(node.getAttribute("latestStart")),
-                Timeline.DateTime.parseGregorianDateTime(node.getAttribute("earliestEnd")),
+                parseDateTimeFunction(node.getAttribute("start")),
+                parseDateTimeFunction(node.getAttribute("end")),
+                parseDateTimeFunction(node.getAttribute("latestStart")),
+                parseDateTimeFunction(node.getAttribute("earliestEnd")),
                 node.getAttribute("isDuration") != "true",
                 node.getAttribute("title"),
                 description,

@@ -60,10 +60,11 @@ Timeline.Platform = new Object();
     
     // ISO-639 language codes, ISO-3166 country codes (2 characters)
     var supportedLocales = [
-        "en",
-        "ru",
-        "vi",
-        "zh"
+        "en",       // English
+        "es",       // Spanish
+        "ru",       // Russian
+        "vi",       // Vietnamese
+        "zh"        // Chinese
     ];
     
     try {

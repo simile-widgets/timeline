@@ -9,6 +9,7 @@ Timeline.GregorianDateLabeller = function(locale, timeZone) {
 };
 
 Timeline.GregorianDateLabeller.monthNames = [];
+Timeline.GregorianDateLabeller.dayNames = [];
 Timeline.GregorianDateLabeller.labelIntervalFunctions = [];
 
 Timeline.GregorianDateLabeller.getMonthName = function(month, locale) {

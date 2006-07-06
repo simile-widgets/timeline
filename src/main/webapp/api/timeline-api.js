@@ -62,7 +62,9 @@ Timeline.Platform = new Object();
     var supportedLocales = [
         "en",       // English
         "es",       // Spanish
+        "it",       // Italian
         "ru",       // Russian
+        "se",       // Swedish
         "vi",       // Vietnamese
         "zh"        // Chinese
     ];

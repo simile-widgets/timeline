@@ -73,7 +73,7 @@ function performFiltering(timeline, bandIndices, table) {
     if (text.length > 0) {
         var regex = new RegExp(text, "i");
         filterMatcher = function(evt) {
-            return regex.test(evt.getDescription());
+            return regex.test(evt.getText()) || regex.test(evt.getDescription());
         };
     }
     
@@ -90,10 +90,11 @@ function performFiltering(timeline, bandIndices, table) {
         }
     }
     var highlightMatcher = hasHighlights ? function(evt) {
+        var text = evt.getText();
         var description = evt.getDescription();
         for (var x = 0; x < regexes.length; x++) {
             var regex = regexes[x];
-            if (regex != null && regex.test(description)) {
+            if (regex != null && (regex.test(text) || regex.test(description))) {
                 return x;
             }
         }

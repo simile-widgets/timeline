@@ -81,13 +81,20 @@ Timeline.SortedArray.prototype.getLast = function() {
  *==================================================
  */
 
-Timeline.EventIndex = function() {
-    this._events = new Timeline.SortedArray(Timeline.EventIndex.compare);
+Timeline.EventIndex = function(unit) {
+    var eventIndex = this;
+    
+    this._unit = (unit != null) ? unit : Timeline.NativeDateUnit;
+    this._events = new Timeline.SortedArray(
+        function(event1, event2) {
+            return eventIndex._unit.compare(event1.getStart(), event2.getStart());
+        }
+    );
     this._indexed = true;
 };
 
-Timeline.EventIndex.compare = function(event1, event2) {
-    return event1.getStart().getTime() - event2.getStart().getTime();
+Timeline.EventIndex.prototype.getUnit = function() {
+    return this._unit;
 };
 
 Timeline.EventIndex.prototype.add = function(evt) {
@@ -103,7 +110,7 @@ Timeline.EventIndex.prototype.getIterator = function(startDate, endDate) {
     if (!this._indexed) {
         this._index();
     }
-    return new Timeline.EventIndex._Iterator(this._events, startDate, endDate);
+    return new Timeline.EventIndex._Iterator(this._events, startDate, endDate, this._unit);
 };
 
 Timeline.EventIndex.prototype.getAllIterator = function() {
@@ -128,7 +135,7 @@ Timeline.EventIndex.prototype.getLatestDate = function() {
     var index = evt._earliestOverlapIndex;
     var date = this._events.elementAt(index).getEnd();
     for (var i = index + 1; i < this._events.length(); i++) {
-        date = new Date(Math.max(date.getTime(), this._events.elementAt(i).getEnd().getTime()));
+        date = this._unit.later(date, this._events.elementAt(i).getEnd());
     }
     
     return date;
@@ -149,14 +156,14 @@ Timeline.EventIndex.prototype._index = function() {
     var toIndex = 1;
     for (var i = 0; i < l; i++) {
         var evt = this._events.elementAt(i);
-        var end = evt.getEnd().getTime();
+        var end = evt.getEnd();
         
         toIndex = Math.max(toIndex, i + 1);
         while (toIndex < l) {
             var evt2 = this._events.elementAt(toIndex);
-            var start2 = evt2.getStart().getTime();
+            var start2 = evt2.getStart();
             
-            if (start2 < end) {
+            if (this._unit.compare(start2, end) < 0) {
                 evt2._earliestOverlapIndex = i;
                 toIndex++;
             } else {
@@ -167,13 +174,14 @@ Timeline.EventIndex.prototype._index = function() {
     this._indexed = true;
 };
 
-Timeline.EventIndex._Iterator = function(events, startDate, endDate) {
+Timeline.EventIndex._Iterator = function(events, startDate, endDate, unit) {
     this._events = events;
     this._startDate = startDate;
     this._endDate = endDate;
+    this._unit = unit;
     
     this._currentIndex = events.find(function(evt) {
-        return evt.getStart().getTime() - startDate.getTime();
+        return unit.compare(evt.getStart(), startDate);
     });
     if (this._currentIndex - 1 >= 0) {
         this._currentIndex = this._events.elementAt(this._currentIndex - 1)._earliestOverlapIndex;
@@ -181,7 +189,7 @@ Timeline.EventIndex._Iterator = function(events, startDate, endDate) {
     this._currentIndex--;
     
     this._maxIndex = events.find(function(evt) {
-        return evt.getStart().getTime() - endDate.getTime();
+        return unit.compare(evt.getStart(), endDate);
     });
     
     this._hasNext = false;
@@ -202,10 +210,11 @@ Timeline.EventIndex._Iterator.prototype = {
         }
     },
     _findNext: function() {
+        var unit = this._unit;
         while ((++this._currentIndex) < this._maxIndex) {
             var evt = this._events.elementAt(this._currentIndex);
-            if (evt.getStart().getTime() < this._endDate.getTime() &&
-                evt.getEnd().getTime() > this._startDate.getTime()) {
+            if (unit.compare(evt.getStart(), this._endDate) < 0 &&
+                unit.compare(evt.getEnd(), this._startDate) > 0) {
                 
                 this._next = evt;
                 this._hasNext = true;

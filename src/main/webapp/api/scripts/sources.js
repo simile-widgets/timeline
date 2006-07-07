@@ -26,13 +26,7 @@ Timeline.DefaultEventSource.prototype.loadXML = function(xml, url) {
     var base = this._getBaseURL(url);
     
     var dateTimeFormat = xml.documentElement.getAttribute("date-time-format");
-    if (dateTimeFormat != null) {
-        dateTimeFormat = dateTimeFormat.toLowerCase();
-    }
-    var parseDateTimeFunction =
-        (dateTimeFormat == "iso8601" || dateTimeFormat == "iso 8601") ?
-        Timeline.DateTime.parseIso8601DateTime : 
-        Timeline.DateTime.parseGregorianDateTime;
+    var parseDateTimeFunction = this._events.getUnit().getParser(dateTimeFormat);
 
     var node = xml.documentElement.firstChild;
     var added = false;
@@ -74,34 +68,30 @@ Timeline.DefaultEventSource.prototype.loadXML = function(xml, url) {
 Timeline.DefaultEventSource.prototype.loadJSON = function(data, url) {
     var base = this._getBaseURL(url);
     var added = false;  
-   if (data && data.events){
-       dateTimeFormat = (data.dateTimeFormat && data.dateTimeFormat.toLowerCase()) || "iso8601";
+    if (data && data.events){
+        var dateTimeFormat = ("dateTimeFormat" in data) ? data.dateTimeFormat : null;
+        var parseDateTimeFunction = this._events.getUnit().getParser(dateTimeFormat);
        
-       var parseDateTimeFunction =
-           (dateTimeFormat == "iso8601" || dateTimeFormat == "iso 8601") ?
-           Timeline.DateTime.parseIso8601DateTime : 
-           Timeline.DateTime.parseGregorianDateTime;
-   
-       for (var i=0; i < data.events.length; i++){
-           var event = data.events[i];
-           var evt = new Timeline.DefaultEventSource.Event(
-                   parseDateTimeFunction(event.start),
-                   parseDateTimeFunction(event.end),
-                   parseDateTimeFunction(event.latestStart),
-                   parseDateTimeFunction(event.earliestEnd),
-                   event.isDuration || false,
-                   event.title,
-                    event.description,
-                   this._resolveRelativeURL(event.image, base),
-                   this._resolveRelativeURL(event.link, base),
-                   this._resolveRelativeURL(event.icon, base),
-                   event.color,
-                   event.textColor
-           );
-           this._events.add(evt);
-           added = true;
-       }
-   }
+        for (var i=0; i < data.events.length; i++){
+            var event = data.events[i];
+            var evt = new Timeline.DefaultEventSource.Event(
+                parseDateTimeFunction(event.start),
+                parseDateTimeFunction(event.end),
+                parseDateTimeFunction(event.latestStart),
+                parseDateTimeFunction(event.earliestEnd),
+                event.isDuration || false,
+                event.title,
+                event.description,
+                this._resolveRelativeURL(event.image, base),
+                this._resolveRelativeURL(event.link, base),
+                this._resolveRelativeURL(event.icon, base),
+                event.color,
+                event.textColor
+            );
+            this._events.add(evt);
+            added = true;
+        }
+    }
    
     if (added) {
         for (var i = 0; i < this._listeners.length; i++) {

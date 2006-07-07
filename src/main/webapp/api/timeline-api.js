@@ -38,8 +38,10 @@ Timeline.Platform = new Object();
         "util/date-time.js",
         "util/data-structure.js",
         
+        "units.js",
         "themes.js",
         "ethers.js",
+        "ether-painters.js",
         "labellers.js",
         "sources.js",
         "layouts.js",

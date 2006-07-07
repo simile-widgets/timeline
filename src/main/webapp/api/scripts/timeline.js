@@ -2,8 +2,8 @@
  *  Timeline
  *==================================================
  */
-Timeline.create = function(elmt, bandInfos, orientation) {
-    return new Timeline._Impl(elmt, bandInfos, orientation);
+Timeline.create = function(elmt, bandInfos, orientation, unit) {
+    return new Timeline._Impl(elmt, bandInfos, orientation, unit);
 };
 
 Timeline.HORIZONTAL = 0;
@@ -137,10 +137,12 @@ Timeline.loadJSON = function(url, f) {
 };
 
 
-Timeline._Impl = function(elmt, bandInfos, orientation) {
+Timeline._Impl = function(elmt, bandInfos, orientation, unit) {
     this._containerDiv = elmt;
-    this._orientation = orientation == null ? Timeline.HORIZONTAL : orientation;
+    
     this._bandInfos = bandInfos;
+    this._orientation = orientation == null ? Timeline.HORIZONTAL : orientation;
+    this._unit = (unit != null) ? unit : Timeline.NativeDateUnit;
     
     this._initialize();
 };
@@ -191,6 +193,10 @@ Timeline._Impl.prototype.getPixelLength = function() {
 Timeline._Impl.prototype.getPixelWidth = function() {
     return this._orientation == Timeline.VERTICAL ? 
         this._containerDiv.offsetWidth : this._containerDiv.offsetHeight;
+};
+
+Timeline._Impl.prototype.getUnit = function() {
+    return this._unit;
 };
 
 Timeline._Impl.prototype._initialize = function() {
@@ -274,7 +280,7 @@ Timeline._Band = function(timeline, bandInfo, index) {
     this._locale = ("locale" in bandInfo) ? bandInfo.locale : Timeline.Platform.getDefaultLocale();
     this._timeZone = ("timeZone" in bandInfo) ? bandInfo.timeZone : 0;
     this._labeller = ("labeller" in bandInfo) ? bandInfo.labeller : 
-        new Timeline.GregorianDateLabeller(this._locale, this._timeZone);
+        timeline.getUnit().createLabeller(this._locale, this._timeZone);
     
     this._dragging = false;
     this._changing = false;

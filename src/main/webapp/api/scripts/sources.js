@@ -50,6 +50,11 @@ Timeline.DefaultEventSource.prototype.loadXML = function(xml, url) {
                 node.getAttribute("color"),
                 node.getAttribute("textColor")
             );
+            evt._node = node;
+            evt.getProperty = function(name) {
+                return this._node.getAttribute(name);
+            };
+            
             this._events.add(evt);
             
             added = true;
@@ -88,6 +93,11 @@ Timeline.DefaultEventSource.prototype.loadJSON = function(data, url) {
                 event.color,
                 event.textColor
             );
+            evt._obj = event;
+            evt.getProperty = function(name) {
+                return this._obj[name];
+            };
+
             this._events.add(evt);
             added = true;
         }
@@ -209,6 +219,8 @@ Timeline.DefaultEventSource.Event.prototype = {
     getIcon:        function() { return this._icon; },
     getColor:       function() { return this._color; },
     getTextColor:   function() { return this._textColor; },
+    
+    getProperty:    function(name) { return null; },
     
     fillDescription: function(elmt) {
         elmt.innerHTML = this._description;

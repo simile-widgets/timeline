@@ -105,6 +105,7 @@ Timeline.ThumbnailEventPainter.prototype.paint = function() {
         var div = doc.createElement("div");
         div.style.position = "absolute";
         div.style.overflow = "hidden";
+        div.style.color = textColor;
         
         div.style.left = pixel + "px";
         div.style.top = trackOffset + "px";
@@ -117,12 +118,15 @@ Timeline.ThumbnailEventPainter.prototype.paint = function() {
         img.style.cssFloat = "left";
         div.appendChild(img);
         
+        /*
         var divLabel = document.createElement("div");
         divLabel.style.height = p._trackHeight;
         divLabel.style.overflow = "hidden";
-        divLabel.style.color = textColor;
         divLabel.appendChild(doc.createTextNode(evt.getText()));
         div.appendChild(divLabel);
+        */
+        
+        div.appendChild(doc.createTextNode(evt.getText()));
         
         div.style.cursor = "pointer";
         Timeline.DOM.registerEvent(div, "mousedown", function(elmt, domEvt, target) {

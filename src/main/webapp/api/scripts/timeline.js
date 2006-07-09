@@ -314,20 +314,20 @@ Timeline._Band = function(timeline, bandInfo, index) {
     this._etherPainter = bandInfo.etherPainter;
     bandInfo.etherPainter.initialize(this, timeline);
     
-    this._eventPainter = bandInfo.eventPainter;
-    bandInfo.eventPainter.initialize(this, timeline);
-    
-    this._decorators = ("decorators" in bandInfo) ? bandInfo.decorators : [];
-    for (var i = 0; i < this._decorators.length; i++) {
-        this._decorators[i].initialize(this, timeline);
-    }
-        
     this._eventSource = bandInfo.eventSource;
     if (this._eventSource) {
         this._eventSource.addListener({
             onAddMany: function() { b._onAddMany(); },
             onClear:   function() { b._onClear(); }
         });
+    }
+        
+    this._eventPainter = bandInfo.eventPainter;
+    bandInfo.eventPainter.initialize(this, timeline);
+    
+    this._decorators = ("decorators" in bandInfo) ? bandInfo.decorators : [];
+    for (var i = 0; i < this._decorators.length; i++) {
+        this._decorators[i].initialize(this, timeline);
     }
         
     this._bubble = null;

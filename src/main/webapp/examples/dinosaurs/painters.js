@@ -136,7 +136,7 @@ Timeline.ThumbnailEventPainter.prototype.paint = function() {
         eventLayer.appendChild(div);
         
         if (highlightIndex >= 0) {
-            divLabel.style.background = 
+            div.style.background = 
                 theme.event.highlightColors[Math.min(highlightIndex, theme.event.highlightColors.length - 1)];
         }
     };

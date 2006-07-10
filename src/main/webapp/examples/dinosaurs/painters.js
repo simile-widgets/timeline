@@ -126,7 +126,9 @@ Timeline.ThumbnailEventPainter.prototype.paint = function() {
         div.appendChild(divLabel);
         */
         
-        div.appendChild(doc.createTextNode(evt.getText()));
+        var span = doc.createElement("span");
+        span.appendChild(doc.createTextNode(evt.getText()));
+        div.appendChild(span);
         
         div.style.cursor = "pointer";
         Timeline.DOM.registerEvent(div, "mousedown", function(elmt, domEvt, target) {
@@ -136,7 +138,7 @@ Timeline.ThumbnailEventPainter.prototype.paint = function() {
         eventLayer.appendChild(div);
         
         if (highlightIndex >= 0) {
-            div.style.background = 
+            span.style.background = 
                 theme.event.highlightColors[Math.min(highlightIndex, theme.event.highlightColors.length - 1)];
         }
     };

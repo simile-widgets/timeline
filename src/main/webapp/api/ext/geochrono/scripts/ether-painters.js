@@ -21,7 +21,7 @@ Timeline.GeochronoEtherPainter.prototype.initialize = function(band, timeline) {
     this._markerLayer = null;
     this._lineLayer = null;
     
-    var align = ("align" in this._params) ? this._params.align : 
+    var align = ("align" in this._params && typeof this._params.align == "string") ? this._params.align : 
         this._theme.ether.interval.marker[timeline.isHorizontal() ? "hAlign" : "vAlign"];
     var showLine = ("showLine" in this._params) ? this._params.showLine : 
         this._theme.ether.interval.line.show;

@@ -14,7 +14,7 @@
             theme.event.label.width = 150; // px
             theme.event.bubble.width = 250;
             theme.event.bubble.height = 200;
-            theme.ether.backgroundColors[0] = "white";
+            theme.ether.backgroundColors.unshift("white");
             
             var eventSource = new Timeline.DefaultEventSource(new Timeline.EventIndex(Timeline.GeochronoUnit));
             
@@ -23,7 +23,7 @@
                 Timeline.Geochrono.createBandInfo({
                     eventSource:    eventSource,
                     date:           d,
-                    width:          "90%", 
+                    width:          "86%", 
                     intervalUnit:   Timeline.GeochronoUnit.MA, 
                     intervalPixels: 100,
                     trackGap:       0.2,
@@ -32,17 +32,26 @@
                 }),
                 Timeline.Geochrono.createBandInfo({
                     date:           d,
-                    width:          "5%", 
+                    width:          "6%", 
+                    intervalUnit:   Timeline.GeochronoUnit.EPOCH, 
+                    intervalPixels: 15,
+                    showEventText:  false,
+                    align:          "Top",
+                    theme:          theme
+                }),
+                Timeline.Geochrono.createBandInfo({
+                    date:           d,
+                    width:          "4%", 
                     intervalUnit:   Timeline.GeochronoUnit.PERIOD, 
-                    intervalPixels: 5,
+                    intervalPixels: 8,
                     showEventText:  false,
                     theme:          theme
                 }),
                 Timeline.Geochrono.createBandInfo({
                     date:           d,
-                    width:          "5%", 
+                    width:          "4%", 
                     intervalUnit:   Timeline.GeochronoUnit.ERA, 
-                    intervalPixels: 1,
+                    intervalPixels: 2,
                     showEventText:  false,
                     theme:          theme
                 })
@@ -57,8 +66,10 @@
             });
             bandInfos[1].syncWith = 0;
             bandInfos[1].highlight = true;
-            bandInfos[2].syncWith = 1;
+            bandInfos[2].syncWith = 0;
             bandInfos[2].highlight = true;
+            bandInfos[3].syncWith = 0;
+            bandInfos[3].highlight = true;
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL, Timeline.GeochronoUnit);
             Timeline.loadXML("dinosaurs.xml", function(xml, url) {
@@ -91,7 +102,7 @@
     <p>Sources: <a href="http://internt.nhm.ac.uk/jdsml/nature-online/dino-directory/timeline.dsml?disp=gall&per_id=&sort=Genus">the National History Museum</a>.
     </p>
     
-    <div id="tl" class="timeline-default" style="height: 700px;">
+    <div id="tl" class="timeline-default" style="height: 730px;">
     </div>
     
     <div class="controls" id="controls">

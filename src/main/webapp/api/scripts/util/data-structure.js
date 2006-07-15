@@ -102,6 +102,11 @@ Timeline.EventIndex.prototype.add = function(evt) {
     this._indexed = false;
 };
 
+Timeline.EventIndex.prototype.removeAll = function() {
+    this._events.removeAll();
+    this._indexed = false;
+};
+
 Timeline.EventIndex.prototype.getCount = function() {
     return this._events.length();
 };

@@ -70,7 +70,7 @@
             bandInfos[1].eventPainter.setLayout(bandInfos[0].eventPainter.getLayout());
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
-            Timeline.loadXML("christianity.xml", function(xml, url) {
+            tl.loadXML("christianity.xml", function(xml, url) {
                 eventSourceChristianity.loadXML(xml, url);
             });
             

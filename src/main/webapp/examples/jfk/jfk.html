@@ -120,7 +120,7 @@
             }
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
-            Timeline.loadXML("jfk.xml", function(xml, url) { eventSource.loadXML(xml, url); });
+            tl.loadXML("jfk.xml", function(xml, url) { eventSource.loadXML(xml, url); });
             
             setupFilterHighlightControls(document.getElementById("controls"), tl, [0,1], theme);
         }

@@ -24,7 +24,7 @@
             ];
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
-            Timeline.loadJSON("cubism.js", function(json, url) {
+            tl.loadJSON("cubism.js", function(json, url) {
                 eventSource.loadJSON(json, url);
             });
         }

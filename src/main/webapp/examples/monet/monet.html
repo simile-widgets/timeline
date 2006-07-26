@@ -51,7 +51,7 @@
             ];
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
-            Timeline.loadXML("monet.xml", function(xml, url) {
+            tl.loadXML("monet.xml", function(xml, url) {
                 eventSource.loadXML(xml, url);
             });
         }

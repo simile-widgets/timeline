@@ -106,11 +106,11 @@
             bandInfos[3].eventPainter.setLayout(bandInfos[2].eventPainter.getLayout());
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
-            Timeline.loadXML("jewish.xml", function(xml, url) {
+            tl.loadXML("jewish.xml", function(xml, url) {
                 eventSourceJewish.loadXML(xml, url);
                 document.getElementById("jewish-event-count").innerHTML = eventSourceJewish.getCount();
             });
-            Timeline.loadXML("christianity.xml", function(xml, url) {
+            tl.loadXML("christianity.xml", function(xml, url) {
                 eventSourceChristianity.loadXML(xml, url);
                 document.getElementById("christianity-event-count").innerHTML = eventSourceChristianity.getCount();
             });

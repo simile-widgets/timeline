@@ -63,9 +63,7 @@ Timeline.DefaultEventSource.prototype.loadXML = function(xml, url) {
     }
 
     if (added) {
-        for (var i = 0; i < this._listeners.length; i++) {
-            this._listeners[i].onAddMany();
-        }
+        this._fire("onAddMany", []);
     }
 };
 
@@ -104,24 +102,93 @@ Timeline.DefaultEventSource.prototype.loadJSON = function(data, url) {
     }
    
     if (added) {
-        for (var i = 0; i < this._listeners.length; i++) {
-            this._listeners[i].onAddMany();
+        this._fire("onAddMany", []);
+    }
+};
+
+/*
+ *  Contributed by Morten Frederiksen, http://www.wasab.dk/morten/
+ */
+Timeline.DefaultEventSource.prototype.loadSPARQL = function(xml, url) {
+    var base = this._getBaseURL(url);
+    
+    var dateTimeFormat = 'iso8601';
+    var parseDateTimeFunction = this._events.getUnit().getParser(dateTimeFormat);
+
+    if (xml == null) {
+        return null;
+    }
+    
+    /*
+     *  Find <results> tag
+     */
+    var node = xml.documentElement.firstChild;
+    while (node != null && (node.nodeType != 1 || node.nodeName != 'results')) {
+        node = node.nextSibling;
+    }
+    
+    if (node != null) {
+        node = node.firstChild;
+    }
+    
+    var added = false;
+    while (node != null) {
+        if (node.nodeType == 1) {
+            var bindings = { };
+            var binding = node.firstChild;
+            while (binding != null) {
+                if (binding.nodeType == 1 && 
+                    binding.firstChild != null && 
+                    binding.firstChild.nodeType == 1 && 
+                    binding.firstChild.firstChild != null && 
+                    binding.firstChild.firstChild.nodeType == 3) {
+                    bindings[binding.getAttribute('name')] = binding.firstChild.firstChild.nodeValue;
+                }
+                binding = binding.nextSibling;
+            }
+            
+            if (bindings["start"] == null && bindings["date"] != null) {
+                bindings["start"] = bindings["date"];
+            }
+            
+            var evt = new Timeline.DefaultEventSource.Event(
+                parseDateTimeFunction(bindings["start"]),
+                parseDateTimeFunction(bindings["end"]),
+                parseDateTimeFunction(bindings["latestStart"]),
+                parseDateTimeFunction(bindings["earliestEnd"]),
+                bindings["isDuration"] != "true",
+                bindings["title"],
+                bindings["description"],
+                this._resolveRelativeURL(bindings["image"], base),
+                this._resolveRelativeURL(bindings["link"], base),
+                this._resolveRelativeURL(bindings["icon"], base),
+                bindings["color"],
+                bindings["textColor"]
+            );
+            evt._bindings = bindings;
+            evt.getProperty = function(name) {
+                return this._bindings[name];
+            };
+            
+            this._events.add(evt);
+            added = true;
         }
+        node = node.nextSibling;
+    }
+
+    if (added) {
+        this._fire("onAddMany", []);
     }
 };
 
 Timeline.DefaultEventSource.prototype.add = function(evt) {
     this._events.add(evt);
-    for (var i = 0; i < this._listeners.length; i++) {
-        this._listeners[i].onAddOne(evt);
-    }
+    this._fire("onAddOne", [evt]);
 };
 
 Timeline.DefaultEventSource.prototype.clear = function() {
     this._events.removeAll();
-    for (var i = 0; i < this._listeners.length; i++) {
-        this._listeners[i].onClear();
-    }
+    this._fire("onClear", []);
 };
 
 Timeline.DefaultEventSource.prototype.getEventIterator = function(startDate, endDate) {
@@ -142,6 +209,19 @@ Timeline.DefaultEventSource.prototype.getEarliestDate = function() {
 
 Timeline.DefaultEventSource.prototype.getLatestDate = function() {
     return this._events.getLatestDate();
+};
+
+Timeline.DefaultEventSource.prototype._fire = function(handlerName, args) {
+    for (var i = 0; i < this._listeners.length; i++) {
+        var listener = this._listeners[i];
+        if (handlerName in listener) {
+            try {
+                listener[handlerName].apply(listener, args);
+            } catch (e) {
+                Timeline.Debug.exception(e);
+            }
+        }
+    }
 };
 
 Timeline.DefaultEventSource.prototype._getBaseURL = function(url) {
@@ -247,5 +327,43 @@ Timeline.DefaultEventSource.Event.prototype = {
                 elmt.appendChild(elmt.ownerDocument.createTextNode(labeller.labelPrecise(this._end)));
             }
         }
+    },
+    fillInfoBubble: function(elmt, theme, labeller) {
+        var doc = elmt.ownerDocument;
+        
+        var title = this.getText();
+        var link = this.getLink();
+        var image = this.getImage();
+        
+        if (image != null) {
+            var img = doc.createElement("img");
+            img.src = image;
+            
+            theme.event.bubble.imageStyler(img);
+            elmt.appendChild(img);
+        }
+        
+        var divTitle = doc.createElement("div");
+        var textTitle = doc.createTextNode(title);
+        if (link != null) {
+            var a = doc.createElement("a");
+            a.href = link;
+            a.appendChild(textTitle);
+            divTitle.appendChild(a);
+        } else {
+            divTitle.appendChild(textTitle);
+        }
+        theme.event.bubble.titleStyler(divTitle);
+        elmt.appendChild(divTitle);
+        
+        var divBody = doc.createElement("div");
+        this.fillDescription(divBody);
+        theme.event.bubble.bodyStyler(divBody);
+        elmt.appendChild(divBody);
+        
+        var divTime = doc.createElement("div");
+        this.fillTime(divTime, labeller);
+        theme.event.bubble.timeStyler(divTime);
+        elmt.appendChild(divTime);
     }
 };

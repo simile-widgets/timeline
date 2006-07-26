@@ -72,7 +72,7 @@
             bandInfos[3].highlight = true;
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL, Timeline.GeochronoUnit);
-            Timeline.loadXML("dinosaurs.xml", function(xml, url) {
+            tl.loadXML("dinosaurs.xml", function(xml, url) {
                 eventSource.loadXML(xml, url);
             });
             

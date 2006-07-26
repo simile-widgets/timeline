@@ -17,7 +17,9 @@ Timeline.XmlHttp._onReadyStateChange = function(xmlhttp, fError, fDone) {
     // Download complete
     case 4:
         try {
-            if (xmlhttp.status == 200) {
+            if (xmlhttp.status == 0     // file:// urls, works on Firefox
+             || xmlhttp.status == 200   // http:// urls
+            ) {
                 if (fDone) {
                     fDone(xmlhttp);
                 }
@@ -101,7 +103,6 @@ Timeline.XmlHttp.get = function(url, fError, fDone) {
     var xmlhttp = Timeline.XmlHttp._createRequest();
     
     xmlhttp.open("GET", url, true);
-    //xmlhttp.overrideMimeType("text/xml");
     xmlhttp.onreadystatechange = function() {
         Timeline.XmlHttp._onReadyStateChange(xmlhttp, fError, fDone);
     };
@@ -117,10 +118,16 @@ Timeline.XmlHttp.post = function(url, body, fError, fDone) {
     var xmlhttp = Timeline.XmlHttp._createRequest();
     
     xmlhttp.open("POST", url, true);
-    //xmlhttp.overrideMimeType("text/xml");
     xmlhttp.onreadystatechange = function() {
         Timeline.XmlHttp._onReadyStateChange(xmlhttp, fError, fDone);
     };
     xmlhttp.send(body);
 };
 
+Timeline.XmlHttp._forceXML = function(xmlhttp) {
+    try {
+        xmlhttp.overrideMimeType("text/xml");
+    } catch (e) {
+        xmlhttp.setrequestheader("Content-Type", "text/xml");
+    }
+};

@@ -330,40 +330,5 @@ Timeline.DurationEventPainter.prototype._showBubble = function(x, y, evt) {
         this._theme.event.bubble.height
     );
     
-    var doc = this._timeline.getDocument();
-    
-    var title = evt.getText();
-    var link = evt.getLink();
-    var image = evt.getImage();
-    
-    if (image != null) {
-        var img = doc.createElement("img");
-        img.src = image;
-        
-        this._theme.event.bubble.imageStyler(img);
-        div.appendChild(img);
-    }
-    
-    var divTitle = doc.createElement("div");
-    var textTitle = doc.createTextNode(title);
-    if (link != null) {
-        var a = doc.createElement("a");
-        a.href = link;
-        a.appendChild(textTitle);
-        divTitle.appendChild(a);
-    } else {
-        divTitle.appendChild(textTitle);
-    }
-    this._theme.event.bubble.titleStyler(divTitle);
-    div.appendChild(divTitle);
-    
-    var divBody = doc.createElement("div");
-    evt.fillDescription(divBody);
-    this._theme.event.bubble.bodyStyler(divBody);
-    div.appendChild(divBody);
-    
-    var divTime = doc.createElement("div");
-    evt.fillTime(divTime, this._band.getLabeller());
-    this._theme.event.bubble.timeStyler(divTime);
-    div.appendChild(divTime);
+    evt.fillInfoBubble(div, this._theme, this._band.getLabeller());
 };

@@ -209,3 +209,86 @@ Timeline.Graphics.createBubbleForPoint = function(doc, pageX, pageY, contentWidt
     
     return bubble;
 };
+
+Timeline.Graphics.createMessageBubble = function(doc) {
+    var containerDiv = doc.createElement("div");
+    
+    var topDiv = doc.createElement("div");
+    topDiv.style.height = "33px";
+    topDiv.style.background = "url(" + Timeline.urlPrefix + "images/message-top-left.png) top left no-repeat";
+    topDiv.style.paddingLeft = "44px";
+    containerDiv.appendChild(topDiv);
+    
+    var topRightDiv = doc.createElement("div");
+    topRightDiv.style.height = "33px";
+    topRightDiv.style.background = "url(" + Timeline.urlPrefix + "images/message-top-right.png) top right no-repeat";
+    topDiv.appendChild(topRightDiv);
+    
+    var middleDiv = doc.createElement("div");
+    middleDiv.style.background = "url(" + Timeline.urlPrefix + "images/message-left.png) top left repeat-y";
+    middleDiv.style.paddingLeft = "44px";
+    containerDiv.appendChild(middleDiv);
+    
+    var middleRightDiv = doc.createElement("div");
+    middleRightDiv.style.background = "url(" + Timeline.urlPrefix + "images/message-right.png) top right repeat-y";
+    middleRightDiv.style.paddingRight = "44px";
+    middleDiv.appendChild(middleRightDiv);
+    
+    var contentDiv = doc.createElement("div");
+    middleRightDiv.appendChild(contentDiv);
+    
+    var bottomDiv = doc.createElement("div");
+    bottomDiv.style.height = "55px";
+    bottomDiv.style.background = "url(" + Timeline.urlPrefix + "images/message-bottom-left.png) bottom left no-repeat";
+    bottomDiv.style.paddingLeft = "44px";
+    containerDiv.appendChild(bottomDiv);
+    
+    var bottomRightDiv = doc.createElement("div");
+    bottomRightDiv.style.height = "55px";
+    bottomRightDiv.style.background = "url(" + Timeline.urlPrefix + "images/message-bottom-right.png) bottom right no-repeat";
+    bottomDiv.appendChild(bottomRightDiv);
+    
+    return {
+        containerDiv:   containerDiv,
+        contentDiv:     contentDiv
+    };
+};
+
+Timeline.Graphics.createAnimation = function(f, from, to, duration) {
+    return new Timeline.Graphics._Animation(f, from, to, duration);
+};
+
+Timeline.Graphics._Animation = function(f, from, to, duration) {
+    this.f = f;
+    
+    this.from = from;
+    this.to = to;
+    this.current = from;
+    
+    this.duration = duration;
+    this.start = new Date().getTime();
+    this.timePassed = 0;
+};
+
+Timeline.Graphics._Animation.prototype.run = function() {
+    var a = this;
+    window.setTimeout(function() { a.step(); }, 100);
+};
+
+Timeline.Graphics._Animation.prototype.step = function() {
+    this.timePassed += 100;
+    
+    var timePassedFraction = this.timePassed / this.duration;
+    var parameterFraction = -Math.cos(timePassedFraction * Math.PI) / 2 + 0.5;
+    var current = parameterFraction * (this.to - this.from) + this.from;
+    
+    try {
+        this.f(current, current - this.current);
+    } catch (e) {
+    }
+    this.current = current;
+    
+    if (this.timePassed < this.duration) {
+        this.run();
+    }
+};

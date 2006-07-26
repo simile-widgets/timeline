@@ -54,14 +54,14 @@
 }
 
 .timeline-band-layer {
-    position: absolute;
-    width: 100%;
-    height: 100%;
+    position:   absolute;
+    width:      100%;
+    height:     100%;
 }
 
 .timeline-band-layer-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
+    position:   relative;
+    width:      100%;
+    height:     100%;
 }
 

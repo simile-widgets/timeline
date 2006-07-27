@@ -27,7 +27,7 @@ Timeline.DOM.registerEvent = function(elmt, eventName, handler) {
         return true;
     }
     
-    if (Timeline.Platform.isIE) {
+    if (Timeline.Platform.browser.isIE) {
         elmt.attachEvent("on" + eventName, handler2);
     } else {
         elmt.addEventListener(eventName, handler2, false);
@@ -52,7 +52,7 @@ Timeline.DOM.getPageCoordinates = function(elmt) {
 };
 
 Timeline.DOM.getEventRelativeCoordinates = function(evt, elmt) {
-    if (Timeline.Platform.isIE) {
+    if (Timeline.Platform.browser.isIE) {
         return {
             x: evt.offsetX,
             y: evt.offsetY

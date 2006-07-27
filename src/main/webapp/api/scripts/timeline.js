@@ -579,7 +579,7 @@ Timeline._Band.prototype.createLayerDiv = function(zIndex) {
     
     var innerDiv = this._timeline.getDocument().createElement("div");
     innerDiv.className = "timeline-band-layer-inner";
-    if (Timeline.Platform.isIE) {
+    if (Timeline.Platform.browser.isIE) {
         innerDiv.style.cursor = "move";
     } else {
         innerDiv.style.cursor = "-moz-grab";

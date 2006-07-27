@@ -46,7 +46,7 @@ Timeline.XmlHttp._onReadyStateChange = function(xmlhttp, fError, fDone) {
  *  itself with that function.
  */
 Timeline.XmlHttp._createRequest = function() {
-    if (Timeline.Platform.isIE) {
+    if (Timeline.Platform.browser.isIE) {
         var programIDs = [
         "Msxml2.XMLHTTP",
         "Microsoft.XMLHTTP",

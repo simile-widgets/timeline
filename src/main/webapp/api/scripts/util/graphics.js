@@ -4,7 +4,7 @@
  */
 
 Timeline.Graphics = new Object();
-Timeline.Graphics.pngIsTranslucent = !(Timeline.Platform.isIE && Timeline.Platform.isWin32);
+Timeline.Graphics.pngIsTranslucent = (!Timeline.Platform.browser.isIE) || (Timeline.Platform.browser.majorVersion > 6);
 
 Timeline.Graphics.createTranslucentImage = function(doc, url, verticalAlign) {
     var elmt;
@@ -12,7 +12,7 @@ Timeline.Graphics.createTranslucentImage = function(doc, url, verticalAlign) {
         elmt = doc.createElement("img");
         elmt.setAttribute("src", url);
     } else {
-        elmt = doc.createElement("div");
+        elmt = doc.createElement("img");
         elmt.style.display = "inline";
         elmt.style.width = "1px";  // just so that IE will calculate the size property
         elmt.style.height = "1px";
@@ -23,7 +23,7 @@ Timeline.Graphics.createTranslucentImage = function(doc, url, verticalAlign) {
 };
 
 Timeline.Graphics.setOpacity = function(elmt, opacity) {
-    if (Timeline.Platform.isIE) {
+    if (Timeline.Platform.browser.isIE) {
         elmt.style.filter = "progid:DXImageTransform.Microsoft.Alpha(Style=0,Opacity=" + opacity + ")";
     } else {
         var o = (opacity / 100).toString();
@@ -212,41 +212,50 @@ Timeline.Graphics.createBubbleForPoint = function(doc, pageX, pageY, contentWidt
 
 Timeline.Graphics.createMessageBubble = function(doc) {
     var containerDiv = doc.createElement("div");
-    
-    var topDiv = doc.createElement("div");
-    topDiv.style.height = "33px";
-    topDiv.style.background = "url(" + Timeline.urlPrefix + "images/message-top-left.png) top left no-repeat";
-    topDiv.style.paddingLeft = "44px";
-    containerDiv.appendChild(topDiv);
-    
-    var topRightDiv = doc.createElement("div");
-    topRightDiv.style.height = "33px";
-    topRightDiv.style.background = "url(" + Timeline.urlPrefix + "images/message-top-right.png) top right no-repeat";
-    topDiv.appendChild(topRightDiv);
-    
-    var middleDiv = doc.createElement("div");
-    middleDiv.style.background = "url(" + Timeline.urlPrefix + "images/message-left.png) top left repeat-y";
-    middleDiv.style.paddingLeft = "44px";
-    containerDiv.appendChild(middleDiv);
-    
-    var middleRightDiv = doc.createElement("div");
-    middleRightDiv.style.background = "url(" + Timeline.urlPrefix + "images/message-right.png) top right repeat-y";
-    middleRightDiv.style.paddingRight = "44px";
-    middleDiv.appendChild(middleRightDiv);
-    
-    var contentDiv = doc.createElement("div");
-    middleRightDiv.appendChild(contentDiv);
-    
-    var bottomDiv = doc.createElement("div");
-    bottomDiv.style.height = "55px";
-    bottomDiv.style.background = "url(" + Timeline.urlPrefix + "images/message-bottom-left.png) bottom left no-repeat";
-    bottomDiv.style.paddingLeft = "44px";
-    containerDiv.appendChild(bottomDiv);
-    
-    var bottomRightDiv = doc.createElement("div");
-    bottomRightDiv.style.height = "55px";
-    bottomRightDiv.style.background = "url(" + Timeline.urlPrefix + "images/message-bottom-right.png) bottom right no-repeat";
-    bottomDiv.appendChild(bottomRightDiv);
+    if (Timeline.Graphics.pngIsTranslucent) {
+        var topDiv = doc.createElement("div");
+        topDiv.style.height = "33px";
+        topDiv.style.background = "url(" + Timeline.urlPrefix + "images/message-top-left.png) top left no-repeat";
+        topDiv.style.paddingLeft = "44px";
+        containerDiv.appendChild(topDiv);
+        
+        var topRightDiv = doc.createElement("div");
+        topRightDiv.style.height = "33px";
+        topRightDiv.style.background = "url(" + Timeline.urlPrefix + "images/message-top-right.png) top right no-repeat";
+        topDiv.appendChild(topRightDiv);
+        
+        var middleDiv = doc.createElement("div");
+        middleDiv.style.background = "url(" + Timeline.urlPrefix + "images/message-left.png) top left repeat-y";
+        middleDiv.style.paddingLeft = "44px";
+        containerDiv.appendChild(middleDiv);
+        
+        var middleRightDiv = doc.createElement("div");
+        middleRightDiv.style.background = "url(" + Timeline.urlPrefix + "images/message-right.png) top right repeat-y";
+        middleRightDiv.style.paddingRight = "44px";
+        middleDiv.appendChild(middleRightDiv);
+        
+        var contentDiv = doc.createElement("div");
+        middleRightDiv.appendChild(contentDiv);
+        
+        var bottomDiv = doc.createElement("div");
+        bottomDiv.style.height = "55px";
+        bottomDiv.style.background = "url(" + Timeline.urlPrefix + "images/message-bottom-left.png) bottom left no-repeat";
+        bottomDiv.style.paddingLeft = "44px";
+        containerDiv.appendChild(bottomDiv);
+        
+        var bottomRightDiv = doc.createElement("div");
+        bottomRightDiv.style.height = "55px";
+        bottomRightDiv.style.background = "url(" + Timeline.urlPrefix + "images/message-bottom-right.png) bottom right no-repeat";
+        bottomDiv.appendChild(bottomRightDiv);
+    } else {
+        containerDiv.style.border = "2px solid #7777AA";
+        containerDiv.style.padding = "20px";
+        containerDiv.style.background = "white";
+        Timeline.Graphics.setOpacity(containerDiv, 90);
+        
+        var contentDiv = doc.createElement("div");
+        containerDiv.appendChild(contentDiv);
+    }
     
     return {
         containerDiv:   containerDiv,

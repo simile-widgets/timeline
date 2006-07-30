@@ -636,7 +636,12 @@ Timeline._Band.prototype._onMouseUp = function(innerFrame, evt, target) {
 };
 
 Timeline._Band.prototype._onMouseOut = function(innerFrame, evt, target) {
-    this._dragging = false;
+    var coords = Timeline.DOM.getEventRelativeCoordinates(evt, innerFrame);
+    coords.x += this._viewOffset;
+    if (coords.x < 0 || coords.x > innerFrame.offsetWidth ||
+        coords.y < 0 || coords.y > innerFrame.offsetHeight) {
+        this._dragging = false;
+    }
 };
 
 Timeline._Band.prototype._onDblClick = function(innerFrame, evt, target) {

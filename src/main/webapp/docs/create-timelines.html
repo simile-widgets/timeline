@@ -84,7 +84,7 @@ function onLoad() {
         intervalPixels: 200
     })
   ];
-  var tl = Timeline.create(document.getElementById("my-timeline"), bandInfos);
+  tl = Timeline.create(document.getElementById("my-timeline"), bandInfos);
 }
 
 var resizeTimerID = null;
@@ -130,7 +130,7 @@ function onResize() {
 <span class="highlight">  bandInfos[1].syncWith = 0;
   bandInfos[1].highlight = true;</span>
   
-  var tl = Timeline.create(document.getElementById("my-timeline"), bandInfos);
+  tl = Timeline.create(document.getElementById("my-timeline"), bandInfos);
 }</pre>
         If you try to pan one band, the other is scrolled as well.
     </p>
@@ -162,7 +162,7 @@ function onResize() {
   bandInfos[1].syncWith = 0;
   bandInfos[1].highlight = true;
   
-  var tl = Timeline.create(document.getElementById("my-timeline"), bandInfos);
+  tl = Timeline.create(document.getElementById("my-timeline"), bandInfos);
 <span class="highlight">  Timeline.loadXML("example1.xml", function(xml, url) { eventSource.loadXML(xml, url); });</span>
 }</pre>
         The <span class="code">date</span> field is there to make sure the
@@ -218,7 +218,7 @@ function onResize() {
   bandInfos[1].syncWith = 0;
   bandInfos[1].highlight = true;
   
-  var tl = Timeline.create(document.getElementById("my-timeline"), bandInfos);
+  tl = Timeline.create(document.getElementById("my-timeline"), bandInfos);
   Timeline.loadXML("example1.xml", function(xml, url) { eventSource.loadXML(xml, url); });
 }</pre>
         The lower band of the timeline below does not show text and its
@@ -324,7 +324,7 @@ function onResize() {
   bandInfos[1].highlight = true;
   <span class="highlight">bandInfos[1].eventPainter.setLayout(bandInfos[0].eventPainter.getLayout());</span>
   
-  var tl = Timeline.create(document.getElementById("my-timeline"), bandInfos);
+  tl = Timeline.create(document.getElementById("my-timeline"), bandInfos);
   Timeline.loadXML("example1.xml", function(xml, url) { eventSource.loadXML(xml, url); });
 }</pre>
         Now note that the last event is on its own track in the lower band
@@ -394,7 +394,7 @@ function onResize() {
   bandInfos[1].highlight = true;
   bandInfos[1].eventPainter.setLayout(bandInfos[0].eventPainter.getLayout());
   
-  var tl = Timeline.create(document.getElementById("my-timeline"), bandInfos);
+  tl = Timeline.create(document.getElementById("my-timeline"), bandInfos);
   Timeline.loadXML("example1.xml", function(xml, url) { eventSource.loadXML(xml, url); });
 }</pre>
         In the resulting timeline below, the whole month of August 2006
@@ -460,7 +460,7 @@ function onResize() {
   bandInfos[1].highlight = true;
   bandInfos[1].eventPainter.setLayout(bandInfos[0].eventPainter.getLayout());
   
-  var tl = Timeline.create(document.getElementById("my-timeline"), bandInfos);
+  tl = Timeline.create(document.getElementById("my-timeline"), bandInfos);
   Timeline.loadXML("example1.xml", function(xml, url) { eventSource.loadXML(xml, url); });
 }</pre>
     </p>

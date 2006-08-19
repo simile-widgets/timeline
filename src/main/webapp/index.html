@@ -121,7 +121,7 @@
             }
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
-            Timeline.loadXML("examples/jfk/jfk.xml", function(xml, url) { eventSource.loadXML(xml, url); });
+            tl.loadXML("examples/jfk/jfk.xml", function(xml, url) { eventSource.loadXML(xml, url); });
         }
         
         var resizeTimerID = null;

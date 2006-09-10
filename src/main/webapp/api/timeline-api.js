@@ -76,42 +76,69 @@ Timeline.Platform = new Object();
         var desiredLocales = [ "en" ];
         var defaultServerLocale = "en";
         
-        (function() {
-            var heads = document.documentElement.getElementsByTagName("head");
-            for (var h = 0; h < heads.length; h++) {
-                var scripts = heads[h].getElementsByTagName("script");
-                for (var s = 0; s < scripts.length; s++) {
-                    var url = scripts[s].src;
-                    var i = url.indexOf("timeline-api.js");
-                    if (i >= 0) {
-                        Timeline.urlPrefix = url.substr(0, i);
-                        
-                        // Parse parameters
-                        var q = url.indexOf("?");
-                        if (q > 0) {
-                            var params = url.substr(q + 1).split("&");
-                            for (var p = 0; p < params.length; p++) {
-                                var pair = params[p].split("=");
-                                if (pair[0] == "locales") {
-                                    desiredLocales = desiredLocales.concat(pair[1].split(","));
-                                } else if (pair[0] == "defaultLocale") {
-                                    defaultServerLocale = pair[1];
-                                }
-                            }
-                        }
-                        
-                        return;
-                    }
+        var parseURLParameters = function(parameters) {
+            var params = parameters.split("&");
+            for (var p = 0; p < params.length; p++) {
+                var pair = params[p].split("=");
+                if (pair[0] == "locales") {
+                    desiredLocales = desiredLocales.concat(pair[1].split(","));
+                } else if (pair[0] == "defaultLocale") {
+                    defaultServerLocale = pair[1];
                 }
             }
-            throw new Error("Failed to derive URL prefix for Timeline API code files");
+        };
+        
+        (function() {
+            if (typeof Timeline_urlPrefix == "string") {
+                Timeline.urlPrefix = Timeline_urlPrefix;
+                if (typeof Timeline_parameters == "string") {
+                    parseURLParameters(Timeline_parameters);
+                }
+            } else {
+                var heads = document.documentElement.getElementsByTagName("head");
+                for (var h = 0; h < heads.length; h++) {
+                    var scripts = heads[h].getElementsByTagName("script");
+                    for (var s = 0; s < scripts.length; s++) {
+                        var url = scripts[s].src;
+                        var i = url.indexOf("timeline-api.js");
+                        if (i >= 0) {
+                            Timeline.urlPrefix = url.substr(0, i);
+                            var q = url.indexOf("?");
+                            if (q > 0) {
+                                parseURLParameters(url.substr(q + 1));
+                            }
+                            return;
+                        }
+                    }
+                }
+                throw new Error("Failed to derive URL prefix for Timeline API code files");
+            }
         })();
         
+        var getHead = function() {
+            return document.getElementsByTagName("head")[0];
+        };
         var includeJavascriptFile = function(filename) {
-            document.write("<script src='" + Timeline.urlPrefix + "scripts/" + filename + "' type='text/javascript'></script>");
+            if (document.body == null) {
+                document.write("<script src='" + Timeline.urlPrefix + "scripts/" + filename + "' type='text/javascript'></script>");
+            } else {
+                var script = document.createElement("script");
+                script.type = "text/javascript";
+                script.language = "JavaScript";
+                script.src = Timeline.urlPrefix + "scripts/" + filename;
+                getHead().appendChild(script);
+            }
         };
         var includeCssFile = function(filename) {
-            document.write("<link rel='stylesheet' href='" + Timeline.urlPrefix + "styles/" + filename + "' type='text/css'/>");
+            if (document.body == null) {
+                document.write("<link rel='stylesheet' href='" + Timeline.urlPrefix + "styles/" + filename + "' type='text/css'/>");
+            } else {
+                var link = document.createElement("link");
+                link.setAttribute("rel", "stylesheet");
+                link.setAttribute("type", "text/css");
+                link.setAttribute("href", Timeline.urlPrefix + "styles/" + filename);
+                getHead().appendChild(link);
+            }
         }
         
         /*
@@ -178,12 +205,8 @@ Timeline.Platform = new Object();
             }
         }
         
-        document.write(
-            "<script type='text/javascript'>" +
-                "Timeline.Platform.serverLocale = '" + defaultServerLocale + "';" + 
-                "Timeline.Platform.clientLocale = '" + defaultClientLocale + "';" +
-            "</script>"
-        );
+        Timeline.Platform.serverLocale = defaultServerLocale;
+        Timeline.Platform.clientLocale = defaultClientLocale;
     } catch (e) {
         alert(e);
     }

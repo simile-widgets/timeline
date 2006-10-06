@@ -7,12 +7,7 @@
  *
  *  Include this file in your HTML file as follows:
  *
- *    <script src="http://simile.mit.edu.nyud.net:8080/timeline/api/scripts/timeline-api.js" type="text/javascript"></script>
- *
- *  Note that we are using Coral CND [1] to reduce
- *  the load on our server.
- *
- *  [1] http://coralcdn.org/
+ *    <script src="http://simile.mit.edu/timeline/api/scripts/timeline-api.js" type="text/javascript"></script>
  *
  *==================================================
  */
@@ -115,41 +110,59 @@ Timeline.Platform = new Object();
             }
         })();
         
-        var getHead = function() {
-            return document.getElementsByTagName("head")[0];
-        };
-        var includeJavascriptFile = function(filename) {
-            if (document.body == null) {
-                document.write("<script src='" + Timeline.urlPrefix + "scripts/" + filename + "' type='text/javascript'></script>");
-            } else {
-                var script = document.createElement("script");
-                script.type = "text/javascript";
-                script.language = "JavaScript";
-                script.src = Timeline.urlPrefix + "scripts/" + filename;
-                getHead().appendChild(script);
+        var includeJavascriptFiles;
+        var includeCssFiles;
+        if ("SimileAjax" in window) {
+            includeJavascriptFiles = function(urlPrefix, filenames) {
+                SimileAjax.includeJavascriptFiles(document, urlPrefix, filenames);
             }
-        };
-        var includeCssFile = function(filename) {
-            if (document.body == null) {
-                document.write("<link rel='stylesheet' href='" + Timeline.urlPrefix + "styles/" + filename + "' type='text/css'/>");
-            } else {
-                var link = document.createElement("link");
-                link.setAttribute("rel", "stylesheet");
-                link.setAttribute("type", "text/css");
-                link.setAttribute("href", Timeline.urlPrefix + "styles/" + filename);
-                getHead().appendChild(link);
+            includeCssFiles = function(urlPrefix, filenames) {
+                SimileAjax.includeCssFiles(document, urlPrefix, filenames);
             }
+        } else {
+            var getHead = function() {
+                return document.getElementsByTagName("head")[0];
+            };
+            var includeJavascriptFile = function(url) {
+                if (document.body == null) {
+                    document.write("<script src='" + url + "' type='text/javascript'></script>");
+                } else {
+                    var script = document.createElement("script");
+                    script.type = "text/javascript";
+                    script.language = "JavaScript";
+                    script.src = url;
+                    getHead().appendChild(script);
+                }
+            };
+            var includeCssFile = function(url) {
+                if (document.body == null) {
+                    document.write("<link rel='stylesheet' href='" + url + "' type='text/css'/>");
+                } else {
+                    var link = document.createElement("link");
+                    link.setAttribute("rel", "stylesheet");
+                    link.setAttribute("type", "text/css");
+                    link.setAttribute("href", url);
+                    getHead().appendChild(link);
+                }
+            }
+            
+            includeJavascriptFiles = function(urlPrefix, filenames) {
+                for (var i = 0; i < filenames.length; i++) {
+                    includeJavascriptFile(urlPrefix + filenames[i]);
+                }
+            };
+            includeCssFiles = function(urlPrefix, filenames) {
+                for (var i = 0; i < filenames.length; i++) {
+                    includeCssFile(urlPrefix + filenames[i]);
+                }
+            };
         }
         
         /*
          *  Include non-localized files
          */
-        for (var i = 0; i < javascriptFiles.length; i++) {
-            includeJavascriptFile(javascriptFiles[i]);
-        }
-        for (var i = 0; i < cssFiles.length; i++) {
-            includeCssFile(cssFiles[i]);
-        }
+        includeJavascriptFiles(Timeline.urlPrefix + "scripts/", javascriptFiles);
+        includeCssFiles(Timeline.urlPrefix + "styles/", cssFiles);
         
         /*
          *  Include localized files
@@ -196,12 +209,8 @@ Timeline.Platform = new Object();
         for (var l = 0; l < supportedLocales.length; l++) {
             var locale = supportedLocales[l];
             if (loadLocale[locale]) {
-                for (var i = 0; i < localizedJavascriptFiles.length; i++) {
-                    includeJavascriptFile("l10n/" + locale + "/" + localizedJavascriptFiles[i]);
-                }
-                for (var i = 0; i < localizedCssFiles.length; i++) {
-                    includeCssFile("l10n/" + locale + "/" + localizedCssFiles[i]);
-                }
+                includeJavascriptFiles(Timeline.urlPrefix + "scripts/l10n/" + locale + "/", localizedJavascriptFiles);
+                includeCssFiles(Timeline.urlPrefix + "styles/l10n/" + locale + "/", localizedCssFiles);
             }
         }
         

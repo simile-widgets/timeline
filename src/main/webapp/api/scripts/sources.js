@@ -186,6 +186,13 @@ Timeline.DefaultEventSource.prototype.add = function(evt) {
     this._fire("onAddOne", [evt]);
 };
 
+Timeline.DefaultEventSource.prototype.addMany = function(events) {
+    for (var i = 0; i < events.length; i++) {
+        this._events.add(events[i]);
+    }
+    this._fire("onAddMany", []);
+};
+
 Timeline.DefaultEventSource.prototype.clear = function() {
     this._events.removeAll();
     this._fire("onClear", []);

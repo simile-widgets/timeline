@@ -1,5 +1,8 @@
 {
 'dateTimeFormat': 'iso8601',
+'wikiURL': "http://simile.mit.edu/shelf/",
+'wikiSection': "Simile JFK Timeline",
+
 'events' : [
         {'start': '1924',
         'title': 'Barfusserkirche',

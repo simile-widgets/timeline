@@ -116,6 +116,9 @@ Timeline.ClassicTheme._Impl = function() {
             imageStyler: function(elmt) {
                 elmt.className = "timeline-event-bubble-image";
             },
+            wikiStyler: function(elmt) {
+                elmt.className = "timeline-event-bubble-wiki";
+            },
             timeStyler: function(elmt) {
                 elmt.className = "timeline-event-bubble-time";
             }

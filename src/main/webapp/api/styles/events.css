@@ -25,6 +25,15 @@
 .timeline-event-bubble-body {
 }
 
+.timeline-event-bubble-wiki {
+    margin:     0.5em;
+    text-align: right;
+    color:      #A0A040;
+}
+.timeline-event-bubble-wiki a {
+    color:      #A0A040;
+}
+
 .timeline-event-bubble-time {
     color: #aaa;
 }

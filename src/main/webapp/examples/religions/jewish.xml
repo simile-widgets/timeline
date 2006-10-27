@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<data>
+<data
+    wiki-url="http://simile.mit.edu/shelf/"
+    wiki-section="Simile Jewish Timeline">
     <event start='200 BC' end='100 AD' isDuration="true"
         title="Canonicalization of Tanakh"
         >

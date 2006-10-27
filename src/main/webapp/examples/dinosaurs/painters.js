@@ -232,4 +232,9 @@ Timeline.ThumbnailEventPainter.prototype._showBubble = function(x, y, evt) {
     evt.fillTime(divTime, this._band.getLabeller());
     this._theme.event.bubble.timeStyler(divTime);
     div.appendChild(divTime);
+    
+    var divWiki = doc.createElement("div");
+    evt.fillWikiInfo(divWiki);
+    this._theme.event.bubble.wikiStyler(divWiki);
+    div.appendChild(divWiki);
 };

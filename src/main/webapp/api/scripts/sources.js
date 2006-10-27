@@ -25,6 +25,9 @@ Timeline.DefaultEventSource.prototype.removeListener = function(listener) {
 Timeline.DefaultEventSource.prototype.loadXML = function(xml, url) {
     var base = this._getBaseURL(url);
     
+    var wikiURL = xml.documentElement.getAttribute("wiki-url");
+    var wikiSection = xml.documentElement.getAttribute("wiki-section");
+
     var dateTimeFormat = xml.documentElement.getAttribute("date-time-format");
     var parseDateTimeFunction = this._events.getUnit().getParser(dateTimeFormat);
 
@@ -54,6 +57,7 @@ Timeline.DefaultEventSource.prototype.loadXML = function(xml, url) {
             evt.getProperty = function(name) {
                 return this._node.getAttribute(name);
             };
+            evt.setWikiInfo(wikiURL, wikiSection);
             
             this._events.add(evt);
             
@@ -72,6 +76,9 @@ Timeline.DefaultEventSource.prototype.loadJSON = function(data, url) {
     var base = this._getBaseURL(url);
     var added = false;  
     if (data && data.events){
+        var wikiURL = ("wikiURL" in data) ? data.wikiURL : null;
+        var wikiSection = ("wikiSection" in data) ? data.wikiSection : null;
+    
         var dateTimeFormat = ("dateTimeFormat" in data) ? data.dateTimeFormat : null;
         var parseDateTimeFunction = this._events.getUnit().getParser(dateTimeFormat);
        
@@ -95,6 +102,7 @@ Timeline.DefaultEventSource.prototype.loadJSON = function(data, url) {
             evt.getProperty = function(name) {
                 return this._obj[name];
             };
+            evt.setWikiInfo(wikiURL, wikiSection);
 
             this._events.add(evt);
             added = true;
@@ -127,7 +135,12 @@ Timeline.DefaultEventSource.prototype.loadSPARQL = function(xml, url) {
         node = node.nextSibling;
     }
     
+    var wikiURL = null;
+    var wikiSection = null;
     if (node != null) {
+        wikiURL = node.getAttribute("wiki-url");
+        wikiSection = node.getAttribute("wiki-section");
+        
         node = node.firstChild;
     }
     
@@ -169,6 +182,7 @@ Timeline.DefaultEventSource.prototype.loadSPARQL = function(xml, url) {
             evt.getProperty = function(name) {
                 return this._bindings[name];
             };
+            evt.setWikiInfo(wikiURL, wikiSection);
             
             this._events.add(evt);
             added = true;
@@ -285,6 +299,9 @@ Timeline.DefaultEventSource.Event = function(
     this._icon = (icon != null && icon != "") ? icon : null;
     this._color = (color != null && color != "") ? color : null;
     this._textColor = (textColor != null && textColor != "") ? textColor : null;
+    
+    this._wikiURL = null;
+    this._wikiSection = null;
 };
 
 Timeline.DefaultEventSource.Event.prototype = {
@@ -309,8 +326,36 @@ Timeline.DefaultEventSource.Event.prototype = {
     
     getProperty:    function(name) { return null; },
     
+    getWikiURL:     function() { return this._wikiURL; },
+    getWikiSection: function() { return this._wikiSection; },
+    setWikiInfo: function(wikiURL, wikiSection) {
+        this._wikiURL = wikiURL;
+        this._wikiSection = wikiSection;
+    },
+    
     fillDescription: function(elmt) {
         elmt.innerHTML = this._description;
+    },
+    fillWikiInfo: function(elmt) {
+        if (this._wikiURL != null && this._wikiSection != null) {
+            var wikiID = this.getProperty("wikiID");
+            if (wikiID == null || wikiID.length == 0) {
+                wikiID = this.getText();
+            }
+            wikiID = wikiID.replace(/\s/g, "_");
+            
+            var url = this._wikiURL + this._wikiSection.replace(/\s/g, "_") + "/" + wikiID;
+            var a = document.createElement("a");
+            a.href = url;
+            a.target = "new";
+            a.innerHTML = Timeline.strings[Timeline.Platform.clientLocale].wikiLinkLabel;
+            
+            elmt.appendChild(document.createTextNode("["));
+            elmt.appendChild(a);
+            elmt.appendChild(document.createTextNode("]"));
+        } else {
+            elmt.style.display = "none";
+        }
     },
     fillTime: function(elmt, labeller) {
         if (this._instant) {
@@ -372,5 +417,10 @@ Timeline.DefaultEventSource.Event.prototype = {
         this.fillTime(divTime, labeller);
         theme.event.bubble.timeStyler(divTime);
         elmt.appendChild(divTime);
+        
+        var divWiki = doc.createElement("div");
+        this.fillWikiInfo(divWiki);
+        theme.event.bubble.wikiStyler(divWiki);
+        elmt.appendChild(divWiki);
     }
 };

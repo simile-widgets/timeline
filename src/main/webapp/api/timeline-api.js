@@ -50,6 +50,7 @@ Timeline.Platform = new Object();
     ];
     
     var localizedJavascriptFiles = [
+        "timeline.js",
         "labellers.js"
     ];
     var localizedCssFiles = [

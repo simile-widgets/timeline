@@ -2,6 +2,9 @@
  *  Timeline
  *==================================================
  */
+
+Timeline.strings = {}; // localization string tables
+
 Timeline.create = function(elmt, bandInfos, orientation, unit) {
     return new Timeline._Impl(elmt, bandInfos, orientation, unit);
 };

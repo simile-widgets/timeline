@@ -18,18 +18,18 @@
 
   Timeline consists of a bunch of static resources. All you really need is to
   serve those resources off a web server. But we have configured the timeline
-  project to be runnable by Maven on top of Jetty, so if you have Maven you
-  can run change to this directory (where this README.txt file resides) and
-  run:
+  project to be runnable Jetty, so if you have a java virtual machine 
+  installed you can simply type "run" in your shell or in your command prompt.
   
-    maven jetty6:run
-
 
 
   How do I customize Timeline?
   ----------------------------
 
-  Refer to the docs directory.
+  Refer to the Timeline web site at 
+  
+  
+   http://simile.mit.edu/timeline/
 
 
 

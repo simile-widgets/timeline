@@ -17,9 +17,18 @@
   ----------------
 
   Timeline consists of a bunch of static resources. All you really need is to
-  serve those resources off a web server. But we have configured the timeline
+  serve those resources off a web server. Any web server would do.
+  
+  But if you don't have any available to you, we have configured the timeline
   project to be runnable Jetty, so if you have a java virtual machine 
-  installed you can simply type "run" in your shell or in your command prompt.
+  installed you can open a shell or command prompt and type:
+  
+   [win32]> run
+   [unix/macosx]> ./run
+
+  and then point your browser to
+  
+   http://127.0.0.1:9999/timeline/
   
 
 

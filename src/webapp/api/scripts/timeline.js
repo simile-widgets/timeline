@@ -501,12 +501,20 @@ Timeline._Band.prototype.softPaint = function() {
 };
 
 Timeline._Band.prototype.setBandShiftAndWidth = function(shift, width) {
+    var inputDiv = this._keyboardInput.parentNode;
+    var middle = shift + Math.floor(width / 2);
     if (this._timeline.isHorizontal()) {
         this._div.style.top = shift + "px";
         this._div.style.height = width + "px";
+        
+        inputDiv.style.top = middle + "px";
+        inputDiv.style.left = "-1em";
     } else {
         this._div.style.left = shift + "px";
         this._div.style.width = width + "px";
+        
+        inputDiv.style.left = middle + "px";
+        inputDiv.style.top = "-1em";
     }
 };
 

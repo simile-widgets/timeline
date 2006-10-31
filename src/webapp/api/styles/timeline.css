@@ -42,8 +42,6 @@
 
 .timeline-band-input {
     position:   absolute;
-    top:        -10em;
-    left:       -10em;
     width:      1em;
     height:     1em;
     overflow:   hidden;

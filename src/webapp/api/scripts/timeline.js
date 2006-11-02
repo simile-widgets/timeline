@@ -154,6 +154,15 @@ Timeline._Impl = function(elmt, bandInfos, orientation, unit) {
     this._initialize();
 };
 
+Timeline._Impl.prototype.dispose = function() {
+    for (var i = 0; i < this._bands.length; i++) {
+        this._bands[i].dispose();
+    }
+    this._bands = null;
+    this._bandInfos = null;
+    this._containerDiv.innerHTML = "";
+};
+
 Timeline._Impl.prototype.getBandCount = function() {
     return this._bands.length;
 };
@@ -424,6 +433,29 @@ Timeline._Band = function(timeline, bandInfo, index) {
 
 Timeline._Band.SCROLL_MULTIPLES = 5;
 
+Timeline._Band.prototype.dispose = function() {
+    this.closeBubble();
+    
+    this._timeline = null;
+    this._bandInfo = null;
+    
+    this._eventSource = null;
+    this._labeller = null;
+    this._ether = null;
+    this._etherPainter = null;
+    this._eventPainter = null;
+    this._decorators = null;
+    
+    this._onScrollListeners = null;
+    this._syncWithBandHandler = null;
+    this._selectorListener = null;
+    
+    this._div = null;
+    this._innerDiv = null;
+    this._keyboardInput = null;
+    this._bubble = null;
+};
+
 Timeline._Band.prototype.addOnScrollListener = function(listener) {
     this._onScrollListeners.push(listener);
 };
@@ -626,6 +658,16 @@ Timeline._Band.prototype.openBubbleForPoint = function(pageX, pageY, width, heig
         this._timeline.getDocument(), pageX, pageY, width, height);
         
     return this._bubble.content;
+};
+
+Timeline._Band.prototype.scrollToCenter = function(date) {
+    var pixelOffset = this._ether.dateToPixelOffset(date);
+    if (pixelOffset < -this._viewLength / 2) {
+        this.setCenterVisibleDate(this.pixelOffsetToDate(pixelOffset + this._viewLength));
+    } else if (pixelOffset > 3 * this._viewLength / 2) {
+        this.setCenterVisibleDate(this.pixelOffsetToDate(pixelOffset - this._viewLength));
+    }
+    this._autoScroll(Math.round(this._viewLength / 2 - this._ether.dateToPixelOffset(date)));
 };
 
 Timeline._Band.prototype._onMouseDown = function(innerFrame, evt, target) {

@@ -775,7 +775,7 @@ Timeline._Band.prototype._autoScroll = function(distance) {
     var b = this;
     var a = Timeline.Graphics.createAnimation(function(abs, diff) {
         b._moveEther(diff);
-    }, 0, distance, 3000);
+    }, 0, distance, 1000);
     a.run();
 };
 

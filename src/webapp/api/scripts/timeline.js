@@ -414,10 +414,11 @@ Timeline._Band = function(timeline, bandInfo, index) {
     
     this._eventSource = bandInfo.eventSource;
     if (this._eventSource) {
-        this._eventSource.addListener({
+        this._eventListener = {
             onAddMany: function() { b._onAddMany(); },
             onClear:   function() { b._onClear(); }
-        });
+        }
+        this._eventSource.addListener(this._eventListener);
     }
         
     this._eventPainter = bandInfo.eventPainter;
@@ -436,10 +437,15 @@ Timeline._Band.SCROLL_MULTIPLES = 5;
 Timeline._Band.prototype.dispose = function() {
     this.closeBubble();
     
+    if (this._eventSource) {
+        this._eventSource.removeListener(this._eventListener);
+        this._eventListener = null;
+        this._eventSource = null;
+    }
+    
     this._timeline = null;
     this._bandInfo = null;
     
-    this._eventSource = null;
     this._labeller = null;
     this._ether = null;
     this._etherPainter = null;

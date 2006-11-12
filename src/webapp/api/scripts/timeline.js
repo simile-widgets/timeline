@@ -734,13 +734,14 @@ Timeline._Band.prototype._onKeyDown = function(keyboardInput, evt, target) {
             this._moveEther(this._scrollSpeed);
             break;
         default:
-            return;
+            return true;
         }
         this.closeBubble();
         
         Timeline.DOM.cancelEvent(evt);
         return false;
     }
+    return true;
 };
 
 Timeline._Band.prototype._onKeyUp = function(keyboardInput, evt, target) {
@@ -761,7 +762,7 @@ Timeline._Band.prototype._onKeyUp = function(keyboardInput, evt, target) {
             this._autoScroll(-this._timeline.getPixelLength());
             break;
         default:
-            return;
+            return true;
         }
         
         this.closeBubble();
@@ -769,6 +770,7 @@ Timeline._Band.prototype._onKeyUp = function(keyboardInput, evt, target) {
         Timeline.DOM.cancelEvent(evt);
         return false;
     }
+    return true;
 };
 
 Timeline._Band.prototype._autoScroll = function(distance) {

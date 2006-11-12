@@ -124,7 +124,7 @@ Timeline.DefaultEventSource.prototype.loadSPARQL = function(xml, url) {
     var parseDateTimeFunction = this._events.getUnit().getParser(dateTimeFormat);
 
     if (xml == null) {
-        return null;
+        return;
     }
     
     /*

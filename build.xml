@@ -1,0 +1,44 @@
+<!--+
+    |
+    |           +===========================+
+    |           |   Timeline Build System   |
+    |           +===========================+
+    |
+    | This is just for bundling and minifying javascript and CSS files.
+    |
+    +-->
+
+<project default="bundle" basedir="." name="Piggy Bank">
+
+  <target name="tasks">
+    <taskdef name="jsmin"
+        classname="edu.mit.simile.jsminTask.JSMinTask"
+        classpath="tools/jsminTask.jar"/>
+  </target>
+  	
+  <target name="bundle" depends="tasks">
+    <jsmin output="src/webapp/api/bundle.js">
+        <fileset dir="src/webapp/api/scripts">
+        	<include name="timeline.js" />
+        </fileset>
+        <fileset dir="src/webapp/api/scripts/util">
+        	<include name="platform.js" />
+        </fileset>
+    	
+        <fileset dir="src/webapp/api/scripts/util">
+        	<include name="*.js" />
+        	<exclude name="platform.js" />
+        </fileset>
+        <fileset dir="src/webapp/api/scripts">
+        	<include name="*.js" />
+        	<exclude name="timeline.js" />
+        </fileset>
+  	</jsmin>
+  	
+    <concat destfile="src/webapp/api/bundle.css">
+        <fileset dir="src/webapp/api/styles">
+        	<include name="**/*.css" />
+        </fileset>
+    </concat>
+  </target>
+</project>

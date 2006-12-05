@@ -22,6 +22,7 @@ Timeline.Platform = new Object();
     */
 
 (function() {
+    var bundle = true;
     var javascriptFiles = [
         "timeline.js",
         
@@ -80,6 +81,8 @@ Timeline.Platform = new Object();
                     desiredLocales = desiredLocales.concat(pair[1].split(","));
                 } else if (pair[0] == "defaultLocale") {
                     defaultServerLocale = pair[1];
+                } else if (pair[0] == "bundle") {
+                    bundle = pair[1] != "false";
                 }
             }
         };
@@ -162,8 +165,13 @@ Timeline.Platform = new Object();
         /*
          *  Include non-localized files
          */
-        includeJavascriptFiles(Timeline.urlPrefix + "scripts/", javascriptFiles);
-        includeCssFiles(Timeline.urlPrefix + "styles/", cssFiles);
+        if (bundle) {
+            includeJavascriptFiles(Timeline.urlPrefix, [ "bundle.js" ]);
+            includeCssFiles(Timeline.urlPrefix, [ "bundle.css" ]);
+        } else {
+            includeJavascriptFiles(Timeline.urlPrefix + "scripts/", javascriptFiles);
+            includeCssFiles(Timeline.urlPrefix + "styles/", cssFiles);
+        }
         
         /*
          *  Include localized files

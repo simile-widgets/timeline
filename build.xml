@@ -8,7 +8,7 @@
     |
     +-->
 
-<project default="bundle" basedir="." name="Piggy Bank">
+<project default="bundle" basedir="." name="Timeline">
 
   <target name="tasks">
     <taskdef name="jsmin"

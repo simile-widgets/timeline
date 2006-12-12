@@ -27,6 +27,7 @@ Timeline.createBandInfo = function(params) {
     
     var etherPainter = new Timeline.GregorianEtherPainter({
         unit:       params.intervalUnit, 
+        multiple:   ("multiple" in params) ? params.multiple : 1,
         theme:      theme 
     });
     

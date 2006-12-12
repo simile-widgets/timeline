@@ -7,6 +7,7 @@ Timeline.GregorianEtherPainter = function(params) {
     this._params = params;
     this._theme = params.theme;
     this._unit = params.unit;
+    this._multiple = ("multiple" in params) ? params.multiple : 1;
 };
 
 Timeline.GregorianEtherPainter.prototype.initialize = function(band, timeline) {
@@ -61,7 +62,9 @@ Timeline.GregorianEtherPainter.prototype.paint = function() {
     
     var p = this;
     var incrementDate = function(date) {
-        Timeline.DateTime.incrementByInterval(date, p._unit);
+        for (var i = 0; i < p._multiple; i++) {
+            Timeline.DateTime.incrementByInterval(date, p._unit);
+        }
     };
     
     while (minDate.getTime() < maxDate.getTime()) {

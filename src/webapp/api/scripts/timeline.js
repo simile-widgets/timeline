@@ -28,7 +28,8 @@ Timeline.createBandInfo = function(params) {
     var etherPainter = new Timeline.GregorianEtherPainter({
         unit:       params.intervalUnit, 
         multiple:   ("multiple" in params) ? params.multiple : 1,
-        theme:      theme 
+        theme:      theme,
+        align:      ("align" in params) ? params.align : undefined
     });
     
     var layout = new Timeline.StaticTrackBasedLayout({
@@ -76,7 +77,8 @@ Timeline.createHotZoneBandInfo = function(params) {
     var etherPainter = new Timeline.HotZoneGregorianEtherPainter({
         unit:       params.intervalUnit, 
         zones:      params.zones,
-        theme:      theme 
+        theme:      theme,
+        align:      ("align" in params) ? params.align : undefined
     });
     
     var layout = new Timeline.StaticTrackBasedLayout({

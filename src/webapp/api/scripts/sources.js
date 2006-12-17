@@ -291,8 +291,8 @@ Timeline.DefaultEventSource.Event = function(
     this._latestStart = (latestStart != null) ? latestStart : (instant ? this._end : this._start);
     this._earliestEnd = (earliestEnd != null) ? earliestEnd : (instant ? this._start : this._end);
     
-    this._text = text;
-    this._description = description;
+    this._text = Timeline.HTML.deEntify(text);
+    this._description = Timeline.HTML.deEntify(description);
     this._image = (image != null && image != "") ? image : null;
     this._link = (link != null && link != "") ? link : null;
     

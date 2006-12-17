@@ -33,6 +33,7 @@ Timeline.Platform = new Object();
         "util/graphics.js",
         "util/date-time.js",
         "util/data-structure.js",
+        "util/html.js",
         
         "units.js",
         "themes.js",

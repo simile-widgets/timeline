@@ -24,7 +24,7 @@ Timeline.PlanningLabeller.prototype.labelInterval = function(date, intervalUnit)
     case Timeline.PlanningUnit.QUARTER: prefix = labels.quarterPrefix;  divider = 28 * 3;   divider2 = divider * 4; break;
     case Timeline.PlanningUnit.YEAR:    prefix = labels.yearPrefix;     divider = 28 * 12;  divider2 = divider * 5; break;
     }
-    return { text: prefix + (n / divider), emphasized: (n % divider2) == 0 };
+    return { text: prefix + Math.floor(n / divider), emphasized: (n % divider2) == 0 };
 };
 
 Timeline.PlanningLabeller.prototype.labelPrecise = function(date) {

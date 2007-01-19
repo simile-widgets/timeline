@@ -64,13 +64,10 @@ Timeline.GregorianDateLabeller.prototype.defaultLabelInterval = function(date, i
         break;
     case Timeline.DateTime.MONTH:
         var m = date.getUTCMonth();
-        if (m == 0) {
-            text = this.labelInterval(date, Timeline.DateTime.YEAR).text;
-            emphasized = true;
-        } else {
+        if (m != 0) {
             text = Timeline.GregorianDateLabeller.getMonthName(m, this._locale);
-        }
-        break;
+            break;
+        } // else, fall through
     case Timeline.DateTime.YEAR:
     case Timeline.DateTime.DECADE:
     case Timeline.DateTime.CENTURY:
@@ -81,7 +78,9 @@ Timeline.GregorianDateLabeller.prototype.defaultLabelInterval = function(date, i
         } else {
             text = (1 - y) + "BC";
         }
-        emphasized = (intervalUnit == Timeline.DateTime.DECADE && y % 100 == 0) || 
+        emphasized = 
+            (intervalUnit == Timeline.DateTime.MONTH) ||
+            (intervalUnit == Timeline.DateTime.DECADE && y % 100 == 0) || 
             (intervalUnit == Timeline.DateTime.CENTURY && y % 1000 == 0);
         break;
     default:

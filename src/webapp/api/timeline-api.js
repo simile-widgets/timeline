@@ -131,25 +131,35 @@ Timeline.Platform = new Object();
             };
             var includeJavascriptFile = function(url) {
                 if (document.body == null) {
-                    document.write("<script src='" + url + "' type='text/javascript'></script>");
-                } else {
-                    var script = document.createElement("script");
-                    script.type = "text/javascript";
-                    script.language = "JavaScript";
-                    script.src = url;
-                    getHead().appendChild(script);
+                    try {
+                        document.write("<script src='" + url + "' type='text/javascript'></script>");
+                        return;
+                    } catch (e) {
+                        // fall through
+                    }
                 }
+                
+                var script = document.createElement("script");
+                script.type = "text/javascript";
+                script.language = "JavaScript";
+                script.src = url;
+                getHead().appendChild(script);
             };
             var includeCssFile = function(url) {
                 if (document.body == null) {
-                    document.write("<link rel='stylesheet' href='" + url + "' type='text/css'/>");
-                } else {
-                    var link = document.createElement("link");
-                    link.setAttribute("rel", "stylesheet");
-                    link.setAttribute("type", "text/css");
-                    link.setAttribute("href", url);
-                    getHead().appendChild(link);
+                    try {
+                        document.write("<link rel='stylesheet' href='" + url + "' type='text/css'/>");
+                        return;
+                    } catch (e) {
+                        // fall through
+                    }
                 }
+                
+                var link = document.createElement("link");
+                link.setAttribute("rel", "stylesheet");
+                link.setAttribute("type", "text/css");
+                link.setAttribute("href", url);
+                getHead().appendChild(link);
             }
             
             includeJavascriptFiles = function(urlPrefix, filenames) {

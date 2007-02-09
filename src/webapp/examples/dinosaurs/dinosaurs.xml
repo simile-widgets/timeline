@@ -95,7 +95,7 @@
 <event isDuration="true" start='121' end='99' title='Harpymimus'
 	image='http://internt.nhm.ac.uk/resources/nature-online/life/dinosaurs/dino-directory/drawing/thumb/Harpymimus.gif'
 	link='http://internt.nhm.ac.uk/jdsml/nature-online/dino-directory/detail.dsml?perID=5&amp;disp=time&amp;identifier=Harpymimus&amp;sort=Genus&amp;dataHeaderText_EX=%0d%0a%09Lower+Cretaceous+dinosaurs%0d%0a&amp;beginIndex=11&amp;listPageURL=timeline%2edsml%3fperID%3d5%26disp%3dtime%26sort%3dGenus'
-	thumbnail='unknown.png'
+	thumbnail='http://internt.nhm.ac.uk/jdsml/nature-online/dino-directory/images/body/gallimICON.gif'
 	>
 	Dinosauria, Saurischia, Theropoda, Neotherapoda, Tetanurae, Avetherapoda, Coelurosauria, Tyrannoraptora, Maniraptoriformes, Ornithomimosauria
 	</event>
@@ -191,7 +191,7 @@
 <event isDuration="true" start='127' end='121' title='Pelicanimimus'
 	image='http://internt.nhm.ac.uk/resources/nature-online/life/dinosaurs/dino-directory/drawing/thumb/Pelicanimimus.gif'
 	link='http://internt.nhm.ac.uk/jdsml/nature-online/dino-directory/detail.dsml?perID=5&amp;disp=time&amp;identifier=Pelicanimimus&amp;sort=Genus&amp;dataHeaderText_EX=%0d%0a%09Lower+Cretaceous+dinosaurs%0d%0a&amp;beginIndex=23&amp;listPageURL=timeline%2edsml%3fperID%3d5%26disp%3dtime%26sort%3dGenus'
-	thumbnail='unknown.png'
+	thumbnail='http://internt.nhm.ac.uk/jdsml/nature-online/dino-directory/images/body/gallimICON.gif'
 	>
 	Dinosauria, Saurischia, Theropoda, Neotherapoda, Tetanurae, Avetherapoda, Coelurosauria, Tyrannoraptora, Maniraptoriformes, Ornithomimosauria
 	</event>
@@ -407,7 +407,7 @@
 <event isDuration="true" start='84' end='65' title='Anserimimus'
 	image='http://internt.nhm.ac.uk/resources/nature-online/life/dinosaurs/dino-directory/drawing/thumb/anseri.gif'
 	link='http://internt.nhm.ac.uk/jdsml/nature-online/dino-directory/detail.dsml?perID=6&amp;disp=time&amp;identifier=anseri&amp;sort=Genus&amp;dataHeaderText_EX=%0d%0a%09Upper+Cretaceous+dinosaurs%0d%0a&amp;beginIndex=11&amp;listPageURL=timeline%2edsml%3fperID%3d6%26disp%3dtime%26sort%3dGenus'
-	thumbnail='unknown.png'
+	thumbnail='http://internt.nhm.ac.uk/jdsml/nature-online/dino-directory/images/body/gallimICON.gif'
 	>
 	Dinosauria, Saurischia, Theropoda, Neotherapoda, Tetanurae, Avetherapoda, Coelurosauria, Tyrannoraptora, Maniraptoriformes, Ornithomimosauria, Ornithomimidae
 	</event>
@@ -431,7 +431,7 @@
 <event isDuration="true" start='95' end='70' title='Archaeornithomimus'
 	image='http://internt.nhm.ac.uk/resources/nature-online/life/dinosaurs/dino-directory/drawing/thumb/archaeorn.gif'
 	link='http://internt.nhm.ac.uk/jdsml/nature-online/dino-directory/detail.dsml?perID=6&amp;disp=time&amp;identifier=archaeorn&amp;sort=Genus&amp;dataHeaderText_EX=%0d%0a%09Upper+Cretaceous+dinosaurs%0d%0a&amp;beginIndex=14&amp;listPageURL=timeline%2edsml%3fperID%3d6%26disp%3dtime%26sort%3dGenus'
-	thumbnail='unknown.png'
+	thumbnail='http://internt.nhm.ac.uk/jdsml/nature-online/dino-directory/images/body/gallimICON.gif'
 	>
 	Dinosauria, Saurischia, Theropoda, Neotherapoda, Tetanurae, Avetherapoda, Coelurosauria, Tyrannoraptora, Maniraptoriformes, Ornithomimosauria, Ornithomimidae
 	</event>
@@ -599,7 +599,7 @@
 <event isDuration="true" start='74' end='70' title='Dromiceiomimus'
 	image='http://internt.nhm.ac.uk/resources/nature-online/life/dinosaurs/dino-directory/drawing/thumb/dromic.gif'
 	link='http://internt.nhm.ac.uk/jdsml/nature-online/dino-directory/detail.dsml?perID=6&amp;disp=time&amp;identifier=dromic&amp;sort=Genus&amp;dataHeaderText_EX=%0d%0a%09Upper+Cretaceous+dinosaurs%0d%0a&amp;beginIndex=35&amp;listPageURL=timeline%2edsml%3fperID%3d6%26disp%3dtime%26sort%3dGenus'
-	thumbnail='unknown.png'
+	thumbnail='http://internt.nhm.ac.uk/jdsml/nature-online/dino-directory/images/body/gallimICON.gif'
 	>
 	Dinosauria, Saurischia, Theropoda, Neotherapoda, Tetanurae, Avetherapoda, Coelurosauria, Tyrannoraptora, Maniraptoriformes, Ornithomimosauria, Ornithomimidae
 	</event>
@@ -655,7 +655,7 @@
 <event isDuration="true" start='74' end='70' title='Gallimimus'
 	image='http://internt.nhm.ac.uk/resources/nature-online/life/dinosaurs/dino-directory/drawing/thumb/gallim.gif'
 	link='http://internt.nhm.ac.uk/jdsml/nature-online/dino-directory/detail.dsml?perID=6&amp;disp=time&amp;identifier=gallim&amp;sort=Genus&amp;dataHeaderText_EX=%0d%0a%09Upper+Cretaceous+dinosaurs%0d%0a&amp;beginIndex=42&amp;listPageURL=timeline%2edsml%3fperID%3d6%26disp%3dtime%26sort%3dGenus'
-	thumbnail='unknown.png'
+	thumbnail='http://internt.nhm.ac.uk/jdsml/nature-online/dino-directory/images/body/gallimICON.gif'
 	>
 	Dinosauria, Saurischia, Theropoda, Neotherapoda, Tetanurae, Avetherapoda, Coelurosauria, Tyrannoraptora, Maniraptoriformes, Ornithomimosauria, Ornithomimidae
 	</event>
@@ -663,7 +663,7 @@
 <event isDuration="true" start='99' end='89' title='Garudimimus'
 	image='http://internt.nhm.ac.uk/resources/nature-online/life/dinosaurs/dino-directory/drawing/thumb/Garudimimus.gif'
 	link='http://internt.nhm.ac.uk/jdsml/nature-online/dino-directory/detail.dsml?perID=6&amp;disp=time&amp;identifier=Garudimimus&amp;sort=Genus&amp;dataHeaderText_EX=%0d%0a%09Upper+Cretaceous+dinosaurs%0d%0a&amp;beginIndex=43&amp;listPageURL=timeline%2edsml%3fperID%3d6%26disp%3dtime%26sort%3dGenus'
-	thumbnail='unknown.png'
+	thumbnail='http://internt.nhm.ac.uk/jdsml/nature-online/dino-directory/images/body/gallimICON.gif'
 	>
 	Dinosauria, Saurischia, Theropoda, Neotherapoda, Tetanurae, Avetherapoda, Coelurosauria, Tyrannoraptora, Maniraptoriformes, Ornithomimosauria
 	</event>
@@ -975,7 +975,7 @@
 <event isDuration="true" start='85' end='80' title='Saurornithoides'
 	image='http://internt.nhm.ac.uk/resources/nature-online/life/dinosaurs/dino-directory/drawing/thumb/saurorn.gif'
 	link='http://internt.nhm.ac.uk/jdsml/nature-online/dino-directory/detail.dsml?perID=6&amp;disp=time&amp;identifier=saurorn&amp;sort=Genus&amp;dataHeaderText_EX=%0d%0a%09Upper+Cretaceous+dinosaurs%0d%0a&amp;beginIndex=82&amp;listPageURL=timeline%2edsml%3fperID%3d6%26disp%3dtime%26sort%3dGenus'
-	thumbnail='unknown.png'
+	thumbnail='http://internt.nhm.ac.uk/jdsml/nature-online/dino-directory/images/body/gallimICON.gif'
 	>
 	Dinosauria, Saurischia, Theropoda, Neotherapoda, Tetanurae, Avetherapoda, Coelurosauria, Tyrannoraptora, Maniraptoriformes, Maniraptora, Paraves, Eumaniraptoria, Troodontidae
 	</event>
@@ -1023,7 +1023,7 @@
 <event isDuration="true" start='76' end='74' title='Struthiomimus'
 	image='http://internt.nhm.ac.uk/resources/nature-online/life/dinosaurs/dino-directory/drawing/thumb/struthio.gif'
 	link='http://internt.nhm.ac.uk/jdsml/nature-online/dino-directory/detail.dsml?perID=6&amp;disp=time&amp;identifier=struthio&amp;sort=Genus&amp;dataHeaderText_EX=%0d%0a%09Upper+Cretaceous+dinosaurs%0d%0a&amp;beginIndex=88&amp;listPageURL=timeline%2edsml%3fperID%3d6%26disp%3dtime%26sort%3dGenus'
-	thumbnail='unknown.png'
+	thumbnail='http://internt.nhm.ac.uk/jdsml/nature-online/dino-directory/images/body/gallimICON.gif'
 	>
 	Dinosauria, Saurischia, Theropoda, Neotherapoda, Tetanurae, Avetherapoda, Coelurosauria, Tyrannoraptora, Maniraptoriformes, Ornithomimosauria, Ornithomimidae
 	</event>
@@ -1591,7 +1591,7 @@
 <event isDuration="true" start='213' end='200' title='Lesothosaurus'
 	image='http://internt.nhm.ac.uk/resources/nature-online/life/dinosaurs/dino-directory/drawing/thumb/lesotho.gif'
 	link='http://internt.nhm.ac.uk/jdsml/nature-online/dino-directory/detail.dsml?perID=2&amp;disp=time&amp;identifier=lesotho&amp;sort=Genus&amp;dataHeaderText_EX=%0d%0a%09Lower+Jurassic+dinosaurs%0d%0a&amp;beginIndex=7&amp;listPageURL=timeline%2edsml%3fperID%3d2%26disp%3dtime%26sort%3dGenus'
-	thumbnail='unknown.png'
+	thumbnail='http://internt.nhm.ac.uk/jdsml/nature-online/dino-directory/images/body/gallimICON.gif'
 	>
 	Dinosauria, Ornithischia
 	</event>

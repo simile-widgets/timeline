@@ -52,6 +52,22 @@ Timeline.Graphics._bubblePointOffset = 6;
 Timeline.Graphics._halfArrowWidth = 18;
 
 Timeline.Graphics.createBubbleForPoint = function(doc, pageX, pageY, contentWidth, contentHeight) {
+    function getWindowDims() {
+        if (typeof window.innerWidth == 'number') {
+	    return { w:window.innerWidth, h:window.innerHeight }; // Non-IE
+	} else if (document.documentElement && document.documentElement.clientWidth) {
+	    return { // IE6+, in "standards compliant mode"
+		w:document.documentElement.clientWidth,
+		h:document.documentElement.clientHeight
+	    };
+	} else if (document.body && document.body.clientWidth) {
+	    return { // IE 4 compatible
+		w:document.body.clientWidth,
+		h:document.body.clientHeight
+	    };
+	}
+    }
+
     var bubble = {
         _closed:    false,
         _doc:       doc,
@@ -65,14 +81,17 @@ Timeline.Graphics.createBubbleForPoint = function(doc, pageX, pageY, contentWidt
             }
         }
     };
-    
-    var docWidth = doc.body.offsetWidth;
-    var docHeight = doc.body.offsetHeight;
-    
+
+    var dims = getWindowDims();
+    var docWidth = dims.w;
+    var docHeight = dims.h;
+
     var margins = Timeline.Graphics._bubbleMargins;
+    contentWidth = parseInt(contentWidth, 10); // harden against bad input bugs
+    contentHeight = parseInt(contentHeight, 10); // getting numbers-as-strings
     var bubbleWidth = margins.left + contentWidth + margins.right;
     var bubbleHeight = margins.top + contentHeight + margins.bottom;
-    
+
     var pngIsTranslucent = Timeline.Graphics.pngIsTranslucent;
     var urlPrefix = Timeline.urlPrefix;
     

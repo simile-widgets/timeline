@@ -2,9 +2,7 @@
  *  Geochrono
  *==================================================
  */
-
 Timeline.Geochrono = new Object();
-
 Timeline.Geochrono.eons = [
     {   name: "Proterozoic",
         start: 2500.000
@@ -13,7 +11,6 @@ Timeline.Geochrono.eons = [
         start: 542.000
     }
 ];
-
 Timeline.Geochrono.eras = [
     {   name: "Paleoarchean",
         start: 3600.000
@@ -43,7 +40,6 @@ Timeline.Geochrono.eras = [
         start: 65.500
     }
 ];
-
 Timeline.Geochrono.periods = [
     {   name: "Siderian",
         start: 2500.000
@@ -109,7 +105,6 @@ Timeline.Geochrono.periods = [
         start: 23.030
     }
 ];
-
 Timeline.Geochrono.epoches = [
     {   name: "Lower Cambrian",
         start: 542.000
@@ -211,7 +206,6 @@ Timeline.Geochrono.epoches = [
         start: 0.012
     }
 ];
-
 Timeline.Geochrono.ages = [
     {   name: "-",
         start: 542.000
@@ -481,7 +475,6 @@ Timeline.Geochrono.ages = [
         start: 2.588
     }
 ];
-
 
 Timeline.Geochrono.createBandInfo = function(params) {
     var theme = ("theme" in params) ? params.theme : Timeline.getDefaultTheme();

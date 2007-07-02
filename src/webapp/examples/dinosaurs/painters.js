@@ -131,7 +131,7 @@ Timeline.ThumbnailEventPainter.prototype.paint = function() {
         div.appendChild(span);
         
         div.style.cursor = "pointer";
-        Timeline.DOM.registerEvent(div, "mousedown", function(elmt, domEvt, target) {
+        SimileAjax.DOM.registerEvent(div, "mousedown", function(elmt, domEvt, target) {
             p._onClickInstantEvent(img, domEvt, evt);
         });
             
@@ -168,7 +168,7 @@ Timeline.ThumbnailEventPainter.prototype.softPaint = function() {
 Timeline.ThumbnailEventPainter.prototype._onClickInstantEvent = function(icon, domEvt, evt) {
     domEvt.cancelBubble = true;
     
-    var c = Timeline.DOM.getPageCoordinates(icon);
+    var c = SimileAjax.DOM.getPageCoordinates(icon);
     this._showBubble(
         c.left + Math.ceil(icon.offsetWidth / 2), 
         c.top + Math.ceil(icon.offsetHeight / 2),
@@ -237,4 +237,5 @@ Timeline.ThumbnailEventPainter.prototype._showBubble = function(x, y, evt) {
     evt.fillWikiInfo(divWiki);
     this._theme.event.bubble.wikiStyler(divWiki);
     div.appendChild(divWiki);
+
 };

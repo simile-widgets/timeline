@@ -1,5 +1,5 @@
-function centerTimeline(date) {
-    tl.getBand(0).setCenterVisibleDate(Timeline.DateTime.parseGregorianDateTime(date));
+function centerSimileAjax(date) {
+    tl.getBand(0).setCenterVisibleDate(SimileAjax.DateTime.parseGregorianDateTime(date));
 }
 
 function setupFilterHighlightControls(div, timeline, bandIndices, theme) {
@@ -23,7 +23,7 @@ function setupFilterHighlightControls(div, timeline, bandIndices, theme) {
     
     var input = document.createElement("input");
     input.type = "text";
-    Timeline.DOM.registerEvent(input, "keypress", handler);
+    SimileAjax.DOM.registerEvent(input, "keypress", handler);
     td.appendChild(input);
     
     for (var i = 0; i < theme.event.highlightColors.length; i++) {
@@ -31,7 +31,7 @@ function setupFilterHighlightControls(div, timeline, bandIndices, theme) {
         
         input = document.createElement("input");
         input.type = "text";
-        Timeline.DOM.registerEvent(input, "keypress", handler);
+        SimileAjax.DOM.registerEvent(input, "keypress", handler);
         td.appendChild(input);
         
         var divColor = document.createElement("div");
@@ -43,7 +43,7 @@ function setupFilterHighlightControls(div, timeline, bandIndices, theme) {
     td = tr.insertCell(tr.cells.length);
     var button = document.createElement("button");
     button.innerHTML = "Clear All";
-    Timeline.DOM.registerEvent(button, "click", function() {
+    SimileAjax.DOM.registerEvent(button, "click", function() {
         clearAll(timeline, bandIndices, table);
     });
     td.appendChild(button);

@@ -10,7 +10,7 @@ Timeline.ClassicTheme.implementations = [];
 
 Timeline.ClassicTheme.create = function(locale) {
     if (locale == null) {
-        locale = Timeline.Platform.getDefaultLocale();
+        locale = Timeline.getDefaultLocale();
     }
     
     var f = Timeline.ClassicTheme.implementations[locale];

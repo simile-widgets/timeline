@@ -88,14 +88,18 @@ Timeline.DurationEventPainter.prototype.paint = function() {
     //if (this._timeline.isHorizontal()) {
         var appendIcon = function(evt, div) {
             var icon = evt.getIcon();
-            var img = Timeline.Graphics.createTranslucentImage(
-                doc, icon != null ? icon : eventTheme.instant.icon
+            var img = SimileAjax.Graphics.createTranslucentImage(
+                icon != null ? icon : eventTheme.instant.icon,
+                "middle"
             );
             div.appendChild(img);
             div.style.cursor = "pointer";
             
-            Timeline.DOM.registerEvent(div, "mousedown", function(elmt, domEvt, target) {
+            SimileAjax.DOM.registerEvent(div, "mousedown", function(elmt, domEvt, target) {
                 p._onClickInstantEvent(img, domEvt, evt);
+                
+                SimileAjax.DOM.cancelEvent(evt);
+                return false;
             });
         };
         var createHighlightDiv = function(highlightIndex, startPixel, length, highlightOffset, highlightWidth) {
@@ -110,7 +114,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
                 div.style.top = highlightOffset + "em";
                 div.style.height = highlightWidth + "em";
                 div.style.background = color;
-                //Timeline.Graphics.setOpacity(div, 50);
+                //SimileAjax.Graphics.setOpacity(div, 50);
                 
                 highlightLayer.appendChild(div);
             }
@@ -131,7 +135,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
                 
                 divImprecise.style.background = eventTheme.instant.impreciseColor;
                 if (eventTheme.instant.impreciseOpacity < 100) {
-                    Timeline.Graphics.setOpacity(divImprecise, eventTheme.instant.impreciseOpacity);
+                    SimileAjax.Graphics.setOpacity(divImprecise, eventTheme.instant.impreciseOpacity);
                 }
                 
                 eventLayer.appendChild(divImprecise);
@@ -173,8 +177,11 @@ Timeline.DurationEventPainter.prototype.paint = function() {
         var createDurationDiv = function(evt, startPixel, endPixel, streamOffset, highlightIndex, highlightOffset, highlightWidth) {
             var attachClickEvent = function(elmt) {
                 elmt.style.cursor = "pointer";
-                Timeline.DOM.registerEvent(elmt, "mousedown", function(elmt, domEvt, target) {
+                SimileAjax.DOM.registerEvent(elmt, "mousedown", function(elmt, domEvt, target) {
                     p._onClickDurationEvent(domEvt, evt, target);
+                    
+                    SimileAjax.DOM.cancelEvent(evt);
+                    return false;
                 });
             };
             
@@ -191,7 +198,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
                 
                 div.style.background = eventTheme.duration.impreciseColor;
                 if (eventTheme.duration.impreciseOpacity < 100) {
-                    Timeline.Graphics.setOpacity(div, eventTheme.duration.impreciseOpacity);
+                    SimileAjax.Graphics.setOpacity(div, eventTheme.duration.impreciseOpacity);
                 }
                 
                 eventLayer.appendChild(div);
@@ -225,7 +232,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
                 
                 div.style.background = background != null ? background : eventTheme.duration.color;
                 if (eventTheme.duration.opacity < 100) {
-                    Timeline.Graphics.setOpacity(div, eventTheme.duration.opacity);
+                    SimileAjax.Graphics.setOpacity(div, eventTheme.duration.opacity);
                 }
                 
                 eventLayer.appendChild(div);
@@ -302,7 +309,7 @@ Timeline.DurationEventPainter.prototype.softPaint = function() {
 Timeline.DurationEventPainter.prototype._onClickInstantEvent = function(icon, domEvt, evt) {
     domEvt.cancelBubble = true;
     
-    var c = Timeline.DOM.getPageCoordinates(icon);
+    var c = SimileAjax.DOM.getPageCoordinates(icon);
     this._showBubble(
         c.left + Math.ceil(icon.offsetWidth / 2), 
         c.top + Math.ceil(icon.offsetHeight / 2),
@@ -316,7 +323,7 @@ Timeline.DurationEventPainter.prototype._onClickDurationEvent = function(domEvt,
         var x = domEvt.pageX;
         var y = domEvt.pageY;
     } else {
-        var c = Timeline.DOM.getPageCoordinates(target);
+        var c = SimileAjax.DOM.getPageCoordinates(target);
         var x = domEvt.offsetX + c.left;
         var y = domEvt.offsetY + c.top;
     }

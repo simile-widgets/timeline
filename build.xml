@@ -17,7 +17,20 @@
   </target>
   	
   <target name="bundle" depends="tasks">
-    <jsmin output="src/webapp/api/bundle.js">
+    <!-- SimileAjax -->
+    <jsmin output="src/ajax/api/simile-ajax-bundle.js">
+        <fileset dir="src/ajax/api/scripts">
+            <include name="platform.js" />
+        </fileset>
+        <fileset dir="src/ajax/api/scripts">
+            <include name="**/*.js" />
+            <exclude name="signal.js" />
+            <exclude name="platform.js" />
+        </fileset>
+    </jsmin>
+  	
+  	<!-- Timeline -->
+    <jsmin output="src/webapp/api/timeline-bundle.js">
         <fileset dir="src/webapp/api/scripts">
         	<include name="timeline.js" />
         </fileset>
@@ -35,7 +48,7 @@
         </fileset>
   	</jsmin>
   	
-    <concat destfile="src/webapp/api/bundle.css">
+    <concat destfile="src/webapp/api/timeline-bundle.css">
         <fileset dir="src/webapp/api/styles">
         	<include name="**/*.css" />
         </fileset>

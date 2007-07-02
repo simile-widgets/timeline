@@ -25,7 +25,7 @@ Timeline.GregorianDateLabeller.prototype.labelInterval = function(date, interval
 };
 
 Timeline.GregorianDateLabeller.prototype.labelPrecise = function(date) {
-    return Timeline.DateTime.removeTimeZoneOffset(
+    return SimileAjax.DateTime.removeTimeZoneOffset(
         date, 
         this._timeZone //+ (new Date().getTimezoneOffset() / 60)
     ).toUTCString();
@@ -35,16 +35,16 @@ Timeline.GregorianDateLabeller.prototype.defaultLabelInterval = function(date, i
     var text;
     var emphasized = false;
     
-    date = Timeline.DateTime.removeTimeZoneOffset(date, this._timeZone);
+    date = SimileAjax.DateTime.removeTimeZoneOffset(date, this._timeZone);
     
     switch(intervalUnit) {
-    case Timeline.DateTime.MILLISECOND:
+    case SimileAjax.DateTime.MILLISECOND:
         text = date.getUTCMilliseconds();
         break;
-    case Timeline.DateTime.SECOND:
+    case SimileAjax.DateTime.SECOND:
         text = date.getUTCSeconds();
         break;
-    case Timeline.DateTime.MINUTE:
+    case SimileAjax.DateTime.MINUTE:
         var m = date.getUTCMinutes();
         if (m == 0) {
             text = date.getUTCHours() + ":00";
@@ -53,25 +53,25 @@ Timeline.GregorianDateLabeller.prototype.defaultLabelInterval = function(date, i
             text = m;
         }
         break;
-    case Timeline.DateTime.HOUR:
+    case SimileAjax.DateTime.HOUR:
         text = date.getUTCHours() + "hr";
         break;
-    case Timeline.DateTime.DAY:
+    case SimileAjax.DateTime.DAY:
         text = Timeline.GregorianDateLabeller.getMonthName(date.getUTCMonth(), this._locale) + " " + date.getUTCDate();
         break;
-    case Timeline.DateTime.WEEK:
+    case SimileAjax.DateTime.WEEK:
         text = Timeline.GregorianDateLabeller.getMonthName(date.getUTCMonth(), this._locale) + " " + date.getUTCDate();
         break;
-    case Timeline.DateTime.MONTH:
+    case SimileAjax.DateTime.MONTH:
         var m = date.getUTCMonth();
         if (m != 0) {
             text = Timeline.GregorianDateLabeller.getMonthName(m, this._locale);
             break;
         } // else, fall through
-    case Timeline.DateTime.YEAR:
-    case Timeline.DateTime.DECADE:
-    case Timeline.DateTime.CENTURY:
-    case Timeline.DateTime.MILLENNIUM:
+    case SimileAjax.DateTime.YEAR:
+    case SimileAjax.DateTime.DECADE:
+    case SimileAjax.DateTime.CENTURY:
+    case SimileAjax.DateTime.MILLENNIUM:
         var y = date.getUTCFullYear();
         if (y > 0) {
             text = date.getUTCFullYear();
@@ -79,9 +79,9 @@ Timeline.GregorianDateLabeller.prototype.defaultLabelInterval = function(date, i
             text = (1 - y) + "BC";
         }
         emphasized = 
-            (intervalUnit == Timeline.DateTime.MONTH) ||
-            (intervalUnit == Timeline.DateTime.DECADE && y % 100 == 0) || 
-            (intervalUnit == Timeline.DateTime.CENTURY && y % 1000 == 0);
+            (intervalUnit == SimileAjax.DateTime.MONTH) ||
+            (intervalUnit == SimileAjax.DateTime.DECADE && y % 100 == 0) || 
+            (intervalUnit == SimileAjax.DateTime.CENTURY && y % 1000 == 0);
         break;
     default:
         text = date.toUTCString();

@@ -4,7 +4,7 @@
  */
 
 Timeline.SpanHighlightDecorator = function(params) {
-    this._unit = ("unit" in params) ? params.unit : Timeline.NativeDateUnit;
+    this._unit = ("unit" in params) ? params.unit : SimileAjax.NativeDateUnit;
     this._startDate = (typeof params.startDate == "string") ? 
         this._unit.parseFromObject(params.startDate) : params.startDate;
     this._endDate = (typeof params.endDate == "string") ?
@@ -55,7 +55,7 @@ Timeline.SpanHighlightDecorator.prototype.paint = function() {
         div.style.overflow = "hidden";
         div.style.background = this._color;
         if (this._opacity < 100) {
-            Timeline.Graphics.setOpacity(div, this._opacity);
+            SimileAjax.Graphics.setOpacity(div, this._opacity);
         }
         this._layerDiv.appendChild(div);
             
@@ -122,7 +122,7 @@ Timeline.SpanHighlightDecorator.prototype.softPaint = function() {
  */
 
 Timeline.PointHighlightDecorator = function(params) {
-    this._unit = ("unit" in params) ? params.unit : Timeline.NativeDateUnit;
+    this._unit = ("unit" in params) ? params.unit : SimileAjax.NativeDateUnit;
     this._date = (typeof params.date == "string") ? 
         this._unit.parseFromObject(params.date) : params.date;
     this._width = ("width" in params) ? params.width : 10;
@@ -161,7 +161,7 @@ Timeline.PointHighlightDecorator.prototype.paint = function() {
         div.style.overflow = "hidden";
         div.style.background = this._color;
         if (this._opacity < 100) {
-            Timeline.Graphics.setOpacity(div, this._opacity);
+            SimileAjax.Graphics.setOpacity(div, this._opacity);
         }
         this._layerDiv.appendChild(div);
             

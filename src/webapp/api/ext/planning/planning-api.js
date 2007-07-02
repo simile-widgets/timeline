@@ -72,8 +72,8 @@
             return null;
         }
         
-        tryLocale(Timeline.Platform.serverLocale);
-        tryLocale(Timeline.Platform.clientLocale);
+        tryLocale(Timeline.serverLocale);
+        tryLocale(Timeline.clientLocale);
         
         for (var l = 0; l < supportedLocales.length; l++) {
             var locale = supportedLocales[l];

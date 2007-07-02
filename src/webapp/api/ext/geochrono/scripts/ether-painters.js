@@ -170,7 +170,7 @@ Timeline.GeochronoEtherMarkerLayout = function(timeline, band, theme, align, sho
             divLine.style.position = "absolute";
             
             if (lineTheme.opacity < 100) {
-                Timeline.Graphics.setOpacity(divLine, lineTheme.opacity);
+                SimileAjax.Graphics.setOpacity(divLine, lineTheme.opacity);
             }
             
             if (horizontal) {

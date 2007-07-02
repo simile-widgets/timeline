@@ -5,7 +5,7 @@
 
 
 Timeline.DefaultEventSource = function(eventIndex) {
-    this._events = (eventIndex instanceof Object) ? eventIndex : new Timeline.EventIndex();
+    this._events = (eventIndex instanceof Object) ? eventIndex : new SimileAjax.EventIndex();
     this._listeners = [];
 };
 
@@ -40,6 +40,7 @@ Timeline.DefaultEventSource.prototype.loadXML = function(xml, url) {
                 description = node.firstChild.nodeValue;
             }
             var evt = new Timeline.DefaultEventSource.Event(
+                node.getAttribute("id"),
                 parseDateTimeFunction(node.getAttribute("start")),
                 parseDateTimeFunction(node.getAttribute("end")),
                 parseDateTimeFunction(node.getAttribute("latestStart")),
@@ -85,6 +86,7 @@ Timeline.DefaultEventSource.prototype.loadJSON = function(data, url) {
         for (var i=0; i < data.events.length; i++){
             var event = data.events[i];
             var evt = new Timeline.DefaultEventSource.Event(
+                ("id" in event) ? event.id : undefined,
                 parseDateTimeFunction(event.start),
                 parseDateTimeFunction(event.end),
                 parseDateTimeFunction(event.latestStart),
@@ -165,6 +167,7 @@ Timeline.DefaultEventSource.prototype.loadSPARQL = function(xml, url) {
             }
             
             var evt = new Timeline.DefaultEventSource.Event(
+                bindings["id"],
                 parseDateTimeFunction(bindings["start"]),
                 parseDateTimeFunction(bindings["end"]),
                 parseDateTimeFunction(bindings["latestStart"]),
@@ -212,6 +215,10 @@ Timeline.DefaultEventSource.prototype.clear = function() {
     this._fire("onClear", []);
 };
 
+Timeline.DefaultEventSource.prototype.getEvent = function(id) {
+    return this._events.getEvent(id);
+};
+
 Timeline.DefaultEventSource.prototype.getEventIterator = function(startDate, endDate) {
     return this._events.getIterator(startDate, endDate);
 };
@@ -239,7 +246,7 @@ Timeline.DefaultEventSource.prototype._fire = function(handlerName, args) {
             try {
                 listener[handlerName].apply(listener, args);
             } catch (e) {
-                Timeline.Debug.exception(e);
+                SimileAjax.Debug.exception(e);
             }
         }
     }
@@ -277,11 +284,13 @@ Timeline.DefaultEventSource.prototype._resolveRelativeURL = function(url, base) 
 
 
 Timeline.DefaultEventSource.Event = function(
+        id,
         start, end, latestStart, earliestEnd, instant, 
         text, description, image, link,
         icon, color, textColor) {
         
-    this._id = "e" + Math.floor(Math.random() * 1000000);
+    id = (id) ? id.trim() : "";
+    this._id = id.length > 0 ? id : ("e" + Math.floor(Math.random() * 1000000));
     
     this._instant = instant || (end == null);
     
@@ -291,8 +300,8 @@ Timeline.DefaultEventSource.Event = function(
     this._latestStart = (latestStart != null) ? latestStart : (instant ? this._end : this._start);
     this._earliestEnd = (earliestEnd != null) ? earliestEnd : (instant ? this._start : this._end);
     
-    this._text = Timeline.HTML.deEntify(text);
-    this._description = Timeline.HTML.deEntify(description);
+    this._text = SimileAjax.HTML.deEntify(text);
+    this._description = SimileAjax.HTML.deEntify(description);
     this._image = (image != null && image != "") ? image : null;
     this._link = (link != null && link != "") ? link : null;
     
@@ -348,7 +357,7 @@ Timeline.DefaultEventSource.Event.prototype = {
             var a = document.createElement("a");
             a.href = url;
             a.target = "new";
-            a.innerHTML = Timeline.strings[Timeline.Platform.clientLocale].wikiLinkLabel;
+            a.innerHTML = Timeline.strings[Timeline.clientLocale].wikiLinkLabel;
             
             elmt.appendChild(document.createTextNode("["));
             elmt.appendChild(a);

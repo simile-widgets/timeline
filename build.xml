@@ -32,19 +32,7 @@
   	<!-- Timeline -->
     <jsmin output="src/webapp/api/timeline-bundle.js">
         <fileset dir="src/webapp/api/scripts">
-        	<include name="timeline.js" />
-        </fileset>
-        <fileset dir="src/webapp/api/scripts/util">
-        	<include name="platform.js" />
-        </fileset>
-    	
-        <fileset dir="src/webapp/api/scripts/util">
         	<include name="*.js" />
-        	<exclude name="platform.js" />
-        </fileset>
-        <fileset dir="src/webapp/api/scripts">
-        	<include name="*.js" />
-        	<exclude name="timeline.js" />
         </fileset>
   	</jsmin>
   	

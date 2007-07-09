@@ -72,218 +72,6 @@ Timeline.DurationEventPainter.prototype.paint = function() {
     var minDate = this._band.getMinDate();
     var maxDate = this._band.getMaxDate();
     
-    var doc = this._timeline.getDocument();
-    
-    var p = this;
-    var eventLayer = this._eventLayer;
-    var highlightLayer = this._highlightLayer;
-    
-    var showText = this._showText;
-    var theme = this._params.theme;
-    var eventTheme = theme.event;
-    var trackOffset = eventTheme.track.offset;
-    var trackHeight = ("trackHeight" in this._params) ? this._params.trackHeight : eventTheme.track.height;
-    var trackGap = ("trackGap" in this._params) ? this._params.trackGap : eventTheme.track.gap;
-    
-    //if (this._timeline.isHorizontal()) {
-        var appendIcon = function(evt, div) {
-            var icon = evt.getIcon();
-            var img = SimileAjax.Graphics.createTranslucentImage(
-                icon != null ? icon : eventTheme.instant.icon,
-                "middle"
-            );
-            div.appendChild(img);
-            div.style.cursor = "pointer";
-            
-            SimileAjax.DOM.registerEvent(div, "mousedown", function(elmt, domEvt, target) {
-                p._onClickInstantEvent(img, domEvt, evt);
-                
-                SimileAjax.DOM.cancelEvent(evt);
-                return false;
-            });
-        };
-        var createHighlightDiv = function(highlightIndex, startPixel, length, highlightOffset, highlightWidth) {
-            if (highlightIndex >= 0) {
-                var color = eventTheme.highlightColors[Math.min(highlightIndex, eventTheme.highlightColors.length - 1)];
-                
-                var div = doc.createElement("div");
-                div.style.position = "absolute";
-                div.style.overflow = "hidden";
-                div.style.left = (startPixel - 3) + "px";
-                div.style.width = (length + 6) + "px";
-                div.style.top = highlightOffset + "em";
-                div.style.height = highlightWidth + "em";
-                div.style.background = color;
-                //SimileAjax.Graphics.setOpacity(div, 50);
-                
-                highlightLayer.appendChild(div);
-            }
-        };
-        
-        var createInstantDiv = function(evt, startPixel, endPixel, streamOffset, highlightIndex, highlightOffset, highlightWidth) {
-            if (evt.isImprecise()) { // imprecise time
-                var length = Math.max(endPixel - startPixel, 1);
-            
-                var divImprecise = doc.createElement("div");
-                divImprecise.style.position = "absolute";
-                divImprecise.style.overflow = "hidden";
-                
-                divImprecise.style.top = streamOffset;
-                divImprecise.style.height = trackHeight + "em";
-                divImprecise.style.left = startPixel + "px";
-                divImprecise.style.width = length + "px";
-                
-                divImprecise.style.background = eventTheme.instant.impreciseColor;
-                if (eventTheme.instant.impreciseOpacity < 100) {
-                    SimileAjax.Graphics.setOpacity(divImprecise, eventTheme.instant.impreciseOpacity);
-                }
-                
-                eventLayer.appendChild(divImprecise);
-            }
-            
-            var div = doc.createElement("div");
-            div.style.position = "absolute";
-            div.style.overflow = "hidden";
-            eventLayer.appendChild(div);
-            
-            var foreground = evt.getTextColor();
-            var background = evt.getColor();
-            
-            var realign = -8; // shift left so that icon is centered on startPixel
-            var length = 16;
-            if (showText) {
-                div.style.width = eventTheme.label.width + "px";
-                div.style.color = foreground != null ? foreground : eventTheme.label.outsideColor;
-                
-                appendIcon(evt, div);
-                div.appendChild(doc.createTextNode(evt.getText()));
-            } else {
-                if (p._showLineForNoText) {
-                    div.style.width = "1px";
-                    div.style.borderLeft = "1px solid " + (background != null ? background : eventTheme.instant.lineColor);
-                    realign = 0; // no shift
-                    length = 1;
-                } else {
-                    appendIcon(evt, div);
-                }
-            }
-            
-            div.style.top = streamOffset;
-            div.style.height = trackHeight + "em";
-            div.style.left = (startPixel + realign) + "px";
-            
-            createHighlightDiv(highlightIndex, (startPixel + realign), length, highlightOffset, highlightWidth);
-        };
-        var createDurationDiv = function(evt, startPixel, endPixel, streamOffset, highlightIndex, highlightOffset, highlightWidth) {
-            var attachClickEvent = function(elmt) {
-                elmt.style.cursor = "pointer";
-                SimileAjax.DOM.registerEvent(elmt, "mousedown", function(elmt, domEvt, target) {
-                    p._onClickDurationEvent(domEvt, evt, target);
-                    
-                    SimileAjax.DOM.cancelEvent(evt);
-                    return false;
-                });
-            };
-            
-            var length = Math.max(endPixel - startPixel, 1);
-            if (evt.isImprecise()) { // imprecise time
-                var div = doc.createElement("div");
-                div.style.position = "absolute";
-                div.style.overflow = "hidden";
-                
-                div.style.top = streamOffset;
-                div.style.height = trackHeight + "em";
-                div.style.left = startPixel + "px";
-                div.style.width = length + "px";
-                
-                div.style.background = eventTheme.duration.impreciseColor;
-                if (eventTheme.duration.impreciseOpacity < 100) {
-                    SimileAjax.Graphics.setOpacity(div, eventTheme.duration.impreciseOpacity);
-                }
-                
-                eventLayer.appendChild(div);
-                
-                var startDate = evt.getLatestStart();
-                var endDate = evt.getEarliestEnd();
-                
-                var startPixel2 = Math.round(p._band.dateToPixelOffset(startDate));
-                var endPixel2 = Math.round(p._band.dateToPixelOffset(endDate));
-            } else {
-                var startPixel2 = startPixel;
-                var endPixel2 = endPixel;
-            }
-            
-            var foreground = evt.getTextColor();
-            var outside = true;
-            if (startPixel2 <= endPixel2) {
-                length = Math.max(endPixel2 - startPixel2, 1);
-                outside = !(length > eventTheme.label.width);
-                
-                div = doc.createElement("div");
-                div.style.position = "absolute";
-                div.style.overflow = "hidden";
-                
-                div.style.top = streamOffset;
-                div.style.height = trackHeight + "em";
-                div.style.left = startPixel2 + "px";
-                div.style.width = length + "px";
-                
-                var background = evt.getColor();
-                
-                div.style.background = background != null ? background : eventTheme.duration.color;
-                if (eventTheme.duration.opacity < 100) {
-                    SimileAjax.Graphics.setOpacity(div, eventTheme.duration.opacity);
-                }
-                
-                eventLayer.appendChild(div);
-            } else {
-                var temp = startPixel2;
-                startPixel2 = endPixel2;
-                endPixel2 = temp;
-            }
-            if (div == null) {
-                console.log(evt);
-            }
-            attachClickEvent(div);
-                
-            if (showText) {
-                var divLabel = doc.createElement("div");
-                divLabel.style.position = "absolute";
-                
-                divLabel.style.top = streamOffset;
-                divLabel.style.height = trackHeight + "em";
-                divLabel.style.left = ((length > eventTheme.label.width) ? startPixel2 : endPixel2) + "px";
-                divLabel.style.width = eventTheme.label.width + "px";
-                divLabel.style.color = foreground != null ? foreground : (outside ? eventTheme.label.outsideColor : eventTheme.label.insideColor);
-                divLabel.style.overflow = "hidden";
-                divLabel.appendChild(doc.createTextNode(evt.getText()));
-                
-                eventLayer.appendChild(divLabel);
-                attachClickEvent(divLabel);
-            }
-            
-            createHighlightDiv(highlightIndex, startPixel, endPixel - startPixel, highlightOffset, highlightWidth);
-        };
-    //}
-    var createEventDiv = function(evt, highlightIndex) {
-        var startDate = evt.getStart();
-        var endDate = evt.getEnd();
-        
-        var startPixel = Math.round(p._band.dateToPixelOffset(startDate));
-        var endPixel = Math.round(p._band.dateToPixelOffset(endDate));
-        
-        var streamOffset = (trackOffset + 
-            p._layout.getTrack(evt) * (trackHeight + trackGap));
-            
-        if (evt.isInstant()) {
-            createInstantDiv(evt, startPixel, endPixel, streamOffset + "em", 
-                highlightIndex, streamOffset - trackGap, trackHeight + 2 * trackGap);
-        } else {
-            createDurationDiv(evt, startPixel, endPixel, streamOffset + "em",
-                highlightIndex, streamOffset - trackGap, trackHeight + 2 * trackGap);
-        }
-    };
-    
     var filterMatcher = (this._filterMatcher != null) ? 
         this._filterMatcher :
         function(evt) { return true; };
@@ -295,7 +83,7 @@ Timeline.DurationEventPainter.prototype.paint = function() {
     while (iterator.hasNext()) {
         var evt = iterator.next();
         if (filterMatcher(evt)) {
-            createEventDiv(evt, highlightMatcher(evt));
+            this.paintEvent(evt, highlightMatcher(evt));
         }
     }
     
@@ -304,6 +92,234 @@ Timeline.DurationEventPainter.prototype.paint = function() {
 };
 
 Timeline.DurationEventPainter.prototype.softPaint = function() {
+};
+
+Timeline.DurationEventPainter.prototype.paintEvent = function(evt, highlightIndex) {
+    var theme = this._params.theme;
+    var eventTheme = theme.event;
+    var trackOffset = eventTheme.track.offset;
+    var trackHeight = ("trackHeight" in this._params) ? this._params.trackHeight : eventTheme.track.height;
+    var trackGap = ("trackGap" in this._params) ? this._params.trackGap : eventTheme.track.gap;
+    
+    var startDate = evt.getStart();
+    var endDate = evt.getEnd();
+    
+    var startPixel = Math.round(this._band.dateToPixelOffset(startDate));
+    var endPixel = Math.round(this._band.dateToPixelOffset(endDate));
+    
+    var streamOffset = (trackOffset + this._layout.getTrack(evt) * (trackHeight + trackGap));
+    if (evt.isInstant()) {
+        this.paintInstantEvent(evt, startPixel, endPixel, streamOffset + "em", trackHeight,
+            highlightIndex, streamOffset - trackGap, trackHeight + 2 * trackGap);
+    } else {
+        this.paintDurationEvent(evt, startPixel, endPixel, streamOffset + "em", trackHeight,
+            highlightIndex, streamOffset - trackGap, trackHeight + 2 * trackGap);
+    }
+};
+    
+Timeline.DurationEventPainter.prototype.paintInstantEvent = function(
+    evt, startPixel, endPixel, streamOffset, trackHeight, highlightIndex, highlightOffset, highlightWidth) {
+    
+    var p = this;
+    var doc = this._timeline.getDocument();
+    var theme = this._params.theme;
+    var eventTheme = theme.event;
+    
+    if (evt.isImprecise()) { // imprecise time
+        var length = Math.max(endPixel - startPixel, 1);
+    
+        var divImprecise = doc.createElement("div");
+        divImprecise.style.position = "absolute";
+        divImprecise.style.overflow = "hidden";
+        
+        divImprecise.style.top = streamOffset;
+        divImprecise.style.height = trackHeight + "em";
+        divImprecise.style.left = startPixel + "px";
+        divImprecise.style.width = length + "px";
+        
+        divImprecise.style.background = eventTheme.instant.impreciseColor;
+        if (eventTheme.instant.impreciseOpacity < 100) {
+            SimileAjax.Graphics.setOpacity(divImprecise, eventTheme.instant.impreciseOpacity);
+        }
+        
+        this._eventLayer.appendChild(divImprecise);
+    }
+    
+    var div = doc.createElement("div");
+    div.style.position = "absolute";
+    div.style.overflow = "hidden";
+    this._eventLayer.appendChild(div);
+    
+    var foreground = evt.getTextColor();
+    var background = evt.getColor();
+    
+    var realign = -8; // shift left so that icon is centered on startPixel
+    var length = 16;
+    if (this._showText) {
+        div.style.width = eventTheme.label.width + "px";
+        div.style.color = foreground != null ? foreground : eventTheme.label.outsideColor;
+        
+        this._appendIcon(evt, div);
+        div.appendChild(doc.createTextNode(evt.getText()));
+    } else {
+        if (p._showLineForNoText) {
+            div.style.width = "1px";
+            div.style.borderLeft = "1px solid " + (background != null ? background : eventTheme.instant.lineColor);
+            realign = 0; // no shift
+            length = 1;
+        } else {
+            this._appendIcon(evt, div);
+        }
+    }
+    
+    div.style.top = streamOffset;
+    div.style.height = trackHeight + "em";
+    div.style.left = (startPixel + realign) + "px";
+    
+    this._createHighlightDiv(highlightIndex, (startPixel + realign), length, highlightOffset, highlightWidth);
+};
+
+Timeline.DurationEventPainter.prototype.paintDurationEvent = function(
+    evt, startPixel, endPixel, streamOffset, trackHeight, highlightIndex, highlightOffset, highlightWidth) {
+    
+    var p = this;
+    var doc = this._timeline.getDocument();
+    var theme = this._params.theme;
+    var eventTheme = theme.event;
+    
+    var attachClickEvent = function(elmt) {
+        elmt.style.cursor = "pointer";
+        SimileAjax.DOM.registerEvent(elmt, "mousedown", function(elmt, domEvt, target) {
+            p._onClickDurationEvent(domEvt, evt, target);
+            
+            SimileAjax.DOM.cancelEvent(evt);
+            return false;
+        });
+    };
+    
+    var length = Math.max(endPixel - startPixel, 1);
+    if (evt.isImprecise()) { // imprecise time
+        var div = doc.createElement("div");
+        div.style.position = "absolute";
+        div.style.overflow = "hidden";
+        
+        div.style.top = streamOffset;
+        div.style.height = trackHeight + "em";
+        div.style.left = startPixel + "px";
+        div.style.width = length + "px";
+        
+        div.style.background = eventTheme.duration.impreciseColor;
+        if (eventTheme.duration.impreciseOpacity < 100) {
+            SimileAjax.Graphics.setOpacity(div, eventTheme.duration.impreciseOpacity);
+        }
+        
+        this._eventLayer.appendChild(div);
+        
+        var startDate = evt.getLatestStart();
+        var endDate = evt.getEarliestEnd();
+        
+        var startPixel2 = Math.round(p._band.dateToPixelOffset(startDate));
+        var endPixel2 = Math.round(p._band.dateToPixelOffset(endDate));
+    } else {
+        var startPixel2 = startPixel;
+        var endPixel2 = endPixel;
+    }
+    
+    var foreground = evt.getTextColor();
+    var outside = true;
+    if (startPixel2 <= endPixel2) {
+        length = Math.max(endPixel2 - startPixel2, 1);
+        outside = !(length > eventTheme.label.width);
+        
+        div = doc.createElement("div");
+        div.style.position = "absolute";
+        div.style.overflow = "hidden";
+        
+        div.style.top = streamOffset;
+        div.style.height = trackHeight + "em";
+        div.style.left = startPixel2 + "px";
+        div.style.width = length + "px";
+        
+        var background = evt.getColor();
+        
+        div.style.background = background != null ? background : eventTheme.duration.color;
+        if (eventTheme.duration.opacity < 100) {
+            SimileAjax.Graphics.setOpacity(div, eventTheme.duration.opacity);
+        }
+        
+        this._eventLayer.appendChild(div);
+    } else {
+        var temp = startPixel2;
+        startPixel2 = endPixel2;
+        endPixel2 = temp;
+    }
+    if (div == null) {
+        console.log(evt);
+    }
+    attachClickEvent(div);
+        
+    if (this._showText) {
+        var divLabel = doc.createElement("div");
+        divLabel.style.position = "absolute";
+        
+        divLabel.style.top = streamOffset;
+        divLabel.style.height = trackHeight + "em";
+        divLabel.style.left = ((length > eventTheme.label.width) ? startPixel2 : endPixel2) + "px";
+        divLabel.style.width = eventTheme.label.width + "px";
+        divLabel.style.color = foreground != null ? foreground : (outside ? eventTheme.label.outsideColor : eventTheme.label.insideColor);
+        divLabel.style.overflow = "hidden";
+        divLabel.appendChild(doc.createTextNode(evt.getText()));
+        
+        this._eventLayer.appendChild(divLabel);
+        attachClickEvent(divLabel);
+    }
+    
+    this._createHighlightDiv(highlightIndex, startPixel, endPixel - startPixel, highlightOffset, highlightWidth);
+};
+
+Timeline.DurationEventPainter.prototype._appendIcon = function(evt, div) {
+    var p = this;
+    var doc = this._timeline.getDocument();
+    var theme = this._params.theme;
+    var eventTheme = theme.event;
+    
+    var icon = evt.getIcon();
+    var img = SimileAjax.Graphics.createTranslucentImage(
+        icon != null ? icon : eventTheme.instant.icon,
+        "middle"
+    );
+    div.appendChild(img);
+    div.style.cursor = "pointer";
+    
+    SimileAjax.DOM.registerEvent(div, "mousedown", function(elmt, domEvt, target) {
+        p._onClickInstantEvent(img, domEvt, evt);
+        
+        SimileAjax.DOM.cancelEvent(evt);
+        return false;
+    });
+};
+
+Timeline.DurationEventPainter.prototype._createHighlightDiv = function(
+        highlightIndex, startPixel, length, highlightOffset, highlightWidth) {
+        
+    if (highlightIndex >= 0) {
+        var doc = this._timeline.getDocument();
+        var theme = this._params.theme;
+        var eventTheme = theme.event;
+        
+        var color = eventTheme.highlightColors[Math.min(highlightIndex, eventTheme.highlightColors.length - 1)];
+        
+        var div = doc.createElement("div");
+        div.style.position = "absolute";
+        div.style.overflow = "hidden";
+        div.style.left = (startPixel - 3) + "px";
+        div.style.width = (length + 6) + "px";
+        div.style.top = highlightOffset + "em";
+        div.style.height = highlightWidth + "em";
+        div.style.background = color;
+        
+        this._highlightLayer.appendChild(div);
+    }
 };
 
 Timeline.DurationEventPainter.prototype._onClickInstantEvent = function(icon, domEvt, evt) {

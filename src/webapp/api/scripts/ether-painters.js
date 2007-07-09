@@ -58,7 +58,7 @@ Timeline.GregorianEtherPainter.prototype.paint = function() {
     var timeZone = this._band.getTimeZone();
     var labeller = this._band.getLabeller();
     
-    SimileAjax.DateTime.roundDownToInterval(minDate, this._unit, timeZone, 1, this._theme.firstDayOfWeek);
+    SimileAjax.DateTime.roundDownToInterval(minDate, this._unit, timeZone, this._multiple, this._theme.firstDayOfWeek);
     
     var p = this;
     var incrementDate = function(date) {

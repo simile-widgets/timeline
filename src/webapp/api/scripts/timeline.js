@@ -690,8 +690,9 @@ Timeline._Band.prototype.scrollToCenter = function(date, f) {
 Timeline._Band.prototype.showBubbleForEvent = function(eventID) {
     var evt = this.getEventSource().getEvent(eventID);
     if (evt) {
+        var self = this;
         this.scrollToCenter(evt.getStart(), function() {
-            console.log("done");
+            self._eventPainter.showBubble(evt);
         });
     }
 };

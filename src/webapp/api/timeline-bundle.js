@@ -1217,6 +1217,7 @@ params.showLineForNoText:params.theme.event.instant.showLineForNoText;
 
 this._filterMatcher=null;
 this._highlightMatcher=null;
+this._eventIdToElmt={};
 };
 
 Timeline.DurationEventPainter.prototype.initialize=function(band,timeline){
@@ -1257,6 +1258,8 @@ var eventSource=this._band.getEventSource();
 if(eventSource==null){
 return;
 }
+
+this._eventIdToElmt={};
 
 if(this._highlightLayer!=null){
 this._band.removeLayerDiv(this._highlightLayer);
@@ -1363,6 +1366,8 @@ div.style.width=eventTheme.label.width+"px";
 div.style.color=foreground!=null?foreground:eventTheme.label.outsideColor;
 
 this._appendIcon(evt,div);
+this._eventIdToElmt[evt.getID()]=div.lastChild;
+
 div.appendChild(doc.createTextNode(evt.getText()));
 }else{
 if(p._showLineForNoText){
@@ -1370,8 +1375,11 @@ div.style.width="1px";
 div.style.borderLeft="1px solid "+(background!=null?background:eventTheme.instant.lineColor);
 realign=0;
 length=1;
+
+this._eventIdToElmt[evt.getID()]=div;
 }else{
 this._appendIcon(evt,div);
+this._eventIdToElmt[evt.getID()]=div.lastChild;
 }
 }
 
@@ -1393,7 +1401,7 @@ var eventTheme=theme.event;
 var attachClickEvent=function(elmt){
 elmt.style.cursor="pointer";
 SimileAjax.DOM.registerEvent(elmt,"mousedown",function(elmt,domEvt,target){
-p._onClickDurationEvent(domEvt,evt,target);
+p._onClickDurationEvent(target,domEvt,evt);
 
 SimileAjax.DOM.cancelEvent(evt);
 return false;
@@ -1456,9 +1464,6 @@ var temp=startPixel2;
 startPixel2=endPixel2;
 endPixel2=temp;
 }
-if(div==null){
-console.log(evt);
-}
 attachClickEvent(div);
 
 if(this._showText){
@@ -1478,6 +1483,8 @@ attachClickEvent(divLabel);
 }
 
 this._createHighlightDiv(highlightIndex,startPixel,endPixel-startPixel,highlightOffset,highlightWidth);
+
+this._eventIdToElmt[evt.getID()]=div;
 };
 
 Timeline.DurationEventPainter.prototype._appendIcon=function(evt,div){
@@ -1536,7 +1543,7 @@ evt
 );
 };
 
-Timeline.DurationEventPainter.prototype._onClickDurationEvent=function(domEvt,evt,target){
+Timeline.DurationEventPainter.prototype._onClickDurationEvent=function(target,domEvt,evt){
 domEvt.cancelBubble=true;
 if("pageX"in domEvt){
 var x=domEvt.pageX;
@@ -1547,6 +1554,14 @@ var x=domEvt.offsetX+c.left;
 var y=domEvt.offsetY+c.top;
 }
 this._showBubble(x,y,evt);
+};
+
+Timeline.DurationEventPainter.prototype.showBubble=function(evt){
+var elmt=this._eventIdToElmt[evt.getID()];
+if(elmt){
+var c=SimileAjax.DOM.getPageCoordinates(elmt);
+this._showBubble(c.left+elmt.offsetWidth/2,c.top+elmt.offsetHeight/2,evt);
+}
 };
 
 Timeline.DurationEventPainter.prototype._showBubble=function(x,y,evt){
@@ -2789,8 +2804,9 @@ this._autoScroll(Math.round(this._viewLength/2-this._ether.dateToPixelOffset(dat
 Timeline._Band.prototype.showBubbleForEvent=function(eventID){
 var evt=this.getEventSource().getEvent(eventID);
 if(evt){
+var self=this;
 this.scrollToCenter(evt.getStart(),function(){
-console.log("done");
+self._eventPainter.showBubble(evt);
 });
 }
 };

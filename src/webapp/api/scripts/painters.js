@@ -8,6 +8,8 @@ Timeline.DurationEventPainter = function(params) {
     this._theme = params.theme;
     this._layout = params.layout;
     
+    this._onSelectListeners = [];
+    
     this._showText = params.showText;
     this._showLineForNoText = ("showLineForNoText" in params) ? 
         params.showLineForNoText : params.theme.event.instant.showLineForNoText;
@@ -25,6 +27,20 @@ Timeline.DurationEventPainter.prototype.initialize = function(band, timeline) {
     this._eventLayer = null;
     this._highlightLayer = null;
 };
+
+Timeline.DurationEventPainter.prototype.addOnSelectListener = function(listener) {
+    this._onSelectListeners.push(listener);
+};
+
+Timeline.DurationEventPainter.prototype.removeOnSelectListener = function(listener) {
+    for (var i = 0; i < this._onSelectListeners.length; i++) {
+        if (this._onSelectListeners[i] == listener) {
+            this._onSelectListeners.splice(i, 1);
+            break;
+        }
+    }
+};
+
 
 Timeline.DurationEventPainter.prototype.getLayout = function() {
     return this._layout;
@@ -338,6 +354,7 @@ Timeline.DurationEventPainter.prototype._onClickInstantEvent = function(icon, do
         c.top + Math.ceil(icon.offsetHeight / 2),
         evt
     );
+    this._fireOnSelect(evt.getID());
 };
 
 Timeline.DurationEventPainter.prototype._onClickDurationEvent = function(target, domEvt, evt) {
@@ -351,6 +368,7 @@ Timeline.DurationEventPainter.prototype._onClickDurationEvent = function(target,
         var y = domEvt.offsetY + c.top;
     }
     this._showBubble(x, y, evt);
+    this._fireOnSelect(evt.getID());
 };
 
 Timeline.DurationEventPainter.prototype.showBubble = function(evt) {
@@ -369,4 +387,10 @@ Timeline.DurationEventPainter.prototype._showBubble = function(x, y, evt) {
     );
     
     evt.fillInfoBubble(div, this._theme, this._band.getLabeller());
+};
+
+Timeline.DurationEventPainter.prototype._fireOnSelect = function(eventID) {
+    for (var i = 0; i < this._onSelectListeners.length; i++) {
+        this._onSelectListeners[i](eventID);
+    }
 };

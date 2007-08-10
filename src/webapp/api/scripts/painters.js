@@ -380,13 +380,10 @@ Timeline.DurationEventPainter.prototype.showBubble = function(evt) {
 };
 
 Timeline.DurationEventPainter.prototype._showBubble = function(x, y, evt) {
-    var div = this._band.openBubbleForPoint(
-        x, y,
-        this._theme.event.bubble.width,
-        this._theme.event.bubble.height
-    );
-    
+    var div = document.createElement("div");
     evt.fillInfoBubble(div, this._theme, this._band.getLabeller());
+    
+    SimileAjax.Graphics.createBubbleForContentAndPoint(div, x, y, this._theme.event.bubble.width);
 };
 
 Timeline.DurationEventPainter.prototype._fireOnSelect = function(eventID) {

@@ -36,16 +36,8 @@ Timeline.createBandInfo = function(params) {
         align:      ("align" in params) ? params.align : undefined
     });
     
-    var layout = new Timeline.StaticTrackBasedLayout({
-        eventSource:    eventSource,
-        ether:          ether,
-        showText:       ("showEventText" in params) ? params.showEventText : true,
-        theme:          theme
-    });
-    
     var eventPainterParams = {
         showText:   ("showEventText" in params) ? params.showEventText : true,
-        layout:     layout,
         theme:      theme
     };
     if ("trackHeight" in params) {
@@ -54,7 +46,9 @@ Timeline.createBandInfo = function(params) {
     if ("trackGap" in params) {
         eventPainterParams.trackGap = params.trackGap;
     }
-    var eventPainter = new Timeline.DurationEventPainter(eventPainterParams);
+    var eventPainter = ("overview" in params && params.overview) ?
+        new Timeline.OverviewEventPainter(eventPainterParams) :
+        new Timeline.DetailedEventPainter(eventPainterParams);
     
     return {   
         width:          params.width,
@@ -85,15 +79,8 @@ Timeline.createHotZoneBandInfo = function(params) {
         align:      ("align" in params) ? params.align : undefined
     });
     
-    var layout = new Timeline.StaticTrackBasedLayout({
-        eventSource:    eventSource,
-        ether:          ether,
-        theme:          theme
-    });
-    
     var eventPainterParams = {
         showText:   ("showEventText" in params) ? params.showEventText : true,
-        layout:     layout,
         theme:      theme
     };
     if ("trackHeight" in params) {
@@ -102,7 +89,9 @@ Timeline.createHotZoneBandInfo = function(params) {
     if ("trackGap" in params) {
         eventPainterParams.trackGap = params.trackGap;
     }
-    var eventPainter = new Timeline.DurationEventPainter(eventPainterParams);
+    var eventPainter = ("overview" in params && params.overview) ?
+        new Timeline.OverviewEventPainter(eventPainterParams) :
+        new Timeline.DetailedEventPainter(eventPainterParams);
     
     return {   
         width:          params.width,
@@ -398,7 +387,7 @@ Timeline._Band = function(timeline, bandInfo, index) {
      *  The band's outer most div that slides with respect to the timeline's div
      */
     this._div = this._timeline.getDocument().createElement("div");
-    this._div.className = "timeline-band";
+    this._div.className = "timeline-band timeline-band-" + index;
     this._timeline.addDiv(this._div);
     
     SimileAjax.DOM.registerEventWithObject(this._div, "mousedown", this, "_onMouseDown");
@@ -439,8 +428,6 @@ Timeline._Band = function(timeline, bandInfo, index) {
     for (var i = 0; i < this._decorators.length; i++) {
         this._decorators[i].initialize(this, timeline);
     }
-        
-    this._bubble = null;
 };
 
 Timeline._Band.SCROLL_MULTIPLES = 5;
@@ -470,7 +457,6 @@ Timeline._Band.prototype.dispose = function() {
     this._div = null;
     this._innerDiv = null;
     this._keyboardInput = null;
-    this._bubble = null;
 };
 
 Timeline._Band.prototype.addOnScrollListener = function(listener) {
@@ -639,9 +625,9 @@ Timeline._Band.prototype.pixelOffsetToDate = function(pixels) {
     return this._ether.pixelOffsetToDate(pixels + this._viewOffset);
 };
 
-Timeline._Band.prototype.createLayerDiv = function(zIndex) {
+Timeline._Band.prototype.createLayerDiv = function(zIndex, className) {
     var div = this._timeline.getDocument().createElement("div");
-    div.className = "timeline-band-layer";
+    div.className = "timeline-band-layer" + (typeof className == "string" ? (" " + className) : "");
     div.style.zIndex = zIndex;
     this._innerDiv.appendChild(div);
     
@@ -659,22 +645,6 @@ Timeline._Band.prototype.createLayerDiv = function(zIndex) {
 
 Timeline._Band.prototype.removeLayerDiv = function(div) {
     this._innerDiv.removeChild(div.parentNode);
-};
-
-Timeline._Band.prototype.closeBubble = function() {
-    if (this._bubble != null) {
-        this._bubble.close();
-        this._bubble = null;
-    }
-};
-
-Timeline._Band.prototype.openBubbleForPoint = function(pageX, pageY, width, height) {
-    this.closeBubble();
-    
-    this._bubble = SimileAjax.Graphics.createBubbleForPoint(
-        pageX, pageY, width, height);
-        
-    return this._bubble.content;
 };
 
 Timeline._Band.prototype.scrollToCenter = function(date, f) {
@@ -916,4 +886,8 @@ Timeline._Band.prototype._softPaintDecorators = function() {
     for (var i = 0; i < this._decorators.length; i++) {
         this._decorators[i].softPaint();
     }
+};
+
+Timeline._Band.prototype.closeBubble = function() {
+    SimileAjax.WindowManager.cancelPopups();
 };

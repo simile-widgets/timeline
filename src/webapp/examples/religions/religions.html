@@ -12,9 +12,6 @@
             
             var theme = Timeline.ClassicTheme.create();
             theme.event.bubble.width = 320;
-            theme.event.bubble.height = 220;
-            theme.event.track.height = 1.5;
-            theme.event.track.gap = 0.1;
             theme.ether.backgroundColors = [
                 "#D1CECA",
                 "#E7DFD6",
@@ -25,14 +22,14 @@
             var zones = [
                 {   start:    "0",
                     end:      "2100",
-                    magnify:  10,
+                    magnify:  15,
                     unit:     Timeline.DateTime.DECADE
                 },
                 {   start:    "1800",
                     end:      "2100",
                     magnify:  3,
                     unit:     Timeline.DateTime.YEAR,
-                    multiple: 5
+                    multiple: 1
                 }
             ];
             var zones2 = [
@@ -52,19 +49,17 @@
             var d = Timeline.DateTime.parseGregorianDateTime("0");
             var bandInfos = [
                 Timeline.createHotZoneBandInfo({
-                    width:          "10%", 
+                    width:          "7%", 
                     intervalUnit:   Timeline.DateTime.CENTURY, 
                     intervalPixels: 70,
                     zones:          zones2,
                     eventSource:    eventSourceJewish,
                     date:           d,
-                    showEventText:  false,
-                    trackHeight:    0.5,
-                    trackGap:       0.2,
+                    overview:       true,
                     theme:          theme
                 }),
                 Timeline.createHotZoneBandInfo({
-                    width:          "30%", 
+                    width:          "32%",
                     intervalUnit:   Timeline.DateTime.CENTURY, 
                     intervalPixels: 250,
                     zones:          zones,
@@ -74,7 +69,7 @@
                     theme:          theme
                 }),
                 Timeline.createHotZoneBandInfo({
-                    width:          "42%", 
+                    width:          "54%", 
                     intervalUnit:   Timeline.DateTime.CENTURY, 
                     intervalPixels: 250,
                     zones:          zones,
@@ -84,26 +79,22 @@
                     theme:          theme
                 }),
                 Timeline.createHotZoneBandInfo({
-                    width:          "18%", 
+                    width:          "7%", 
                     intervalUnit:   Timeline.DateTime.CENTURY, 
                     intervalPixels: 70,
                     zones:          zones2,
                     eventSource:    eventSourceChristianity,
                     date:           d,
-                    showEventText:  false,
-                    trackHeight:    0.5,
-                    trackGap:       0.2,
+                    overview:       true,
                     theme:          theme
                 })
             ];
             bandInfos[0].syncWith = 1;
             bandInfos[0].highlight = true;
-            bandInfos[0].eventPainter.setLayout(bandInfos[1].eventPainter.getLayout());
             
             bandInfos[2].syncWith = 1;
             bandInfos[3].syncWith = 2;
             bandInfos[3].highlight = true;
-            bandInfos[3].eventPainter.setLayout(bandInfos[2].eventPainter.getLayout());
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
             tl.loadXML("jewish.xml", function(xml, url) {
@@ -118,6 +109,10 @@
             setupFilterHighlightControls(document.getElementById("jewish-controls"), tl, [0,1], theme);
             setupFilterHighlightControls(document.getElementById("christianity-controls"), tl, [2,3], theme);
         }
+        function centerTimeline(year) {
+            tl.getBand(0).setCenterVisibleDate(new Date(year, 0, 1));
+        }
+        
         var resizeTimerID = null;
         function onResize() {
             if (resizeTimerID == null) {

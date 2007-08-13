@@ -60,16 +60,14 @@
             ];
             
             var theme = Timeline.ClassicTheme.create();
-            theme.event.label.width = 250; // px
             theme.event.bubble.width = 250;
-            theme.event.bubble.height = 200;
             
             var date = "Fri Nov 22 1963 13:00:00 GMT-0600"
             var bandInfos = [
                 Timeline.createHotZoneBandInfo({
-                    width:          "75%", 
+                    width:          "80%", 
                     intervalUnit:   Timeline.DateTime.WEEK, 
-                    intervalPixels: 200,
+                    intervalPixels: 220,
                     zones:          zones,
                     eventSource:    eventSource,
                     date:           date,
@@ -77,22 +75,19 @@
                     theme:          theme
                 }),
                 Timeline.createHotZoneBandInfo({
-                    width:          "25%", 
+                    width:          "20%", 
                     intervalUnit:   Timeline.DateTime.MONTH, 
                     intervalPixels: 200,
                     zones:          zones2, 
                     eventSource:    eventSource,
                     date:           date, 
                     timeZone:       -6,
-                    showEventText:  false, 
-                    trackHeight:    0.5,
-                    trackGap:       0.2,
+                    overview:       true,
                     theme:          theme
                 })
             ];
             bandInfos[1].syncWith = 0;
             bandInfos[1].highlight = true;
-            bandInfos[1].eventPainter.setLayout(bandInfos[0].eventPainter.getLayout());
             
             for (var i = 0; i < bandInfos.length; i++) {
                 bandInfos[i].decorators = [
@@ -159,7 +154,7 @@
         should not be taken as an official source of this topic.
     </p>
     
-    <div id="tl" class="timeline-default" style="height: 400px;">
+    <div id="tl" class="timeline-default" style="height: 300px;">
     </div>
     <div class="footnotes">
         All times are in Dallas CST (GMT-0600).

@@ -39,8 +39,8 @@
             "ether-painters.js",
             "labellers.js",
             "sources.js",
-            "layouts.js",
             "painters.js",
+            "overview-painter.js",
             "decorators.js"
         ];
         var cssFiles = [

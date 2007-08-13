@@ -11,7 +11,6 @@
             
             var theme = Timeline.ClassicTheme.create();
             theme.event.bubble.width = 320;
-            theme.event.bubble.height = 220;
             
             var zones = [
                 {   start:    "1700",
@@ -59,15 +58,12 @@
                     zones:          zones2,
                     eventSource:    eventSource,
                     date:           d,
-                    showEventText:  false,
-                    trackHeight:    0.5,
-                    trackGap:       0.2,
+                    overview:       true,
                     theme:          theme
                 })
             ];
             bandInfos[1].syncWith = 0;
             bandInfos[1].highlight = true;
-            bandInfos[1].eventPainter.setLayout(bandInfos[0].eventPainter.getLayout());
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
             tl.loadXML("jewish.xml", function(xml, url) {
@@ -76,6 +72,10 @@
             
             setupFilterHighlightControls(document.getElementById("controls"), tl, [0,1], theme);
         }
+        function centerTimeline(year) {
+            tl.getBand(0).setCenterVisibleDate(new Date(year, 0, 1));
+        }
+
         var resizeTimerID = null;
         function onResize() {
             if (resizeTimerID == null) {

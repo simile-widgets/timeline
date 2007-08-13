@@ -223,6 +223,10 @@ Timeline.DefaultEventSource.prototype.getEventIterator = function(startDate, end
     return this._events.getIterator(startDate, endDate);
 };
 
+Timeline.DefaultEventSource.prototype.getEventReverseIterator = function(startDate, endDate) {
+    return this._events.getReverseIterator(startDate, endDate);
+};
+
 Timeline.DefaultEventSource.prototype.getAllEventIterator = function() {
     return this._events.getAllIterator();
 };

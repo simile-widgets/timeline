@@ -23,16 +23,7 @@ Timeline.Planning.createBandInfo = function(params) {
         theme:              theme 
     });
     
-    var layout = new Timeline.StaticTrackBasedLayout({
-        eventSource:    eventSource,
-        ether:          ether,
-        showText:       ("showEventText" in params) ? params.showEventText : true,
-        theme:          theme
-    });
-    
     var eventPainterParams = {
-        showText:   ("showEventText" in params) ? params.showEventText : true,
-        layout:     layout,
         theme:      theme
     };
     if ("trackHeight" in params) {
@@ -41,7 +32,9 @@ Timeline.Planning.createBandInfo = function(params) {
     if ("trackGap" in params) {
         eventPainterParams.trackGap = params.trackGap;
     }
-    var eventPainter = new Timeline.DurationEventPainter(eventPainterParams);
+    var eventPainter = ("overview" in params && params.overview) ?
+        new Timeline.OverviewEventPainter(eventPainterParams) :
+        new Timeline.DetailedEventPainter(eventPainterParams);
     
     return {   
         width:          params.width,

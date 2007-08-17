@@ -83,7 +83,7 @@ Timeline.ClassicTheme._Impl = function() {
             offset:     20,     // px
             tickHeight: 6,      // px
             height:     2,      // px
-            gap:        1,      // px
+            gap:        1       // px
         },
         tape: {
             height:         6 // px

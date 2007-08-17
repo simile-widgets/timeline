@@ -2484,7 +2484,7 @@ overviewTrack:{
 offset:20,
 tickHeight:6,
 height:2,
-gap:1,
+gap:1
 },
 tape:{
 height:6

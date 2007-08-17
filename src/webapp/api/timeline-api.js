@@ -39,7 +39,7 @@
             "ether-painters.js",
             "labellers.js",
             "sources.js",
-            "painters.js",
+            "detailed-painter.js",
             "overview-painter.js",
             "decorators.js"
         ];

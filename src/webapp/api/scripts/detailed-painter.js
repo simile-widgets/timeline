@@ -541,6 +541,15 @@ Timeline.DetailedEventPainter.prototype._paintEventLabel = function(evt, text, l
     labelDiv.style.top = top + "px";
     labelDiv.innerHTML = text;
     labelDiv.style.cursor = "pointer";
+    
+    var color = evt.getTextColor();
+    if (color == null) {
+        color = evt.getColor();
+    }
+    if (color != null) {
+        labelDiv.style.color = color;
+    }
+    
     this._eventLayer.appendChild(labelDiv);
     
     return {

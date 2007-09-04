@@ -77,7 +77,7 @@ Timeline.ClassicTheme._Impl = function() {
     this.event = {
         track: {
             height:         10, // px
-            gap:            3   // px
+            gap:            2   // px
         },
         overviewTrack: {
             offset:     20,     // px
@@ -86,7 +86,7 @@ Timeline.ClassicTheme._Impl = function() {
             gap:        1       // px
         },
         tape: {
-            height:         6 // px
+            height:         4 // px
         },
         instant: {
             icon:              Timeline.urlPrefix + "images/dull-blue-circle.png",

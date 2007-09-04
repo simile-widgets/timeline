@@ -46,9 +46,19 @@ Timeline.createBandInfo = function(params) {
     if ("trackGap" in params) {
         eventPainterParams.trackGap = params.trackGap;
     }
-    var eventPainter = ("overview" in params && params.overview) ?
-        new Timeline.OverviewEventPainter(eventPainterParams) :
-        new Timeline.DetailedEventPainter(eventPainterParams);
+    
+    var layout = ("overview" in params && params.overview) ? "overview" : ("layout" in params ? params.layout : "original");
+    var eventPainter;
+    switch (layout) {
+        case "overview" :
+            eventPainter = new Timeline.OverviewEventPainter(eventPainterParams);
+            break;
+        case "detailed" :
+            eventPainter = new Timeline.DetailedEventPainter(eventPainterParams);
+            break;
+        default:
+            eventPainter = new Timeline.OriginalEventPainter(eventPainterParams);
+    }
     
     return {   
         width:          params.width,
@@ -89,10 +99,20 @@ Timeline.createHotZoneBandInfo = function(params) {
     if ("trackGap" in params) {
         eventPainterParams.trackGap = params.trackGap;
     }
-    var eventPainter = ("overview" in params && params.overview) ?
-        new Timeline.OverviewEventPainter(eventPainterParams) :
-        new Timeline.DetailedEventPainter(eventPainterParams);
     
+    var layout = ("overview" in params && params.overview) ? "overview" : ("layout" in params ? params.layout : "original");
+    var eventPainter;
+    switch (layout) {
+        case "overview" :
+            eventPainter = new Timeline.OverviewEventPainter(eventPainterParams);
+            break;
+        case "detailed" :
+            eventPainter = new Timeline.DetailedEventPainter(eventPainterParams);
+            break;
+        default:
+            eventPainter = new Timeline.OriginalEventPainter(eventPainterParams);
+    }
+   
     return {   
         width:          params.width,
         eventSource:    eventSource,

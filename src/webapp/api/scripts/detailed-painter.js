@@ -22,6 +22,8 @@ Timeline.DetailedEventPainter.prototype.initialize = function(band, timeline) {
     this._eventLayer = null;
     this._lineLayer = null;
     this._highlightLayer = null;
+    
+    this._eventIdToElmt = null;
 };
 
 Timeline.DetailedEventPainter.prototype.addOnSelectListener = function(listener) {

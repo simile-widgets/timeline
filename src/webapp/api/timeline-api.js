@@ -42,7 +42,8 @@
             "original-painter.js",
             "detailed-painter.js",
             "overview-painter.js",
-            "decorators.js"
+            "decorators.js",
+            "units.js"
         ];
         var cssFiles = [
             "timeline.css",

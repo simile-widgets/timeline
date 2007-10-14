@@ -110,7 +110,7 @@ Timeline.DetailedEventPainter.prototype._prepareForPainting = function() {
         this._backLayer = this._band.createLayerDiv(0, "timeline-band-events");
         this._backLayer.style.visibility = "hidden";
         
-        var eventLabelPrototype = document.createElement("div");
+        var eventLabelPrototype = document.createElement("span");
         eventLabelPrototype.className = "timeline-event-label";
         this._backLayer.appendChild(eventLabelPrototype);
         this._frc = SimileAjax.Graphics.getFontRenderingContext(eventLabelPrototype);

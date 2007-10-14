@@ -110,7 +110,7 @@ Timeline.OriginalEventPainter.prototype._prepareForPainting = function() {
         this._backLayer = this._band.createLayerDiv(0, "timeline-band-events");
         this._backLayer.style.visibility = "hidden";
         
-        var eventLabelPrototype = document.createElement("div");
+        var eventLabelPrototype = document.createElement("span");
         eventLabelPrototype.className = "timeline-event-label";
         this._backLayer.appendChild(eventLabelPrototype);
         this._frc = SimileAjax.Graphics.getFontRenderingContext(eventLabelPrototype);
@@ -301,7 +301,7 @@ Timeline.OriginalEventPainter.prototype.paintImpreciseDurationEvent = function(e
     var color = evt.getColor();
     color = color != null ? color : theme.event.duration.color;
     
-    var impreciseTapeElmtData = this._paintEventTape(evt, tapeTrack, startPixel, endPixel, 
+    var impreciseTapeElmtData = this._paintEventTape(evt, track, startPixel, endPixel, 
         theme.event.duration.impreciseColor, theme.event.duration.impreciseOpacity, metrics, theme);
     var tapeElmtData = this._paintEventTape(evt, track, latestStartPixel, earliestEndPixel, color, 100, metrics, theme);
     

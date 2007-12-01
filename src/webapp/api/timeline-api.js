@@ -68,6 +68,7 @@
             "it",       // Italian
             "ru",       // Russian
             "se",       // Swedish
+            "tr",       // Turkish
             "vi",       // Vietnamese
             "zh"        // Chinese
         ];

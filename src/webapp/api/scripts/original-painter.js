@@ -264,7 +264,7 @@ Timeline.OriginalEventPainter.prototype.paintPreciseDurationEvent = function(evt
     
     var self = this;
     var clickHandler = function(elmt, domEvt, target) {
-        return self._onClickInstantEvent(tapeElmtData.elmt, domEvt, evt);
+        return self._onClickDurationEvent(tapeElmtData.elmt, domEvt, evt);
     };
     SimileAjax.DOM.registerEvent(tapeElmtData.elmt, "mousedown", clickHandler);
     SimileAjax.DOM.registerEvent(labelElmtData.elmt, "mousedown", clickHandler);
@@ -309,7 +309,7 @@ Timeline.OriginalEventPainter.prototype.paintImpreciseDurationEvent = function(e
     
     var self = this;
     var clickHandler = function(elmt, domEvt, target) {
-        return self._onClickInstantEvent(tapeElmtData.elmt, domEvt, evt);
+        return self._onClickDurationEvent(tapeElmtData.elmt, domEvt, evt);
     };
     SimileAjax.DOM.registerEvent(tapeElmtData.elmt, "mousedown", clickHandler);
     SimileAjax.DOM.registerEvent(labelElmtData.elmt, "mousedown", clickHandler);

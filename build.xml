@@ -20,11 +20,13 @@
     <!-- SimileAjax -->
     <jsmin output="src/ajax/api/simile-ajax-bundle.js">
         <fileset dir="src/ajax/api/scripts">
+            <include name="jquery*.js" />
             <include name="platform.js" />
         </fileset>
         <fileset dir="src/ajax/api/scripts">
             <include name="**/*.js" />
             <exclude name="signal.js" />
+            <exclude name="jquery*.js" />
             <exclude name="platform.js" />
         </fileset>
     </jsmin>

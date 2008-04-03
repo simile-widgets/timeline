@@ -339,11 +339,10 @@ Timeline.OriginalEventPainter.prototype._paintEventIcon = function(evt, iconTrac
 
     var img = SimileAjax.Graphics.createTranslucentImage(icon);
     var iconDiv = this._timeline.getDocument().createElement("div");
-    iconDiv.style.position = "absolute";
+	iconDiv.className = 'timeline-event-icon'
     iconDiv.style.left = left + "px";
     iconDiv.style.top = top + "px";
     iconDiv.appendChild(img);
-    iconDiv.style.cursor = "pointer";
     this._eventLayer.appendChild(iconDiv);
     
     return {
@@ -359,12 +358,13 @@ Timeline.OriginalEventPainter.prototype._paintEventLabel = function(evt, text, l
     var doc = this._timeline.getDocument();
     
     var labelDiv = doc.createElement("div");
-    labelDiv.style.position = "absolute";
+	labelDiv.className = 'timeline-event-label'
+
     labelDiv.style.left = left + "px";
     labelDiv.style.width = width + "px";
     labelDiv.style.top = top + "px";
     labelDiv.innerHTML = text;
-    labelDiv.style.cursor = "pointer";
+
     
     var color = evt.getTextColor();
     if (color == null) {
@@ -373,6 +373,12 @@ Timeline.OriginalEventPainter.prototype._paintEventLabel = function(evt, text, l
     if (color != null) {
         labelDiv.style.color = color;
     }
+	
+	
+	var classname = evt.getClassName()
+	if(classname) labelDiv.className +=' ' + classname;
+	
+	
     
     this._eventLayer.appendChild(labelDiv);
     
@@ -393,14 +399,14 @@ Timeline.OriginalEventPainter.prototype._paintEventTape = function(
     var top = metrics.trackOffset + iconTrack * metrics.trackIncrement;
     
     var tapeDiv = this._timeline.getDocument().createElement("div");
-    tapeDiv.style.position = "absolute";
+	tapeDiv.className = "timeline-event-tape"
+
     tapeDiv.style.left = startPixel + "px";
     tapeDiv.style.width = tapeWidth + "px";
     tapeDiv.style.top = top + "px";
-    tapeDiv.style.height = tapeHeight + "px";
-    tapeDiv.style.backgroundColor = color;
-    tapeDiv.style.overflow = "hidden";
-    tapeDiv.style.cursor = "pointer";
+
+   
+   
     SimileAjax.Graphics.setOpacity(tapeDiv, opacity);
     
     this._eventLayer.appendChild(tapeDiv);
@@ -422,13 +428,13 @@ Timeline.OriginalEventPainter.prototype._createHighlightDiv = function(highlight
         var color = eventTheme.highlightColors[Math.min(highlightIndex, eventTheme.highlightColors.length - 1)];
         
         var div = doc.createElement("div");
-        div.style.position = "absolute";
+		div.style.position = "absolute";
         div.style.overflow = "hidden";
         div.style.left =    (dimensions.left - 2) + "px";
         div.style.width =   (dimensions.width + 4) + "px";
         div.style.top =     (dimensions.top - 2) + "px";
         div.style.height =  (dimensions.height + 4) + "px";
-        div.style.background = color;
+//        div.style.background = color;
         
         this._highlightLayer.appendChild(div);
     }

@@ -292,13 +292,13 @@
     <event start="Fri Nov 22 1963 12:30:00 GMT-0600"
         title="Kennedy shot"
         icon="../../api/images/dark-red-circle.png"
-        color="red"
         id="Kennedy shot"
+		classname="important"
         >
         President Kennedy shot in Dallas.
         </event>
     <event start="Fri Nov 22 1963 12:00:00 GMT-0600"
-        title="David Ferrie takes mysterious drive"
+        title="David Ferrie takes mysterious drive"		
         >
         David Ferrie takes a mysterious 364 mile drive in the afternoon.
 
@@ -346,6 +346,7 @@
         </event>
     <event start="Fri Nov 22 1963 12:40:00 GMT-0600" end="Fri Nov 22 1963 12:45:00 GMT-0600"
         title="Oswald gets off bus and boards taxi"
+		classname="strange"
         >
         Oswald gets off bus and boards second taxi after allowing a woman 
         to take the first taxi, tells driver William Whaley, "500 North Beckley 

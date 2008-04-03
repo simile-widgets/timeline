@@ -4,6 +4,7 @@
  */
 
 
+
 Timeline.ClassicTheme = new Object();
 
 Timeline.ClassicTheme.implementations = [];
@@ -22,28 +23,29 @@ Timeline.ClassicTheme.create = function(locale) {
 
 Timeline.ClassicTheme._Impl = function() {
     this.firstDayOfWeek = 0; // Sunday
-    
+	
     this.ether = {
         backgroundColors: [
-            "#EEE",
-            "#DDD",
-            "#CCC",
-            "#AAA"
+        //    "#EEE",
+        //    "#DDD",
+        //    "#CCC",
+        //    "#AAA"
         ],
-        highlightColor:     "white",
+     //   highlightColor:     "white",
         highlightOpacity:   50,
         interval: {
             line: {
                 show:       true,
-                color:      "#aaa",
+               // color:      "#aaa",
                 opacity:    25
             },
             weekend: {
-                color:      "#FFFFE0",
+              //  color:      "#FFFFE0",
                 opacity:    30
             },
             marker: {
                 hAlign:     "Bottom",
+				/*
                 hBottomStyler: function(elmt) {
                     elmt.className = "timeline-ether-marker-bottom";
                 },
@@ -56,9 +58,12 @@ Timeline.ClassicTheme._Impl = function() {
                 hTopEmphasizedStyler: function(elmt) {
                     elmt.className = "timeline-ether-marker-top-emphasized";
                 },
+                */
+				
                     
-                vAlign:     "Right",
-                vRightStyler: function(elmt) {
+                vAlign:     "Right"
+               /*
+			    vRightStyler: function(elmt) {
                     elmt.className = "timeline-ether-marker-right";
                 },
                 vRightEmphasizedStyler: function(elmt) {
@@ -70,6 +75,7 @@ Timeline.ClassicTheme._Impl = function() {
                 vLeftEmphasizedStyler:function(elmt) {
                     elmt.className = "timeline-ether-marker-left-emphasized";
                 }
+                */
             }
         }
     };
@@ -92,26 +98,26 @@ Timeline.ClassicTheme._Impl = function() {
             icon:              Timeline.urlPrefix + "images/dull-blue-circle.png",
             iconWidth:         10,
             iconHeight:        10,
-            color:             "#58A0DC",
-            impreciseColor:    "#58A0DC",
+    //        color:             "#58A0DC",
+    //        impreciseColor:    "#58A0DC",
             impreciseOpacity:  20
         },
         duration: {
-            color:            "#58A0DC",
-            impreciseColor:   "#58A0DC",
+      //      color:            "#58A0DC",
+      //      impreciseColor:   "#58A0DC",
             impreciseOpacity: 20
         },
         label: {
-            backgroundColor:   "white",
+      //      backgroundColor:   "white",
             backgroundOpacity: 50,
-            lineColor:         "#58A0DC",
+      //      lineColor:         "#58A0DC",
             offsetFromLine:    3 // px
         },
         highlightColors: [
-            "#FFFF00",
-            "#FFC000",
-            "#FF0000",
-            "#0000FF"
+   //         "#FFFF00",
+   //         "#FFC000",
+   //         "#FF0000",
+   //         "#0000FF"
         ],
         bubble: {
             width:          250, // px

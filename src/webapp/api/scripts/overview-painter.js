@@ -158,14 +158,15 @@ Timeline.OverviewEventPainter.prototype._paintEventTape = function(
     var height = metrics.trackHeight;
     
     var tapeDiv = this._timeline.getDocument().createElement("div");
-    tapeDiv.style.position = "absolute";
+	tapeDiv.className = 'timeline-small-event-tape'
+//    tapeDiv.style.position = "absolute";
     tapeDiv.style.left = left + "px";
     tapeDiv.style.width = width + "px";
     tapeDiv.style.top = top + "px";
-    tapeDiv.style.height = height + "px";
-    tapeDiv.style.backgroundColor = color;
-    tapeDiv.style.overflow = "hidden";
-    SimileAjax.Graphics.setOpacity(tapeDiv, opacity);
+ //   tapeDiv.style.height = height + "px";
+ //   tapeDiv.style.backgroundColor = color;
+ //   tapeDiv.style.overflow = "hidden";
+    if(opacity<100) SimileAjax.Graphics.setOpacity(tapeDiv, opacity);
     
     this._eventLayer.appendChild(tapeDiv);
     
@@ -186,14 +187,20 @@ Timeline.OverviewEventPainter.prototype._paintEventTick = function(
     var width = 1;
     
     var tickDiv = this._timeline.getDocument().createElement("div");
-    tickDiv.style.position = "absolute";
+	tickDiv.className = 'timeline-small-event-icon'
+//    tickDiv.style.position = "absolute";
     tickDiv.style.left = left + "px";
-    tickDiv.style.width = width + "px";
+  //  tickDiv.style.width = width + "px";
     tickDiv.style.top = top + "px";
-    tickDiv.style.height = height + "px";
-    tickDiv.style.backgroundColor = color;
-    tickDiv.style.overflow = "hidden";
-    SimileAjax.Graphics.setOpacity(tickDiv, opacity);
+  //  tickDiv.style.height = height + "px";
+//  tickDiv.style.backgroundColor = color;
+//  tickDiv.style.overflow = "hidden";
+
+	var classname = evt.getClassName()
+	if(classname) tickDiv.className +=' small-' + classname;
+	
+	
+    if(opacity<100) SimileAjax.Graphics.setOpacity(tickDiv, opacity);
     
     this._eventLayer.appendChild(tickDiv);
     

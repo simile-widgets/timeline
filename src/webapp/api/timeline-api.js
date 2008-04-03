@@ -31,7 +31,7 @@
         window.Timeline = new Object();
         window.Timeline.DateTime = window.SimileAjax.DateTime; // for backward compatibility
     
-        var bundle = true;
+        var bundle = false;
         var javascriptFiles = [
             "timeline.js",
             "themes.js",

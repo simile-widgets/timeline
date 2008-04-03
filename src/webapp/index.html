@@ -59,7 +59,11 @@
                 }
             ];
             
+			
+			
             var theme = Timeline.ClassicTheme.create();
+			Timeline.ThemeName = 'dark-theme'
+			
             theme.event.bubble.width = 250;
             
             var date = "Fri Nov 22 1963 13:00:00 GMT-0600"
@@ -71,8 +75,8 @@
                     zones:          zones,
                     eventSource:    eventSource,
                     date:           date,
-                    timeZone:       -6,
-                    theme:          theme
+                    timeZone:       -6
+                  //  theme:          theme
                 }),
                 Timeline.createHotZoneBandInfo({
                     width:          "20%", 
@@ -82,8 +86,8 @@
                     eventSource:    eventSource,
                     date:           date, 
                     timeZone:       -6,
-                    overview:       true,
-                    theme:          theme
+                    overview:       true
+                   // theme:          theme
                 })
             ];
             bandInfos[1].syncWith = 0;
@@ -98,19 +102,21 @@
                         opacity:    50,
                         startLabel: "shot",
                         endLabel:   "t.o.d.",
-                        theme:      theme
+                       // theme:      theme,
+						cssClass: 't-highlight1'
                     }),
                     new Timeline.PointHighlightDecorator({
                         date:       "Fri Nov 22 1963 14:38:00 GMT-0600",
                         color:      "#FFC080",
                         opacity:    50,
-                        theme:      theme
+                        //theme:      theme,
+						cssClass: 'p-highlight1'
                     }),
                     new Timeline.PointHighlightDecorator({
                         date:       "Sun Nov 24 1963 13:00:00 GMT-0600",
                         color:      "#FFC080",
-                        opacity:    50,
-                        theme:      theme
+                        opacity:    50
+                        //theme:      theme
                     })
                 ];
             }
@@ -128,7 +134,54 @@
                 }, 500);
             }
         }
+		
+		
+		function themeSwitch(){
+			var timeline = document.getElementById('tl');		
+			timeline.className = (timeline.className.indexOf('dark-theme') != -1) ? timeline.className.replace('dark-theme', '') : timeline.className += ' dark-theme';
+			
+		}
     </script>
+	<style type="text/css">
+		
+		#switch_theme{margin-left:2em; cursor:pointer; background:#eee; padding:4px 6px; width:120px; text-align:center; font-weight:bold; border:1px solid #999;}
+		
+		.t-highlight1{background-color:#ccf;}
+		.p-highlight1{background-color:#fcc;}
+		
+		.timeline-highlight-label-start .label_t-highlight1{color:#f00;}
+		.timeline-highlight-label-end .label_t-highlight1{color:#aaf;}
+		
+		.timeline-band-events .important{color:#f00;}		
+		.timeline-band-events .small-important{background:#c00;}
+		
+		
+		/*---------------------------------*/
+		
+		.dark-theme {color:#eee;}
+		.dark-theme .timeline-band-0 .timeline-ether-bg{background-color:#333}
+		.dark-theme .timeline-band-1 .timeline-ether-bg{background-color:#111}
+		.dark-theme .timeline-band-2 .timeline-ether-bg{background-color:#222}
+		.dark-theme .timeline-band-3 .timeline-ether-bg{background-color:#444}
+		
+		
+		.dark-theme .t-highlight1{background-color:#003;}
+		.dark-theme .p-highlight1{background-color:#300;}
+		
+		.dark-theme .timeline-highlight-label-start .label_t-highlight1{color:#f00;}
+		.dark-theme .timeline-highlight-label-end .label_t-highlight1{color:#115;}
+		
+		.dark-theme .timeline-band-events .important{color:#c00;}		
+		.dark-theme .timeline-band-events .small-important{background:#c00;}
+		
+		.dark-theme .timeline-date-label-em{color:#fff;}
+		.dark-theme .timeline-ether-lines{border-color:#555; border-style:solid;}
+		.dark-theme .timeline-ether-highlight{background:#555;}
+		
+		.dark-theme .timeline-event-tape,
+		.dark-theme .timeline-small-event-tape{background:#f60;}
+		.dark-theme .timeline-ether-weekends{background:#111;}
+	</style>
 </head>
 <body onload="onLoad();" onresize="onResize();">
 <!--#include virtual="sidebar.html" -->
@@ -145,7 +198,8 @@
         dragging it horizontally.
     </p>
 
-    <div id="tl" class="timeline-default" style="height: 350px; margin: 2em;">
+	<div id="switch_theme" onclick="themeSwitch();">Switch theme</div>
+    <div id="tl" class="timeline-default dark-theme" style="height: 350px; margin: 2em;">
     </div>
     
     <p>Just like Google Maps, Timeline can be used with zero software installation,

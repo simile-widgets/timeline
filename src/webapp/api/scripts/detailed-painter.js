@@ -483,7 +483,7 @@ Timeline.DetailedEventPainter.prototype._paintEventLine = function(evt, left, st
     
     var lineStyle = "1px solid " + theme.event.label.lineColor;
     var lineDiv = this._timeline.getDocument().createElement("div");
-    lineDiv.style.position = "absolute";
+	lineDiv.style.position = "absolute";
     lineDiv.style.left = left + "px";
     lineDiv.style.width = theme.event.label.offsetFromLine + "px";
     lineDiv.style.height = height + "px";

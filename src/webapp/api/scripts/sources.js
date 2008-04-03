@@ -52,8 +52,10 @@ Timeline.DefaultEventSource.prototype.loadXML = function(xml, url) {
                 this._resolveRelativeURL(node.getAttribute("link"), base),
                 this._resolveRelativeURL(node.getAttribute("icon"), base),
                 node.getAttribute("color"),
-                node.getAttribute("textColor")
+                node.getAttribute("textColor"),
+				node.getAttribute("classname")
             );
+
             evt._node = node;
             evt.getProperty = function(name) {
                 return this._node.getAttribute(name);
@@ -97,8 +99,9 @@ Timeline.DefaultEventSource.prototype.loadJSON = function(data, url) {
                 this._resolveRelativeURL(event.image, base),
                 this._resolveRelativeURL(event.link, base),
                 this._resolveRelativeURL(event.icon, base),
-                event.color,
-                event.textColor
+                event.color,				
+                event.textColor,
+				event.classname
             );
             evt._obj = event;
             evt.getProperty = function(name) {
@@ -178,8 +181,9 @@ Timeline.DefaultEventSource.prototype.loadSPARQL = function(xml, url) {
                 this._resolveRelativeURL(bindings["image"], base),
                 this._resolveRelativeURL(bindings["link"], base),
                 this._resolveRelativeURL(bindings["icon"], base),
-                bindings["color"],
-                bindings["textColor"]
+                bindings["color"],				
+                bindings["textColor"],
+				bindings["classname"]
             );
             evt._bindings = bindings;
             evt.getProperty = function(name) {
@@ -291,7 +295,7 @@ Timeline.DefaultEventSource.Event = function(
         id,
         start, end, latestStart, earliestEnd, instant, 
         text, description, image, link,
-        icon, color, textColor) {
+        icon, color, textColor, classname) {
         
     id = (id) ? id.trim() : "";
     this._id = id.length > 0 ? id : ("e" + Math.floor(Math.random() * 1000000));
@@ -310,8 +314,9 @@ Timeline.DefaultEventSource.Event = function(
     this._link = (link != null && link != "") ? link : null;
     
     this._icon = (icon != null && icon != "") ? icon : null;
-    this._color = (color != null && color != "") ? color : null;
+    this._color = (color != null && color != "") ? color : null;	
     this._textColor = (textColor != null && textColor != "") ? textColor : null;
+	this._classname = (classname != null && classname != "") ? classname : null;
     
     this._wikiURL = null;
     this._wikiSection = null;
@@ -334,8 +339,9 @@ Timeline.DefaultEventSource.Event.prototype = {
     getLink:        function() { return this._link; },
     
     getIcon:        function() { return this._icon; },
-    getColor:       function() { return this._color; },
+    getColor:       function() { return this._color; },	
     getTextColor:   function() { return this._textColor; },
+	getClassName:    function() {return this._classname;  },
     
     getProperty:    function(name) { return null; },
     

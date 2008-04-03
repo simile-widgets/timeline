@@ -16,7 +16,9 @@ Timeline.GregorianEtherPainter.prototype.initialize = function(band, timeline) {
     
     this._backgroundLayer = band.createLayerDiv(0);
     this._backgroundLayer.setAttribute("name", "ether-background"); // for debugging
-    this._backgroundLayer.style.background = this._theme.ether.backgroundColors[band.getIndex()];
+    this._backgroundLayer.className('timeline-ether-bg')
+  //  this._backgroundLayer.style.background = this._theme.ether.backgroundColors[band.getIndex()];
+
     
     this._markerLayer = null;
     this._lineLayer = null;
@@ -143,7 +145,8 @@ Timeline.HotZoneGregorianEtherPainter.prototype.initialize = function(band, time
     
     this._backgroundLayer = band.createLayerDiv(0);
     this._backgroundLayer.setAttribute("name", "ether-background"); // for debugging
-    this._backgroundLayer.style.background = this._theme.ether.backgroundColors[band.getIndex()];
+    this._backgroundLayer.className ='timeline-ether-bg';
+    //this._backgroundLayer.style.background = this._theme.ether.backgroundColors[band.getIndex()];
     
     this._markerLayer = null;
     this._lineLayer = null;
@@ -248,7 +251,8 @@ Timeline.YearCountEtherPainter.prototype.initialize = function(band, timeline) {
     
     this._backgroundLayer = band.createLayerDiv(0);
     this._backgroundLayer.setAttribute("name", "ether-background"); // for debugging
-    this._backgroundLayer.style.background = this._theme.ether.backgroundColors[band.getIndex()];
+    this._backgroundLayer.className('timeline-ether-bg')
+   // this._backgroundLayer.style.background = this._theme.ether.backgroundColors[band.getIndex()];
     
     this._markerLayer = null;
     this._lineLayer = null;
@@ -335,7 +339,8 @@ Timeline.QuarterlyEtherPainter.prototype.initialize = function(band, timeline) {
     
     this._backgroundLayer = band.createLayerDiv(0);
     this._backgroundLayer.setAttribute("name", "ether-background"); // for debugging
-    this._backgroundLayer.style.background = this._theme.ether.backgroundColors[band.getIndex()];
+    this._backgroundLayer.className = 'timeline-ether-bg';
+ //   this._backgroundLayer.style.background = this._theme.ether.backgroundColors[band.getIndex()];
     
     this._markerLayer = null;
     this._lineLayer = null;
@@ -452,24 +457,18 @@ Timeline.EtherIntervalMarkerLayout = function(timeline, band, theme, align, show
 
         if (showLine && unit != SimileAjax.DateTime.WEEK) {
             var divLine = timeline.getDocument().createElement("div");
-            divLine.style.position = "absolute";
-            
+            divLine.className = "timeline-ether-lines";
+
             if (lineTheme.opacity < 100) {
                 SimileAjax.Graphics.setOpacity(divLine, lineTheme.opacity);
             }
             
             if (horizontal) {
-                divLine.style.borderLeft = "1px solid " + lineTheme.color;
-                divLine.style.left = offset + "px";
-                divLine.style.width = "1px";
-                divLine.style.top = "0px";
-                divLine.style.height = "100%";
+				//divLine.className += " timeline-ether-lines-vertical";
+				divLine.style.left = offset + "px";
             } else {
-                divLine.style.borderTop = "1px solid " + lineTheme.color;
+				//divLine.className += " timeline-ether-lines-horizontal";
                 divLine.style.top = offset + "px";
-                divLine.style.height = "1px";
-                divLine.style.left = "0px";
-                divLine.style.width = "100%";
             }
             lineDiv.appendChild(divLine);
         }
@@ -483,24 +482,19 @@ Timeline.EtherIntervalMarkerLayout = function(timeline, band, theme, align, show
             var mondayPixel = Math.round(band.dateToPixelOffset(monday));
             var length = Math.max(1, mondayPixel - saturdayPixel);
             
-            var divWeekend = timeline.getDocument().createElement("div");
-            divWeekend.style.position = "absolute";
-            
-            divWeekend.style.background = weekendTheme.color;
+            var divWeekend = timeline.getDocument().createElement("div");            
+			divWeekend.className = 'timeline-ether-weekends'
+
             if (weekendTheme.opacity < 100) {
                 SimileAjax.Graphics.setOpacity(divWeekend, weekendTheme.opacity);
             }
             
-            if (horizontal) {
+            if (horizontal) {				
                 divWeekend.style.left = saturdayPixel + "px";
-                divWeekend.style.width = length + "px";
-                divWeekend.style.top = "0px";
-                divWeekend.style.height = "100%";
-            } else {
+                divWeekend.style.width = length + "px";                
+            } else {				
                 divWeekend.style.top = saturdayPixel + "px";
-                divWeekend.style.height = length + "px";
-                divWeekend.style.left = "0px";
-                divWeekend.style.width = "100%";
+                divWeekend.style.height = length + "px";                
             }
             lineDiv.appendChild(divWeekend);
         }
@@ -509,9 +503,12 @@ Timeline.EtherIntervalMarkerLayout = function(timeline, band, theme, align, show
         
         var div = timeline.getDocument().createElement("div");
         div.innerHTML = label.text;
-        div.style.position = "absolute";
-        (label.emphasized ? emphasizedLabelStyler : labelStyler)(div);
         
+        
+        
+		div.className = 'timeline-date-label'
+		if(label.emphasized) div.className += ' timeline-date-label-em'
+		
         this.positionDiv(div, offset);
         markerDiv.appendChild(div);
         
@@ -532,8 +529,7 @@ Timeline.EtherHighlight = function(timeline, band, theme, backgroundLayer) {
         if (this._highlightDiv == null) {
             this._highlightDiv = timeline.getDocument().createElement("div");
             this._highlightDiv.setAttribute("name", "ether-highlight"); // for debugging
-            this._highlightDiv.style.position = "absolute";
-            this._highlightDiv.style.background = theme.ether.highlightColor;
+            this._highlightDiv.className = 'timeline-ether-highlight'            
             
             var opacity = theme.ether.highlightOpacity;
             if (opacity < 100) {
@@ -552,15 +548,12 @@ Timeline.EtherHighlight = function(timeline, band, theme, backgroundLayer) {
         var length = Math.max(endPixel - startPixel, 3);
         if (horizontal) {
             this._highlightDiv.style.left = startPixel + "px";
-            this._highlightDiv.style.width = length + "px";
-            this._highlightDiv.style.top = "2px";
+            this._highlightDiv.style.width = length + "px";           
             this._highlightDiv.style.height = (band.getViewWidth() - 4) + "px";
         } else {
             this._highlightDiv.style.top = startPixel + "px";
             this._highlightDiv.style.height = length + "px";
-            this._highlightDiv.style.left = "2px";
             this._highlightDiv.style.width = (band.getViewWidth() - 4) + "px";
         }
     }
 };
-

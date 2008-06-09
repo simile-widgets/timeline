@@ -40,6 +40,13 @@ Timeline.createBandInfo = function(params) {
         showText:   ("showEventText" in params) ? params.showEventText : true,
         theme:      theme
     };
+    // pass in custom parameters for the event painter
+    if ("eventPainterParams" in params) {
+        for (var prop in params.eventPainterParams) {
+            eventPainterParams[prop] = params.eventPainterParams[prop];
+        }
+    }
+    
     if ("trackHeight" in params) {
         eventPainterParams.trackHeight = params.trackHeight;
     }
@@ -49,15 +56,19 @@ Timeline.createBandInfo = function(params) {
     
     var layout = ("overview" in params && params.overview) ? "overview" : ("layout" in params ? params.layout : "original");
     var eventPainter;
-    switch (layout) {
-        case "overview" :
-            eventPainter = new Timeline.OverviewEventPainter(eventPainterParams);
-            break;
-        case "detailed" :
-            eventPainter = new Timeline.DetailedEventPainter(eventPainterParams);
-            break;
-        default:
-            eventPainter = new Timeline.OriginalEventPainter(eventPainterParams);
+    if ("eventPainter" in params) {
+        eventPainter = new params.eventPainter(eventPainterParams);
+    } else {
+        switch (layout) {
+            case "overview" :
+                eventPainter = new Timeline.OverviewEventPainter(eventPainterParams);
+                break;
+            case "detailed" :
+                eventPainter = new Timeline.DetailedEventPainter(eventPainterParams);
+                break;
+            default:
+                eventPainter = new Timeline.OriginalEventPainter(eventPainterParams);
+        }
     }
     
     return {   
@@ -93,6 +104,12 @@ Timeline.createHotZoneBandInfo = function(params) {
         showText:   ("showEventText" in params) ? params.showEventText : true,
         theme:      theme
     };
+    // pass in custom parameters for the event painter
+    if ("eventPainterParams" in params) {
+        for (var prop in params.eventPainterParams) {
+            eventPainterParams[prop] = params.eventPainterParams[prop];
+        }
+    }
     if ("trackHeight" in params) {
         eventPainterParams.trackHeight = params.trackHeight;
     }
@@ -102,17 +119,20 @@ Timeline.createHotZoneBandInfo = function(params) {
     
     var layout = ("overview" in params && params.overview) ? "overview" : ("layout" in params ? params.layout : "original");
     var eventPainter;
-    switch (layout) {
-        case "overview" :
-            eventPainter = new Timeline.OverviewEventPainter(eventPainterParams);
-            break;
-        case "detailed" :
-            eventPainter = new Timeline.DetailedEventPainter(eventPainterParams);
-            break;
-        default:
-            eventPainter = new Timeline.OriginalEventPainter(eventPainterParams);
-    }
-   
+    if ("eventPainter" in params) {
+        eventPainter = new params.eventPainter(eventPainterParams);
+    } else {
+        switch (layout) {
+            case "overview" :
+                eventPainter = new Timeline.OverviewEventPainter(eventPainterParams);
+                break;
+            case "detailed" :
+                eventPainter = new Timeline.DetailedEventPainter(eventPainterParams);
+                break;
+            default:
+                eventPainter = new Timeline.OriginalEventPainter(eventPainterParams);
+        }
+    }   
     return {   
         width:          params.width,
         eventSource:    eventSource,

@@ -295,7 +295,7 @@ Timeline.DefaultEventSource.Event = function(
         id,
         start, end, latestStart, earliestEnd, instant, 
         text, description, image, link,
-        icon, color, textColor, classname) {
+        icon, color, textColor, hoverText, classname) {
         
     id = (id) ? id.trim() : "";
     this._id = id.length > 0 ? id : ("e" + Math.floor(Math.random() * 1000000));
@@ -312,6 +312,7 @@ Timeline.DefaultEventSource.Event = function(
     this._description = SimileAjax.HTML.deEntify(description);
     this._image = (image != null && image != "") ? image : null;
     this._link = (link != null && link != "") ? link : null;
+    this._title = (hoverText != null) ? hoverText : null;
     
     this._icon = (icon != null && icon != "") ? icon : null;
     this._color = (color != null && color != "") ? color : null;	

@@ -343,6 +343,10 @@ Timeline.OriginalEventPainter.prototype._paintEventIcon = function(evt, iconTrac
     iconDiv.style.left = left + "px";
     iconDiv.style.top = top + "px";
     iconDiv.appendChild(img);
+
+    if(evt._title != null)
+        iconDiv.title = evt._title;
+
     this._eventLayer.appendChild(iconDiv);
     
     return {
@@ -365,7 +369,9 @@ Timeline.OriginalEventPainter.prototype._paintEventLabel = function(evt, text, l
     labelDiv.style.top = top + "px";
     labelDiv.innerHTML = text;
 
-    
+    if(evt._title != null)
+        labelDiv.title = evt._title;    
+
     var color = evt.getTextColor();
     if (color == null) {
         color = evt.getColor();
@@ -405,7 +411,8 @@ Timeline.OriginalEventPainter.prototype._paintEventTape = function(
     tapeDiv.style.width = tapeWidth + "px";
     tapeDiv.style.top = top + "px";
 
-   
+    if(evt._title != null)
+        tapeDiv.title = evt._title;   
    
     SimileAjax.Graphics.setOpacity(tapeDiv, opacity);
     

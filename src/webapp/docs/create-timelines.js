@@ -27,7 +27,8 @@ function createBandInfos2(eventSource) {
             width:          "30%", 
             intervalUnit:   Timeline.DateTime.YEAR, 
             intervalPixels: 200,
-            eventSource:    eventSource
+            eventSource:    eventSource,
+            overview:       true
         })
     ];
     bandInfos[1].syncWith = 0;
@@ -51,7 +52,8 @@ function createBandInfos3(eventSource) {
             showEventText:  false, 
             trackHeight:    0.5,
             trackGap:       0.2,
-            eventSource:    eventSource
+            eventSource:    eventSource,
+            overview:       true
         })
     ];
     bandInfos[1].syncWith = 0;
@@ -62,7 +64,6 @@ function createBandInfos4(eventSource) {
     var bandInfos = createBandInfos3(eventSource);
     bandInfos[1].syncWith = 0;
     bandInfos[1].highlight = true;
-    bandInfos[1].eventPainter.setLayout(bandInfos[0].eventPainter.getLayout());
     return bandInfos;
 }
 function createBandInfos5(eventSource) {
@@ -101,12 +102,12 @@ function createBandInfos5(eventSource) {
             showEventText:  false, 
             trackHeight:    0.5,
             trackGap:       0.2,
-            eventSource:    eventSource
+            eventSource:    eventSource,
+            overview:       true
         })
     ];
     bandInfos[1].syncWith = 0;
     bandInfos[1].highlight = true;
-    bandInfos[1].eventPainter.setLayout(bandInfos[0].eventPainter.getLayout());
     return bandInfos;
 }
 function createBandInfos6(eventSource) {
@@ -128,11 +129,50 @@ function createBandInfos6(eventSource) {
                     magnify:  20,
                     unit:     Timeline.DateTime.WEEK
                 }
-            ]
+            ],
+            overview:       true
         });
     bandInfos[1].syncWith = 0;
     bandInfos[1].highlight = true;
-    bandInfos[1].eventPainter.setLayout(bandInfos[0].eventPainter.getLayout());
+    return bandInfos;
+}
+function createBandInfos7(eventSource) {
+    var bandInfos = [
+        Timeline.createBandInfo({
+            date:           "Jun 28 2006 00:00:00 GMT",
+            width:          "70%", 
+            intervalUnit:   Timeline.DateTime.MONTH, 
+            intervalPixels: 100,
+            eventSource:    eventSource,
+            zoomIndex:      10,
+            zoomSteps:      new Array(
+              {pixelsPerInterval: 280,  unit: Timeline.DateTime.HOUR},
+              {pixelsPerInterval: 140,  unit: Timeline.DateTime.HOUR},
+              {pixelsPerInterval:  70,  unit: Timeline.DateTime.HOUR},
+              {pixelsPerInterval:  35,  unit: Timeline.DateTime.HOUR},
+              {pixelsPerInterval: 400,  unit: Timeline.DateTime.DAY},
+              {pixelsPerInterval: 200,  unit: Timeline.DateTime.DAY},
+              {pixelsPerInterval: 100,  unit: Timeline.DateTime.DAY},
+              {pixelsPerInterval:  50,  unit: Timeline.DateTime.DAY},
+              {pixelsPerInterval: 400,  unit: Timeline.DateTime.MONTH},
+              {pixelsPerInterval: 200,  unit: Timeline.DateTime.MONTH},
+              {pixelsPerInterval: 100,  unit: Timeline.DateTime.MONTH}
+            )            
+        }),
+        Timeline.createBandInfo({
+            date:           "Jun 28 2006 00:00:00 GMT",
+            width:          "30%", 
+            intervalUnit:   Timeline.DateTime.YEAR, 
+            intervalPixels: 200,
+            showEventText:  false, 
+            trackHeight:    0.5,
+            trackGap:       0.2,
+            eventSource:    eventSource,
+            overview:       true
+        })
+    ];
+    bandInfos[1].syncWith = 0;
+    bandInfos[1].highlight = true;
     return bandInfos;
 }
 function onLoad() {
@@ -153,16 +193,16 @@ function onLoad() {
     var bandInfos3 = createBandInfos3(eventSource1);
     timelines[3] = Timeline.create(document.getElementById("tl3"), bandInfos3);
     
-    var bandInfos4 = createBandInfos4(eventSource1);
+    var bandInfos4 = createBandInfos4(eventSource2);
     timelines[4] = Timeline.create(document.getElementById("tl4"), bandInfos4);
     
-    var bandInfos5 = createBandInfos4(eventSource2);
+    var bandInfos5 = createBandInfos5(eventSource2);
     timelines[5] = Timeline.create(document.getElementById("tl5"), bandInfos5);
     
-    var bandInfos6 = createBandInfos5(eventSource2);
+    var bandInfos6 = createBandInfos6(eventSource2);
     timelines[6] = Timeline.create(document.getElementById("tl6"), bandInfos6);
     
-    var bandInfos7 = createBandInfos6(eventSource2);
+    var bandInfos7 = createBandInfos7(eventSource2);
     timelines[7] = Timeline.create(document.getElementById("tl7"), bandInfos7);
     
     Timeline.loadXML("example1.xml", 

@@ -156,7 +156,8 @@ function onResize() {
         <span class="highlight">date:           "Jun 28 2006 00:00:00 GMT",</span>
         width:          "30%", 
         intervalUnit:   Timeline.DateTime.YEAR, 
-        intervalPixels: 200
+        intervalPixels: 200,
+  <span class="highlight">overview:	true</span>
     })
   ];
   bandInfos[1].syncWith = 0;
@@ -167,7 +168,9 @@ function onResize() {
 }</pre>
         The <span class="code">date</span> field is there to make sure the
         timeline starts out showing the events immediately without requiring 
-        the user to pan first. Here is the resulting timeline with 3 events:
+        the user to pan first. The overview setting is set to true so that the 
+        lower band only shows approximate positions of events seen in the upper
+        band. Here is the resulting timeline with 3 events:
     </p>
     
     <p><div id="tl2" class="timeline-default" style="height: 250px"></div></p>
@@ -212,7 +215,8 @@ function onResize() {
         date:           "Jun 28 2006 00:00:00 GMT",
         width:          "30%", 
         intervalUnit:   Timeline.DateTime.YEAR, 
-        intervalPixels: 200
+        intervalPixels: 200,
+        overview:	true
     })
   ];
   bandInfos[1].syncWith = 0;
@@ -297,45 +301,6 @@ function onResize() {
         events don't overlap one another.
     </p>
     
-    <p>The object returned by <span class="code">Timeline.createBandInfo()</span>
-        can be fixed before we feed it into <span class="code">Timeline.create()</span>.
-        We have already done that to sync the two bands. This time, we will
-        take the layout from the upper band and set it into the lower band
-        so that the event is positioned on the same track in both bands:
-<pre>function onLoad() {
-  var eventSource = new Timeline.DefaultEventSource();
-  var bandInfos = [
-    Timeline.createBandInfo({
-        eventSource:    eventSource,
-        date:           "Jun 28 2006 00:00:00 GMT",
-        width:          "70%", 
-        intervalUnit:   Timeline.DateTime.MONTH, 
-        intervalPixels: 100
-    }),
-    Timeline.createBandInfo({
-        eventSource:    eventSource,
-        date:           "Jun 28 2006 00:00:00 GMT",
-        width:          "30%", 
-        intervalUnit:   Timeline.DateTime.YEAR, 
-        intervalPixels: 200
-    })
-  ];
-  bandInfos[1].syncWith = 0;
-  bandInfos[1].highlight = true;
-  <span class="highlight">bandInfos[1].eventPainter.setLayout(bandInfos[0].eventPainter.getLayout());</span>
-  
-  tl = Timeline.create(document.getElementById("my-timeline"), bandInfos);
-  Timeline.loadXML("example1.xml", function(xml, url) { eventSource.loadXML(xml, url); });
-}</pre>
-        Now note that the last event is on its own track in the lower band
-        (just like in the upper band) although it can stay on the same
-        track as the first even in the lower band without resulting in any
-        overlap.
-    </p>    
-    
-    <p><div id="tl4" class="timeline-default" style="height: 250px"></div></p>
-    
-    
     <!--================================================================================
         Hot Zones
     -->
@@ -346,7 +311,7 @@ function onResize() {
         2006, are quite cramped:
     </p>
     
-    <p><div id="tl5" class="timeline-default" style="height: 250px"></div></p>
+    <p><div id="tl4" class="timeline-default" style="height: 250px"></div></p>
     
     <p>To solve this problem, we will <em>distort</em> the time of those days, producing
         the effect of zooming in. Because we want time to flow differently than 
@@ -387,12 +352,12 @@ function onResize() {
         date:           "Jun 28 2006 00:00:00 GMT",
         width:          "30%", 
         intervalUnit:   Timeline.DateTime.YEAR, 
-        intervalPixels: 200
+        intervalPixels: 200,
+        overview:	true
     })
   ];
   bandInfos[1].syncWith = 0;
   bandInfos[1].highlight = true;
-  bandInfos[1].eventPainter.setLayout(bandInfos[0].eventPainter.getLayout());
   
   tl = Timeline.create(document.getElementById("my-timeline"), bandInfos);
   Timeline.loadXML("example1.xml", function(xml, url) { eventSource.loadXML(xml, url); });
@@ -407,7 +372,7 @@ function onResize() {
         shrinks.
     </p>
     
-    <p><div id="tl6" class="timeline-default" style="height: 250px"></div></p>
+    <p><div id="tl5" class="timeline-default" style="height: 250px"></div></p>
     
     <p>Of course, panning the lower band over the <em>hot zones</em> of the
         upper band now makes the upper band a little jumpy. We can distort
@@ -453,12 +418,12 @@ function onResize() {
         date:           "Jun 28 2006 00:00:00 GMT",
         width:          "30%", 
         intervalUnit:   Timeline.DateTime.YEAR, 
-        intervalPixels: 200
+        intervalPixels: 200,
+        overview:	true
     })
   ];
   bandInfos[1].syncWith = 0;
   bandInfos[1].highlight = true;
-  bandInfos[1].eventPainter.setLayout(bandInfos[0].eventPainter.getLayout());
   
   tl = Timeline.create(document.getElementById("my-timeline"), bandInfos);
   Timeline.loadXML("example1.xml", function(xml, url) { eventSource.loadXML(xml, url); });
@@ -469,7 +434,82 @@ function onResize() {
         it smooth. But I hope this has been a good starting point for you.
     </p>
     
+    <p><div id="tl6" class="timeline-default" style="height: 250px"></div></p>
+
+    <!--================================================================================
+        Zoom
+    -->
+    <h2><a name="zoom">Zoom</a></h2>
+    
+    <p>Hot zones can be a challenge to create for dynamically generated 
+        data. They also can be somewhat confusing if there are many of them and 
+        they are distorting the timeline. An alternate approach would be to 
+        allow the user to dynamically scale the interval presented on the timeline. 
+        A zoom feature has been created to enable this.<br/><br/>
+        The first step to enabling zoom is ensuring that it is enabled within 
+        your theme (the default theme is shown below):
+<pre>
+Timeline.ClassicTheme._Impl = function() {
+    ...
+    
+    <span class="highlight">this.zoom = true; // true or false</span>
+};
+</pre>
+	Next you decide the intervalPixels/intervalUnit steps that you would 
+	like the user to be able to zoom to. The BandInfo object's intervalUnit 
+	and intervalPixels parameters must correspond with one of these steps, and
+	the index of this default step must be passed along as the zoomIndex.
+<pre>function onLoad() {
+  var eventSource = new Timeline.DefaultEventSource();
+  var bandInfos = [
+        Timeline.createBandInfo({
+            date:           "Jun 28 2006 00:00:00 GMT",
+            width:          "70%", 
+            intervalUnit:   Timeline.DateTime.MONTH, 
+            intervalPixels: 100,
+            eventSource:    eventSource,<span class="highlight">
+            zoomIndex:      10,
+            zoomSteps:      new Array(
+              {pixelsPerInterval: 280,  unit: Timeline.DateTime.HOUR},
+              {pixelsPerInterval: 140,  unit: Timeline.DateTime.HOUR},
+              {pixelsPerInterval:  70,  unit: Timeline.DateTime.HOUR},
+              {pixelsPerInterval:  35,  unit: Timeline.DateTime.HOUR},
+              {pixelsPerInterval: 400,  unit: Timeline.DateTime.DAY},
+              {pixelsPerInterval: 200,  unit: Timeline.DateTime.DAY},
+              {pixelsPerInterval: 100,  unit: Timeline.DateTime.DAY},
+              {pixelsPerInterval:  50,  unit: Timeline.DateTime.DAY},
+              {pixelsPerInterval: 400,  unit: Timeline.DateTime.MONTH},
+              {pixelsPerInterval: 200,  unit: Timeline.DateTime.MONTH},
+              {pixelsPerInterval: 100,  unit: Timeline.DateTime.MONTH} // DEFAULT zoomIndex</span>
+            )
+        }),
+        Timeline.createBandInfo({
+            date:           "Jun 28 2006 00:00:00 GMT",
+            width:          "30%", 
+            intervalUnit:   Timeline.DateTime.YEAR, 
+            intervalPixels: 200,
+            showEventText:  false, 
+            trackHeight:    0.5,
+            trackGap:       0.2,
+            eventSource:    eventSource,
+            overview:       true
+        })
+  ];
+  bandInfos[1].syncWith = 0;
+  bandInfos[1].highlight = true;
+  
+  tl = Timeline.create(document.getElementById("my-timeline"), bandInfos);
+  Timeline.loadXML("example2.xml", function(xml, url) { eventSource.loadXML(xml, url); });
+}</pre>
+    Try moving your mouse over the top band and scrolling your mouse wheel in and out. 
+    You will notice that the date where your cursor is hovering over as you zoom 
+    in and out stays static, meanwhile the rest of the timeline scales around it.
+    </p>
+    
     <p><div id="tl7" class="timeline-default" style="height: 250px"></div></p>
+    
+    <p>You can also enable zoom on the other bands in the same manner. Currently
+    they zoom in and out independently of each other.</p>
     
 </div>
 </body>

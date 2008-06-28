@@ -139,4 +139,6 @@ Timeline.ClassicTheme._Impl = function() {
             }
         }
     };
+    
+    this.zoom = true; // true or false
 };

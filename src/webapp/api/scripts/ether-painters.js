@@ -16,7 +16,7 @@ Timeline.GregorianEtherPainter.prototype.initialize = function(band, timeline) {
     
     this._backgroundLayer = band.createLayerDiv(0);
     this._backgroundLayer.setAttribute("name", "ether-background"); // for debugging
-    this._backgroundLayer.className('timeline-ether-bg')
+    this._backgroundLayer.className = 'timeline-ether-bg';
   //  this._backgroundLayer.style.background = this._theme.ether.backgroundColors[band.getIndex()];
 
     
@@ -81,6 +81,13 @@ Timeline.GregorianEtherPainter.prototype.paint = function() {
 
 Timeline.GregorianEtherPainter.prototype.softPaint = function() {
 };
+
+Timeline.GregorianEtherPainter.prototype.zoom = function(netIntervalChange) {
+  if (netIntervalChange != 0) {
+    this._unit += netIntervalChange;
+  }
+};
+
 
 /*==================================================
  *  Hot Zone Gregorian Ether Painter
@@ -233,6 +240,16 @@ Timeline.HotZoneGregorianEtherPainter.prototype.paint = function() {
 Timeline.HotZoneGregorianEtherPainter.prototype.softPaint = function() {
 };
 
+Timeline.HotZoneGregorianEtherPainter.prototype.zoom = function(netIntervalChange) {
+  if (netIntervalChange != 0) {
+    for (var i = 0; i < this._zones.length; ++i) {
+      if (this._zones[i]) {
+        this._zones[i].unit += netIntervalChange;
+      }
+    }
+  }
+};
+
 /*==================================================
  *  Year Count Ether Painter
  *==================================================
@@ -251,7 +268,7 @@ Timeline.YearCountEtherPainter.prototype.initialize = function(band, timeline) {
     
     this._backgroundLayer = band.createLayerDiv(0);
     this._backgroundLayer.setAttribute("name", "ether-background"); // for debugging
-    this._backgroundLayer.className('timeline-ether-bg')
+    this._backgroundLayer.className = 'timeline-ether-bg';
    // this._backgroundLayer.style.background = this._theme.ether.backgroundColors[band.getIndex()];
     
     this._markerLayer = null;

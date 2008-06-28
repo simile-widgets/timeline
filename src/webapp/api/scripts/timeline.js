@@ -26,7 +26,8 @@ Timeline.createBandInfo = function(params) {
     var ether = new Timeline.LinearEther({ 
         centersOn:          ("date" in params) ? params.date : new Date(),
         interval:           SimileAjax.DateTime.gregorianUnitLengths[params.intervalUnit],
-        pixelsPerInterval:  params.intervalPixels
+        pixelsPerInterval:  params.intervalPixels,
+        theme:              theme
     });
     
     var etherPainter = new Timeline.GregorianEtherPainter({
@@ -77,7 +78,10 @@ Timeline.createBandInfo = function(params) {
         timeZone:       ("timeZone" in params) ? params.timeZone : 0,
         ether:          ether,
         etherPainter:   etherPainter,
-        eventPainter:   eventPainter
+        eventPainter:   eventPainter,
+        theme:          theme,
+        zoomIndex:      ("zoomIndex" in params) ? params.zoomIndex : 0,
+        zoomSteps:      ("zoomSteps" in params) ? params.zoomSteps : null
     };
 };
 
@@ -90,7 +94,8 @@ Timeline.createHotZoneBandInfo = function(params) {
         centersOn:          ("date" in params) ? params.date : new Date(),
         interval:           SimileAjax.DateTime.gregorianUnitLengths[params.intervalUnit],
         pixelsPerInterval:  params.intervalPixels,
-        zones:              params.zones
+        zones:              params.zones,
+        theme:              theme
     });
     
     var etherPainter = new Timeline.HotZoneGregorianEtherPainter({
@@ -139,7 +144,10 @@ Timeline.createHotZoneBandInfo = function(params) {
         timeZone:       ("timeZone" in params) ? params.timeZone : 0,
         ether:          ether,
         etherPainter:   etherPainter,
-        eventPainter:   eventPainter
+        eventPainter:   eventPainter,
+        theme:          theme,
+        zoomIndex:      ("zoomIndex" in params) ? params.zoomIndex : 0,
+        zoomSteps:      ("zoomSteps" in params) ? params.zoomSteps : null
     };
 };
 
@@ -386,6 +394,22 @@ Timeline._Impl.prototype._distributeWidths = function() {
     }
 };
 
+Timeline._Impl.prototype.zoom = function (zoomIn, x, y, target) {
+  var matcher = new RegExp("^timeline-band-([0-9]+)$");
+  var bandIndex = null;
+  
+  var result = matcher.exec(target.id);
+  if (result) {
+    bandIndex = parseInt(result[1]);
+  }
+
+  if (bandIndex != null) {
+    this._bands[bandIndex].zoom(zoomIn, x, y, target);
+  }   
+
+  this.paint();
+};
+
 /*==================================================
  *  Band
  *==================================================
@@ -401,6 +425,9 @@ Timeline._Band = function(timeline, bandInfo, index) {
         (("createLabeller" in timeline.getUnit()) ?
             timeline.getUnit().createLabeller(this._locale, this._timeZone) :
             new Timeline.GregorianDateLabeller(this._locale, this._timeZone));
+    this._theme = bandInfo.theme;
+    this._zoomIndex = ("zoomIndex" in bandInfo) ? bandInfo.zoomIndex : 0;
+    this._zoomSteps = ("zoomSteps" in bandInfo) ? bandInfo.zoomSteps : null;
 
     this._dragging = false;
     this._changing = false;
@@ -434,6 +461,7 @@ Timeline._Band = function(timeline, bandInfo, index) {
      *  The band's outer most div that slides with respect to the timeline's div
      */
     this._div = this._timeline.getDocument().createElement("div");
+    this._div.id = "timeline-band-" + index;
     this._div.className = "timeline-band timeline-band-" + index;
     this._timeline.addDiv(this._div);
     
@@ -442,6 +470,13 @@ Timeline._Band = function(timeline, bandInfo, index) {
     SimileAjax.DOM.registerEventWithObject(this._div, "mouseup", this, "_onMouseUp");
     SimileAjax.DOM.registerEventWithObject(this._div, "mouseout", this, "_onMouseOut");
     SimileAjax.DOM.registerEventWithObject(this._div, "dblclick", this, "_onDblClick");
+    
+    if (SimileAjax.Platform.browser.isFirefox) {
+      SimileAjax.DOM.registerEventWithObject(this._div, "DOMMouseScroll", this, "_onMouseScroll");
+    } else {
+      SimileAjax.DOM.registerEventWithObject(this._div, "mousewheel", this, "_onMouseScroll");
+    }
+    
     
     /*
      *  The inner div that contains layers
@@ -454,7 +489,7 @@ Timeline._Band = function(timeline, bandInfo, index) {
      *  Initialize parts of the band
      */
     this._ether = bandInfo.ether;
-    bandInfo.ether.initialize(timeline);
+    bandInfo.ether.initialize(this, timeline);
         
     this._etherPainter = bandInfo.etherPainter;
     bandInfo.etherPainter.initialize(this, timeline);
@@ -714,6 +749,25 @@ Timeline._Band.prototype.showBubbleForEvent = function(eventID) {
     }
 };
 
+Timeline._Band.prototype.zoom = function(zoomIn, x, y, target) {
+  if (!this._theme.zoom || !this._zoomSteps) {
+    // zoom disabled
+    return;
+  }
+  
+  // shift the x value by our offset
+  x += this._viewOffset;
+
+  var zoomDate = this._ether.pixelOffsetToDate(x);
+  var netIntervalChange = this._ether.zoom(zoomIn);
+  this._etherPainter.zoom(netIntervalChange);
+
+  // shift our zoom date to the far left
+  this._moveEther(Math.round(-this._ether.dateToPixelOffset(zoomDate)));
+  // then shift it back to where the mouse was
+  this._moveEther(x);
+};
+
 Timeline._Band.prototype._onMouseDown = function(innerFrame, evt, target) {
     this.closeBubble();
     
@@ -747,6 +801,46 @@ Timeline._Band.prototype._onMouseOut = function(innerFrame, evt, target) {
         coords.y < 0 || coords.y > innerFrame.offsetHeight) {
         this._dragging = false;
     }
+};
+
+Timeline._Band.prototype._onMouseScroll = function(innerFrame, evt, target) {
+  var now = new Date();
+  now = now.getTime();
+
+  if (!this._lastScrollTime || ((now - this._lastScrollTime) > 50)) {
+    // limit 1 scroll per 200ms due to FF3 sending multiple events back to back
+    this._lastScrollTime = now;
+
+    var delta = 0;
+    if (evt.wheelDelta) {
+      delta = evt.wheelDelta/120;
+    } else if (evt.detail) {
+      delta = -evt.detail/3;
+    }
+
+    var loc = SimileAjax.DOM.getEventRelativeCoordinates(evt, innerFrame);
+    if (delta != 0) {
+      var zoomIn;
+      if (delta > 0)
+        zoomIn = true;
+      if (delta < 0)
+        zoomIn = false;
+      // call zoom on the timeline so we could zoom multiple bands if desired
+      this._timeline.zoom(zoomIn, loc.x, loc.y, innerFrame);
+    }
+  }
+
+  // prevent bubble
+  if (evt.stopPropagation) {
+    evt.stopPropagation();
+  }
+  evt.cancelBubble = true;
+
+  // prevent the default action
+  if (evt.preventDefault) {
+    evt.preventDefault();
+  }
+  evt.returnValue = false;
 };
 
 Timeline._Band.prototype._onDblClick = function(innerFrame, evt, target) {

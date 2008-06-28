@@ -9,7 +9,8 @@ Timeline.LinearEther = function(params) {
     this._pixelsPerInterval = params.pixelsPerInterval;
 };
 
-Timeline.LinearEther.prototype.initialize = function(timeline) {
+Timeline.LinearEther.prototype.initialize = function(band, timeline) {
+    this._band = band;
     this._timeline = timeline;
     this._unit = timeline.getUnit();
     
@@ -46,6 +47,30 @@ Timeline.LinearEther.prototype.pixelOffsetToDate = function(pixels) {
     return this._unit.change(this._start, numeric);
 };
 
+Timeline.LinearEther.prototype.zoom = function(zoomIn) {
+  var netIntervalChange = 0;
+  var currentZoomIndex = this._band._zoomIndex;
+  var newZoomIndex = currentZoomIndex;
+
+  if (zoomIn && (currentZoomIndex > 0)) {
+    newZoomIndex = currentZoomIndex - 1;
+  }
+  
+  if (!zoomIn && (currentZoomIndex < (this._band._zoomSteps.length - 1))) {
+    newZoomIndex = currentZoomIndex + 1;
+  }
+
+  this._band._zoomIndex = newZoomIndex;  
+  this._interval = 
+    SimileAjax.DateTime.gregorianUnitLengths[this._band._zoomSteps[newZoomIndex].unit];
+  this._pixelsPerInterval = this._band._zoomSteps[newZoomIndex].pixelsPerInterval;
+  netIntervalChange = this._band._zoomSteps[newZoomIndex].unit - 
+    this._band._zoomSteps[currentZoomIndex].unit;
+
+  return netIntervalChange;
+};
+
+
 /*==================================================
  *  Hot Zone Ether
  *==================================================
@@ -55,9 +80,11 @@ Timeline.HotZoneEther = function(params) {
     this._params = params;
     this._interval = params.interval;
     this._pixelsPerInterval = params.pixelsPerInterval;
+    this._theme = params.theme;
 };
 
-Timeline.HotZoneEther.prototype.initialize = function(timeline) {
+Timeline.HotZoneEther.prototype.initialize = function(band, timeline) {
+    this._band = band;
     this._timeline = timeline;
     this._unit = timeline.getUnit();
     
@@ -133,6 +160,29 @@ Timeline.HotZoneEther.prototype.dateToPixelOffset = function(date) {
 
 Timeline.HotZoneEther.prototype.pixelOffsetToDate = function(pixels) {
     return this._pixelOffsetToDate(pixels, this._start);
+};
+
+Timeline.HotZoneEther.prototype.zoom = function(zoomIn) {
+  var netIntervalChange = 0;
+  var currentZoomIndex = this._band._zoomIndex;
+  var newZoomIndex = currentZoomIndex;
+
+  if (zoomIn && (currentZoomIndex > 0)) {
+    newZoomIndex = currentZoomIndex - 1;
+  }
+  
+  if (!zoomIn && (currentZoomIndex < (this._band._zoomSteps.length - 1))) {
+    newZoomIndex = currentZoomIndex + 1;
+  }
+
+  this._band._zoomIndex = newZoomIndex;  
+  this._interval = 
+    SimileAjax.DateTime.gregorianUnitLengths[this._band._zoomSteps[newZoomIndex].unit];
+  this._pixelsPerInterval = this._band._zoomSteps[newZoomIndex].pixelsPerInterval;
+  netIntervalChange = this._band._zoomSteps[newZoomIndex].unit - 
+    this._band._zoomSteps[currentZoomIndex].unit;
+
+  return netIntervalChange;
 };
 
 Timeline.HotZoneEther.prototype._dateDiffToPixelOffset = function(fromDate, toDate) {

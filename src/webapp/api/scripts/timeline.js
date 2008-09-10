@@ -471,12 +471,15 @@ Timeline._Band = function(timeline, bandInfo, index) {
     SimileAjax.DOM.registerEventWithObject(this._div, "mouseout", this, "_onMouseOut");
     SimileAjax.DOM.registerEventWithObject(this._div, "dblclick", this, "_onDblClick");
     
-    if (SimileAjax.Platform.browser.isFirefox) {
-      SimileAjax.DOM.registerEventWithObject(this._div, "DOMMouseScroll", this, "_onMouseScroll");
-    } else {
-      SimileAjax.DOM.registerEventWithObject(this._div, "mousewheel", this, "_onMouseScroll");
-    }
-    
+    var mouse_wheel = this._theme.mouse_wheel;
+    if (mouse_wheel === 'zoom' || mouse_wheel === 'scroll' || this._zoomSteps) {
+    	// capture mouse scroll
+      if (SimileAjax.Platform.browser.isFirefox) {
+        SimileAjax.DOM.registerEventWithObject(this._div, "DOMMouseScroll", this, "_onMouseScroll");
+      } else {
+        SimileAjax.DOM.registerEventWithObject(this._div, "mousewheel", this, "_onMouseScroll");
+      }
+    }    
     
     /*
      *  The inner div that contains layers
@@ -750,7 +753,7 @@ Timeline._Band.prototype.showBubbleForEvent = function(eventID) {
 };
 
 Timeline._Band.prototype.zoom = function(zoomIn, x, y, target) {
-  if (!this._theme.zoom || !this._zoomSteps) {
+  if (!this._zoomSteps) {
     // zoom disabled
     return;
   }
@@ -817,16 +820,25 @@ Timeline._Band.prototype._onMouseScroll = function(innerFrame, evt, target) {
     } else if (evt.detail) {
       delta = -evt.detail/3;
     }
-
-    var loc = SimileAjax.DOM.getEventRelativeCoordinates(evt, innerFrame);
-    if (delta != 0) {
-      var zoomIn;
-      if (delta > 0)
-        zoomIn = true;
-      if (delta < 0)
-        zoomIn = false;
-      // call zoom on the timeline so we could zoom multiple bands if desired
-      this._timeline.zoom(zoomIn, loc.x, loc.y, innerFrame);
+    
+    // either scroll or zoom
+    var mouse_wheel = this._theme.mouse_wheel;
+    
+    if (this._zoomSteps || mouse_wheel === 'zoom') {
+      var loc = SimileAjax.DOM.getEventRelativeCoordinates(evt, innerFrame);
+      if (delta != 0) {
+        var zoomIn;
+        if (delta > 0)
+          zoomIn = true;
+        if (delta < 0)
+          zoomIn = false;
+        // call zoom on the timeline so we could zoom multiple bands if desired
+        this._timeline.zoom(zoomIn, loc.x, loc.y, innerFrame);
+      }
+    }
+    else if (mouse_wheel === 'scroll') {
+    	var move_amt = 50 * (delta < 0 ? -1 : 1);
+      this._moveEther(move_amt);
     }
   }
 

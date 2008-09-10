@@ -140,5 +140,5 @@ Timeline.ClassicTheme._Impl = function() {
         }
     };
     
-    this.mouse_wheel = 'scroll'; // 'default', 'zoom', 'scroll'
+    this.mouseWheel = 'scroll'; // 'default', 'zoom', 'scroll'
 };

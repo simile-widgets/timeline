@@ -471,8 +471,8 @@ Timeline._Band = function(timeline, bandInfo, index) {
     SimileAjax.DOM.registerEventWithObject(this._div, "mouseout", this, "_onMouseOut");
     SimileAjax.DOM.registerEventWithObject(this._div, "dblclick", this, "_onDblClick");
     
-    var mouse_wheel = this._theme.mouse_wheel;
-    if (mouse_wheel === 'zoom' || mouse_wheel === 'scroll' || this._zoomSteps) {
+    var mouseWheel = this._theme.mouseWheel;
+    if (mouseWheel === 'zoom' || mouseWheel === 'scroll' || this._zoomSteps) {
     	// capture mouse scroll
       if (SimileAjax.Platform.browser.isFirefox) {
         SimileAjax.DOM.registerEventWithObject(this._div, "DOMMouseScroll", this, "_onMouseScroll");
@@ -822,9 +822,9 @@ Timeline._Band.prototype._onMouseScroll = function(innerFrame, evt, target) {
     }
     
     // either scroll or zoom
-    var mouse_wheel = this._theme.mouse_wheel;
+    var mouseWheel = this._theme.mouseWheel;
     
-    if (this._zoomSteps || mouse_wheel === 'zoom') {
+    if (this._zoomSteps || mouseWheel === 'zoom') {
       var loc = SimileAjax.DOM.getEventRelativeCoordinates(evt, innerFrame);
       if (delta != 0) {
         var zoomIn;
@@ -836,7 +836,7 @@ Timeline._Band.prototype._onMouseScroll = function(innerFrame, evt, target) {
         this._timeline.zoom(zoomIn, loc.x, loc.y, innerFrame);
       }
     }
-    else if (mouse_wheel === 'scroll') {
+    else if (mouseWheel === 'scroll') {
     	var move_amt = 50 * (delta < 0 ? -1 : 1);
       this._moveEther(move_amt);
     }

@@ -1,8 +1,8 @@
 CHANGES.txt
 
 Version 2.1.0
-* Added mouse-wheel scroll. Mouse-wheel acts as left and right arrow keys. Theme controls whether the mouse-wheel scrolls, zooms or moves the page (if the page has a scroll-bar). Docs: see webapp/docs/create-timelines.html (LarryK)
-* Additional support in timeline-api for using your own server for Timeline libraries (LarryK)
+* Added mouse-wheel scroll. Mouse-wheel acts as left and right arrow keys. Theme controls whether the mouse-wheel scrolls, zooms or moves the page (if the page has a scroll-bar). Docs: see webapp/docs/create-timelines.html (LarryK) rev 1553
+* Additional support in timeline-api for using your own server for Timeline libraries (LarryK) rev 1553
 * Separation of javascript and css (gm.marko) rev 1326
 * Added mouse-wheel zoom functionality. It operates on a per-band basis, keeping the date under the mouse cursor static while the timeline around it scales. Zoom is specified as user-defined steps. Documentation and a working demo in the webapp/docs/create-timelines.html page (halcyon1981) rev 1418
 * Added support for 'hoverText' - title pop-ups on Exhibit-based timelines (Vincent.Vazzo) rev 1411

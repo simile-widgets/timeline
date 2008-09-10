@@ -1579,7 +1579,7 @@ this.event={track:{height:10,gap:2},overviewTrack:{offset:20,tickHeight:6,height
 },wikiStyler:function(A){A.className="timeline-event-bubble-wiki";
 },timeStyler:function(A){A.className="timeline-event-bubble-time";
 }}};
-this.mouse_wheel="scroll";
+this.mouseWheel="scroll";
 };
 
 
@@ -1803,7 +1803,7 @@ SimileAjax.DOM.registerEventWithObject(this._div,"mousemove",this,"_onMouseMove"
 SimileAjax.DOM.registerEventWithObject(this._div,"mouseup",this,"_onMouseUp");
 SimileAjax.DOM.registerEventWithObject(this._div,"mouseout",this,"_onMouseOut");
 SimileAjax.DOM.registerEventWithObject(this._div,"dblclick",this,"_onDblClick");
-var F=this._theme.mouse_wheel;
+var F=this._theme.mouseWheel;
 if(F==="zoom"||F==="scroll"||this._zoomSteps){if(SimileAjax.Platform.browser.isFirefox){SimileAjax.DOM.registerEventWithObject(this._div,"DOMMouseScroll",this,"_onMouseScroll");
 }else{SimileAjax.DOM.registerEventWithObject(this._div,"mousewheel",this,"_onMouseScroll");
 }}this._innerDiv=this._timeline.getDocument().createElement("div");
@@ -1985,7 +1985,7 @@ if(!this._lastScrollTime||((A-this._lastScrollTime)>50)){this._lastScrollTime=A;
 var I=0;
 if(H.wheelDelta){I=H.wheelDelta/120;
 }else{if(H.detail){I=-H.detail/3;
-}}var F=this._theme.mouse_wheel;
+}}var F=this._theme.mouseWheel;
 if(this._zoomSteps||F==="zoom"){var E=SimileAjax.DOM.getEventRelativeCoordinates(H,G);
 if(I!=0){var D;
 if(I>0){D=true;

@@ -5,11 +5,35 @@
  *  necessary to make the standard timeline work.
  *  It also detects the default locale.
  *
+ *  To run from the MIT copy of Timeline:
  *  Include this file in your HTML file as follows:
  *
- *    <script src="http://simile.mit.edu/timeline/api/scripts/timeline-api.js" type="text/javascript"></script>
+ *    <script src="http://static.simile.mit.edu/timeline/api-2.0/timeline-api.js" 
+ *     type="text/javascript"></script>
  *
- *==================================================
+ *
+ * To host the Timeline files on your own server:
+ *   1) Install the Timeline and Simile-Ajax files onto your webserver using install.sh or
+ *      install the entire Timeline source tree if that is easier
+ * 
+ *   2) Set global js variables used to send parameters to this script:
+ *        Timeline_ajax_url -- url for simile-ajax-api.js
+ *        Timeline_urlPrefix -- url for the *directory* that contains timeline-api.js
+ *          Include trailing slash
+ *      
+ * eg your html page would include
+ *
+ *   <script>
+ *     Timeline_ajax_url="http://YOUR_SERVER/javascripts/timeline/timeline_ajax/simile-ajax-api.js";
+ *     Timeline_urlPrefix='http://YOUR_SERVER/javascripts/timeline/timeline_js/';       
+ *     Timeline_parameters='bundle=true';
+ *   </script>
+ *   <script src="http://YOUR_SERVER/javascripts/timeline/timeline_js/timeline-api.js"    
+ *     type="text/javascript">
+ *   </script>
+ *
+ *
+ *================================================== 
  */
 
 (function() {
@@ -202,6 +226,9 @@
         var url = useLocalResources ?
             "http://127.0.0.1:9999/ajax/api/simile-ajax-api.js?bundle=false" :
             "http://static.simile.mit.edu/ajax/api-2.0/simile-ajax-api.js";
+        if (typeof Timeline_ajax_url == "string") {
+           url = Timeline_ajax_url;
+        }
         var createScriptElement = function() {
             var script = document.createElement("script");
             script.type = "text/javascript";

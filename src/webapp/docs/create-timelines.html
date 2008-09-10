@@ -440,20 +440,30 @@ function onResize() {
     <!--================================================================================
         Zoom
     -->
-    <h2><a name="zoom">Zoom</a></h2>
+    <h2><a name="zoom">Mouse-wheel zooming and scrolling</a></h2>
     
     <p>Hot zones can be a challenge to create for dynamically generated 
         data. They also can be somewhat confusing if there are many of them and 
-        they are distorting the timeline. An alternate approach would be to 
-        allow the user to dynamically scale the interval presented on the timeline. 
-        A zoom feature has been created to enable this.<br/><br/>
+        they are distorting the timeline. An alternate approach is to 
+        enable the user to dynamically scale the interval presented on the timeline. 
+        A zoom feature has been created to enable this.
+    <p>
+        The mouse-wheel can be set for one of three modes:
+        <ul>
+          <li>scroll -- the timeline is moved to the left or right (same as arrow keys) using the mouse-wheel.
+          (Demonstrated above.) <i>This is the default for the default theme</i></li>
+          <li>zoom -- the timeline is expanded / contracted using the mouse-wheel (demonstrated below)</li>
+          <li>default -- the mouse-wheel will scroll the entire html page if the page has vertical scrolling</li>
+        </ul>
+        
+    <p>
         The first step to enabling zoom is ensuring that it is enabled within 
         your theme (the default theme is shown below):
 <pre>
 Timeline.ClassicTheme._Impl = function() {
     ...
     
-    <span class="highlight">this.zoom = true; // true or false</span>
+    <span class="highlight">this.mouse_wheel = 'zoom'; // 'default', 'zoom', 'scroll'</span>
 };
 </pre>
 	Next you decide the intervalPixels/intervalUnit steps that you would 

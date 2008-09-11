@@ -1,6 +1,9 @@
 CHANGES.txt
 
 Version 2.1.0
+* Added copy of JFK timeline in examples with Dutch locale set. (LarryK)
+* Added forceLocale parameter to timeline-api.js to force a locale for testing (LarryK)
+* Added Dutch localization (Marko)
 * Added mouse-wheel scroll. Mouse-wheel acts as left and right arrow keys. Theme controls whether the mouse-wheel scrolls, zooms or moves the page (if the page has a scroll-bar). Docs: see webapp/docs/create-timelines.html (LarryK) rev 1553
 * Additional support in timeline-api for using your own server for Timeline libraries (LarryK) rev 1553
 * Separation of javascript and css (gm.marko) rev 1326

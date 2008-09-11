@@ -32,7 +32,20 @@
  *     type="text/javascript">
  *   </script>
  *
- *
+ * SCRIPT PARAMETERS
+ * This script auto-magically figures out locale and has defaults for other parameters 
+ * To set parameters explicity, set js global variable Timeline_parameters or include as
+ * parameters on the url using GET style. Eg the two next lines pass the same parameters:
+ *     Timeline_parameters='bundle=true';                    // pass parameter via js variable
+ *     <script src="http://....timeline-api.js?bundle=true"  // pass parameter via url
+ * 
+ * Parameters 
+ *   timeline-use-local-resources -- 
+ *   bundle -- true: use the single js bundle file; false: load individual files (for debugging)
+ *   locales -- 
+ *   defaultLocale --
+ *   forceLocale -- force locale to be a particular value--used for debugging. Normally locale is determined
+ *                  by browser's and server's locale settings.
  *================================================== 
  */
 
@@ -90,6 +103,7 @@
             "es",       // Spanish
             "fr",       // French
             "it",       // Italian
+            "nl",       // Dutch (The Netherlands)
             "ru",       // Russian
             "se",       // Swedish
             "tr",       // Turkish
@@ -98,8 +112,9 @@
         ];
         
         try {
-            var desiredLocales = [ "en" ];
-            var defaultServerLocale = "en";
+            var desiredLocales = [ "en" ],
+                defaultServerLocale = "en",
+                forceLocale = null;
             
             var parseURLParameters = function(parameters) {
                 var params = parameters.split("&");
@@ -109,6 +124,9 @@
                         desiredLocales = desiredLocales.concat(pair[1].split(","));
                     } else if (pair[0] == "defaultLocale") {
                         defaultServerLocale = pair[1];
+                    } else if (pair[0] == "forceLocale") {
+                        forceLocale = pair[1];
+                        desiredLocales = desiredLocales.concat(pair[1].split(","));                        
                     } else if (pair[0] == "bundle") {
                         bundle = pair[1] != "false";
                     }
@@ -210,8 +228,13 @@
                 }
             }
             
-            Timeline.serverLocale = defaultServerLocale;
-            Timeline.clientLocale = defaultClientLocale;
+            if (forceLocale == null) {
+              Timeline.serverLocale = defaultServerLocale;
+              Timeline.clientLocale = defaultClientLocale;
+            } else {
+              Timeline.serverLocale = forceLocale;
+              Timeline.clientLocale = forceLocale;
+            }            	
         } catch (e) {
             alert(e);
         }

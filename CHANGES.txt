@@ -1,14 +1,38 @@
 CHANGES.txt
 
 Version 2.1.0
-* Added copy of JFK timeline in examples with Dutch locale set. (LarryK) rev 1560
-* Added forceLocale parameter to timeline-api.js to force a locale for testing (LarryK) rev 1560
+
+
+* Fix: Event color attribute now properly sets the background color of the bar.
+  Note that events (where isDuration = true) have opacity applied. See 
+  http://code.google.com/p/simile-widgets/wiki/Timeline_EventSources (LarryK) rev 1569
+* New event attribute barImage sets the event's bar div background-image.
+  New event attribute barRepeat sets the background-repeat. Default is 'repeat'
+  Cubism example updated to demonstrate color, textColor, barImage, barRepeat and
+  hoverText attributes. For a handy stripe generator, see
+  http://www.stripegenerator.com (LarryK) rev 1569
+* Fix: Event attribute hoverText was not properly processed by JSON or SPARCL sources
+  (LarryK) rev 1569
+* Build process now creates timeline_source.zip which has source, examples and the
+  jetty web server. Enables easy access with for folks without svn. (LarryK) rev 1569
+* Added copy of JFK timeline in examples with Dutch locale set.
+  (LarryK) rev 1560
+* Added forceLocale parameter to timeline-api.js to force a locale for testing
+  (LarryK) rev 1560
 * Added Dutch localization (Marko) rev 1560
-* Added mouse-wheel scroll. Mouse-wheel acts as left and right arrow keys. Theme controls whether the mouse-wheel scrolls, zooms or moves the page (if the page has a scroll-bar). Docs: see webapp/docs/create-timelines.html (LarryK) rev 1553
-* Additional support in timeline-api for using your own server for Timeline libraries (LarryK) rev 1553
+* Added mouse-wheel scroll. Mouse-wheel acts as left and right arrow keys. Theme
+  controls whether the mouse-wheel scrolls, zooms or moves the page (if the page
+  has a scroll-bar). Docs: see webapp/docs/create-timelines.html
+  (LarryK) rev 1553
+* Additional support in timeline-api for using your own server for Timeline
+  libraries (LarryK) rev 1553
 * Separation of javascript and css (gm.marko) rev 1326
-* Added mouse-wheel zoom functionality. It operates on a per-band basis, keeping the date under the mouse cursor static while the timeline around it scales. Zoom is specified as user-defined steps. Documentation and a working demo in the webapp/docs/create-timelines.html page (halcyon1981) rev 1418
-* Added support for 'hoverText' - title pop-ups on Exhibit-based timelines (Vincent.Vazzo) rev 1411
+* Added mouse-wheel zoom functionality. It operates on a per-band basis, keeping
+  the date under the mouse cursor static while the timeline around it scales. 
+  Zoom is specified as user-defined steps. Documentation and a working demo in 
+  the webapp/docs/create-timelines.html page (halcyon1981) rev 1418
+* Added support for 'hoverText' - title pop-ups on Exhibit-based timelines
+  (Vincent.Vazzo) rev 1411
 
 
 Version 2.0

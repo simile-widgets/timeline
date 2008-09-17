@@ -100,7 +100,7 @@ Timeline.ClassicTheme._Impl = function() {
             iconHeight:        10,
     //        color:             "#58A0DC",
     //        impreciseColor:    "#58A0DC",
-            impreciseOpacity:  20
+            impreciseOpacity:  20 // opacity of the bar when duration is false
         },
         duration: {
       //      color:            "#58A0DC",

@@ -158,7 +158,7 @@ Timeline.OverviewEventPainter.prototype._paintEventTape = function(
     var height = metrics.trackHeight;
     
     var tapeDiv = this._timeline.getDocument().createElement("div");
-	tapeDiv.className = 'timeline-small-event-tape'
+	  tapeDiv.className = 'timeline-small-event-tape'
 //    tapeDiv.style.position = "absolute";
     tapeDiv.style.left = left + "px";
     tapeDiv.style.width = width + "px";

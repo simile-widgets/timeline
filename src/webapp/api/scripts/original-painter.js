@@ -221,8 +221,12 @@ Timeline.OriginalEventPainter.prototype.paintImpreciseInstantEvent = function(ev
     
     var iconElmtData = this._paintEventIcon(evt, track, iconLeftEdge, metrics, theme);
     var labelElmtData = this._paintEventLabel(evt, text, labelLeft, labelTop, labelSize.width, labelSize.height, theme);
+
+    var color = evt.getColor();
+    color = color != null ? color : theme.event.instant.impreciseColor;
+
     var tapeElmtData = this._paintEventTape(evt, track, startPixel, endPixel, 
-        theme.event.instant.impreciseColor, theme.event.instant.impreciseOpacity, metrics, theme);
+        color, theme.event.instant.impreciseOpacity, metrics, theme);
     
     var self = this;
     var clickHandler = function(elmt, domEvt, target) {
@@ -362,7 +366,7 @@ Timeline.OriginalEventPainter.prototype._paintEventLabel = function(evt, text, l
     var doc = this._timeline.getDocument();
     
     var labelDiv = doc.createElement("div");
-	labelDiv.className = 'timeline-event-label'
+	  labelDiv.className = 'timeline-event-label'
 
     labelDiv.style.left = left + "px";
     labelDiv.style.width = width + "px";
@@ -380,10 +384,10 @@ Timeline.OriginalEventPainter.prototype._paintEventLabel = function(evt, text, l
         labelDiv.style.color = color;
     }
 	
-	
-	var classname = evt.getClassName()
-	if(classname) labelDiv.className +=' ' + classname;
-	
+	  var classname = evt.getClassName();
+	  if(classname != null) {
+	  	labelDiv.className +=' ' + classname;
+    }	
 	
     
     this._eventLayer.appendChild(labelDiv);
@@ -405,7 +409,7 @@ Timeline.OriginalEventPainter.prototype._paintEventTape = function(
     var top = metrics.trackOffset + iconTrack * metrics.trackIncrement;
     
     var tapeDiv = this._timeline.getDocument().createElement("div");
-	tapeDiv.className = "timeline-event-tape"
+    tapeDiv.className = "timeline-event-tape"
 
     tapeDiv.style.left = startPixel + "px";
     tapeDiv.style.width = tapeWidth + "px";
@@ -414,6 +418,18 @@ Timeline.OriginalEventPainter.prototype._paintEventTape = function(
     if(evt._title != null)
         tapeDiv.title = evt._title;   
    
+    if(color != null) {
+        tapeDiv.style.backgroundColor = color;
+    }
+    
+    var backgroundImage = evt.getBarImage();
+    var backgroundRepeat = evt.getBarRepeat();
+    backgroundRepeat = backgroundRepeat != null ? backgroundRepeat : 'repeat';
+    if(backgroundImage != null) {
+      tapeDiv.style.backgroundImage = "url(" + backgroundImage + ")";
+      tapeDiv.style.backgroundRepeat = backgroundRepeat;
+    } 	
+    
     SimileAjax.Graphics.setOpacity(tapeDiv, opacity);
     
     this._eventLayer.appendChild(tapeDiv);

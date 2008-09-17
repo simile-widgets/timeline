@@ -26,8 +26,11 @@
         'title': 'Landschaft bei Montreuil',
         'description': 'by Albert Gleizes, French Painter, 1881-1953',
         'image': 'http://images.allposters.com/images/mer/1336_b.jpg',
-        'link': 'http://www.allposters.com/-sp/Landschaft-bei-Montreuil-Posters_i339007_.htm'
-        },
+        'link': 'http://www.allposters.com/-sp/Landschaft-bei-Montreuil-Posters_i339007_.htm',
+        'isDuration' : true,
+        'icon' : "../../api/images/dark-red-circle.png",        
+        'color' : 'red',
+        'textColor' : 'green'},
 
 
         {'start': '1920',
@@ -51,7 +54,8 @@
         'title': 'Jour',
         'description': 'by Georges Braque, French Painter, 1882-1963',
         'image': 'http://images.allposters.com/images/SHD/S1041_b.jpg',
-        'link': 'http://www.allposters.com/-sp/Jour-Posters_i126663_.htm'
+        'link': 'http://www.allposters.com/-sp/Jour-Posters_i126663_.htm',
+        'color': 'green'
         },
 
 
@@ -77,7 +81,10 @@
         'title': 'Castor Et Pollux',
         'description': 'by Roger de la Fresnaye, French Painter, 1885-1925',
         'image': 'http://images.allposters.com/images/CORPOD/IX001463_b.jpg',
-        'link': 'http://www.allposters.com/-sp/Castor-Et-Pollux-Posters_i831718_.htm'
+        'link': 'http://www.allposters.com/-sp/Castor-Et-Pollux-Posters_i831718_.htm',
+        'barImage': 'blue_stripes.png',
+        'barRepeat': 'repeat-x',
+        'hoverText': 'This is the hover text event attribute.' 
         },
 
 

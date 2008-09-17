@@ -471,7 +471,7 @@ Timeline._Band = function(timeline, bandInfo, index) {
     SimileAjax.DOM.registerEventWithObject(this._div, "mouseout", this, "_onMouseOut");
     SimileAjax.DOM.registerEventWithObject(this._div, "dblclick", this, "_onDblClick");
     
-    var mouseWheel = this._theme.mouseWheel;
+    var mouseWheel = this._theme!= null ? this._theme.mouseWheel : 'scroll'; // theme is not always defined
     if (mouseWheel === 'zoom' || mouseWheel === 'scroll' || this._zoomSteps) {
     	// capture mouse scroll
       if (SimileAjax.Platform.browser.isFirefox) {

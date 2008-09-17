@@ -8,7 +8,11 @@
     |
     +-->
 
-<project default="bundle" basedir="." name="Timeline">
+<project default="all" basedir="." name="Timeline">
+
+  <property name="version" value="2.1.0_rc1" />
+  
+  <target name="all" depends="timeline_source.zip" />
 
   <target name="tasks">
     <taskdef name="jsmin"
@@ -43,5 +47,39 @@
         	<include name="**/*.css" />
         </fileset>
     </concat>
+  </target>
+  
+  <target name="create_output1" depends="bundle">
+    <!-- Create versioned timeline dir with lib, src, examples, jetty -->
+    <delete dir="timeline_${version}"/>
+    <copy todir="timeline_${version}/lib">
+      <fileset dir="lib" excludes="**/.svn/**" />
+    </copy>
+    <copy todir="timeline_${version}/src">
+      <fileset dir="src" excludes="**/.svn/**" />
+    </copy>
+    <copy todir="timeline_${version}/tools">
+      <fileset dir="tools" excludes="**/.svn/**" />
+    </copy>
+    <copy file=".project" todir="timeline_${version}" />
+    <copy file="build.xml" todir="timeline_${version}" />
+    <copy file="CHANGES.txt" todir="timeline_${version}" />
+    <copy file="jetty.xml" todir="timeline_${version}" />
+    <copy file="LICENSE.txt" todir="timeline_${version}" />
+    <copy file="README.txt" todir="timeline_${version}" />
+    <copy file="run" todir="timeline_${version}" />
+    <copy file="run.bat" todir="timeline_${version}" />
+  </target>
+  
+  <target name="timeline_source.zip" depends="create_output1">
+    <!-- Create timeline_source.zip - entire source tree: tools, lib, src -->
+    <delete file="timeline_source.zip" />
+    <zip destfile="timeline_source.zip"
+         basedir="."
+         update="yes"
+         duplicate="fail"
+         includes="timeline_${version}/**"
+    />  
+    <delete dir="timeline_${version}"/>
   </target>
 </project>

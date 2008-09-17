@@ -53,7 +53,9 @@ Timeline.DefaultEventSource.prototype.loadXML = function(xml, url) {
                 this._resolveRelativeURL(node.getAttribute("icon"), base),
                 node.getAttribute("color"),
                 node.getAttribute("textColor"),
-				node.getAttribute("classname")
+	              node.getAttribute("classname"),
+	              node.getAttribute("barImage"),
+	              node.getAttribute("barRepeat")
             );
 
             evt._node = node;
@@ -101,7 +103,10 @@ Timeline.DefaultEventSource.prototype.loadJSON = function(data, url) {
                 this._resolveRelativeURL(event.icon, base),
                 event.color,				
                 event.textColor,
-				event.classname
+                event.hoverText,
+				        event.classname,
+				        event.barImage,
+				        event.barRepeat
             );
             evt._obj = event;
             evt.getProperty = function(name) {
@@ -175,15 +180,18 @@ Timeline.DefaultEventSource.prototype.loadSPARQL = function(xml, url) {
                 parseDateTimeFunction(bindings["end"]),
                 parseDateTimeFunction(bindings["latestStart"]),
                 parseDateTimeFunction(bindings["earliestEnd"]),
-                bindings["isDuration"] != "true",
-                bindings["title"],
+                bindings["isDuration"] != "true", // instant
+                bindings["title"], // text
                 bindings["description"],
                 this._resolveRelativeURL(bindings["image"], base),
                 this._resolveRelativeURL(bindings["link"], base),
                 this._resolveRelativeURL(bindings["icon"], base),
                 bindings["color"],				
                 bindings["textColor"],
-				bindings["classname"]
+                bindings["hoverText"],
+				        bindings["classname"],
+				        bindings["barImage"],
+				        bindings["barRepeat"]
             );
             evt._bindings = bindings;
             evt.getProperty = function(name) {
@@ -295,7 +303,12 @@ Timeline.DefaultEventSource.Event = function(
         id,
         start, end, latestStart, earliestEnd, instant, 
         text, description, image, link,
-        icon, color, textColor, hoverText, classname) {
+        icon, color, textColor, hoverText, classname, barImage, barRepeat) { // 17 args
+        //
+        // Attention developers!
+        // If you add a new event attribute, please be sure to add it to
+        // all three load functions: loadXML, loadSPARCL, loadJSON. 
+        // Thanks!
         
     id = (id) ? id.trim() : "";
     this._id = id.length > 0 ? id : ("e" + Math.floor(Math.random() * 1000000));
@@ -317,7 +330,9 @@ Timeline.DefaultEventSource.Event = function(
     this._icon = (icon != null && icon != "") ? icon : null;
     this._color = (color != null && color != "") ? color : null;	
     this._textColor = (textColor != null && textColor != "") ? textColor : null;
-	this._classname = (classname != null && classname != "") ? classname : null;
+	  this._classname = (classname != null && classname != "") ? classname : null;
+	  this._barImage = (barImage != null && barImage != "") ? barImage : null;
+	  this._barRepeat = (barRepeat != null && barRepeat != "") ? barRepeat : null;
     
     this._wikiURL = null;
     this._wikiSection = null;
@@ -342,7 +357,9 @@ Timeline.DefaultEventSource.Event.prototype = {
     getIcon:        function() { return this._icon; },
     getColor:       function() { return this._color; },	
     getTextColor:   function() { return this._textColor; },
-	getClassName:    function() {return this._classname;  },
+	  getClassName:   function() { return this._classname; },
+	  getBarImage:    function() { return this._barImage; },
+	  getBarRepeat:   function() { return this._barRepeat; },
     
     getProperty:    function(name) { return null; },
     

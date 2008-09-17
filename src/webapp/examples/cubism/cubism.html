@@ -9,8 +9,8 @@
             var eventSource = new Timeline.DefaultEventSource(0);
             
             var theme = Timeline.ClassicTheme.create();
-            theme.event.bubble.width = 320;
-            theme.event.bubble.height = 220;
+            theme.event.bubble.width = 350;
+            theme.event.bubble.height = 300;
             var d = Timeline.DateTime.parseGregorianDateTime("1900")
             var bandInfos = [
                 Timeline.createBandInfo({
@@ -19,12 +19,14 @@
                     intervalPixels: 200,
                     eventSource:    eventSource,
                     date:           d,
-                    theme:          theme
+                    theme:          theme,
+                    layout:         'original'  // original, overview, detailed
                 })
             ];
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
-            tl.loadJSON("cubism.js", function(json, url) {
+            // stop browser caching of data during testing...
+            tl.loadJSON("cubism.js?"+ (new Date().getTime()), function(json, url) {
                 eventSource.loadJSON(json, url);
             });
         }
@@ -49,8 +51,10 @@
 <div id="body">
     <h1>Cubism</h1>
     
-    <p>Demonstrating the use of <a href="cubism.js">JSON data</a>, thanks to Juan Manuel Caicedo.
-    </p>
+    <p>Demonstrates the use of <a href="cubism.js">JSON data</a>, thanks to Juan Manuel Caicedo.</p>
+    <p>Also demonstrates use of event attributes <i>color</i>, <i>textColor</i>, <i>barImage</i>, and <i>barRepeat</i>. <a href='http://code.google.com/p/simile-widgets/wiki/Timeline_EventSources'>Details</a></p>
+    <p>The striped event has a hoverText attribute. Hover over the label or bar to view.</p>
+    <p>Stripe courtesy of <a href='http://www.stripegenerator.com/'>Stripe Generator</a>
     <p>Sources:
         <ul>
             <li><a href="http://en.wikipedia.org/wiki/Monet">http://en.wikipedia.org/wiki/Monet</a></li>

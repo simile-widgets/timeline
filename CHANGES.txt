@@ -6,20 +6,24 @@ Version 2.1.0
   and tape divs. Eg classname of 'hot_event' will result in div classes of
   'timeline-event-label hot_event' and 'timeline-event-tape hot_event' for
   the event's Timeline label and tape, respectively. Change is that classname
-  is now added to the tape's div. -- Larryk rev 1576
+  is now added to the tape's div. -- LarryK rev 1576
 * Re-worked function Timeline.DefaultEventSource.Event in sources.js to use
   named arguments (via a hash/anon object) rather than positional arguments.
   19 positional arguments are too many! Now much easier and cleaner to add
-  additional event attributes.  -- Larryk rev 1576
+  additional event attributes.  
+  Note: this is a breaking change for anyone who calls Event directly. But since
+  the wiki page about dynamic events recommends calling loadXML, etc, I
+  hoping that this won't cause anyone much pain. And the new format is
+  MUCH easier to use as a developer.  -- LarryK rev 1576
 * New event attribute eventID is a 'cookie' attribute that is stored, not used
   by the Timeline library. If you write a custom labeller or event bubble
   filler, the attribute can be obtained using the getEventID() method on the
-  event object.  -- Larryk rev 1576
+  event object.  -- LarryK rev 1576
 * New event attribute caption superceedes hoverText. hoverText is deprecated.
-  For now, it will live on for backwards compatibility.  -- Larryk rev 1576
+  For now, it will live on for backwards compatibility.  -- LarryK rev 1576
 * Event attributes barImage and barRepeat renamed to tapeImage and tapeRepeat.
   No backwards compatibility. (Breaking change from previous checkin)
-   -- Larryk rev 1576
+   -- LarryK rev 1576
 * Fix: Event color attribute now properly sets the background color of the bar.
   Note that events (where isDuration = true) have opacity applied. See 
   http://code.google.com/p/simile-widgets/wiki/Timeline_EventSources (LarryK) rev 1569

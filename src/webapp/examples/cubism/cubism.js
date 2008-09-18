@@ -82,9 +82,10 @@
         'description': 'by Roger de la Fresnaye, French Painter, 1885-1925',
         'image': 'http://images.allposters.com/images/CORPOD/IX001463_b.jpg',
         'link': 'http://www.allposters.com/-sp/Castor-Et-Pollux-Posters_i831718_.htm',
-        'barImage': 'blue_stripes.png',
-        'barRepeat': 'repeat-x',
-        'hoverText': 'This is the hover text event attribute.' 
+        'tapeImage': 'blue_stripes.png',
+        'tapeRepeat': 'repeat-x',
+        'caption': "This is the event's caption attribute.",
+        'classname': 'hot_event' 
         },
 
 

@@ -343,7 +343,7 @@ Timeline.OriginalEventPainter.prototype._paintEventIcon = function(evt, iconTrac
 
     var img = SimileAjax.Graphics.createTranslucentImage(icon);
     var iconDiv = this._timeline.getDocument().createElement("div");
-	iconDiv.className = 'timeline-event-icon'
+    iconDiv.className = 'timeline-event-icon'
     iconDiv.style.left = left + "px";
     iconDiv.style.top = top + "px";
     iconDiv.appendChild(img);
@@ -422,8 +422,8 @@ Timeline.OriginalEventPainter.prototype._paintEventTape = function(
         tapeDiv.style.backgroundColor = color;
     }
     
-    var backgroundImage = evt.getBarImage();
-    var backgroundRepeat = evt.getBarRepeat();
+    var backgroundImage = evt.getTapeImage();
+    var backgroundRepeat = evt.getTapeRepeat();
     backgroundRepeat = backgroundRepeat != null ? backgroundRepeat : 'repeat';
     if(backgroundImage != null) {
       tapeDiv.style.backgroundImage = "url(" + backgroundImage + ")";
@@ -432,6 +432,11 @@ Timeline.OriginalEventPainter.prototype._paintEventTape = function(
     
     SimileAjax.Graphics.setOpacity(tapeDiv, opacity);
     
+	  var classname = evt.getClassName();
+	  if(classname != null) {
+	  	tapeDiv.className +=' ' + classname;
+    }	
+
     this._eventLayer.appendChild(tapeDiv);
     
     return {

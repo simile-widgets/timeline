@@ -1,7 +1,10 @@
 CHANGES.txt
 
-Version 2.1.0
 
+Version 2.1.0 -- September 19, 2008
+* Prep for 2.1.0: updated examples, readme. created RELEASE_NOTES LarryK
+* Added timeline_libraries.zip to build file. Removed install.sh
+  -- LarryK rev 1579  
 * Event attribute classname is added to the classnames for the event's label
   and tape divs. Eg classname of 'hot_event' will result in div classes of
   'timeline-event-label hot_event' and 'timeline-event-tape hot_event' for

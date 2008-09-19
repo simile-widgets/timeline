@@ -1,9 +1,5 @@
 
-
-
                                 T I M E L I N E
-
-
 
 
   What is this?
@@ -12,34 +8,51 @@
   Timeline is a DHTML-based AJAXy timeline.
 
 
-
   Running Timeline
   ----------------
 
-  Timeline consists of a bunch of static resources. All you really need is to
-  serve those resources off a web server. Any web server would do.
-  
-  But if you don't have any available to you, we have configured the timeline
-  project to be runnable Jetty, so if you have a java virtual machine 
-  installed you can open a shell or command prompt and type:
-  
-   [win32]> run
-   [unix/macosx]> ./run
+  Timeline consists of static resources, Javascript libraries,
+  image files and css files. All you really need is to
+  serve those resources off a web server. Any web server will do.
 
-  and then point your browser to
+  Two ways to access the library
   
-   http://127.0.0.1:9999/timeline/
+  1. Unzip either timeline_source.zip or timeline_libraries.zip into
+     a directory served by a webserver.
+     
+     timeline_source.zip includes complete source and example files. Use your
+     browser to see the examples at
+     .../timeline_directory/src/webapp
+     
+     timeline_libraries.zip is the minimum install of the bundled js libraries,
+     css and image files
+     
+  2. No web server? The timeline project includes a small webserver called
+     Jetty (use the timeline_source.zip file)
+     a) install the Java runtime from Sun
+     b) unzip timeline_source.zip to an install directory
+     c) Open a shell or command prompt to the install directory and type:
   
+     [win32]> run
+     [unix/macosx]> chmod +x run; ./run
 
+     and then point your browser to
+  
+     http://127.0.0.1:9999/timeline/
+  
 
   How do I customize Timeline?
   ----------------------------
 
   Refer to the Timeline web site at 
-  
-  
-   http://simile.mit.edu/timeline/
+  http://code.google.com/p/simile-widgets/
 
+  
+  Mailing List and Forum
+  ----------------------
+  
+  Join the community by joining the Google Group SIMILE Widgets
+  http://groups.google.com/group/simile-widgets/
 
 
   Licensing and legal issues

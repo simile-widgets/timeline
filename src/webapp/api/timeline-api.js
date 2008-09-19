@@ -13,8 +13,9 @@
  *
  *
  * To host the Timeline files on your own server:
- *   1) Install the Timeline and Simile-Ajax files onto your webserver using install.sh or
- *      install the entire Timeline source tree if that is easier
+ *   1) Install the Timeline and Simile-Ajax files onto your webserver using
+ *      timeline_libraries.zip or install the entire Timeline source tree if
+ *      that is easier
  * 
  *   2) Set global js variables used to send parameters to this script:
  *        Timeline_ajax_url -- url for simile-ajax-api.js

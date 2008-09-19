@@ -28,7 +28,7 @@
         'image': 'http://images.allposters.com/images/mer/1336_b.jpg',
         'link': 'http://www.allposters.com/-sp/Landschaft-bei-Montreuil-Posters_i339007_.htm',
         'isDuration' : true,
-        'icon' : "../../api/images/dark-red-circle.png",        
+        'icon' : "dark-red-circle.png",        
         'color' : 'red',
         'textColor' : 'green'},
 

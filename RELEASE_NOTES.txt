@@ -1,0 +1,65 @@
+RELEASE_NOTES.txt
+
+Version 2.1.0 -- September 19, 2008
+
+  Known Issues
+  Firefox 3.x on Macintosh -- width of event labels on the Timeline
+  are not calculated correctly, causes some labels to wrap. 
+  Issue # 13 on the issues tracker
+  http://code.google.com/p/simile-widgets/issues
+  
+  New features
+  * mouse-wheel scrolling of timelines. (LarryK) This is the default.
+  * mouse-wheel zooming of timelines, an alternative to hot zones.
+    (halcyon1981)
+  Documentation
+  http://code.google.com/p/simile-widgets/wiki/MouseWheelScrollingAndZooming
+  * Improved separation of javascript and css (gm.marko)
+  
+  New attributes for events
+  *  tapeImage and tapeRepeat Sets the background image and repeat style for
+     the event's tape. (LarryK)
+  *  caption - additional event information shown when mouse is hovered over
+     the Timeline tape or label. (LarryK and Vincent.Vazzo)
+  *  classname - added to the HTML classnames for the event's label and tape
+     divs.
+  *  eventID - a cookie attribute that is later available for developers via
+     event_object.GetEventID()  (LarryK)
+  
+  Documentation revised
+  http://code.google.com/p/simile-widgets/wiki/Timeline_EventSources
+
+  Attributes deprecated
+  *  hoverText - replaced by caption
+  
+  Dutch localization added. (Marko)
+
+  New release files
+  * timeline_source.zip -- complete source including examples and the 
+    Jetty web server
+  * timeline_libraries.zip -- minimum Javascript, css and image files needed
+  
+  Developer changes
+  * Timeline.DefaultEventSource.Event in sources.js changed to use
+    named arguments (via a hash/anon object) rather than positional
+    arguments. (LarryK)
+    
+  See the CHANGES.txt file for additional details
+  
+  
+PREVIOUS RELEASES
+
+Version numbering was not consistent prior to Version 2.1.0
+In general, the trunk tends to be stable
+
+Version 2.0-before-google-code
+  Updates
+
+Version 2.0-on-static-simile
+  March 20, 2008
+  Version brought over from the MIT server
+
+Version 2.0
+  Not tagged explicitly in SVN
+  Software changes
+  Moved svn repository to Google code

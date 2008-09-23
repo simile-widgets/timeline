@@ -305,11 +305,17 @@ Timeline.OriginalEventPainter.prototype.paintImpreciseDurationEvent = function(e
     var color = evt.getColor();
     color = color != null ? color : theme.event.duration.color;
     
+    // Imprecise events can have two event tapes
+    // The imprecise dates tape, uses opacity to be dimmer than precise dates
     var impreciseTapeElmtData = this._paintEventTape(evt, track, startPixel, endPixel, 
-        theme.event.duration.impreciseColor, theme.event.duration.impreciseOpacity, metrics, theme);
-    var tapeElmtData = this._paintEventTape(evt, track, latestStartPixel, earliestEndPixel, color, 100, metrics, theme);
+        theme.event.duration.impreciseColor,
+        theme.event.duration.impreciseOpacity, metrics, theme);
+    // The precise dates tape, regular (100%) opacity
+    var tapeElmtData = this._paintEventTape(evt, track, latestStartPixel,
+        earliestEndPixel, color, 100, metrics, theme);
     
-    var labelElmtData = this._paintEventLabel(evt, text, labelLeft, labelTop, labelSize.width, labelSize.height, theme);
+    var labelElmtData = this._paintEventLabel(evt, text, labelLeft, labelTop,
+        labelSize.width, labelSize.height, theme);
     
     var self = this;
     var clickHandler = function(elmt, domEvt, target) {

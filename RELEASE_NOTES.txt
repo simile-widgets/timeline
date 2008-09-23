@@ -1,5 +1,20 @@
 RELEASE_NOTES.txt
 
+Version 2.2.0 -- September 23, 2008
+
+  Known Issues
+  Firefox 3.x on Macintosh -- width of event labels on the Timeline
+  are not calculated correctly, causes some labels to wrap. 
+  Issue # 13 on the issues tracker
+  http://code.google.com/p/simile-widgets/issues
+
+  Developer changes
+  *  Re-built to pick up new simile-ajax that includes jquery 1.2.6
+     (eob)
+    
+  See the CHANGES.txt file for additional details
+
+
 Version 2.1.0 -- September 19, 2008
 
   Known Issues

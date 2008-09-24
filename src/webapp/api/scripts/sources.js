@@ -354,7 +354,7 @@ Timeline.DefaultEventSource.Event = function(args) {
   this._earliestEnd = (args.earliestEnd != null) ? args.earliestEnd : (args.instant ? this._start : this._end);
   
   this._eventID = cleanArg('eventID');
-  this._text = SimileAjax.HTML.deEntify(args.text);
+  this._text = (args.text != null) ? SimileAjax.HTML.deEntify(args.text) : ""; // Change blank titles to ""
   this._description = SimileAjax.HTML.deEntify(args.description);
   this._image = cleanArg('image');
   this._link =  cleanArg('link');
@@ -384,7 +384,7 @@ Timeline.DefaultEventSource.Event.prototype = {
     getEarliestEnd: function() { return this._earliestEnd; },
     
     getEventID:     function() { return this._eventID; },
-    getText:        function() { return this._text; },
+    getText:        function() { return this._text; }, // title
     getDescription: function() { return this._description; },
     getImage:       function() { return this._image; },
     getLink:        function() { return this._link; },
@@ -409,25 +409,38 @@ Timeline.DefaultEventSource.Event.prototype = {
         elmt.innerHTML = this._description;
     },
     fillWikiInfo: function(elmt) {
-        if (this._wikiURL != null && this._wikiSection != null) {
-            var wikiID = this.getProperty("wikiID");
-            if (wikiID == null || wikiID.length == 0) {
-                wikiID = this.getText();
-            }
-            wikiID = wikiID.replace(/\s/g, "_");
-            
-            var url = this._wikiURL + this._wikiSection.replace(/\s/g, "_") + "/" + wikiID;
-            var a = document.createElement("a");
-            a.href = url;
-            a.target = "new";
-            a.innerHTML = Timeline.strings[Timeline.clientLocale].wikiLinkLabel;
-            
-            elmt.appendChild(document.createTextNode("["));
-            elmt.appendChild(a);
-            elmt.appendChild(document.createTextNode("]"));
-        } else {
-            elmt.style.display = "none";
+        // Many bubbles will not support a wiki link. 
+        // 
+        // Strategy: assume no wiki link. If we do have
+        // enough parameters for one, then create it.
+        elmt.style.display = "none"; // default
+        
+        if (this._wikiURL == null || this._wikiSection == null) {
+        	return; // EARLY RETURN
         }
+
+        // create the wikiID from the property or from the event text (the title)      
+        var wikiID = this.getProperty("wikiID");
+        if (wikiID == null || wikiID.length == 0) {
+            wikiID = this.getText(); // use the title as the backup wiki id
+        }
+        
+        if (wikiID == null || wikiID.length == 0) {
+        	return; // No wikiID. Thus EARLY RETURN
+        }
+        	
+        // ready to go...
+        elmt.style.display = "inline";
+        wikiID = wikiID.replace(/\s/g, "_");
+        var url = this._wikiURL + this._wikiSection.replace(/\s/g, "_") + "/" + wikiID;
+        var a = document.createElement("a");
+        a.href = url;
+        a.target = "new";
+        a.innerHTML = Timeline.strings[Timeline.clientLocale].wikiLinkLabel;
+        
+        elmt.appendChild(document.createTextNode("["));
+        elmt.appendChild(a);
+        elmt.appendChild(document.createTextNode("]"));
     },
     fillTime: function(elmt, labeller) {
         if (this._instant) {

@@ -349,7 +349,7 @@ Timeline.OriginalEventPainter.prototype._paintEventIcon = function(evt, iconTrac
 
     var img = SimileAjax.Graphics.createTranslucentImage(icon);
     var iconDiv = this._timeline.getDocument().createElement("div");
-    iconDiv.className = 'timeline-event-icon'
+    iconDiv.className = 'timeline-event-icon';
     iconDiv.style.left = left + "px";
     iconDiv.style.top = top + "px";
     iconDiv.appendChild(img);
@@ -462,7 +462,7 @@ Timeline.OriginalEventPainter.prototype._createHighlightDiv = function(highlight
         var color = eventTheme.highlightColors[Math.min(highlightIndex, eventTheme.highlightColors.length - 1)];
         
         var div = doc.createElement("div");
-		div.style.position = "absolute";
+        div.style.position = "absolute";
         div.style.overflow = "hidden";
         div.style.left =    (dimensions.left - 2) + "px";
         div.style.width =   (dimensions.width + 4) + "px";

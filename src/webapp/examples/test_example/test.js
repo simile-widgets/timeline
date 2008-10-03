@@ -11,10 +11,24 @@
         'link': 'http://www.allposters.com/-sp/Barfusserkirche-1924-Posters_i1116895_.htm'
         },
 
+        {'start': '1881',
+        'title': 'Test 5a: All that really belongs to us is time; even he who has nothing else has that.',
+        'description': 'Test 5a: really long labels',
+        'image': 'http://images.allposters.com/images/AWI/NR096_b.jpg',
+        'link': 'http://www.allposters.com/-sp/Barfusserkirche-1924-Posters_i1116895_.htm'
+        },
 
         {'start': '1913',
         'end': '1929',
         'title': 'Test 2a',
+        'description': 'Test 2a: start and end dates. No isDuration',
+        'image': 'http://images.allposters.com/images/BRGPOD/75857_b.jpg',
+        'link': 'http://www.allposters.com/-sp/Three-Figures-1913-28-Posters_i1349989_.htm'
+        },
+
+        {'start': '1913',
+        'end': '1929',
+        'title': "Test 5b: If time flies when you're having fun, it hits the afterburners when you don't think you're having enough.",
         'description': 'Test 2a: start and end dates. No isDuration',
         'image': 'http://images.allposters.com/images/BRGPOD/75857_b.jpg',
         'link': 'http://www.allposters.com/-sp/Three-Figures-1913-28-Posters_i1349989_.htm'

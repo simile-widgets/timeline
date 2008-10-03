@@ -1,5 +1,8 @@
 CHANGES.txt
 
+Version 2.4.0
+* Added test 5, really long labels, to test example page rev 1601, LarryK
+
 Version 2.3.0
 * Added test example page for trying and testing event attributes
   src/webapp/examples/test_example/test.html -- LarryK rev 1598

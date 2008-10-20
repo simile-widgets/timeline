@@ -1,9 +1,10 @@
 CHANGES.txt
 
-Version 2.4.0
-* Added test 5, really long labels, to test example page rev 1601, LarryK
-
 Version 2.3.0
+* Added test 5, really long labels, to test example page rev 1601, LarryK
+* Added tags/latest, a copy of the latest tagged release. Will be used for
+  referring to examples and other source files from the wiki. This way
+  the wiki references will not need to be updated for each release.
 * Added test example page for trying and testing event attributes
   src/webapp/examples/test_example/test.html -- LarryK rev 1598
 * Fixed issues caused when events don't have title attribute.

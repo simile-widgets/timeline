@@ -460,7 +460,8 @@ Timeline.OriginalEventPainter.prototype._createHighlightDiv = function(highlight
         var doc = this._timeline.getDocument();
         var eventTheme = theme.event;
         
-        var color = eventTheme.highlightColors[Math.min(highlightIndex, eventTheme.highlightColors.length - 1)];
+        var color = eventTheme.highlightColors[Math.min(highlightIndex,
+           eventTheme.highlightColors.length - 1)];
         
         var div = doc.createElement("div");
         div.style.position = "absolute";
@@ -469,7 +470,7 @@ Timeline.OriginalEventPainter.prototype._createHighlightDiv = function(highlight
         div.style.width =   (dimensions.width + 4) + "px";
         div.style.top =     (dimensions.top - 2) + "px";
         div.style.height =  (dimensions.height + 4) + "px";
-//        div.style.background = color;
+        div.style.background = color;
         
         this._highlightLayer.appendChild(div);
     }

@@ -1209,6 +1209,7 @@ F.style.left=(C.left-2)+"px";
 F.style.width=(C.width+4)+"px";
 F.style.top=(C.top-2)+"px";
 F.style.height=(C.height+4)+"px";
+F.style.background=B;
 this._highlightLayer.appendChild(F);
 }};
 Timeline.OriginalEventPainter.prototype._onClickInstantEvent=function(C,A,B){var D=SimileAjax.DOM.getPageCoordinates(C);

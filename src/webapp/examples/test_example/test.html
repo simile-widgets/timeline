@@ -8,9 +8,16 @@
         function onLoad() {
             var eventSource = new Timeline.DefaultEventSource(0);
             
+            // Example of changing the theme from the defaults
+            // The default theme is defined in 
+            // http://simile-widgets.googlecode.com/svn/timeline/tags/latest/src/webapp/api/scripts/themes.js
             var theme = Timeline.ClassicTheme.create();
             theme.event.bubble.width = 350;
             theme.event.bubble.height = 300;
+            // increase tape height
+            theme.event.tape.height = 8; // px
+            theme.event.track.height = theme.event.tape.height + 6;            
+            
             var d = Timeline.DateTime.parseGregorianDateTime("1900")
             var bandInfos = [
                 Timeline.createBandInfo({
@@ -61,11 +68,16 @@
             <li>Red tapes. Events without titles. Start and end dates. Combinations of isDuration</li>
             <li>Caption and tapeImage attributes. The striped tape. Hover over the label or tape to view the caption.</li>
             <li>Really long labels. They should not wrap</li>
-        </ul>
-    Remember to check that the bubbles look appropriate too.
+        </ol>
+    Additional features demonstrated:
+    <ul>
+    <li>Default Timeline <i>Theme</i> is modified (see html file source).</li>
+    <li>Modified theme: thicker event tapes and increased track size appropriately to match.</li>
+    <li>Modified theme: Popup bubble dimensions set explicitly.</li>
+    </ul>
     </p>
     <p>Stripe courtesy of <a href='http://www.stripegenerator.com/'>Stripe Generator</a>
-    <div id="tl" class="timeline-default" style="height: 300px;">
+    <div id="tl" class="timeline-default" style="height: 400px;">
     </div>
 </div>
 </body>

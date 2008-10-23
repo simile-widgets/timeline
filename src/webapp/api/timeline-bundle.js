@@ -1184,6 +1184,7 @@ var O=this._timeline.getDocument().createElement("div");
 O.className="timeline-event-tape";
 O.style.left=D+"px";
 O.style.width=F+"px";
+O.style.height=E+"px";
 O.style.top=L+"px";
 if(N._title!=null){O.title=N._title;
 }if(G!=null){O.style.backgroundColor=G;

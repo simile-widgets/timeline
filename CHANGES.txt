@@ -14,7 +14,15 @@ Version 2.3.0
   It is easier and clearer to set both in the same place (the theme), rather than
   one in the theme and one in the css. This is a breaking change if you were 
   setting the height in the css. People were having problems with this in the
-  mailing list. -- LarryK rev 1623
+  mailing list.
+
+  Further note about this change since it is undoing someone's work: The tape height
+  on the screen was defined purely by css. But the tape height from the theme was
+  still being used (to some extent) in the sw. In particular, the Theme's tape height
+  is returned by function _paintEventTape in file original-painter. It doesn't make
+  sense for the theme's tape height to be returned by the function when the 
+  actual height of the tape was being controlled in the css file.
+  -- LarryK rev 1623
 
 Version 2.2.0 -- September 23, 2008
 * Prep for 2.2.0: updated RELEASE_NOTES -- LarryK rev 1593

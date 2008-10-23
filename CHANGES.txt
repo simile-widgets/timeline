@@ -9,6 +9,12 @@ Version 2.3.0
   src/webapp/examples/test_example/test.html -- LarryK rev 1598
 * Fixed issues caused when events don't have title attribute.
   Issue tracker #20 -- LarryK rev 1598
+* Event tape heights now use theme.event.tape.height. Better than using css since:
+  theme.event.track.height & theme.event.tape.height need to work with each other.
+  It is easier and clearer to set both in the same place (the theme), rather than
+  one in the theme and one in the css. This is a breaking change if you were 
+  setting the height in the css. People were having problems with this in the
+  mailing list. -- LarryK rev 1623
 
 Version 2.2.0 -- September 23, 2008
 * Prep for 2.2.0: updated RELEASE_NOTES -- LarryK rev 1593

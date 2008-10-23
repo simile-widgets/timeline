@@ -419,6 +419,7 @@ Timeline.OriginalEventPainter.prototype._paintEventTape = function(
 
     tapeDiv.style.left = startPixel + "px";
     tapeDiv.style.width = tapeWidth + "px";
+    tapeDiv.style.height = tapeHeight + "px";
     tapeDiv.style.top = top + "px";
 
     if(evt._title != null)

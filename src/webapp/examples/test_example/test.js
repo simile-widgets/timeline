@@ -5,8 +5,24 @@
 
 'events' : [
         {'start': '1880',
-        'title': 'Test 1',
-        'description': 'Test 1: only start date',
+        'title': 'Test 1a: only start date, no isDuration',
+        'description': 'Test 1a: only start date, no isDuration',
+        'image': 'http://images.allposters.com/images/AWI/NR096_b.jpg',
+        'link': 'http://www.allposters.com/-sp/Barfusserkirche-1924-Posters_i1116895_.htm'
+        },
+
+        {'start': '1880',
+        'title': 'Test 1b: only start date, isDuration true',
+        'description': 'Test 1b: only start date, isDuration true',
+        'isDuration' : true,
+        'image': 'http://images.allposters.com/images/AWI/NR096_b.jpg',
+        'link': 'http://www.allposters.com/-sp/Barfusserkirche-1924-Posters_i1116895_.htm'
+        },
+
+        {'start': '1880',
+        'title': 'Test 1c: only start date, isDuration false',
+        'description': 'Test 1b: only start date, isDuration false',
+        'isDuration' : false,
         'image': 'http://images.allposters.com/images/AWI/NR096_b.jpg',
         'link': 'http://www.allposters.com/-sp/Barfusserkirche-1924-Posters_i1116895_.htm'
         },
@@ -20,14 +36,14 @@
 
         {'start': '1913',
         'end': '1929',
-        'title': 'Test 2a',
+        'title': 'Test 2a: start and end dates. No isDuration',
         'description': 'Test 2a: start and end dates. No isDuration',
         'image': 'http://images.allposters.com/images/BRGPOD/75857_b.jpg',
         'link': 'http://www.allposters.com/-sp/Three-Figures-1913-28-Posters_i1349989_.htm'
         },
 
-        {'start': '1913',
-        'end': '1929',
+        {'start': '1930',
+        'end': '1940',
         'title': "Test 5b: If time flies when you're having fun, it hits the afterburners when you don't think you're having enough.",
         'description': 'Test 2a: start and end dates. No isDuration',
         'image': 'http://images.allposters.com/images/BRGPOD/75857_b.jpg',
@@ -36,7 +52,7 @@
 
         {'start': '1913',
         'end': '1929',
-        'title': 'Test 2b',
+        'title': 'Test 2b: start and end dates. isDuration = true',
         'description': 'Test 2b: start and end dates. isDuration = true',
         'image': 'http://images.allposters.com/images/BRGPOD/75857_b.jpg',
         'isDuration' : true,
@@ -45,11 +61,51 @@
 
         {'start': '1913',
         'end': '1929',
-        'title': 'Test 2c',
+        'title': 'Test 2c: start and end dates. isDuration = false',
         'description': 'Test 2c: start and end dates. isDuration = false',
         'isDuration' : false,
         'image': 'http://images.allposters.com/images/BRGPOD/75857_b.jpg',
         'link': 'http://www.allposters.com/-sp/Three-Figures-1913-28-Posters_i1349989_.htm'
+        },
+
+        {'start': '1913',
+        'latestStart': '1930',
+        'title': 'Test 2d, isDuration true, Start &amp; latestStart dates',
+        'isDuration' : true,
+        'description': 'Test 2d, isDuration true, Start &amp; latestStart dates',
+        'image': 'http://images.allposters.com/images/AWI/NR096_b.jpg',
+        'link': 'http://www.allposters.com/-sp/Barfusserkirche-1924-Posters_i1116895_.htm'
+        },
+
+        {'start': '1913',
+        'latestStart': '1930',
+        'title': 'Test 2e, isDuration false, Start &amp; latestStart dates',
+        'isDuration' : false,
+        'description': 'Test 2e, isDuration false, Start &amp; latestStart dates',
+        'image': 'http://images.allposters.com/images/AWI/NR096_b.jpg',
+        'link': 'http://www.allposters.com/-sp/Barfusserkirche-1924-Posters_i1116895_.htm'
+        },
+
+        {'start': '1913',
+        'latestStart': '1915',
+        'earliestEnd': '1930',
+        'end': '1940',
+        'title': 'Test 2f, isDuration false, Start, latestStart, end, earliestEnd dates',
+        'isDuration' : false,
+        'description': 'Test 2f, isDuration false, Start, latestStart, end, earliestEnd dates',
+        'image': 'http://images.allposters.com/images/AWI/NR096_b.jpg',
+        'link': 'http://www.allposters.com/-sp/Barfusserkirche-1924-Posters_i1116895_.htm'
+        },
+
+        {'start': '1913',
+        'latestStart': '1915',
+        'earliestEnd': '1930',
+        'end': '1940',
+        'title': 'Test 2g, isDuration true, Start, latestStart, end, earliestEnd dates',
+        'isDuration' : true,
+        'description': 'Test 2g, isDuration true, Start, latestStart, end, earliestEnd dates',
+        'image': 'http://images.allposters.com/images/AWI/NR096_b.jpg',
+        'link': 'http://www.allposters.com/-sp/Barfusserkirche-1924-Posters_i1116895_.htm'
         },
 
         {'start': '1881',

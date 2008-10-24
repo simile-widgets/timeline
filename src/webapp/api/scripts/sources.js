@@ -350,11 +350,40 @@ Timeline.DefaultEventSource.Event = function(args) {
   this._start = args.start;
   this._end = (args.end != null) ? args.end : args.start;
   
-  this._latestStart = (args.latestStart != null) ? args.latestStart : (args.instant ? this._end : this._start);
-  this._earliestEnd = (args.earliestEnd != null) ? args.earliestEnd : (args.instant ? this._start : this._end);
+  this._latestStart = (args.latestStart != null) ?
+                       args.latestStart : (args.instant ? this._end : this._start);
+  this._earliestEnd = (args.earliestEnd != null) ? 
+                       args.earliestEnd : this._end;
+  
+  // check sanity of dates since incorrect dates will later cause calculation errors
+  // when painting
+  var err=[];
+  if (this._start > this._latestStart) {
+  	this._latestStart = this._start;
+  	err.push("start is > latestStart");}
+  if (this._start > this._earliestEnd) {
+  	this._earliestEnd = this._latestStart;
+  	err.push("start is > earliestEnd");}
+  if (this._start > this._end) {
+  	this._end = this._earliestEnd;
+  	err.push("start is > end");}
+  if (this._latestStart > this._earliestEnd) {
+  	this._earliestEnd = this._latestStart;
+  	err.push("latestStart is > earliestEnd");}
+  if (this._latestStart > this._end) {
+  	this._end = this._earliestEnd;
+  	err.push("latestStart is > end");}
+  if (this._earliestEnd > this._end) {
+  	this._end = this._earliestEnd;
+  	err.push("earliestEnd is > end");}  
   
   this._eventID = cleanArg('eventID');
   this._text = (args.text != null) ? SimileAjax.HTML.deEntify(args.text) : ""; // Change blank titles to ""
+  if (err.length > 0) {
+  	this._text += " PROBLEM: " + err.join(", ");
+  }
+
+  
   this._description = SimileAjax.HTML.deEntify(args.description);
   this._image = cleanArg('image');
   this._link =  cleanArg('link');

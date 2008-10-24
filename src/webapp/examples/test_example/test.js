@@ -34,6 +34,36 @@
         'link': 'http://www.allposters.com/-sp/Barfusserkirche-1924-Posters_i1116895_.htm'
         },
 
+        {'start': '1900', 'end': '1899',
+        'title': 'Test 6a: Bad dates: start > end',
+        'description': 'Test 6a: Bad dates: start > end'
+        },
+        {'start': '1900', 'latestStart': '1899', 'end': '1905',
+        'title': 'Test 6b: Bad dates: start > latestStart',
+        'description': 'Test 6b: Bad dates: start > latestStart'
+        },
+        {'start': '1900', 'latestStart': '1901', 'earliestEnd': '1899', 'end': '1905',
+        'title': 'Test 6c: Bad dates: start > earliesEnd',
+        'description': 'Test 6c: Bad dates: start > earliesEnd'
+        },
+        {'start': '1900', 'latestStart': '1906', 'end': '1905',
+        'title': 'Test 6d: Bad dates: latestStart > end',
+        'description': 'Test 6d: Bad dates: latestStart > end'
+        },
+        {'start': '1900', 'latestStart': '1901', 'earliestEnd': '1900', 'end': '1905',
+        'title': 'Test 6e: Bad dates: latestStart > earliestEnd',
+        'description': 'Test 6e: Bad dates: latestStart > earliestEnd'
+        },
+        {'start': '1900', 'latestStart': '1901', 'earliestEnd': '1903', 'end': '1900',
+        'title': 'Test 6f: Bad dates: latestStart > end',
+        'description': 'Test 6f: Bad dates: latestStart > end'
+        },
+        {'start': '1900', 'latestStart': '1901', 'earliestEnd': '1903', 'end': '1902',
+        'title': 'Test 6g: Bad dates: earliestEnd > end',
+        'description': 'Test 6g: Bad dates: earliestEnd > end'
+        },
+
+
         {'start': '1913',
         'end': '1929',
         'title': 'Test 2a: start and end dates. No isDuration',
@@ -69,7 +99,6 @@
         },
 
         {'start': '1913',
-        'latestStart': '1930',
         'title': 'Test 2d, isDuration true, Start &amp; latestStart dates',
         'isDuration' : true,
         'description': 'Test 2d, isDuration true, Start &amp; latestStart dates',

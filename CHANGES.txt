@@ -23,15 +23,21 @@ Version 2.3.0
   sense for the theme's tape height to be returned by the function when the 
   actual height of the tape was being controlled in the css file.
   -- LarryK rev 1623
-  
+
 * Un-commented-out 
   div.style.background = color;
   from Timeline.OriginalEventPainter.prototype._createHighlightDiv function
   to re-enable event highlighting
   See http://groups.google.com/group/simile-widgets/browse_thread/thread/acbffeaa662722f8
   -- Hunt Culver and LarryK rev 1628
-  
-  
+* Bullet-proofing: Fix for issue 34. The Monet example had a latestStart date
+  after the event's earliestEnd. This caused the tape width to be negative. This
+  caused an exception when setting the width value, but only on IE. Fix: changed
+  sources.js to sanity check dates and append error messages to event title if
+  a problem is detected. Updated test example to have events with bad dates.
+  -- LarryK rev 1629
+
+
 Version 2.2.0 -- September 23, 2008
 * Prep for 2.2.0: updated RELEASE_NOTES -- LarryK rev 1593
 * Added comments per MPS in timeline-api.js that bundle=true

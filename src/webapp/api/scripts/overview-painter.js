@@ -19,6 +19,10 @@ Timeline.OverviewEventPainter.prototype.initialize = function(band, timeline) {
     this._highlightLayer = null;
 };
 
+Timeline.OverviewEventPainter.prototype.getType = function() {
+    return 'overview';
+};
+
 Timeline.OverviewEventPainter.prototype.addOnSelectListener = function(listener) {
     this._onSelectListeners.push(listener);
 };
@@ -84,6 +88,8 @@ Timeline.OverviewEventPainter.prototype.paint = function() {
     
     this._highlightLayer.style.display = "block";
     this._eventLayer.style.display = "block";
+    // update the band object for max number of tracks in this section of the ether
+    this._band.setEventTrackInfo(this._tracks.length, metrics.trackIncrement); 
 };
 
 Timeline.OverviewEventPainter.prototype.softPaint = function() {
@@ -159,13 +165,16 @@ Timeline.OverviewEventPainter.prototype._paintEventTape = function(
     
     var tapeDiv = this._timeline.getDocument().createElement("div");
 	  tapeDiv.className = 'timeline-small-event-tape'
-//    tapeDiv.style.position = "absolute";
     tapeDiv.style.left = left + "px";
     tapeDiv.style.width = width + "px";
     tapeDiv.style.top = top + "px";
- //   tapeDiv.style.height = height + "px";
- //   tapeDiv.style.backgroundColor = color;
- //   tapeDiv.style.overflow = "hidden";
+    tapeDiv.style.height = height + "px"; // set height here since it is also returned by function
+    
+    if (color != null) {
+      tapeDiv.style.backgroundColor = color; // set color here if defined by event. Else use css
+    }
+ //   tapeDiv.style.overflow = "hidden";   // now set in css
+ //   tapeDiv.style.position = "absolute";
     if(opacity<100) SimileAjax.Graphics.setOpacity(tapeDiv, opacity);
     
     this._eventLayer.appendChild(tapeDiv);
@@ -188,13 +197,13 @@ Timeline.OverviewEventPainter.prototype._paintEventTick = function(
     
     var tickDiv = this._timeline.getDocument().createElement("div");
 	tickDiv.className = 'timeline-small-event-icon'
-//    tickDiv.style.position = "absolute";
     tickDiv.style.left = left + "px";
-  //  tickDiv.style.width = width + "px";
     tickDiv.style.top = top + "px";
+  //  tickDiv.style.width = width + "px";
+  //  tickDiv.style.position = "absolute";
   //  tickDiv.style.height = height + "px";
-//  tickDiv.style.backgroundColor = color;
-//  tickDiv.style.overflow = "hidden";
+  //  tickDiv.style.backgroundColor = color;
+  //  tickDiv.style.overflow = "hidden";
 
 	var classname = evt.getClassName()
 	if(classname) tickDiv.className +=' small-' + classname;

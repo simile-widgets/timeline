@@ -26,6 +26,10 @@ Timeline.DetailedEventPainter.prototype.initialize = function(band, timeline) {
     this._eventIdToElmt = null;
 };
 
+Timeline.DetailedEventPainter.prototype.getType = function() {
+    return 'detailed';
+};
+
 Timeline.DetailedEventPainter.prototype.addOnSelectListener = function(listener) {
     this._onSelectListeners.push(listener);
 };
@@ -98,6 +102,9 @@ Timeline.DetailedEventPainter.prototype.paint = function() {
     this._highlightLayer.style.display = "block";
     this._lineLayer.style.display = "block";
     this._eventLayer.style.display = "block";
+    // update the band object for max number of tracks in this section of the ether
+    this._band.setEventTrackInfo(this._lowerTracks.length + this._upperTracks.length,
+                                 metrics.trackIncrement); 
 };
 
 Timeline.DetailedEventPainter.prototype.softPaint = function() {

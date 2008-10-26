@@ -23,7 +23,6 @@ Version 2.3.0
   sense for the theme's tape height to be returned by the function when the 
   actual height of the tape was being controlled in the css file.
   -- LarryK rev 1623
-
 * Un-commented-out 
   div.style.background = color;
   from Timeline.OriginalEventPainter.prototype._createHighlightDiv function
@@ -35,7 +34,26 @@ Version 2.3.0
   caused an exception when setting the width value, but only on IE. Fix: changed
   sources.js to sanity check dates and append error messages to event title if
   a problem is detected. Updated test example to have events with bad dates.
+  Thank you to Tim Dimsdale for noting that the example didn't run in Monet.
   -- LarryK rev 1629
+* Added autoWidth. AutoWidth automatically calculates and sets the 'width' for 
+  the Timeline's bands and for the overall Timeline. The 'width,' for horizontal
+  Timelines, is actually the 'height' style of the various divs. To use:
+  1) Optionally update the autoWidthMargin settings in the Theme. The margin, per
+     band, is used to set how close the bottom of the lowest track is to the 
+     edge of the band's div. The units are total track width. There are two settings,
+     one for overview bands, the second for others.
+  2) After the events have been loaded, call tl.autoSetWidths() where tl is the 
+     Timeline object returned from Timeline.create. tl.autoSetWidths returns the new
+     'width' of the overall Timeline. 
+  3) For horizontal Timelines, change the height of the Timeline's div to the new value.
+     For vertical Timelines, change the width of the Timeline's div.
+  4) Call the layout method for the timeline.
+  Demo: examples/test_example2/test_example2.html
+  -- LarryK rev 1630
+* Tape color for overview painter now set. Uses following precedence: event's color attribute, 
+  theme.event.duration.color or css color for class timeline-small-event-tape
+  -- LarryK rev 1630
 
 
 Version 2.2.0 -- September 23, 2008

@@ -108,11 +108,9 @@
 	position:absolute;
 }
 
-.timeline-small-event-tape{height:2px;}
 .timeline-small-event-icon{width:1px; height:6px;}
  
  
-
 /*--------------------------------- TIMELINE-------------------------*/
 .timeline-ether-bg{width:100%; height:100%;}
 .timeline-band-0 .timeline-ether-bg{background-color:#eee}

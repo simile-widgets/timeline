@@ -26,6 +26,10 @@ Timeline.OriginalEventPainter.prototype.initialize = function(band, timeline) {
     this._eventIdToElmt = null;
 };
 
+Timeline.OriginalEventPainter.prototype.getType = function() {
+    return 'original';
+};
+
 Timeline.OriginalEventPainter.prototype.addOnSelectListener = function(listener) {
     this._onSelectListeners.push(listener);
 };
@@ -65,7 +69,8 @@ Timeline.OriginalEventPainter.prototype.paint = function() {
     this._prepareForPainting();
     
     var eventTheme = this._params.theme.event;
-    var trackHeight = Math.max(eventTheme.track.height, eventTheme.tape.height + this._frc.getLineHeight());
+    var trackHeight = Math.max(eventTheme.track.height, eventTheme.tape.height + 
+                        this._frc.getLineHeight());
     var metrics = {
         trackOffset:    eventTheme.track.gap,
         trackHeight:    trackHeight,
@@ -98,6 +103,8 @@ Timeline.OriginalEventPainter.prototype.paint = function() {
     this._highlightLayer.style.display = "block";
     this._lineLayer.style.display = "block";
     this._eventLayer.style.display = "block";
+    // update the band object for max number of tracks in this section of the ether
+    this._band.setEventTrackInfo(this._tracks.length, metrics.trackIncrement); 
 };
 
 Timeline.OriginalEventPainter.prototype.softPaint = function() {

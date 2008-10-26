@@ -24,6 +24,9 @@ Timeline.ClassicTheme.create = function(locale) {
 Timeline.ClassicTheme._Impl = function() {
     this.firstDayOfWeek = 0; // Sunday
 	
+	  // Note: Many styles previously set here are now set using CSS
+	  //       The comments indicate settings controlled by CSS, not
+	  //       lines to be un-commented.
     this.ether = {
         backgroundColors: [
         //    "#EEE",
@@ -36,15 +39,16 @@ Timeline.ClassicTheme._Impl = function() {
         interval: {
             line: {
                 show:       true,
-               // color:      "#aaa",
                 opacity:    25
+               // color:      "#aaa",
             },
             weekend: {
-              //  color:      "#FFFFE0",
                 opacity:    30
+              //  color:      "#FFFFE0",
             },
             marker: {
                 hAlign:     "Bottom",
+                vAlign:     "Right"
 				/*
                 hBottomStyler: function(elmt) {
                     elmt.className = "timeline-ether-marker-bottom";
@@ -61,7 +65,6 @@ Timeline.ClassicTheme._Impl = function() {
                 */
 				
                     
-                vAlign:     "Right"
                /*
 			    vRightStyler: function(elmt) {
                     elmt.className = "timeline-ether-marker-right";
@@ -83,13 +86,21 @@ Timeline.ClassicTheme._Impl = function() {
     this.event = {
         track: {
             height:         10, // px
-            gap:            2   // px
+            gap:             2, // px
+            autoWidthMargin: 1
+            /* The autoWidthMargin setting is used to set how close the bottom of the
+               lowest track is to the edge of the band's div. The units are total track
+               width (tape + label + gap). A min of 0.5 is suggested. Use this setting to
+               move the bottom track's tapes above the axis markers, if needed for your
+               Timeline.
+            */
         },
         overviewTrack: {
             offset:     20,     // px
             tickHeight: 6,      // px
             height:     2,      // px
-            gap:        1       // px
+            gap:        1,      // px
+            autoWidthMargin: 15 // Min of 20 is needed due to width requirements of labels and spacing
         },
         tape: {
             height:         4 // px
@@ -98,20 +109,20 @@ Timeline.ClassicTheme._Impl = function() {
             icon:              Timeline.urlPrefix + "images/dull-blue-circle.png",
             iconWidth:         10,
             iconHeight:        10,
+            impreciseOpacity:  20 // opacity of the bar when durationEvent is false
     //        color:             "#58A0DC",
     //        impreciseColor:    "#58A0DC",
-            impreciseOpacity:  20 // opacity of the bar when duration is false
         },
         duration: {
+            impreciseOpacity: 20
       //      color:            "#58A0DC",
       //      impreciseColor:   "#58A0DC",
-            impreciseOpacity: 20
         },
         label: {
-      //      backgroundColor:   "white",
             backgroundOpacity: 50,
-      //      lineColor:         "#58A0DC",
             offsetFromLine:    3 // px
+      //      backgroundColor:   "white",
+      //      lineColor:         "#58A0DC",
         },
         highlightColors: [
    //         "#FFFF00",

@@ -328,7 +328,7 @@ Timeline._Impl.prototype._initialize = function() {
      */
     var elmtCopyright = SimileAjax.Graphics.createTranslucentImage(Timeline.urlPrefix + (this.isHorizontal() ? "images/copyright-vertical.png" : "images/copyright.png"));
     elmtCopyright.className = "timeline-copyright";
-    elmtCopyright.title = "Timeline (c) SIMILE - http://simile.mit.edu/timeline/";
+    elmtCopyright.title = "Timeline &copy; SIMILE - http://simile.mit.edu/timeline/";
     SimileAjax.DOM.registerEvent(elmtCopyright, "click", function() { window.location = "http://simile.mit.edu/timeline/"; });
     containerDiv.appendChild(elmtCopyright);
     
@@ -378,20 +378,51 @@ Timeline._Impl.prototype._distributeWidths = function() {
         var band = this._bands[i];
         var bandInfos = this._bandInfos[i];
         var widthString = bandInfos.width;
+        var bandWidth;
         
-        var x = widthString.indexOf("%");
-        if (x > 0) {
-            var percent = parseInt(widthString.substr(0, x));
-            var bandWidth = percent * width / 100;
+        if (typeof widthString == 'string') {
+          var x =  widthString.indexOf("%");
+          if (x > 0) {
+              var percent = parseInt(widthString.substr(0, x));
+              bandWidth = Math.round(percent * width / 100);
+          } else {
+              bandWidth = parseInt(widthString);
+          }
         } else {
-            var bandWidth = parseInt(widthString);
+        	// was given an integer
+        	bandWidth = widthString;
         }
-        
+        	 
         band.setBandShiftAndWidth(cumulativeWidth, bandWidth);
         band.setViewLength(length);
         
         cumulativeWidth += bandWidth;
     }
+};
+
+Timeline._Impl.prototype.autoSetWidths = function() {
+    // Automatically set band widths based on the Band's desired widths.
+    //
+    // RETURNS the total width desired. The enclosing div can be resized by
+    // the caller. After resizing the enclosing div, need to call layout method
+    // ERROR CASE: returns null if the width can't be calculated (because
+    // events have not been loaded yet)
+    // SIDE EFFECTS: sets the width attribute of the bands' bandInfos
+    var cumulativeWidth = 0;
+    var noInfo = false; // error flag
+    
+    for (var i = 0; i < this._bands.length; i++) {
+        var band = this._bands[i];
+        var bandInfos = this._bandInfos[i];
+        var desiredWidth = band.desiredWidth();
+        if (desiredWidth != null) {
+          bandInfos.width = desiredWidth;
+          cumulativeWidth += desiredWidth;
+        } else {
+        	noInfo = true;
+        }    
+    }
+    return noInfo ? null : cumulativeWidth;
 };
 
 Timeline._Impl.prototype.zoom = function (zoomIn, x, y, target) {
@@ -507,6 +538,8 @@ Timeline._Band = function(timeline, bandInfo, index) {
     }
         
     this._eventPainter = bandInfo.eventPainter;
+    this._eventTracksNeeded = null;   // set by painter via setEventTrackInfo
+    this._eventTrackIncrement = null; 
     bandInfo.eventPainter.initialize(this, timeline);
     
     this._decorators = ("decorators" in bandInfo) ? bandInfo.decorators : [];
@@ -598,6 +631,20 @@ Timeline._Band.prototype.getEventSource = function() {
 
 Timeline._Band.prototype.getEventPainter = function() {
     return this._eventPainter;
+};
+
+Timeline._Band.prototype.setEventTrackInfo = function(tracks, increment) {
+    this._eventTracksNeeded = Math.max(tracks, this._eventTracksNeeded);
+    this._eventTrackIncrement = increment; // doesn't vary for a specific band
+};
+
+Timeline._Band.prototype.desiredWidth = function() {
+	  // returns the desired width for the band.
+	  // Ie (number of tracks + margin) * track increment
+	  var margin = this._eventPainter.getType() == 'overview' ? 
+	       this._theme.event.overviewTrack.autoWidthMargin : 
+	       this._theme.event.track.autoWidthMargin;
+    return Math.ceil((this._eventTracksNeeded + margin) * this._eventTrackIncrement);
 };
 
 Timeline._Band.prototype.layout = function() {

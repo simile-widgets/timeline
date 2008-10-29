@@ -53,7 +53,13 @@ Version 2.3.0
   -- LarryK rev 1630
 * Tape color for overview painter now set. Uses following precedence: event's color attribute, 
   theme.event.duration.color or css color for class timeline-small-event-tape
-  -- LarryK rev 1630
+  See issue 16 -- LarryK rev 1630
+* Update to send css class to computeSize. Fixes:
+  issue 13 - TIMELINE: Event labels wrap on FF 3 on Mac
+  issue 30 - TIMELINE : Event labels wrap when 'classname' attribute is added and text is bold
+  NOTE: fixes don't work unless latest Simile-Ajax library is used. Will be
+  automatically used after it is released.
+  -- LarryK rev 1638
 
 
 Version 2.2.0 -- September 23, 2008

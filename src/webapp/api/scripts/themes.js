@@ -85,9 +85,9 @@ Timeline.ClassicTheme._Impl = function() {
     
     this.event = {
         track: {
-            height:         10, // px
-            gap:             2, // px
-            autoWidthMargin: 1
+                     height: 10, // px
+                        gap:  2, // px
+            autoWidthMargin:  1
             /* The autoWidthMargin setting is used to set how close the bottom of the
                lowest track is to the edge of the band's div. The units are total track
                width (tape + label + gap). A min of 0.5 is suggested. Use this setting to
@@ -120,7 +120,11 @@ Timeline.ClassicTheme._Impl = function() {
         },
         label: {
             backgroundOpacity: 50,
-            offsetFromLine:    3 // px
+               offsetFromLine:  3, // px
+                 maxLabelChar:  0,  // Any events with longer labels will be truncated
+                                   // and an ellipsis will be added. 0 indicates no limit.
+               extendLabelDiv: false // should the label divs be extended to be same size as tape?
+                                     // provides a bigger target zone for clicking on the event.
       //      backgroundColor:   "white",
       //      lineColor:         "#58A0DC",
         },

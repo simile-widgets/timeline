@@ -72,14 +72,16 @@ Timeline.OriginalEventPainter.prototype.paint = function() {
     var trackHeight = Math.max(eventTheme.track.height, eventTheme.tape.height + 
                         this._frc.getLineHeight());
     var metrics = {
-        trackOffset:    eventTheme.track.gap,
-        trackHeight:    trackHeight,
-        trackGap:       eventTheme.track.gap,
+           trackOffset: eventTheme.track.gap,
+           trackHeight: trackHeight,
+              trackGap: eventTheme.track.gap,
         trackIncrement: trackHeight + eventTheme.track.gap,
-        icon:           eventTheme.instant.icon,
-        iconWidth:      eventTheme.instant.iconWidth,
-        iconHeight:     eventTheme.instant.iconHeight,
-        labelWidth:     eventTheme.label.width
+                  icon: eventTheme.instant.icon,
+             iconWidth: eventTheme.instant.iconWidth,
+            iconHeight: eventTheme.instant.iconHeight,
+            labelWidth: eventTheme.label.width,
+          maxLabelChar: eventTheme.label.maxLabelChar,
+        extendLabelDiv: eventTheme.label.extendLabelDiv
     }
     
     var minDate = this._band.getMinDate();
@@ -176,8 +178,9 @@ Timeline.OriginalEventPainter.prototype.paintPreciseInstantEvent = function(evt,
     var startPixel = Math.round(this._band.dateToPixelOffset(startDate));
     var iconRightEdge = Math.round(startPixel + metrics.iconWidth / 2);
     var iconLeftEdge = Math.round(startPixel - metrics.iconWidth / 2);
-    
-    var labelSize = this._frc.computeSize(text);
+
+    var labelDivClassName = this._getLabelDivClassName(evt);
+    var labelSize = this._frc.computeSize(text, labelDivClassName);
     var labelLeft = iconRightEdge + theme.event.label.offsetFromLine;
     var labelRight = labelLeft + labelSize.width;
     
@@ -189,7 +192,8 @@ Timeline.OriginalEventPainter.prototype.paintPreciseInstantEvent = function(evt,
         metrics.trackHeight / 2 - labelSize.height / 2);
         
     var iconElmtData = this._paintEventIcon(evt, track, iconLeftEdge, metrics, theme);
-    var labelElmtData = this._paintEventLabel(evt, text, labelLeft, labelTop, labelSize.width, labelSize.height, theme);
+    var labelElmtData = this._paintEventLabel(evt, text, labelLeft, labelTop, labelSize.width,
+        labelSize.height, theme, labelDivClassName);
 
     var self = this;
     var clickHandler = function(elmt, domEvt, target) {
@@ -216,7 +220,8 @@ Timeline.OriginalEventPainter.prototype.paintImpreciseInstantEvent = function(ev
     var iconRightEdge = Math.round(startPixel + metrics.iconWidth / 2);
     var iconLeftEdge = Math.round(startPixel - metrics.iconWidth / 2);
     
-    var labelSize = this._frc.computeSize(text);
+    var labelDivClassName = this._getLabelDivClassName(evt);
+    var labelSize = this._frc.computeSize(text, labelDivClassName);
     var labelLeft = iconRightEdge + theme.event.label.offsetFromLine;
     var labelRight = labelLeft + labelSize.width;
     
@@ -227,7 +232,8 @@ Timeline.OriginalEventPainter.prototype.paintImpreciseInstantEvent = function(ev
         metrics.trackHeight / 2 - labelSize.height / 2);
     
     var iconElmtData = this._paintEventIcon(evt, track, iconLeftEdge, metrics, theme);
-    var labelElmtData = this._paintEventLabel(evt, text, labelLeft, labelTop, labelSize.width, labelSize.height, theme);
+    var labelElmtData = this._paintEventLabel(evt, text, labelLeft, labelTop, labelSize.width,
+                        labelSize.height, theme, labelDivClassName);
 
     var color = evt.getColor();
     color = color != null ? color : theme.event.instant.impreciseColor;
@@ -258,7 +264,8 @@ Timeline.OriginalEventPainter.prototype.paintPreciseDurationEvent = function(evt
     var startPixel = Math.round(this._band.dateToPixelOffset(startDate));
     var endPixel = Math.round(this._band.dateToPixelOffset(endDate));
     
-    var labelSize = this._frc.computeSize(text);
+    var labelDivClassName = this._getLabelDivClassName(evt);
+    var labelSize = this._frc.computeSize(text, labelDivClassName);
     var labelLeft = startPixel;
     var labelRight = labelLeft + labelSize.width;
     
@@ -271,7 +278,8 @@ Timeline.OriginalEventPainter.prototype.paintPreciseDurationEvent = function(evt
     color = color != null ? color : theme.event.duration.color;
     
     var tapeElmtData = this._paintEventTape(evt, track, startPixel, endPixel, color, 100, metrics, theme);
-    var labelElmtData = this._paintEventLabel(evt, text, labelLeft, labelTop, labelSize.width, labelSize.height, theme);
+    var labelElmtData = this._paintEventLabel(evt, text, labelLeft, labelTop, labelSize.width,
+      labelSize.height, theme, labelDivClassName);
     
     var self = this;
     var clickHandler = function(elmt, domEvt, target) {
@@ -300,7 +308,8 @@ Timeline.OriginalEventPainter.prototype.paintImpreciseDurationEvent = function(e
     var endPixel = Math.round(this._band.dateToPixelOffset(endDate));
     var earliestEndPixel = Math.round(this._band.dateToPixelOffset(earliestEndDate));
     
-    var labelSize = this._frc.computeSize(text);
+    var labelDivClassName = this._getLabelDivClassName(evt);
+    var labelSize = this._frc.computeSize(text, labelDivClassName);
     var labelLeft = latestStartPixel;
     var labelRight = labelLeft + labelSize.width;
     
@@ -322,7 +331,7 @@ Timeline.OriginalEventPainter.prototype.paintImpreciseDurationEvent = function(e
         earliestEndPixel, color, 100, metrics, theme);
     
     var labelElmtData = this._paintEventLabel(evt, text, labelLeft, labelTop,
-        labelSize.width, labelSize.height, theme);
+        labelSize.width, labelSize.height, theme, labelDivClassName);
     
     var self = this;
     var clickHandler = function(elmt, domEvt, target) {
@@ -375,11 +384,12 @@ Timeline.OriginalEventPainter.prototype._paintEventIcon = function(evt, iconTrac
     };
 };
 
-Timeline.OriginalEventPainter.prototype._paintEventLabel = function(evt, text, left, top, width, height, theme) {
+Timeline.OriginalEventPainter.prototype._paintEventLabel = function(evt, text, left, top, width,
+    height, theme, labelDivClassName) {
     var doc = this._timeline.getDocument();
     
     var labelDiv = doc.createElement("div");
-	  labelDiv.className = 'timeline-event-label'
+	  labelDiv.className = labelDivClassName;
 
     labelDiv.style.left = left + "px";
     labelDiv.style.width = width + "px";
@@ -396,13 +406,7 @@ Timeline.OriginalEventPainter.prototype._paintEventLabel = function(evt, text, l
     if (color != null) {
         labelDiv.style.color = color;
     }
-	
-	  var classname = evt.getClassName();
-	  if(classname != null) {
-	  	labelDiv.className +=' ' + classname;
-    }	
-	
-    
+		
     this._eventLayer.appendChild(labelDiv);
     
     return {
@@ -461,6 +465,12 @@ Timeline.OriginalEventPainter.prototype._paintEventTape = function(
         elmt:   tapeDiv
     };
 }
+
+Timeline.OriginalEventPainter.prototype._getLabelDivClassName = function(evt) {
+	  var evt_classname = evt.getClassName();
+    return 'timeline-event-label' + (evt_classname != null ? (' ' + evt_classname) : '');
+};
+
 
 Timeline.OriginalEventPainter.prototype._createHighlightDiv = function(highlightIndex, dimensions, theme) {
     if (highlightIndex >= 0) {

@@ -63,6 +63,11 @@
         'description': 'Test 6g: Bad dates: earliestEnd > end'
         },
 
+        {'start': '1920', 'end': '1922',
+        'title': 'Test 7a: special_event css (bolded)',
+        'description': 'Test 7a: special_event css (bolded)',
+        'classname': 'special_event' 
+        },
 
         {'start': '1913',
         'end': '1929',

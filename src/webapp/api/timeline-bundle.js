@@ -1626,7 +1626,7 @@ if(A==null){A=Timeline.ClassicTheme._Impl;
 };
 Timeline.ClassicTheme._Impl=function(){this.firstDayOfWeek=0;
 this.ether={backgroundColors:[],highlightOpacity:50,interval:{line:{show:true,opacity:25},weekend:{opacity:30},marker:{hAlign:"Bottom",vAlign:"Right"}}};
-this.event={track:{height:10,gap:2,autoWidthMargin:1},overviewTrack:{offset:20,tickHeight:6,height:2,gap:1,autoWidthMargin:15},tape:{height:4},instant:{icon:Timeline.urlPrefix+"images/dull-blue-circle.png",iconWidth:10,iconHeight:10,impreciseOpacity:20},duration:{impreciseOpacity:20},label:{backgroundOpacity:50,offsetFromLine:3,maxLabelChar:0,extendLabelDiv:false},highlightColors:[],bubble:{width:250,height:125,titleStyler:function(A){A.className="timeline-event-bubble-title";
+this.event={track:{height:10,gap:2,autoWidthMargin:1.5},overviewTrack:{offset:20,tickHeight:6,height:2,gap:1,autoWidthMargin:14},tape:{height:4},instant:{icon:Timeline.urlPrefix+"images/dull-blue-circle.png",iconWidth:10,iconHeight:10,impreciseOpacity:20},duration:{impreciseOpacity:20},label:{backgroundOpacity:50,offsetFromLine:3,extendLabelDiv:false},highlightColors:[],bubble:{width:250,height:125,titleStyler:function(A){A.className="timeline-event-bubble-title";
 },bodyStyler:function(A){A.className="timeline-event-bubble-body";
 },imageStyler:function(A){A.className="timeline-event-bubble-image";
 },wikiStyler:function(A){A.className="timeline-event-bubble-wiki";

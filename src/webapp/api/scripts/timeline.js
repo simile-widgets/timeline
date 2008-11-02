@@ -756,14 +756,17 @@ Timeline._Band.prototype._checkAutoWidth = function() {
       return; // early return
     }
     
-    var margin = this._eventPainter.getType() == 'overview' ? 
+    var overviewBand = this._eventPainter.getType() == 'overview';
+    var margin = overviewBand ? 
         this._theme.event.overviewTrack.autoWidthMargin : 
         this._theme.event.track.autoWidthMargin;
     var desiredWidth = Math.ceil((this._eventTracksNeeded + margin) *
                        this._eventTrackIncrement);
+    // add offset amount (additional margin)
+    desiredWidth += overviewBand ? this._theme.event.overviewTrack.offset : 0;
     var bandInfo = this._bandInfo;
     
-    if (desiredWidth != null && desiredWidth > bandInfo.width) {
+    if (desiredWidth > bandInfo.width) {
         bandInfo.width = desiredWidth;
         this._timeline.autoSetWidth();  
     }

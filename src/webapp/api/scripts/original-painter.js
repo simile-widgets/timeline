@@ -187,7 +187,7 @@ Timeline.OriginalEventPainter.prototype.paintPreciseInstantEvent = function(evt,
     var labelRight = labelLeft + labelSize.width;
     
     var rightEdge = labelRight;
-    var track = this._findFreeTrack(rightEdge);
+    var track = this._findFreeTrack(evt, rightEdge);
     
     var labelTop = Math.round(
         metrics.trackOffset + track * metrics.trackIncrement + 
@@ -228,7 +228,7 @@ Timeline.OriginalEventPainter.prototype.paintImpreciseInstantEvent = function(ev
     var labelRight = labelLeft + labelSize.width;
     
     var rightEdge = Math.max(labelRight, endPixel);
-    var track = this._findFreeTrack(rightEdge);
+    var track = this._findFreeTrack(evt, rightEdge);
     var labelTop = Math.round(
         metrics.trackOffset + track * metrics.trackIncrement + 
         metrics.trackHeight / 2 - labelSize.height / 2);
@@ -272,7 +272,7 @@ Timeline.OriginalEventPainter.prototype.paintPreciseDurationEvent = function(evt
     var labelRight = labelLeft + labelSize.width;
     
     var rightEdge = Math.max(labelRight, endPixel);
-    var track = this._findFreeTrack(rightEdge);
+    var track = this._findFreeTrack(evt, rightEdge);
     var labelTop = Math.round(
         metrics.trackOffset + track * metrics.trackIncrement + theme.event.tape.height);
     
@@ -316,7 +316,7 @@ Timeline.OriginalEventPainter.prototype.paintImpreciseDurationEvent = function(e
     var labelRight = labelLeft + labelSize.width;
     
     var rightEdge = Math.max(labelRight, endPixel);
-    var track = this._findFreeTrack(rightEdge);
+    var track = this._findFreeTrack(evt, rightEdge);
     var labelTop = Math.round(
         metrics.trackOffset + track * metrics.trackIncrement + theme.event.tape.height);
     
@@ -348,7 +348,13 @@ Timeline.OriginalEventPainter.prototype.paintImpreciseDurationEvent = function(e
     this._tracks[track] = startPixel;
 };
 
-Timeline.OriginalEventPainter.prototype._findFreeTrack = function(rightEdge) {
+Timeline.OriginalEventPainter.prototype._findFreeTrack = function(event, rightEdge) {
+    var trackAttribute = event.getTrackNum();
+    if (trackAttribute != null) {
+        return trackAttribute; // early return since event includes track number
+    }
+    
+    // normal case: find an open track
     for (var i = 0; i < this._tracks.length; i++) {
         var t = this._tracks[i];
         if (t > rightEdge) {

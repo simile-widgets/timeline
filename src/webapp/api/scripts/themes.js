@@ -27,6 +27,10 @@ Timeline.ClassicTheme._Impl = function() {
 	  // Note: Many styles previously set here are now set using CSS
 	  //       The comments indicate settings controlled by CSS, not
 	  //       lines to be un-commented.
+    this.autoWidth = false; // Should the Timeline automatically grow itself, as
+                            // needed when too many events for the available width
+                            // are painted on the visible part of the Timeline?
+    this.autoWidthAnimationTime = 1000; // mSec
     this.ether = {
         backgroundColors: [
         //    "#EEE",
@@ -88,7 +92,8 @@ Timeline.ClassicTheme._Impl = function() {
                      height: 10, // px
                         gap:  2, // px
             autoWidthMargin:  1.5
-            /* The autoWidthMargin setting is used to set how close the bottom of the
+            /* This attribute is only used if autoWidth (see above) is true.
+               The autoWidthMargin setting is used to set how close the bottom of the
                lowest track is to the edge of the band's div. The units are total track
                width (tape + label + gap). A min of 0.5 is suggested. Use this setting to
                move the bottom track's tapes above the axis markers, if needed for your
@@ -100,7 +105,8 @@ Timeline.ClassicTheme._Impl = function() {
             tickHeight: 6,      // px
             height:     2,      // px
             gap:        1,      // px
-            autoWidthMargin: 14 // Min of 14 is needed due to width requirements of labels and spacing
+            autoWidthMargin: 14 // This attribute is only used if autoWidth (see above) is true.
+                                // Min of 14 is needed due to width requirements of labels and spacing
         },
         tape: {
             height:         4 // px

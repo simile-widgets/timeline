@@ -36,21 +36,6 @@ Version 2.3.0
   a problem is detected. Updated test example to have events with bad dates.
   Thank you to Tim Dimsdale for noting that the example didn't run in Monet.
   -- LarryK rev 1629
-* Added autoWidth. AutoWidth automatically calculates and sets the 'width' for 
-  the Timeline's bands and for the overall Timeline. The 'width,' for horizontal
-  Timelines, is actually the 'height' style of the various divs. To use:
-  1) Optionally update the autoWidthMargin settings in the Theme. The margin, per
-     band, is used to set how close the bottom of the lowest track is to the 
-     edge of the band's div. The units are total track width. There are two settings,
-     one for overview bands, the second for others.
-  2) After the events have been loaded, call tl.autoSetWidths() where tl is the 
-     Timeline object returned from Timeline.create. tl.autoSetWidths returns the new
-     'width' of the overall Timeline. 
-  3) For horizontal Timelines, change the height of the Timeline's div to the new value.
-     For vertical Timelines, change the width of the Timeline's div.
-  4) Call the layout method for the timeline.
-  Demo: examples/test_example2/test_example2.html
-  -- LarryK rev 1630
 * Tape color for overview painter now set. Uses following precedence: event's color attribute, 
   theme.event.duration.color or css color for class timeline-small-event-tape
   See issue 16 -- LarryK rev 1630
@@ -60,7 +45,33 @@ Version 2.3.0
   NOTE: fixes don't work unless latest Simile-Ajax library is used. Will be
   automatically used after it is released.
   -- LarryK rev 1638
-
+* Added and revised autoWidth. AutoWidth automatically calculates and sets the 'width' for 
+  the Timeline's bands and for the overall Timeline. The 'width,' for horizontal
+  Timelines, is actually the 'height' style of the various divs.
+  
+  The event painters do not calculate the tracks of all the events when they are loaded,
+  the event tracks are only calculated when they are viewed or are about to be viewed.
+  In the same way, the needed width is re-calculated whenever a new set of events
+  are viewed or are about to be viewed. If the new needed width is greater than the
+  current width, the increase is animated. See the example.
+  
+  To use autoWidth:
+  1) You will be modifying the classic theme's settings in your html file. 
+  2) Set the theme's autoWidth to true
+  3) Optionally update the theme's autoWidthAnimationTime setting.
+     band, is used to set how close the bottom of the lowest track is to the 
+     edge of the band's div. The units are total track width. There are two settings,
+     one for overview bands, the second for others.
+  4) Optionally update the autoWidthMargin settings in the Theme. The margin, per
+     band, is used to set how close the bottom of the lowest track is to the 
+     edge of the band's div. The units are total track width. There are two settings,
+     one for overview bands, the second for others.
+  5) After you have loaded your events, call tl.finishedEventLoading() where tl is the 
+     Timeline object returned from Timeline.create. 
+  Demo: examples/test_example2/test_example2.html
+  -- LarryK rev 1630, 1643
+* Updated License to refer to JQuery -- LarryK rev 1643 
+* Added License file to zip files -- LarryK rev 1643
 
 Version 2.2.0 -- September 23, 2008
 * Prep for 2.2.0: updated RELEASE_NOTES -- LarryK rev 1593

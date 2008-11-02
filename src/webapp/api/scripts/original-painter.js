@@ -60,6 +60,8 @@ Timeline.OriginalEventPainter.prototype.setHighlightMatcher = function(highlight
 };
 
 Timeline.OriginalEventPainter.prototype.paint = function() {
+    // Paints the events for a given section of the band--what is
+    // visible on screen and some extra.
     var eventSource = this._band.getEventSource();
     if (eventSource == null) {
         return;
@@ -106,7 +108,7 @@ Timeline.OriginalEventPainter.prototype.paint = function() {
     this._lineLayer.style.display = "block";
     this._eventLayer.style.display = "block";
     // update the band object for max number of tracks in this section of the ether
-    this._band.setEventTrackInfo(this._tracks.length, metrics.trackIncrement); 
+    this._band.updateEventTrackInfo(this._tracks.length, metrics.trackIncrement); 
 };
 
 Timeline.OriginalEventPainter.prototype.softPaint = function() {

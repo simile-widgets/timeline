@@ -89,7 +89,7 @@ Timeline.OverviewEventPainter.prototype.paint = function() {
     this._highlightLayer.style.display = "block";
     this._eventLayer.style.display = "block";
     // update the band object for max number of tracks in this section of the ether
-    this._band.setEventTrackInfo(this._tracks.length, metrics.trackIncrement); 
+    this._band.updateEventTrackInfo(this._tracks.length, metrics.trackIncrement); 
 };
 
 Timeline.OverviewEventPainter.prototype.softPaint = function() {

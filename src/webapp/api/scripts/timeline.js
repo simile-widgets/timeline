@@ -409,7 +409,12 @@ Timeline._Impl.prototype._autoWidthChanged = function(okToShrink) {
     }
     
     // function's mainline
-    if (timeline.autoWidth) {
+    if (!timeline.autoWidth) {
+        return; // early return
+    }
+    if (immediateChange) {
+        checkTimelineWidth();
+    } else {
         // Buffer for .1 sec since other bands may be in the process of changing too
         if (timeline._autoResizeTimer == null) {
             timeline._autoResizeTimer = window.setTimeout(checkTimelineWidth, 100);

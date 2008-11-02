@@ -11,6 +11,9 @@
             var eventSource2 = new Timeline.DefaultEventSource();
             
             var theme1 = Timeline.ClassicTheme.create();
+            theme1.autoWidth = true; // Set the Timeline's "width" automatically.
+                                     // Set autoWidth on the Timeline's first band's theme,
+                                     // will affect all bands.
             
             // create a second theme for the second band because we want it to
             // have different settings
@@ -22,7 +25,7 @@
             var d = Timeline.DateTime.parseGregorianDateTime("1900")
             var bandInfos = [
                 Timeline.createBandInfo({
-                    width:          "50%", // will be ignored since setting width automatically
+                    width:          45, // set to a minimum, autoWidth will then adjust
                     intervalUnit:   Timeline.DateTime.DECADE, 
                     intervalPixels: 200,
                     eventSource:    eventSource1,
@@ -31,7 +34,7 @@
                     layout:         'original'  // original, overview, detailed
                 }),
                 Timeline.createBandInfo({
-                    width:          "40%", 
+                    width:          45, // set to a minimum, autoWidth will then adjust
                     intervalUnit:   Timeline.DateTime.DECADE, 
                     intervalPixels: 40,
                     eventSource:    eventSource2,
@@ -40,8 +43,8 @@
                     layout:         'original'  // original, overview, detailed
                 }),
                 Timeline.createBandInfo({
-                    width:          "10%", 
-                    intervalUnit:   Timeline.DateTime.DECADE, 
+                    width:          25, // set to a minimum, autoWidth will then adjust
+                    intervalUnit:   Timeline.DateTime.CENTURY, 
                     intervalPixels: 50,
                     eventSource:    eventSource2,
                     date:           d,
@@ -68,14 +71,9 @@
 
             function load_json2(json, url) {
               // Called with second json file from server
-              // Also (now that all events have been loaded), resizes
-              // the div
               eventSource2.loadJSON(json, url);
-              var new_ht = tl.autoSetWidths();
-              if (new_ht != null) {
-                tl_el.style.height = new_ht + "px"; // changes height on screen
-                tl.layout(); // new height, need to re-do layout 
-              };
+              // Also (now that all events have been loaded), automatically re-size
+              tl.finishedEventLoading(); // Automatically set new size of the div 
             };
             
             
@@ -88,6 +86,10 @@
             
             // stop browser caching of data during testing by appending time
             tl.loadJSON("cubism1.js?"+ (new Date().getTime()), load_json1);
+        }
+
+        function centerTimeline(year) {
+            tl.getBand(0).setCenterVisibleDate(new Date(year, 0, 1));
         }
         
         var resizeTimerID = null;
@@ -103,34 +105,42 @@
 </head>
 <body onload="onLoad();" onresize="onResize();">
 <ul id="path">
-  <li><a href="http://simile.mit.edu/" title="Home">SIMILE</a></li>
+  <li><a href="http://code.google.com/p/simile-widgets/" title="Home">SIMILE</a></li>
   <li><a href="../../" title="Timeline">Timeline</a></li>
   <li><a href="../" title="Examples">Examples</a></li>
   <li><span>Cubism</span></li>
 </ul>
-<div id="body">
-    <h1>Cubism</h1>
-    
-    <p>Demonstrates:
+<div id="body">    
+    <p><b>Demonstrates:</b>
     <ul>
     <li>Automatic sizing of the Timeline band "widths." (For a horizontal Timeline, a band's "width"
-    is the height of the band on the screen.) Note how the middle band is taller since its scale
+    is the height of the band on the screen.)
+      <ul><li>Note how the middle band is automatically made taller since its scale
     is larger and the event tapes are thicker, thus requiring more space for the events.</li>
-    <li>Use of <a href="cubism1.js">JSON data</a>, thanks to Juan Manuel Caicedo.</li>
-    <li>Use of event attributes <i>color</i>, <i>textColor</i>, <i>tapeImage</i>, and <i>tapeRepeat</i>. <a href='http://code.google.com/p/simile-widgets/wiki/Timeline_EventSources'>Details</a></li>
+      <li>Use mouse-wheel, arrow keys or links to move to 4400 (additional events which require a larger Timeline).
+      Note how the Timeline enlarges when about 4200 becomes visible on screen. The size increase is animated.</li>
+      </ul>
+    </li>
     <li>Changing the default theme</li>
     <li>Loading two different event files sequentially.</li>
-    <li>The striped event has a caption attribute. Hover over the label or tape to view.</li>
-    <li>Stripe courtesy of <a href='http://www.stripegenerator.com/'>Stripe Generator</a></li>
     </ul>
+    Move Timeline: &nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:centerTimeline(1900);">1900</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:centerTimeline(4400);">4400</a>
+    <p>
     
-    <p>Sources:
-        <ul>
-            <li><a href="http://en.wikipedia.org/wiki/Monet">http://en.wikipedia.org/wiki/Monet</a></li>
-            <li><a href="http://www.accents-n-art.com/artists/claude-monet-biography.html">http://www.accents-n-art.com/artists/claude-monet-biography.html</a></li>
-        </ul>
-    </p>
-    <div id="tl" class="timeline-default" style="height: 300px;">
+    
+    <!-- ############################################## -->
+    <!-- ###                                        ### -->
+    <!-- ### NOTE: This Timeline's width will be    ### -->
+    <!-- ###       set automatically. Initial       ### -->
+    <!-- ###       value will be replaced. Start    ### -->
+    <!-- ###       with a min of 200 so "loading"   ### -->
+    <!-- ###       popup can be seen. Or start with ### -->
+    <!-- ###       value near the automatic value   ### -->
+    <!-- ###       to minimize motion on the screen ### -->
+    <!-- ###                                        ### -->
+    <!-- ############################################## -->
+    <div id="tl" class="timeline-default" style="height:500px;" > 
     </div>
 </div>
 </body>

@@ -1,3 +1,30 @@
+/*=================================================
+ *
+ * Coding standards:
+ *
+ * We aim towards Douglas Crockford's Javascript conventions.
+ * See:  http://javascript.crockford.com/code.html
+ * See also: http://www.crockford.com/javascript/javascript.html
+ *
+ * That said, this JS code was written before some recent JS
+ * support libraries became widely used or available.
+ * In particular, the _ character is used to indicate a class function or
+ * variable that should be considered private to the class.
+ *
+ * The code mostly uses accessor methods for getting/setting the private
+ * class variables.
+ *
+ * Over time, we'd like to formalize the convention by using support libraries
+ * which enforce privacy in objects.
+ *
+ * We also want to use jslint:  http://www.jslint.com/
+ *
+ *
+ *==================================================
+ */
+
+
+
 /*==================================================
  *  Timeline
  *==================================================
@@ -187,7 +214,10 @@ Timeline.loadJSON = function(url, f) {
     SimileAjax.XmlHttp.get(url, fError, fDone);
 };
 
-
+/*==================================================
+ *  Timeline Implementation object
+ *==================================================
+ */
 Timeline._Impl = function(elmt, bandInfos, orientation, unit) {
     SimileAjax.WindowManager.initialize();
     
@@ -196,10 +226,22 @@ Timeline._Impl = function(elmt, bandInfos, orientation, unit) {
     this._bandInfos = bandInfos;
     this._orientation = orientation == null ? Timeline.HORIZONTAL : orientation;
     this._unit = (unit != null) ? unit : SimileAjax.NativeDateUnit;
+    this._starting = true; // is the Timeline being created? Used by autoWidth
+                           // functions
+    this._autoResizeTimer = null; // Used by autoWidthChanged to buffer changes
+    
+    // autoWidth is a "public" property of the Timeline object
+    this.autoWidth = bandInfos && bandInfos[0] && bandInfos[0].theme && 
+                     bandInfos[0].theme.autoWidth;
+    this.autoWidthAnimationTime = bandInfos && bandInfos[0] && bandInfos[0].theme && 
+                     bandInfos[0].theme.autoWidthAnimationTime;
     
     this._initialize();
 };
 
+//
+// Public functions used by client sw
+//
 Timeline._Impl.prototype.dispose = function() {
     for (var i = 0; i < this._bands.length; i++) {
         this._bands[i].dispose();
@@ -215,6 +257,16 @@ Timeline._Impl.prototype.getBandCount = function() {
 
 Timeline._Impl.prototype.getBand = function(index) {
     return this._bands[index];
+};
+
+Timeline._Impl.prototype.finishedEventLoading = function() {
+    // Called by client after events have been loaded into Timeline
+    // Only used if the client has set autoWidth
+    // Sets width to Timeline's requested amount and will shrink down the div if
+    // need be.
+    this._autoWidthChanged(true);
+    this._distributeWidths();
+    this._starting = false;
 };
 
 Timeline._Impl.prototype.layout = function() {
@@ -261,6 +313,11 @@ Timeline._Impl.prototype.getUnit = function() {
     return this._unit;
 };
 
+Timeline._Impl.prototype.getWidthStyle = function() {
+    // which element.style attribute should be changed to affect Timeline's "width"
+    return this._orientation == Timeline.HORIZONTAL ? 'height' : 'width';
+};
+
 Timeline._Impl.prototype.loadXML = function(url, f) {
     var tl = this;
     
@@ -288,7 +345,6 @@ Timeline._Impl.prototype.loadXML = function(url, f) {
 Timeline._Impl.prototype.loadJSON = function(url, f) {
     var tl = this;
     
-    
     var fError = function(statusText, status, xmlhttp) {
         alert("Failed to load json data from " + url + "\n" + statusText);
         tl.hideLoadingMessage();
@@ -303,6 +359,62 @@ Timeline._Impl.prototype.loadJSON = function(url, f) {
     
     this.showLoadingMessage();
     window.setTimeout(function() { SimileAjax.XmlHttp.get(url, fError, fDone); }, 0);
+};
+
+//
+// Friends functions used by Timeline client objects
+//
+Timeline._Impl.prototype.autoSetWidth = function() {
+    this._autoWidthChanged(false);
+    this._distributeWidths();
+};
+
+//
+// Private functions used by Timeline object functions
+//
+Timeline._Impl.prototype._autoWidthChanged = function(okToShrink) {
+    var timeline = this; // this Timeline
+    var immediateChange = timeline._starting;
+    var newWidth = 0;
+    
+    function changeTimelineWidth() {        
+        var widthStyle = timeline.getWidthStyle();
+        if (immediateChange) {
+            timeline._containerDiv.style[widthStyle] = newWidth + 'px';
+        } else {
+        	  // animate change
+        	  var animateParam ={};
+        	  animateParam[widthStyle] = newWidth + 'px';
+        	  
+        	  SimileAjax.jQuery(timeline._containerDiv).animate(
+        	      animateParam, timeline.autoWidthAnimationTime);
+        }
+    }
+        	
+    function checkTimelineWidth() {
+        var targetWidth = 0; // the new desired width
+        var currentWidth = timeline.getPixelWidth();
+        timeline._autoResizeTimer = null;
+
+        // compute targetWidth
+        for (var i = 0; i < timeline._bands.length; i++) {
+            targetWidth += timeline._bandInfos[i].width;
+        }
+        
+        if (targetWidth > currentWidth || okToShrink) {
+            // yes, let's change the size
+            newWidth = targetWidth;
+            changeTimelineWidth();
+        }
+    }
+    
+    // function's mainline
+    if (timeline.autoWidth) {
+        // Buffer for .1 sec since other bands may be in the process of changing too
+        if (timeline._autoResizeTimer == null) {
+            timeline._autoResizeTimer = window.setTimeout(checkTimelineWidth, 100);
+        }
+    }
 };
 
 Timeline._Impl.prototype._initialize = function() {
@@ -400,31 +512,6 @@ Timeline._Impl.prototype._distributeWidths = function() {
     }
 };
 
-Timeline._Impl.prototype.autoSetWidths = function() {
-    // Automatically set band widths based on the Band's desired widths.
-    //
-    // RETURNS the total width desired. The enclosing div can be resized by
-    // the caller. After resizing the enclosing div, need to call layout method
-    // ERROR CASE: returns null if the width can't be calculated (because
-    // events have not been loaded yet)
-    // SIDE EFFECTS: sets the width attribute of the bands' bandInfos
-    var cumulativeWidth = 0;
-    var noInfo = false; // error flag
-    
-    for (var i = 0; i < this._bands.length; i++) {
-        var band = this._bands[i];
-        var bandInfos = this._bandInfos[i];
-        var desiredWidth = band.desiredWidth();
-        if (desiredWidth != null) {
-          bandInfos.width = desiredWidth;
-          cumulativeWidth += desiredWidth;
-        } else {
-        	noInfo = true;
-        }    
-    }
-    return noInfo ? null : cumulativeWidth;
-};
-
 Timeline._Impl.prototype.zoom = function (zoomIn, x, y, target) {
   var matcher = new RegExp("^timeline-band-([0-9]+)$");
   var bandIndex = null;
@@ -446,8 +533,17 @@ Timeline._Impl.prototype.zoom = function (zoomIn, x, y, target) {
  *==================================================
  */
 Timeline._Band = function(timeline, bandInfo, index) {
+    // Set up the band's object
+    
+    // Munge params: If autoWidth is on for the Timeline, then ensure that
+    // bandInfo.width is an integer     
+    if (timeline.autoWidth && typeof bandInfo.width == 'string') {
+        bandInfo.width = bandInfo.width.indexOf("%") > -1 ? 0 : parseInt(bandInfo.width);
+    }
+
     this._timeline = timeline;
     this._bandInfo = bandInfo;
+    
     this._index = index;
     
     this._locale = ("locale" in bandInfo) ? bandInfo.locale : Timeline.getDefaultLocale();
@@ -538,8 +634,8 @@ Timeline._Band = function(timeline, bandInfo, index) {
     }
         
     this._eventPainter = bandInfo.eventPainter;
-    this._eventTracksNeeded = null;   // set by painter via setEventTrackInfo
-    this._eventTrackIncrement = null; 
+    this._eventTracksNeeded = 0;   // set by painter via updateEventTrackInfo
+    this._eventTrackIncrement = 0; 
     bandInfo.eventPainter.initialize(this, timeline);
     
     this._decorators = ("decorators" in bandInfo) ? bandInfo.decorators : [];
@@ -633,18 +729,39 @@ Timeline._Band.prototype.getEventPainter = function() {
     return this._eventPainter;
 };
 
-Timeline._Band.prototype.setEventTrackInfo = function(tracks, increment) {
-    this._eventTracksNeeded = Math.max(tracks, this._eventTracksNeeded);
+// Autowidth support
+Timeline._Band.prototype.updateEventTrackInfo = function(tracks, increment) {
     this._eventTrackIncrement = increment; // doesn't vary for a specific band
+
+    if (tracks > this._eventTracksNeeded) {
+        this._eventTracksNeeded = tracks;
+        this._checkAutoWidth();
+    }
 };
 
-Timeline._Band.prototype.desiredWidth = function() {
-	  // returns the desired width for the band.
-	  // Ie (number of tracks + margin) * track increment
-	  var margin = this._eventPainter.getType() == 'overview' ? 
-	       this._theme.event.overviewTrack.autoWidthMargin : 
-	       this._theme.event.track.autoWidthMargin;
-    return Math.ceil((this._eventTracksNeeded + margin) * this._eventTrackIncrement);
+// Autowidth support
+Timeline._Band.prototype._checkAutoWidth = function() {
+    // if a new (larger) width is needed by the band
+    // then: a) updates the band's bandInfo.width
+    //       b) notifies the timeline object
+    //
+    // desiredWidth for the band is 
+    //   (number of tracks + margin) * track increment
+    if (! this._timeline.autoWidth) {
+      return; // early return
+    }
+    
+    var margin = this._eventPainter.getType() == 'overview' ? 
+        this._theme.event.overviewTrack.autoWidthMargin : 
+        this._theme.event.track.autoWidthMargin;
+    var desiredWidth = Math.ceil((this._eventTracksNeeded + margin) *
+                       this._eventTrackIncrement);
+    var bandInfo = this._bandInfo;
+    
+    if (desiredWidth != null && desiredWidth > bandInfo.width) {
+        bandInfo.width = desiredWidth;
+        this._timeline.autoSetWidth();  
+    }
 };
 
 Timeline._Band.prototype.layout = function() {

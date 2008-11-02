@@ -94,6 +94,7 @@
     <copy file="${webapp_api}timeline-api.js"     todir="timeline_${version}/timeline_js" />
     <copy file="${webapp_api}timeline-bundle.js"  todir="timeline_${version}/timeline_js" />
     <copy file="${webapp_api}timeline-bundle.css" todir="timeline_${version}/timeline_js" />
+    <copy file="LICENSE.txt"                      todir="timeline_${version}" />
 
     <copy todir="timeline_${version}/timeline_js/images">
       <fileset dir="${webapp_api}images" excludes="**/.svn/**" />

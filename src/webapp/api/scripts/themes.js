@@ -101,12 +101,11 @@ Timeline.ClassicTheme._Impl = function() {
           */
         },
         overviewTrack: {
-                  offset: 20, // px
+                  offset: 20, // px -- top margin above tapes 
               tickHeight:  6, // px
                   height:  2, // px
                      gap:  1, // px
-         autoWidthMargin: 14 // This attribute is only used if autoWidth (see above) is true.
-                             // Min of 14 is needed due to width requirements of labels and spacing
+         autoWidthMargin:  5 // This attribute is only used if autoWidth (see above) is true.
         },
         tape: {
             height:         4 // px

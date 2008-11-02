@@ -39,26 +39,33 @@ Timeline.DefaultEventSource.prototype.loadXML = function(xml, url) {
             if (node.firstChild != null && node.firstChild.nodeType == 3) {
                 description = node.firstChild.nodeValue;
             }
+            // instant event: default is true. Or use values from isDuration or durationEvent
+            var instant = (node.getAttribute("isDuration")    === null &&
+                           node.getAttribute("durationEvent") === null) ||
+                          node.getAttribute("isDuration") == "false" ||
+                          node.getAttribute("durationEvent") == "false";
+            
             var evt = new Timeline.DefaultEventSource.Event( {
                           id: node.getAttribute("id"),
                        start: parseDateTimeFunction(node.getAttribute("start")),
                          end: parseDateTimeFunction(node.getAttribute("end")),
                  latestStart: parseDateTimeFunction(node.getAttribute("latestStart")),
                  earliestEnd: parseDateTimeFunction(node.getAttribute("earliestEnd")),
-                     instant: node.getAttribute("isDuration") != "true",
+                     instant: instant,
                         text: node.getAttribute("title"),
                  description: description,
                        image: this._resolveRelativeURL(node.getAttribute("image"), base),
-                        link: this._resolveRelativeURL(node.getAttribute("link"), base),
-                        icon: this._resolveRelativeURL(node.getAttribute("icon"), base),
+                        link: this._resolveRelativeURL(node.getAttribute("link") , base),
+                        icon: this._resolveRelativeURL(node.getAttribute("icon") , base),
                        color: node.getAttribute("color"),
                    textColor: node.getAttribute("textColor"),
-	                 hoverText: node.getAttribute("hoverText"),
-	                 classname: node.getAttribute("classname"),
-	                 tapeImage: node.getAttribute("tapeImage"),
-	                tapeRepeat: node.getAttribute("tapeRepeat"),
-	                   caption: node.getAttribute("caption"),
-                     eventID: node.getAttribute("eventID")
+                   hoverText: node.getAttribute("hoverText"),
+                   classname: node.getAttribute("classname"),
+                   tapeImage: node.getAttribute("tapeImage"),
+                  tapeRepeat: node.getAttribute("tapeRepeat"),
+                     caption: node.getAttribute("caption"),
+                     eventID: node.getAttribute("eventID"),
+                    trackNum: node.getAttribute("trackNum")
             });
 
             evt._node = node;
@@ -92,26 +99,32 @@ Timeline.DefaultEventSource.prototype.loadJSON = function(data, url) {
        
         for (var i=0; i < data.events.length; i++){
             var event = data.events[i];
+            // Fixing issue 33:
+            // instant event: default (for JSON only) is false. Or use values from isDuration or durationEvent
+            // isDuration was negated (see issue 33, so keep that interpretation
+            var instant = event.isDuration || (event.durationEvent != null && !event.durationEvent);
+
             var evt = new Timeline.DefaultEventSource.Event({
                           id: ("id" in event) ? event.id : undefined,
                        start: parseDateTimeFunction(event.start),
                          end: parseDateTimeFunction(event.end),
                  latestStart: parseDateTimeFunction(event.latestStart),
                  earliestEnd: parseDateTimeFunction(event.earliestEnd),
-                     instant: event.isDuration || false,
+                     instant: instant,
                         text: event.title,
                  description: event.description,
                        image: this._resolveRelativeURL(event.image, base),
-                        link: this._resolveRelativeURL(event.link, base),
-                        icon: this._resolveRelativeURL(event.icon, base),
-                       color: event.color,				
+                        link: this._resolveRelativeURL(event.link , base),
+                        icon: this._resolveRelativeURL(event.icon , base),
+                       color: event.color,                                      
                    textColor: event.textColor,
                    hoverText: event.hoverText,
-				           classname: event.classname,
-				           tapeImage: event.tapeImage,
-				          tapeRepeat: event.tapeRepeat,
-				             caption: event.caption,
-                     eventID: event.eventID
+                   classname: event.classname,
+                   tapeImage: event.tapeImage,
+                  tapeRepeat: event.tapeRepeat,
+                     caption: event.caption,
+                     eventID: event.eventID,
+                    trackNum: event.trackNum
             });
             evt._obj = event;
             evt.getProperty = function(name) {
@@ -179,26 +192,33 @@ Timeline.DefaultEventSource.prototype.loadSPARQL = function(xml, url) {
                 bindings["start"] = bindings["date"];
             }
             
+            // instant event: default is true. Or use values from isDuration or durationEvent
+            var instant = (bindings["isDuration"]    === null &&
+                           bindings["durationEvent"] === null) ||
+                          bindings["isDuration"] == "false" ||
+                          bindings["durationEvent"] == "false";
+
             var evt = new Timeline.DefaultEventSource.Event({
                           id: bindings["id"],
                        start: parseDateTimeFunction(bindings["start"]),
                          end: parseDateTimeFunction(bindings["end"]),
                  latestStart: parseDateTimeFunction(bindings["latestStart"]),
                  earliestEnd: parseDateTimeFunction(bindings["earliestEnd"]),
-                     instant: bindings["isDuration"] != "true", // instant
+                     instant: instant, // instant
                         text: bindings["title"], // text
                  description: bindings["description"],
                        image: this._resolveRelativeURL(bindings["image"], base),
-                        link: this._resolveRelativeURL(bindings["link"], base),
-                        icon: this._resolveRelativeURL(bindings["icon"], base),
-                       color: bindings["color"],				
+                        link: this._resolveRelativeURL(bindings["link"] , base),
+                        icon: this._resolveRelativeURL(bindings["icon"] , base),
+                       color: bindings["color"],                                
                    textColor: bindings["textColor"],
                    hoverText: bindings["hoverText"],
                      caption: bindings["caption"],
-				           classname: bindings["classname"],
-				           tapeImage: bindings["tapeImage"],
-				          tapeRepeat: bindings["tapeRepeat"],
-				             eventID: bindings["eventID"]
+                   classname: bindings["classname"],
+                   tapeImage: bindings["tapeImage"],
+                  tapeRepeat: bindings["tapeRepeat"],
+                     eventID: bindings["eventID"],
+                    trackNum: bindings["trackNum"]
             });
             evt._bindings = bindings;
             evt.getProperty = function(name) {
@@ -338,8 +358,8 @@ Timeline.DefaultEventSource.Event = function(args) {
   //   tapeRepeat   -- repeat attribute for tapeImage. {repeat | repeat-x | repeat-y }
        
   function cleanArg(arg) {
-  	// clean up an arg
-  	return (args[arg] != null && args[arg] != "") ? args[arg] : null;
+      // clean up an arg
+      return (args[arg] != null && args[arg] != "") ? args[arg] : null;
   }
    
   var id = (args.id) ? args.id.trim() : "";
@@ -352,38 +372,36 @@ Timeline.DefaultEventSource.Event = function(args) {
   
   this._latestStart = (args.latestStart != null) ?
                        args.latestStart : (args.instant ? this._end : this._start);
-  this._earliestEnd = (args.earliestEnd != null) ? 
-                       args.earliestEnd : this._end;
+  this._earliestEnd = (args.earliestEnd != null) ? args.earliestEnd : this._end;
   
   // check sanity of dates since incorrect dates will later cause calculation errors
   // when painting
   var err=[];
   if (this._start > this._latestStart) {
-  	this._latestStart = this._start;
-  	err.push("start is > latestStart");}
+          this._latestStart = this._start;
+          err.push("start is > latestStart");}
   if (this._start > this._earliestEnd) {
-  	this._earliestEnd = this._latestStart;
-  	err.push("start is > earliestEnd");}
+          this._earliestEnd = this._latestStart;
+          err.push("start is > earliestEnd");}
   if (this._start > this._end) {
-  	this._end = this._earliestEnd;
-  	err.push("start is > end");}
+          this._end = this._earliestEnd;
+          err.push("start is > end");}
   if (this._latestStart > this._earliestEnd) {
-  	this._earliestEnd = this._latestStart;
-  	err.push("latestStart is > earliestEnd");}
+          this._earliestEnd = this._latestStart;
+          err.push("latestStart is > earliestEnd");}
   if (this._latestStart > this._end) {
-  	this._end = this._earliestEnd;
-  	err.push("latestStart is > end");}
+          this._end = this._earliestEnd;
+          err.push("latestStart is > end");}
   if (this._earliestEnd > this._end) {
-  	this._end = this._earliestEnd;
-  	err.push("earliestEnd is > end");}  
+          this._end = this._earliestEnd;
+          err.push("earliestEnd is > end");}  
   
   this._eventID = cleanArg('eventID');
   this._text = (args.text != null) ? SimileAjax.HTML.deEntify(args.text) : ""; // Change blank titles to ""
   if (err.length > 0) {
-  	this._text += " PROBLEM: " + err.join(", ");
+          this._text += " PROBLEM: " + err.join(", ");
   }
 
-  
   this._description = SimileAjax.HTML.deEntify(args.description);
   this._image = cleanArg('image');
   this._link =  cleanArg('link');
@@ -391,12 +409,16 @@ Timeline.DefaultEventSource.Event = function(args) {
   this._title = cleanArg('caption');
   
   this._icon = cleanArg('icon');
-  this._color = cleanArg('color');	
+  this._color = cleanArg('color');      
   this._textColor = cleanArg('textColor');
-	this._classname = cleanArg('classname');
-	this._tapeImage = cleanArg('tapeImage');
-	this._tapeRepeat = cleanArg('tapeRepeat');
-  
+  this._classname = cleanArg('classname');
+  this._tapeImage = cleanArg('tapeImage');
+  this._tapeRepeat = cleanArg('tapeRepeat');
+  this._trackNum = cleanArg('trackNum');
+  if (this._trackNum != null) {
+      this._trackNum = parseInt(this._trackNum);
+  }
+    
   this._wikiURL = null;
   this._wikiSection = null;
 };
@@ -419,11 +441,12 @@ Timeline.DefaultEventSource.Event.prototype = {
     getLink:        function() { return this._link; },
     
     getIcon:        function() { return this._icon; },
-    getColor:       function() { return this._color; },	
+    getColor:       function() { return this._color; },
     getTextColor:   function() { return this._textColor; },
-	  getClassName:   function() { return this._classname; },
-	  getTapeImage:   function() { return this._tapeImage; },
-	  getTapeRepeat:  function() { return this._tapeRepeat; },
+    getClassName:   function() { return this._classname; },
+    getTapeImage:   function() { return this._tapeImage; },
+    getTapeRepeat:  function() { return this._tapeRepeat; },
+    getTrackNum:    function() { return this._trackNum; },
     
     getProperty:    function(name) { return null; },
     
@@ -445,7 +468,7 @@ Timeline.DefaultEventSource.Event.prototype = {
         elmt.style.display = "none"; // default
         
         if (this._wikiURL == null || this._wikiSection == null) {
-        	return; // EARLY RETURN
+          return; // EARLY RETURN
         }
 
         // create the wikiID from the property or from the event text (the title)      
@@ -455,9 +478,9 @@ Timeline.DefaultEventSource.Event.prototype = {
         }
         
         if (wikiID == null || wikiID.length == 0) {
-        	return; // No wikiID. Thus EARLY RETURN
+          return; // No wikiID. Thus EARLY RETURN
         }
-        	
+          
         // ready to go...
         elmt.style.display = "inline";
         wikiID = wikiID.replace(/\s/g, "_");

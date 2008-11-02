@@ -74,6 +74,13 @@ Version 2.3.0
 * Added License file to zip files -- LarryK rev 1643
 * Changed example files to refer to Google Simile directory. -- LarryK rev 1643
 * Fixed: autoWidth wasn't working on Safari/Windows. -- LarryK rev 1644
+* Fixed issue 33: added event attribute durationEvent. 
+  Values of isDuration and durationEvent must be true or false for JSON and
+  "true" or "false" for XML and SPARCL. Otherwise results are indeterminate.
+  This can be a breaking change for event sources that were using values
+  other than the above. -- LarryK rev 1654
+* Added event attribute trackNum for developers to specify a track number.
+  See issue 26. -- LarryK rev 1654
 
 Version 2.2.0 -- September 23, 2008
 * Prep for 2.2.0: updated RELEASE_NOTES -- LarryK rev 1593

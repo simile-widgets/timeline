@@ -83,6 +83,7 @@ Version 2.3.0
   See issue 26. -- LarryK rev 1654
 * Improve autoWidth for overview bands: calculation should include overviewTrack.offset
   -- LarryK rev 1655
+* Add English day names to en locale -- LarryK rev 1656 
 
 Version 2.2.0 -- September 23, 2008
 * Prep for 2.2.0: updated RELEASE_NOTES -- LarryK rev 1593

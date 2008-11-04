@@ -3,6 +3,10 @@
  *==================================================
  */
 
+// Note: a number of features from original-painter 
+//       are not yet implemented in detailed painter.
+//       Eg classname, id attributes for icons, labels, tapes
+
 Timeline.DetailedEventPainter = function(params) {
     this._params = params;
     this._onSelectListeners = [];

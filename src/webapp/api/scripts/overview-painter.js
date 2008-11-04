@@ -164,11 +164,11 @@ Timeline.OverviewEventPainter.prototype._paintEventTape = function(
     var height = metrics.trackHeight;
     
     var tapeDiv = this._timeline.getDocument().createElement("div");
-	  tapeDiv.className = 'timeline-small-event-tape'
+    tapeDiv.className = 'timeline-small-event-tape'
     tapeDiv.style.left = left + "px";
     tapeDiv.style.width = width + "px";
     tapeDiv.style.top = top + "px";
-    tapeDiv.style.height = height + "px"; // set height here since it is also returned by function
+    tapeDiv.style.height = height + "px";
     
     if (color != null) {
       tapeDiv.style.backgroundColor = color; // set color here if defined by event. Else use css
@@ -205,9 +205,8 @@ Timeline.OverviewEventPainter.prototype._paintEventTick = function(
   //  tickDiv.style.backgroundColor = color;
   //  tickDiv.style.overflow = "hidden";
 
-	var classname = evt.getClassName()
-	if(classname) tickDiv.className +=' small-' + classname;
-	
+    var classname = evt.getClassName()
+    if(classname) tickDiv.className +=' small-' + classname;
 	
     if(opacity<100) SimileAjax.Graphics.setOpacity(tickDiv, opacity);
     

@@ -10,6 +10,8 @@
             var eventSource = new Timeline.DefaultEventSource(0);
             
             var theme = Timeline.ClassicTheme.create();
+            // demonstrate highlighting of labels (in addition to icons and tapes)
+            theme.event.highlightLabelBackground = true;
             theme.event.bubble.width = 320;
             
             var zones = [

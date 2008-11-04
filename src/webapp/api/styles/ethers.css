@@ -26,6 +26,7 @@
 
 
 /*-------------------------- HIGHLIGHT DECORATORS -------------------*/
+/* Used for decorators, not used for Timeline Highlight              */
 .timeline-highlight-decorator,
 .timeline-highlight-point-decorator{
 	position:absolute;

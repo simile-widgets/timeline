@@ -131,12 +131,14 @@ Timeline.ClassicTheme._Impl = function() {
       //      backgroundColor:   "white",
       //      lineColor:         "#58A0DC",
         },
-        highlightColors: [
-   //         "#FFFF00",
-   //         "#FFC000",
-   //         "#FF0000",
-   //         "#0000FF"
+        highlightColors: [  // Use with getEventPainter().setHighlightMatcher
+                            // See webapp/examples/examples.js
+            "#FFFF00",
+            "#FFC000",
+            "#FF0000",
+            "#0000FF"
         ],
+        highlightLabelBackground: false, // When highlighting an event, also change the event's label background?
         bubble: {
             width:          250, // px
             height:         125, // px

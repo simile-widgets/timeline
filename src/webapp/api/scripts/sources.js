@@ -362,8 +362,8 @@ Timeline.DefaultEventSource.Event = function(args) {
       return (args[arg] != null && args[arg] != "") ? args[arg] : null;
   }
    
-  var id = (args.id) ? args.id.trim() : "";
-  this._id = id.length > 0 ? id : ("e" + Math.floor(Math.random() * 1000000));
+  var id = args.id ? args.id.trim() : "";
+  this._id = id.length > 0 ? id : Timeline.EventUtils.getNewEventID();
   
   this._instant = args.instant || (args.end == null);
   
@@ -494,6 +494,7 @@ Timeline.DefaultEventSource.Event.prototype = {
         elmt.appendChild(a);
         elmt.appendChild(document.createTextNode("]"));
     },
+    
     fillTime: function(elmt, labeller) {
         if (this._instant) {
             if (this.isImprecise()) {
@@ -517,6 +518,7 @@ Timeline.DefaultEventSource.Event.prototype = {
             }
         }
     },
+    
     fillInfoBubble: function(elmt, theme, labeller) {
         var doc = elmt.ownerDocument;
         
@@ -561,3 +563,5 @@ Timeline.DefaultEventSource.Event.prototype = {
         elmt.appendChild(divWiki);
     }
 };
+
+

@@ -3,6 +3,27 @@
  *==================================================
  */
 
+/*==================================================
+ * 
+ * To enable a single event listener to monitor everything
+ * on a Timeline, we need a way to map from an event's icon,
+ * label or tape element to the associated timeline, band and
+ * specific event.
+ *
+ * Thus a set format is used for the id's of the 
+ * events' elements on the Timeline--
+ * 
+ * element id format for labels, icons, tapes:
+ *   labels: label-tl-<timelineID>-<band_index>-<evt.id>
+ *    icons: icon-tl-<timelineID>-<band_index>-<evt.id>
+ *    tapes: tape-tl-<timelineID>-<band_index>-<evt.id>
+ * 
+ * You can then retrieve the band/timeline objects and event object
+ * by using Timeline.EventUtils.decodeEventElID
+ *
+ *==================================================
+ */
+ 
 Timeline.OriginalEventPainter = function(params) {
     this._params = params;
     this._onSelectListeners = [];
@@ -114,6 +135,7 @@ Timeline.OriginalEventPainter.prototype.paint = function() {
 Timeline.OriginalEventPainter.prototype.softPaint = function() {
 };
 
+
 Timeline.OriginalEventPainter.prototype._prepareForPainting = function() {
     var band = this._band;
         
@@ -195,7 +217,7 @@ Timeline.OriginalEventPainter.prototype.paintPreciseInstantEvent = function(evt,
         
     var iconElmtData = this._paintEventIcon(evt, track, iconLeftEdge, metrics, theme);
     var labelElmtData = this._paintEventLabel(evt, text, labelLeft, labelTop, labelSize.width,
-        labelSize.height, theme, labelDivClassName);
+        labelSize.height, theme, labelDivClassName, highlightIndex);
 
     var self = this;
     var clickHandler = function(elmt, domEvt, target) {
@@ -204,7 +226,7 @@ Timeline.OriginalEventPainter.prototype.paintPreciseInstantEvent = function(evt,
     SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mousedown", clickHandler);
     SimileAjax.DOM.registerEvent(labelElmtData.elmt, "mousedown", clickHandler);
     
-    this._createHighlightDiv(highlightIndex, iconElmtData, theme);
+    this._createHighlightDiv(highlightIndex, iconElmtData, theme, evt);
     
     this._eventIdToElmt[evt.getID()] = iconElmtData.elmt;
     this._tracks[track] = iconLeftEdge;
@@ -235,7 +257,7 @@ Timeline.OriginalEventPainter.prototype.paintImpreciseInstantEvent = function(ev
     
     var iconElmtData = this._paintEventIcon(evt, track, iconLeftEdge, metrics, theme);
     var labelElmtData = this._paintEventLabel(evt, text, labelLeft, labelTop, labelSize.width,
-                        labelSize.height, theme, labelDivClassName);
+                        labelSize.height, theme, labelDivClassName, highlightIndex);
 
     var color = evt.getColor();
     color = color != null ? color : theme.event.instant.impreciseColor;
@@ -251,7 +273,7 @@ Timeline.OriginalEventPainter.prototype.paintImpreciseInstantEvent = function(ev
     SimileAjax.DOM.registerEvent(tapeElmtData.elmt, "mousedown", clickHandler);
     SimileAjax.DOM.registerEvent(labelElmtData.elmt, "mousedown", clickHandler);
     
-    this._createHighlightDiv(highlightIndex, iconElmtData, theme);
+    this._createHighlightDiv(highlightIndex, iconElmtData, theme, evt);
     
     this._eventIdToElmt[evt.getID()] = iconElmtData.elmt;
     this._tracks[track] = iconLeftEdge;
@@ -281,7 +303,7 @@ Timeline.OriginalEventPainter.prototype.paintPreciseDurationEvent = function(evt
     
     var tapeElmtData = this._paintEventTape(evt, track, startPixel, endPixel, color, 100, metrics, theme);
     var labelElmtData = this._paintEventLabel(evt, text, labelLeft, labelTop, labelSize.width,
-      labelSize.height, theme, labelDivClassName);
+      labelSize.height, theme, labelDivClassName, highlightIndex);
     
     var self = this;
     var clickHandler = function(elmt, domEvt, target) {
@@ -290,7 +312,7 @@ Timeline.OriginalEventPainter.prototype.paintPreciseDurationEvent = function(evt
     SimileAjax.DOM.registerEvent(tapeElmtData.elmt, "mousedown", clickHandler);
     SimileAjax.DOM.registerEvent(labelElmtData.elmt, "mousedown", clickHandler);
     
-    this._createHighlightDiv(highlightIndex, tapeElmtData, theme);
+    this._createHighlightDiv(highlightIndex, tapeElmtData, theme, evt);
     
     this._eventIdToElmt[evt.getID()] = tapeElmtData.elmt;
     this._tracks[track] = startPixel;
@@ -333,7 +355,7 @@ Timeline.OriginalEventPainter.prototype.paintImpreciseDurationEvent = function(e
         earliestEndPixel, color, 100, metrics, theme);
     
     var labelElmtData = this._paintEventLabel(evt, text, labelLeft, labelTop,
-        labelSize.width, labelSize.height, theme, labelDivClassName);
+        labelSize.width, labelSize.height, theme, labelDivClassName, highlightIndex);
     
     var self = this;
     var clickHandler = function(elmt, domEvt, target) {
@@ -342,10 +364,14 @@ Timeline.OriginalEventPainter.prototype.paintImpreciseDurationEvent = function(e
     SimileAjax.DOM.registerEvent(tapeElmtData.elmt, "mousedown", clickHandler);
     SimileAjax.DOM.registerEvent(labelElmtData.elmt, "mousedown", clickHandler);
     
-    this._createHighlightDiv(highlightIndex, tapeElmtData, theme);
+    this._createHighlightDiv(highlightIndex, tapeElmtData, theme, evt);
     
     this._eventIdToElmt[evt.getID()] = tapeElmtData.elmt;
     this._tracks[track] = startPixel;
+};
+
+Timeline.OriginalEventPainter.prototype._encodeEventElID = function(elType, evt) {
+    return Timeline.EventUtils.encodeEventElID(this._timeline, this._band, elType, evt);
 };
 
 Timeline.OriginalEventPainter.prototype._findFreeTrack = function(event, rightEdge) {
@@ -373,7 +399,8 @@ Timeline.OriginalEventPainter.prototype._paintEventIcon = function(evt, iconTrac
 
     var img = SimileAjax.Graphics.createTranslucentImage(icon);
     var iconDiv = this._timeline.getDocument().createElement("div");
-    iconDiv.className = 'timeline-event-icon';
+    iconDiv.className = this._getElClassName('timeline-event-icon', evt);
+    iconDiv.id = this._encodeEventElID('icon', evt);
     iconDiv.style.left = left + "px";
     iconDiv.style.top = top + "px";
     iconDiv.appendChild(img);
@@ -393,12 +420,12 @@ Timeline.OriginalEventPainter.prototype._paintEventIcon = function(evt, iconTrac
 };
 
 Timeline.OriginalEventPainter.prototype._paintEventLabel = function(evt, text, left, top, width,
-    height, theme, labelDivClassName) {
+    height, theme, labelDivClassName, highlightIndex) {
     var doc = this._timeline.getDocument();
     
     var labelDiv = doc.createElement("div");
-	  labelDiv.className = labelDivClassName;
-
+    labelDiv.className = labelDivClassName;
+    labelDiv.id = this._encodeEventElID('label', evt);
     labelDiv.style.left = left + "px";
     labelDiv.style.width = width + "px";
     labelDiv.style.top = top + "px";
@@ -414,7 +441,10 @@ Timeline.OriginalEventPainter.prototype._paintEventLabel = function(evt, text, l
     if (color != null) {
         labelDiv.style.color = color;
     }
-		
+    if (theme.event.highlightLabelBackground && highlightIndex >= 0) {
+        labelDiv.style.background = this._getHighlightColor(highlightIndex, theme);
+    }
+    
     this._eventLayer.appendChild(labelDiv);
     
     return {
@@ -434,8 +464,8 @@ Timeline.OriginalEventPainter.prototype._paintEventTape = function(
     var top = metrics.trackOffset + iconTrack * metrics.trackIncrement;
     
     var tapeDiv = this._timeline.getDocument().createElement("div");
-    tapeDiv.className = "timeline-event-tape"
-
+    tapeDiv.className = this._getElClassName('timeline-event-tape', evt);
+    tapeDiv.id = this._encodeEventElID('tape', evt);
     tapeDiv.style.left = startPixel + "px";
     tapeDiv.style.width = tapeWidth + "px";
     tapeDiv.style.height = tapeHeight + "px";
@@ -457,12 +487,7 @@ Timeline.OriginalEventPainter.prototype._paintEventTape = function(
     } 	
     
     SimileAjax.Graphics.setOpacity(tapeDiv, opacity);
-    
-	  var classname = evt.getClassName();
-	  if(classname != null) {
-	  	tapeDiv.className +=' ' + classname;
-    }	
-
+        
     this._eventLayer.appendChild(tapeDiv);
     
     return {
@@ -475,20 +500,27 @@ Timeline.OriginalEventPainter.prototype._paintEventTape = function(
 }
 
 Timeline.OriginalEventPainter.prototype._getLabelDivClassName = function(evt) {
-	  var evt_classname = evt.getClassName();
-    return 'timeline-event-label' + (evt_classname != null ? (' ' + evt_classname) : '');
+    return this._getElClassName('timeline-event-label', evt);
 };
 
+Timeline.OriginalEventPainter.prototype._getElClassName = function(elClassName, evt) {
+    var evt_classname = evt.getClassName();
+    return elClassName + (evt_classname != null ? (' ' + evt_classname) : '');
+};
 
-Timeline.OriginalEventPainter.prototype._createHighlightDiv = function(highlightIndex, dimensions, theme) {
+Timeline.OriginalEventPainter.prototype._getHighlightColor = function(highlightIndex, theme) {
+    var highlightColors = theme.event.highlightColors;    
+    return highlightColors[Math.min(highlightIndex, highlightColors.length - 1)];
+};
+
+Timeline.OriginalEventPainter.prototype._createHighlightDiv = function(highlightIndex, dimensions, theme, evt) {
     if (highlightIndex >= 0) {
-        var doc = this._timeline.getDocument();
-        var eventTheme = theme.event;
-        
-        var color = eventTheme.highlightColors[Math.min(highlightIndex,
-           eventTheme.highlightColors.length - 1)];
+        var doc = this._timeline.getDocument();        
+        var color = this._getHighlightColor(highlightIndex, theme);
         
         var div = doc.createElement("div");
+        div.className = this._getElClassName('timeline-event-highlight', evt);
+        div.id = this._encodeEventElID('highlight', evt);
         div.style.position = "absolute";
         div.style.overflow = "hidden";
         div.style.left =    (dimensions.left - 2) + "px";

@@ -74,9 +74,11 @@
         var bundle = false;
         var javascriptFiles = [
             "timeline.js",
+            "band.js",
             "themes.js",
             "ethers.js",
             "ether-painters.js",
+            "event-utils.js",
             "labellers.js",
             "sources.js",
             "original-painter.js",

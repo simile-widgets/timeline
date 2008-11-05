@@ -89,10 +89,12 @@ Timeline.ClassicTheme._Impl = function() {
     
     this.event = {
         track: {
-                   height: 10, // px
-                      gap:  2, // px
+                   height: 10, // px. You will need to change the track
+                               //     height if you change the tape height.
+                      gap:  2, // px. Gap between tracks
+                   offset:  2, // px. top margin above tapes
           autoWidthMargin:  1.5
-          /* This attribute is only used if autoWidth (see above) is true.
+          /* autoWidthMargin is only used if autoWidth (see above) is true.
              The autoWidthMargin setting is used to set how close the bottom of the
              lowest track is to the edge of the band's div. The units are total track
              width (tape + label + gap). A min of 0.5 is suggested. Use this setting to
@@ -108,26 +110,29 @@ Timeline.ClassicTheme._Impl = function() {
          autoWidthMargin:  5 // This attribute is only used if autoWidth (see above) is true.
         },
         tape: {
-            height:         4 // px
+            height:         4 // px. For thicker tapes, remember to change track height too.
         },
         instant: {
-            icon:              Timeline.urlPrefix + "images/dull-blue-circle.png",
-            iconWidth:         10,
-            iconHeight:        10,
-            impreciseOpacity:  20 // opacity of the tape when durationEvent is false
+                           icon: Timeline.urlPrefix + "images/dull-blue-circle.png", 
+                                 // default icon. Icon can also be specified per event
+                      iconWidth: 10,
+                     iconHeight: 10,
+               impreciseOpacity: 20, // opacity of the tape when durationEvent is false
+            impreciseIconMargin: 3   // A tape and an icon are painted for imprecise instant
+                                     // events. This attribute is the margin between the
+                                     // bottom of the tape and the top of the icon in that
+                                     // case.
     //        color:             "#58A0DC",
     //        impreciseColor:    "#58A0DC",
         },
         duration: {
-            impreciseOpacity: 20
+            impreciseOpacity: 20 // tape opacity for imprecise part of duration events
       //      color:            "#58A0DC",
       //      impreciseColor:   "#58A0DC",
         },
         label: {
-            backgroundOpacity: 50,
-               offsetFromLine:  3, // px
-               extendLabelDiv: false // should the label divs be extended to be same size as tape?
-                                     // provides a bigger target zone for clicking on the event.
+            backgroundOpacity: 50,// only used in detailed painter
+               offsetFromLine:  3 // px left margin amount from icon's right edge
       //      backgroundColor:   "white",
       //      lineColor:         "#58A0DC",
         },

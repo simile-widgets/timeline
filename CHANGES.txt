@@ -84,17 +84,38 @@ Version 2.3.0
 * Improve autoWidth for overview bands: calculation should include overviewTrack.offset
   -- LarryK rev 1655
 * Add English day names to en locale -- LarryK rev 1656
+* Rebuilt bundle files with new ver of Ajax lib. -- LarryK rev 1658
 * Split band.js out of timeline.js. Assign event IDs sequentially rather than using 
   random number generator. Add formated ids to event tapes, labels, icons to
   enable a single listener to retrieve state from the id. Added support functions
-  event-utils.js.
+  event-utils.js.  -- LarryK rev 1659
 * Highlighting testing using Religions example. Restored event highlight colors to theme
-  to fix.
+  to fix.  -- LarryK rev 1659
 * New feature: When highlighting events on a Timeline, default is to highlight the event's
   icon or tape. If theme.event.highlightLabelBackground is true, the label's background
   will also be changed to the highlight color. See the Jewish timeline example.
-* Rebuilt bundle files with new ver of Ajax lib. -- LarryK rev 1658
-
+   -- LarryK rev 1659
+* Fixed issue 31, added event's classname attribute to div for icons too.
+   -- LarryK rev 1659
+* event's tape and highlight div's need index num in id since there can be more
+  than one tape div per event. -- And id must be unique. -- LarryK rev 1661
+* Added EventPaintListener hook to original-painter. Enables clients to hook into
+  painting life cycle. See original-painter.js. -- LarryK rev 1661
+* Changed calculation of labelTop for paintImpreciseInstantEvent to be same 
+  calculation as in paintPreciseDurationEvent in original-painter.
+  Problem was that label was too close to tape (and would sometimes overlap)
+  for Imprecise Instant Events. Test example 2, imprecise instant event at
+  year 4400 (with thick tape) looks much better with the change.
+  -- LarryK rev 1661
+* Added  track.offset setting to original-painter. Enables specific
+  control over top margin of band event painting. Very useful when a
+  Timeline has multiple event bands or a pseudo event band that is just
+  used for labeling above an event band.  -- LarryK rev 1661
+* Added instant.impreciseIconMargin to original-painter. Enables specific
+  control over top margin of icon (margin between bottom of tape and 
+  top of icon). Only used if the event has a tape and an icon.
+  -- LarryK rev 1661
+   
 Version 2.2.0 -- September 23, 2008
 * Prep for 2.2.0: updated RELEASE_NOTES -- LarryK rev 1593
 * Added comments per MPS in timeline-api.js that bundle=true

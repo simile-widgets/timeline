@@ -254,12 +254,13 @@ Timeline._Band.prototype._checkAutoWidth = function() {
     
     var overviewBand = this._eventPainter.getType() == 'overview';
     var margin = overviewBand ? 
-        this._theme.event.overviewTrack.autoWidthMargin : 
-        this._theme.event.track.autoWidthMargin;
+       this._theme.event.overviewTrack.autoWidthMargin : 
+       this._theme.event.track.autoWidthMargin;
     var desiredWidth = Math.ceil((this._eventTracksNeeded + margin) *
                        this._eventTrackIncrement);
     // add offset amount (additional margin)
-    desiredWidth += overviewBand ? this._theme.event.overviewTrack.offset : 0;
+    desiredWidth += overviewBand ? this._theme.event.overviewTrack.offset : 
+                                   this._theme.event.track.offset;
     var bandInfo = this._bandInfo;
     
     if (desiredWidth > bandInfo.width) {

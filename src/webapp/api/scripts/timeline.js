@@ -242,7 +242,7 @@ Timeline._Impl = function(elmt, bandInfos, orientation, unit, timelineID) {
     this._unit = (unit != null) ? unit : SimileAjax.NativeDateUnit;
     this._starting = true; // is the Timeline being created? Used by autoWidth
                            // functions
-    this._autoResizeTimer = null; // Used by autoWidthChanged to buffer changes
+    this._autoResizing = false;
     
     // autoWidth is a "public" property of the Timeline object
     this.autoWidth = bandInfos && bandInfos[0] && bandInfos[0].theme && 
@@ -280,15 +280,13 @@ Timeline._Impl.prototype.finishedEventLoading = function() {
     // Only used if the client has set autoWidth
     // Sets width to Timeline's requested amount and will shrink down the div if
     // need be.
-    for (var i = 0; i < this._bands.length; i++) {
-        this._bands[i].checkAutoWidth();
-    }
-    this._autoWidthChanged(true);
-    this._distributeWidths();
+    this._autoWidthCheck(true);
     this._starting = false;
 };
 
 Timeline._Impl.prototype.layout = function() {
+    // called by client when browser is resized
+    this._autoWidthCheck(true);
     this._distributeWidths();
 };
 
@@ -380,18 +378,17 @@ Timeline._Impl.prototype.loadJSON = function(url, f) {
     window.setTimeout(function() { SimileAjax.XmlHttp.get(url, fError, fDone); }, 0);
 };
 
-//
-// Friends functions used by Timeline client objects
-//
-Timeline._Impl.prototype.autoSetWidth = function() {	
-    this._autoWidthChanged(false);
-    this._distributeWidths();
-};
 
 //
 // Private functions used by Timeline object functions
 //
-Timeline._Impl.prototype._autoWidthChanged = function(okToShrink) {
+
+Timeline._Impl.prototype._autoWidthScrollListener = function(band) {	
+    band.getTimeline()._autoWidthCheck(false);
+};
+
+// called to re-calculate auto width and adjust the overall Timeline div if needed
+Timeline._Impl.prototype._autoWidthCheck = function(okToShrink) {	
     var timeline = this; // this Timeline
     var immediateChange = timeline._starting;
     var newWidth = 0;
@@ -402,21 +399,27 @@ Timeline._Impl.prototype._autoWidthChanged = function(okToShrink) {
             timeline._containerDiv.style[widthStyle] = newWidth + 'px';
         } else {
         	  // animate change
+        	  timeline._autoResizing = true;
         	  var animateParam ={};
         	  animateParam[widthStyle] = newWidth + 'px';
         	  
         	  SimileAjax.jQuery(timeline._containerDiv).animate(
-        	      animateParam, timeline.autoWidthAnimationTime);
+        	      animateParam, timeline.autoWidthAnimationTime,
+        	      'linear', function(){timeline._autoResizing = false;});
         }
     }
         	
     function checkTimelineWidth() {
         var targetWidth = 0; // the new desired width
         var currentWidth = timeline.getPixelWidth();
-        timeline._autoResizeTimer = null;
+        
+        if (timeline._autoResizing) {
+        	return; // early return
+        }
 
         // compute targetWidth
         for (var i = 0; i < timeline._bands.length; i++) {
+            timeline._bands[i].checkAutoWidth();
             targetWidth += timeline._bandInfos[i].width;
         }
         
@@ -424,6 +427,7 @@ Timeline._Impl.prototype._autoWidthChanged = function(okToShrink) {
             // yes, let's change the size
             newWidth = targetWidth;
             changeTimelineWidth();
+            timeline._distributeWidths();
         }
     }
     
@@ -431,12 +435,12 @@ Timeline._Impl.prototype._autoWidthChanged = function(okToShrink) {
     if (!timeline.autoWidth) {
         return; // early return
     }
-    if (immediateChange) {
+    if (immediateChange || true) {
         checkTimelineWidth();
     } else {
         // Buffer for .1 sec since other bands may be in the process of changing too
-        if (timeline._autoResizeTimer == null) {
-            timeline._autoResizeTimer = window.setTimeout(checkTimelineWidth, 100);
+        if (timeline._autoResizing == null) {
+            timeline._autoResizing = window.setTimeout(checkTimelineWidth, 100);
         }
     }
 };
@@ -490,6 +494,14 @@ Timeline._Impl.prototype._initialize = function() {
             );
         }
     }
+    
+    
+    if (this.autoWidth) {
+        for (var i = 0; i < this._bands.length; i++) {
+            this._bands[i].addOnScrollListener(this._autoWidthScrollListener);
+        }
+    }
+    
     
     /*
      *  creating loading UI

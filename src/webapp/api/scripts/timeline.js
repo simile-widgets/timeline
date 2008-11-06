@@ -280,6 +280,9 @@ Timeline._Impl.prototype.finishedEventLoading = function() {
     // Only used if the client has set autoWidth
     // Sets width to Timeline's requested amount and will shrink down the div if
     // need be.
+    for (var i = 0; i < this._bands.length; i++) {
+        this._bands[i].checkAutoWidth();
+    }
     this._autoWidthChanged(true);
     this._distributeWidths();
     this._starting = false;
@@ -380,7 +383,7 @@ Timeline._Impl.prototype.loadJSON = function(url, f) {
 //
 // Friends functions used by Timeline client objects
 //
-Timeline._Impl.prototype.autoSetWidth = function() {
+Timeline._Impl.prototype.autoSetWidth = function() {	
     this._autoWidthChanged(false);
     this._distributeWidths();
 };

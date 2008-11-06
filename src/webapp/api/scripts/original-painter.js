@@ -30,10 +30,11 @@
  
 /* 
  *    eventPaintListener functions receive calls about painting.
- *    function(op, evt, els)
+ *    function(band, op, evt, els)
  *       context: 'this' will be an OriginalEventPainter object.
  *                It has properties and methods for obtaining
  *                the relevant band, timeline, etc    
+ *       band = the band being painted
  *       op = 'paintStarting' // the painter is about to remove
  *            all previously painted events, if any. It will
  *            then start painting all of the visible events that
@@ -658,6 +659,6 @@ Timeline.OriginalEventPainter.prototype._fireOnSelect = function(eventID) {
 
 Timeline.OriginalEventPainter.prototype._fireEventPaintListeners = function(op, evt, els) {
     for (var i = 0; i < this._eventPaintListeners.length; i++) {
-        this._eventPaintListeners[i](op, evt, els);
+        this._eventPaintListeners[i](this._band, op, evt, els);
     }
 };

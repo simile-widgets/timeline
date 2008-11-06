@@ -1658,7 +1658,7 @@ B++){this._onSelectListeners[B](A);
 }};
 Timeline.OriginalEventPainter.prototype._fireEventPaintListeners=function(D,A,C){for(var B=0;
 B<this._eventPaintListeners.length;
-B++){this._eventPaintListeners[B](D,A,C);
+B++){this._eventPaintListeners[B](this._band,D,A,C);
 }};
 
 

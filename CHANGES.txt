@@ -115,6 +115,7 @@ Version 2.3.0
   control over top margin of icon (margin between bottom of tape and 
   top of icon). Only used if the event has a tape and an icon.
   -- LarryK rev 1661
+* Added band arg to eventPaintListener listeners -- LarryK rev 1662
    
 Version 2.2.0 -- September 23, 2008
 * Prep for 2.2.0: updated RELEASE_NOTES -- LarryK rev 1593

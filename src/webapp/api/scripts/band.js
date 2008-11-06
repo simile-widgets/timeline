@@ -243,7 +243,6 @@ Timeline._Band.prototype.updateEventTrackInfo = function(tracks, increment) {
 Timeline._Band.prototype.checkAutoWidth = function() {
     // if a new (larger) width is needed by the band
     // then: a) updates the band's bandInfo.width
-    //       b) notifies the timeline object
     //
     // desiredWidth for the band is 
     //   (number of tracks + margin) * track increment
@@ -262,9 +261,8 @@ Timeline._Band.prototype.checkAutoWidth = function() {
                                    this._theme.event.track.offset;
     var bandInfo = this._bandInfo;
     
-    if (desiredWidth > bandInfo.width) {
+    if (desiredWidth != bandInfo.width) {
         bandInfo.width = desiredWidth;
-        this._timeline.autoSetWidth();  
     }
 };
 
@@ -276,7 +274,6 @@ Timeline._Band.prototype.paint = function() {
     this._etherPainter.paint();
     this._paintDecorators();
     this._paintEvents();
-    this.checkAutoWidth();
 };
 
 Timeline._Band.prototype.softLayout = function() {
@@ -617,7 +614,7 @@ Timeline._Band.prototype._moveEther = function(shift) {
         this._recenterDiv();
     } else {
         this.softLayout();
-    }
+    }    
     
     this._onChanging();
 }

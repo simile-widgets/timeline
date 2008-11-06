@@ -117,6 +117,9 @@ Version 2.3.0
   -- LarryK rev 1661
 * Added band arg to eventPaintListener listeners -- LarryK rev 1662
 * Reworked autoWidth to stop recursive call to painter -- LarryK rev 1663
+* Further autoWidth work to have Timeline monitor scroll of bands rather
+  than having bands call up into Timeline. Eliminated sleep for 
+  smoother scrolling with autoWidth -- LarryK rev 1664
    
 Version 2.2.0 -- September 23, 2008
 * Prep for 2.2.0: updated RELEASE_NOTES -- LarryK rev 1593

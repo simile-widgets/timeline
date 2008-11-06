@@ -236,12 +236,11 @@ Timeline._Band.prototype.updateEventTrackInfo = function(tracks, increment) {
 
     if (tracks > this._eventTracksNeeded) {
         this._eventTracksNeeded = tracks;
-        this._checkAutoWidth();
     }
 };
 
 // Autowidth support
-Timeline._Band.prototype._checkAutoWidth = function() {
+Timeline._Band.prototype.checkAutoWidth = function() {
     // if a new (larger) width is needed by the band
     // then: a) updates the band's bandInfo.width
     //       b) notifies the timeline object
@@ -277,6 +276,7 @@ Timeline._Band.prototype.paint = function() {
     this._etherPainter.paint();
     this._paintDecorators();
     this._paintEvents();
+    this.checkAutoWidth();
 };
 
 Timeline._Band.prototype.softLayout = function() {

@@ -645,10 +645,12 @@ Timeline.OriginalEventPainter.prototype.showBubble = function(evt) {
 
 Timeline.OriginalEventPainter.prototype._showBubble = function(x, y, evt) {
     var div = document.createElement("div");
+    var themeBubble = this._params.theme.event.bubble;
     evt.fillInfoBubble(div, this._params.theme, this._band.getLabeller());
     
     SimileAjax.WindowManager.cancelPopups();
-    SimileAjax.Graphics.createBubbleForContentAndPoint(div, x, y, this._params.theme.event.bubble.width);
+    SimileAjax.Graphics.createBubbleForContentAndPoint(div, x, y,
+        themeBubble.width, null, themeBubble.maxHeight);
 };
 
 Timeline.OriginalEventPainter.prototype._fireOnSelect = function(eventID) {

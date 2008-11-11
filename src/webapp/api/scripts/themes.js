@@ -146,7 +146,8 @@ Timeline.ClassicTheme._Impl = function() {
         highlightLabelBackground: false, // When highlighting an event, also change the event's label background?
         bubble: {
             width:          250, // px
-            height:         125, // px
+            maxHeight:        0, // px Maximum height of bubbles. 0 means no max height. 
+                                 // scrollbar will be added for taller bubbles
             titleStyler: function(elmt) {
                 elmt.className = "timeline-event-bubble-title";
             },

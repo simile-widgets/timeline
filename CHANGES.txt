@@ -120,6 +120,10 @@ Version 2.3.0
 * Further autoWidth work to have Timeline monitor scroll of bands rather
   than having bands call up into Timeline. Eliminated sleep for 
   smoother scrolling with autoWidth -- LarryK rev 1664
+* Use new maxHeight param from SimileAjax for setting maxHeight of 
+  bubbles. Added theme.bubble.maxHeight with default of 0 (no maximum).
+  Old theme param of bubble.height is not used within source of
+  Timeline, so removed it. -- LarryK rev 1667
    
 Version 2.2.0 -- September 23, 2008
 * Prep for 2.2.0: updated RELEASE_NOTES -- LarryK rev 1593

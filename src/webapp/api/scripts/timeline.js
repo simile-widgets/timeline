@@ -435,14 +435,8 @@ Timeline._Impl.prototype._autoWidthCheck = function(okToShrink) {
     if (!timeline.autoWidth) {
         return; // early return
     }
-    if (immediateChange || true) {
-        checkTimelineWidth();
-    } else {
-        // Buffer for .1 sec since other bands may be in the process of changing too
-        if (timeline._autoResizing == null) {
-            timeline._autoResizing = window.setTimeout(checkTimelineWidth, 100);
-        }
-    }
+
+    checkTimelineWidth();
 };
 
 Timeline._Impl.prototype._initialize = function() {

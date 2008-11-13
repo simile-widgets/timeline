@@ -12,8 +12,8 @@
         },
 
 
-        {'start': '1913',
-        'end': '1929',
+        {'start': '2013',
+        'end': '2029',
         'title': 'Three Figures',
         'description': 'by Kasimir Malevich, Ukrainian Painter, 1878-1935',
         'image': 'http://images.allposters.com/images/BRGPOD/75857_b.jpg',
@@ -21,8 +21,8 @@
         },
 
 
-        {'start': '1881',
-        'end': '1953',
+        {'start': '2081',
+        'end': '2153',
         'title': 'Landschaft bei Montreuil',
         'description': 'by Albert Gleizes, French Painter, 1881-1953',
         'image': 'http://images.allposters.com/images/mer/1336_b.jpg',
@@ -33,7 +33,7 @@
         'textColor' : 'green'},
 
 
-        {'start': '1920',
+        {'start': '2020',
         'title': 'Femme au Miroir',
         'description': 'by Fernand Leger, French Painter, 1881-1955',
         'image': 'http://images.allposters.com/images/AWI/GMR117_b.jpg',
@@ -41,7 +41,7 @@
         },
 
 
-        {'start': '1903',
+        {'start': '2003',
         'title': 'The Old Guitarist',
         'description': 'by Pablo Picasso, Spanish Painter/Sculptor, 1881-1973',
         'image': 'http://images.allposters.com/images/ESC/AP599_b.jpg',
@@ -49,8 +49,8 @@
         },
 
 
-        {'start': '1882',
-        'end': '1964',
+        {'start': '2082',
+        'end': '2164',
         'title': 'Jour',
         'description': 'by Georges Braque, French Painter, 1882-1963',
         'image': 'http://images.allposters.com/images/SHD/S1041_b.jpg',
@@ -67,8 +67,8 @@
         },
 
 
-        {'start': '1885',
-        'end': '1941',
+        {'start': '2085',
+        'end': '2141',
         'title': 'Rhythm, Joie de Vivre',
         'description': 'by Robert Delaunay, French Painter, 1885-1941',
         'image': 'http://imagecache2.allposters.com/images/pic/adc/10053983a_b~Rhythm-Joie-de-Vivre-Posters.jpg',
@@ -76,8 +76,8 @@
         },
 
 
-        {'start': '1885',
-        'end': '1925',
+        {'start': '2085',
+        'end': '2125',
         'title': 'Castor Et Pollux',
         'description': 'by Roger de la Fresnaye, French Painter, 1885-1925',
         'image': 'http://images.allposters.com/images/CORPOD/IX001463_b.jpg',
@@ -97,8 +97,8 @@
         },
 
 
-        {'start': '1891',
-        'end': '1915',
+        {'start': '2091',
+        'end': '2115',
         'title': 'Portrait of Horace Brodsky',
         'description': 'by Henri Gaudier-Brzeska, French Sculptor, 1891-1915',
         'image': 'http://imagecache2.allposters.com/images/BRGPOD/102770_b.jpg',

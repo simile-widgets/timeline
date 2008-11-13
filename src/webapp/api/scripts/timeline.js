@@ -250,6 +250,13 @@ Timeline._Impl = function(elmt, bandInfos, orientation, unit, timelineID) {
     this.autoWidthAnimationTime = bandInfos && bandInfos[0] && bandInfos[0].theme && 
                      bandInfos[0].theme.autoWidthAnimationTime;
     this.timelineID = timelineID; // also public attribute
+    this.timeline_start = bandInfos && bandInfos[0] && bandInfos[0].theme && 
+                     bandInfos[0].theme.timeline_start;
+    this.timeline_stop  = bandInfos && bandInfos[0] && bandInfos[0].theme && 
+                     bandInfos[0].theme.timeline_stop;
+    this.timeline_at_start = false; // already at start or stop? Then won't 
+    this.timeline_at_stop = false;  // try to move further in the wrong direction
+    
     this._initialize();
 };
 
@@ -540,6 +547,69 @@ Timeline._Impl.prototype._distributeWidths = function() {
         
         cumulativeWidth += bandWidth;
     }
+};
+
+Timeline._Impl.prototype.shiftOK = function(index, shift) {
+    // Returns true if the proposed shift is ok
+    //
+    // Positive shift means going back in time
+    var going_back = shift > 0,
+        going_forward = shift < 0;
+    
+    // Is there an edge?
+    if ((going_back    && this.timeline_start == null) ||
+        (going_forward && this.timeline_stop  == null) ||
+        (shift == 0)) {
+        return (true);  // early return
+    }
+    
+    // If any of the bands has noted that it is changing the others,
+    // then this shift is a secondary shift in reaction to the real shift,
+    // which already happened. In such cases, ignore it. (The issue is
+    // that a positive original shift can cause a negative secondary shift, 
+    // as the bands adjust.)
+    var secondary_shift = false;
+    for (var i = 0; i < this._bands.length && !secondary_shift; i++) {
+       secondary_shift = this._bands[i].busy();
+    }
+    if (secondary_shift) {
+        return(true); // early return
+    }
+    
+    // If we are already at an edge, then don't even think about going any further
+    if ((going_back    && this.timeline_at_start) ||
+        (going_forward && this.timeline_at_stop)) {
+        return (false);  // early return
+    }
+    
+    // Need to check all the bands
+    var ok = false; // return value
+    // If any of the bands will be or are showing an ok date, then let the shift proceed.
+    for (var i = 0; i < this._bands.length && !ok; i++) {
+       var band = this._bands[i];
+       if (going_back) {
+           ok = (i == index ? band.getMinVisibleDateAfterDelta(shift) : band.getMinVisibleDate())
+                >= this.timeline_start;
+       } else {
+           ok = (i == index ? band.getMaxVisibleDateAfterDelta(shift) : band.getMaxVisibleDate())
+                <= this.timeline_stop;
+       }	
+    }
+    
+    // process results
+    if (going_back) {
+       this.timeline_at_start = !ok;
+       this.timeline_at_stop = false;
+    } else {
+       this.timeline_at_stop = !ok;
+       this.timeline_at_start = false;
+    }
+    // This is where you could have an effect once per hitting an
+    // edge of the Timeline. Eg jitter the Timeline
+    //if (!ok) {
+        //alert(going_back ? "At beginning" : "At end");
+    //}
+    return (ok);
 };
 
 Timeline._Impl.prototype.zoom = function (zoomIn, x, y, target) {

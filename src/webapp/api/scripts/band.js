@@ -342,8 +342,18 @@ Timeline._Band.prototype.getMinVisibleDate = function() {
     return this._ether.pixelOffsetToDate(0);
 };
 
+Timeline._Band.prototype.getMinVisibleDateAfterDelta = function(delta) {
+    return this._ether.pixelOffsetToDate(delta);
+};
+
 Timeline._Band.prototype.getMaxVisibleDate = function() {
+    // Max date currently visible on band
     return this._ether.pixelOffsetToDate(this._viewLength);
+};
+
+Timeline._Band.prototype.getMaxVisibleDateAfterDelta = function(delta) {
+    // Max date visible on band after delta px view change is applied 
+    return this._ether.pixelOffsetToDate(this._viewLength + delta);
 };
 
 Timeline._Band.prototype.getCenterVisibleDate = function() {
@@ -600,6 +610,12 @@ Timeline._Band.prototype._autoScroll = function(distance, f) {
 Timeline._Band.prototype._moveEther = function(shift) {
     this.closeBubble();
     
+    // A positive shift means back in time
+    // Check that we're not moving beyond Timeline's limits
+    if (!this._timeline.shiftOK(this._index, shift)) {
+        return; // early return
+    }
+
     this._viewOffset += shift;
     this._ether.shiftPixels(-shift);
     if (this._timeline.isHorizontal()) {
@@ -626,6 +642,11 @@ Timeline._Band.prototype._onChanging = function() {
     this._setSyncWithBandDate();
     
     this._changing = false;
+};
+
+Timeline._Band.prototype.busy = function() {
+    // Is this band busy changing other bands?
+    return(this._changing);
 };
 
 Timeline._Band.prototype._fireOnScroll = function() {

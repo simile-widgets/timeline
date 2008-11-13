@@ -124,7 +124,24 @@ Version 2.3.0
   bubbles. Added theme.bubble.maxHeight with default of 0 (no maximum).
   Old theme param of bubble.height is not used within source of
   Timeline, so removed it. -- LarryK rev 1667
-   
+* Span decorator improvements: now can have null labels. New param of 
+  inFront. If true, then the span is in front of all layers but the events.
+  Now uses color attribute if present, else css. -- LarryK rev 1677
+* Span point decorator: Now uses color attribute if present, else css.
+   -- LarryK rev 1677
+* Timeline start and end feature: Optionally add theme.timeline_start,
+  theme.timeline_stop to disable movement of the Timeline beyond the 
+  start and/or stop. The setting affects the entire Timeline and must
+  be set in the theme of the first band. Depending on the relative
+  resolutions of the bands, different amounts of the various bands 
+  will be seen when at a start or stop edge, depending on which band
+  was being moved and by how much. In addition to setting the timeline_start
+  and _stop, you may want to add span decorators to cover up the 
+  unused parts of the Timeline. See example2. Note that the Timeline
+  will not be movable past a start/stop edge but it can be initially
+  loaded beyond the edges by using the date parameter of the Band Info.
+  -- LarryK rev 1677
+    
 Version 2.2.0 -- September 23, 2008
 * Prep for 2.2.0: updated RELEASE_NOTES -- LarryK rev 1593
 * Added comments per MPS in timeline-api.js that bundle=true

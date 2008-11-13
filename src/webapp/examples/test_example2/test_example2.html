@@ -14,6 +14,8 @@
             theme1.autoWidth = true; // Set the Timeline's "width" automatically.
                                      // Set autoWidth on the Timeline's first band's theme,
                                      // will affect all bands.
+            theme1.timeline_start = new Date(Date.UTC(1850, 0, 1));
+            theme1.timeline_stop  = new Date(Date.UTC(4480, 0, 1));
             
             // create a second theme for the second band because we want it to
             // have different settings
@@ -22,7 +24,7 @@
             theme2.event.tape.height = 6; // px
             theme2.event.track.height = theme2.event.tape.height + 6;
 
-            var d = Timeline.DateTime.parseGregorianDateTime("1700")
+            var d = Timeline.DateTime.parseGregorianDateTime("1900")
             var bandInfos = [
                 Timeline.createBandInfo({
                     width:          45, // set to a minimum, autoWidth will then adjust
@@ -58,7 +60,31 @@
             bandInfos[2].syncWith = 0;
             bandInfos[2].highlight = true;
             
-                        
+            // For each of the bands, add a decorator at the start and end 
+            // of the Timeline. The decorators have to extend quite a way into
+            // the past and future since those times can be visible on the
+            // low resolution band (the third band)
+            for (var i = 0; i < bandInfos.length; i++) {
+                bandInfos[i].decorators = [
+                    new Timeline.SpanHighlightDecorator({
+                        startDate:  "1", // The year 1 Common Era
+                        endDate:    new Date(Date.UTC(1850, 0, 1)),
+                        cssClass:   "timeline-ether-bg", // use same color as background
+                        inFront:    true, // we want this decorator to be in front
+                        theme:      theme1
+                    }),
+                    new Timeline.SpanHighlightDecorator({
+                        startDate:  "Fri Jan 1 4480 00:00:00 GMT",
+                        endDate:    "Fri Jan 1 8000 00:00:00 GMT",
+                        cssClass:   "timeline-ether-bg",
+                        inFront:    true, // we want this decorator to be in front
+                        theme:      theme1
+                    })
+                ];
+            }
+            // Nota bena: The JS Date function interprets years of < 100 as 
+            // being years since 1900. So Date(0, 0, 1) is the same as Date(1900, 0, 1)
+                                    
             // Asynchronous Callback functions. Called after data arrives.
             function load_json1(json, url) {
               // Called with first json file from server
@@ -123,6 +149,7 @@
     </li>
     <li>Changing the default theme</li>
     <li>Loading two different event files sequentially.</li>
+    <li>Timeline starts at 1850 and ends at 4480
     </ul>
     Move Timeline: &nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:centerTimeline(1900);">1900</a>
     &nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:centerTimeline(4400);">4400</a>
@@ -140,7 +167,7 @@
     <!-- ###       to minimize motion on the screen ### -->
     <!-- ###                                        ### -->
     <!-- ############################################## -->
-    <div id="tl" class="timeline-default" style="height:500px;" > 
+    <div id="tl" class="timeline-default" style="height:300px;" > 
     </div>
 </div>
 </body>

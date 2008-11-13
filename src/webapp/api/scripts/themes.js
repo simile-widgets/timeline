@@ -27,10 +27,20 @@ Timeline.ClassicTheme._Impl = function() {
     // Note: Many styles previously set here are now set using CSS
     //       The comments indicate settings controlled by CSS, not
     //       lines to be un-commented.
+    //
+    //
+    // Attributes autoWidth, autoWidthAnimationTime, timeline_start 
+    // and timeline_stop must be set on the first band's theme.
+    // The other attributes can be set differently for each 
+    // band by using different themes for the bands.
     this.autoWidth = false; // Should the Timeline automatically grow itself, as
                             // needed when too many events for the available width
                             // are painted on the visible part of the Timeline?
-    this.autoWidthAnimationTime = 1000; // mSec
+    this.autoWidthAnimationTime = 500; // mSec
+    this.timeline_start = null; // Setting a date, eg new Date(Date.UTC(2008,0,17,20,00,00,0)) will prevent the
+                                // Timeline from being moved to anytime before the date.
+    this.timeline_stop = null;  // Use for setting a maximum date. The Timeline will not be able 
+                                // to be moved to anytime after this date.
     this.ether = {
         backgroundColors: [
         //    "#EEE",

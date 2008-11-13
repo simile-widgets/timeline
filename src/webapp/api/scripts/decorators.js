@@ -4,16 +4,22 @@
  */
 
 Timeline.SpanHighlightDecorator = function(params) {
-    this._unit = ("unit" in params) ? params.unit : SimileAjax.NativeDateUnit;
+    // When evaluating params, test against null. Not "p in params". Testing against
+    // null enables caller to explicitly request the default. Testing against "in" means
+    // that the param has to be ommitted to get the default.
+    this._unit = params.unit != null ? params.unit : SimileAjax.NativeDateUnit;
     this._startDate = (typeof params.startDate == "string") ? 
         this._unit.parseFromObject(params.startDate) : params.startDate;
     this._endDate = (typeof params.endDate == "string") ?
         this._unit.parseFromObject(params.endDate) : params.endDate;
-    this._startLabel = params.startLabel;
-    this._endLabel = params.endLabel;
+    this._startLabel = params.startLabel != null ? params.startLabel : ""; // not null!
+    this._endLabel   = params.endLabel   != null ? params.endLabel   : ""; // not null!
     this._color = params.color;
-	this._cssClass = ("cssClass" in params) ? params.cssClass : null;
-    this._opacity = ("opacity" in params) ? params.opacity : 100;
+    this._cssClass = params.cssClass != null ? params.cssClass : null;
+    this._opacity = params.opacity != null ? params.opacity : 100;
+         // Default z is 10, behind everything but background grid.
+         // If inFront, then place just behind events, in front of everything else
+    this._zIndex = (params.inFront != null && params.inFront) ? 113 : 10;
 };
 
 Timeline.SpanHighlightDecorator.prototype.initialize = function(band, timeline) {
@@ -27,7 +33,7 @@ Timeline.SpanHighlightDecorator.prototype.paint = function() {
     if (this._layerDiv != null) {
         this._band.removeLayerDiv(this._layerDiv);
     }
-    this._layerDiv = this._band.createLayerDiv(10);
+    this._layerDiv = this._band.createLayerDiv(this._zIndex);
     this._layerDiv.setAttribute("name", "span-highlight-decorator"); // for debugging
     this._layerDiv.style.display = "none";
     
@@ -52,36 +58,43 @@ Timeline.SpanHighlightDecorator.prototype.paint = function() {
         };
     
         var div = doc.createElement("div");
-		div.className='timeline-highlight-decorator'
-		if(this._cssClass) div.className += ' ' + this._cssClass
-		  
+        div.className='timeline-highlight-decorator'
+        if(this._cssClass) {
+        	  div.className += ' ' + this._cssClass;
+        }
+        if(this._color != null) {
+        	  div.style.backgroundColor = this._color;
+        }                      
         if (this._opacity < 100) {
             SimileAjax.Graphics.setOpacity(div, this._opacity);
         }
         this._layerDiv.appendChild(div);
             
         var tableStartLabel = createTable();
-		tableStartLabel.className = 'timeline-highlight-label timeline-highlight-label-start'
-		var tdStart =  tableStartLabel.rows[0].cells[0]
+        tableStartLabel.className = 'timeline-highlight-label timeline-highlight-label-start'
+        var tdStart =  tableStartLabel.rows[0].cells[0]
         tdStart.innerHTML = this._startLabel;
-		if(this._cssClass) tdStart.className = 'label_' + this._cssClass
+        if (this._cssClass) {
+        	  tdStart.className = 'label_' + this._cssClass;
+        }
         this._layerDiv.appendChild(tableStartLabel);
-        
-		
+                    
         var tableEndLabel = createTable();
-		tableEndLabel.className = 'timeline-highlight-label timeline-highlight-label-end'
+        tableEndLabel.className = 'timeline-highlight-label timeline-highlight-label-end'
         var tdEnd = tableEndLabel.rows[0].cells[0]
-		tdEnd.innerHTML = this._endLabel;
-		if(this._cssClass) tdEnd.className = 'label_' + this._cssClass
+        tdEnd.innerHTML = this._endLabel;
+        if (this._cssClass) {
+        	   tdEnd.className = 'label_' + this._cssClass;
+        }
         this._layerDiv.appendChild(tableEndLabel);
         
         if (this._timeline.isHorizontal()){
             div.style.left = minPixel + "px";
             div.style.width = (maxPixel - minPixel) + "px";
-			
+                              
             tableStartLabel.style.right = (this._band.getTotalViewLength() - minPixel) + "px";
             tableStartLabel.style.width = (this._startLabel.length) + "em";       
-			            
+                                          
             tableEndLabel.style.left = maxPixel + "px";
             tableEndLabel.style.width = (this._endLabel.length) + "em";
             
@@ -108,13 +121,13 @@ Timeline.SpanHighlightDecorator.prototype.softPaint = function() {
  */
 
 Timeline.PointHighlightDecorator = function(params) {
-    this._unit = ("unit" in params) ? params.unit : SimileAjax.NativeDateUnit;
+    this._unit = params.unit != null ? params.unit : SimileAjax.NativeDateUnit;
     this._date = (typeof params.date == "string") ? 
         this._unit.parseFromObject(params.date) : params.date;
-    this._width = ("width" in params) ? params.width : 10;
+    this._width = params.width != null ? params.width : 10;
     this._color = params.color;
-	this._cssClass = ("cssClass" in params) ? params.cssClass : '';
-    this._opacity = ("opacity" in params) ? params.opacity : 100;
+    this._cssClass = params.cssClass != null ? params.cssClass : '';
+    this._opacity = params.opacity != null ? params.opacity : 100;
 };
 
 Timeline.PointHighlightDecorator.prototype.initialize = function(band, timeline) {
@@ -143,9 +156,12 @@ Timeline.PointHighlightDecorator.prototype.paint = function() {
         var doc = this._timeline.getDocument();
     
         var div = doc.createElement("div");
-		div.className='timeline-highlight-point-decorator'
-		div.className += ' ' + this._cssClass
-		
+        div.className='timeline-highlight-point-decorator'
+        div.className += ' ' + this._cssClass
+                    
+        if(this._color != null) {
+        	  div.style.backgroundColor = this._color;
+        }
         if (this._opacity < 100) {
             SimileAjax.Graphics.setOpacity(div, this._opacity);
         }

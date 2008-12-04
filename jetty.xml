@@ -63,7 +63,7 @@
         <Item>
           <New id="aContext" class="org.mortbay.jetty.handler.ContextHandler">
             <Set name="contextPath">/timeline</Set>
-            <Set name="resourceBase">./src/webapp/</Set>
+            <Set name="resourceBase">./src/webapp/site/</Set>
             <Set name="handler">
               <New id="javadocServletHandler" class="org.mortbay.jetty.servlet.ServletHandler">
                 <Set name="servlets">
@@ -92,11 +92,42 @@
           </New>
         </Item>
         
+        <Item>
+          <New id="aContext" class="org.mortbay.jetty.handler.ContextHandler">
+            <Set name="contextPath">/timeline/api</Set>
+            <Set name="resourceBase">./src/webapp/api/</Set>
+            <Set name="handler">
+              <New id="javadocServletHandler" class="org.mortbay.jetty.servlet.ServletHandler">
+                <Set name="servlets">
+                    <Array type="org.mortbay.jetty.servlet.ServletHolder">
+                        <Item>
+                           <New class="org.mortbay.jetty.servlet.ServletHolder">
+                               <Set name="name">Timeline</Set>
+                               <Set name="className">org.mortbay.jetty.servlet.DefaultServlet</Set>
+                           </New>
+                        </Item>
+                     </Array>
+                 </Set>
+
+                <Set name="servletMappings">
+                    <Array type="org.mortbay.jetty.servlet.ServletMapping">
+                        <Item>
+                           <New class="org.mortbay.jetty.servlet.ServletMapping">
+                             <Set name="pathSpec">/</Set>
+                             <Set name="servletName">Timeline</Set>
+                           </New>
+                        </Item>
+                    </Array>
+                </Set>
+              </New>
+            </Set>
+          </New>
+        </Item>        
 
         <Item>
           <New id="aContext" class="org.mortbay.jetty.handler.ContextHandler">
-            <Set name="contextPath">/ajax</Set>
-            <Set name="resourceBase">./src/ajax/</Set>
+            <Set name="contextPath">/ajax/api</Set>
+            <Set name="resourceBase">./src/ajax/api/</Set>
             <Set name="handler">
               <New id="javadocServletHandler" class="org.mortbay.jetty.servlet.ServletHandler">
                 <Set name="servlets">

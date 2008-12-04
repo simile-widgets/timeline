@@ -141,6 +141,11 @@ Version 2.3.0
   will not be movable past a start/stop edge but it can be initially
   loaded beyond the edges by using the date parameter of the Band Info.
   -- LarryK rev 1677
+  
+* When you run run.bat, we now serve
+  http://localhost:9999/ajax/api - from src/webapp/ajax/api/
+  http://localhost:9999/timeline - from src/webapp/site/
+  http://localhost:9999/timeline/api - from src/webapp/timeline/api/
     
 Version 2.2.0 -- September 23, 2008
 * Prep for 2.2.0: updated RELEASE_NOTES -- LarryK rev 1593

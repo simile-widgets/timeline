@@ -4,25 +4,19 @@
 
 /* style for ethers */
 .timeline-ether-lines{border-color:#666; border-style:dotted; position:absolute;}
-
 .timeline-horizontal .timeline-ether-lines{border-width:0 0 0 1px; height:100%; top: 0; width: 1px;}
-
 .timeline-vertical .timeline-ether-lines{border-width:1px 0 0; height:1px; left: 0; width: 100%;}
 
 
 
-
 /*---------------- Weekends ---------------------------*/
-
 .timeline-ether-weekends{
 	position:absolute;
 	background-color:#FFFFE0;
 }
 
 .timeline-vertical .timeline-ether-weekends{left:0;width:100%;}
-
 .timeline-horizontal .timeline-ether-weekends{top:0; height:100%;}
-
 
 
 /*-------------------------- HIGHLIGHT DECORATORS -------------------*/
@@ -32,16 +26,17 @@
 	position:absolute;
 	overflow:hidden;
 }
+
+/* Width of horizontal decorators and Height of vertical decorators is
+   set in the decorator function params */
 .timeline-horizontal .timeline-highlight-point-decorator,
 .timeline-horizontal .timeline-highlight-decorator{
-	width:10px;
 	top:0;
   height:100%;
 }
 
 .timeline-vertical .timeline-highlight-point-decorator,
 .timeline-vertical .timeline-highlight-decorator{
-	height:10px;
 	width:100%;
 	left:0;
 }
@@ -50,29 +45,34 @@
 .timeline-highlight-point-decorator{background-color:#ff5;}
 
 
-
 /*---------------------------- LABELS -------------------------*/
-.timeline-highlight-label{position:absolute;overflow:hidden;font-size:200%;font-weight:bold;color:#999;}
+.timeline-highlight-label {
+  position:absolute; overflow:hidden; font-size:200%;
+  font-weight:bold; color:#999; }
 
 
 /*---------------- VERTICAL LABEL -------------------*/
-.timeline-horizontal .timeline-highlight-label{top:0;height:100%;}
-.timeline-horizontal .timeline-highlight-label td{vertical-align:middle;}
-.timeline-horizontal .timeline-highlight-label-start{text-align:right;}
-.timeline-horizontal .timeline-highlight-label-end{text-align:left;}
+.timeline-horizontal .timeline-highlight-label {top:0; height:100%;}
+.timeline-horizontal .timeline-highlight-label td {vertical-align:middle;}
+.timeline-horizontal .timeline-highlight-label-start {text-align:right;}
+.timeline-horizontal .timeline-highlight-label-end {text-align:left;}
 
 
 /*---------------- HORIZONTAL LABEL -------------------*/
-.timeline-vertical .timeline-highlight-label{left:0;width:100%;}
-.timeline-vertical .timeline-highlight-label td{vertical-align:top;}
-.timeline-vertical .timeline-highlight-label-start{text-align:center;}
-.timeline-vertical .timeline-highlight-label-end{text-align:center;}
-
+.timeline-vertical .timeline-highlight-label {left:0;width:100%;}
+.timeline-vertical .timeline-highlight-label td {vertical-align:top;}
+.timeline-vertical .timeline-highlight-label-start {text-align:center;}
+.timeline-vertical .timeline-highlight-label-end {text-align:center;}
 
 
 /*-------------------------------- DATE LABELS --------------------------------*/
-.timeline-date-label{position:absolute; border:solid #aaa; color:#aaa;	width:5em; height:1.5em;}
-.timeline-date-label-em{color:#000;}
+.timeline-date-label {
+  position: absolute;
+  border: solid #aaa;
+  color: #aaa;
+  width: 5em;
+  height: 1.5em;}
+.timeline-date-label-em {color: #000;}
 
 /* horizontal */
 .timeline-horizontal .timeline-date-label{padding-left:2px;}
@@ -84,11 +84,11 @@
 .timeline-vertical .timeline-date-label{border-width:1px 0 0;}
 .timeline-vertical .timeline-date-label-em{width:7em}
 
+
 /*------------------------------- Ether.highlight -------------------------*/
 .timeline-ether-highlight{position:absolute; background-color:#fff;}
 .timeline-horizontal .timeline-ether-highlight{top:2px;}
 .timeline-vertical .timeline-ether-highlight{left:2px;}
-
 
 
 /*------------------------------ EVENTS ------------------------------------*/
@@ -110,8 +110,8 @@
 }
 
 .timeline-small-event-icon{width:1px; height:6px;}
- 
- 
+
+  
 /*--------------------------------- TIMELINE-------------------------*/
 .timeline-ether-bg{width:100%; height:100%;}
 .timeline-band-0 .timeline-ether-bg{background-color:#eee}

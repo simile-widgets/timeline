@@ -146,6 +146,14 @@ Version 2.3.0
   http://localhost:9999/ajax/api - from src/webapp/ajax/api/
   http://localhost:9999/timeline - from src/webapp/site/
   http://localhost:9999/timeline/api - from src/webapp/timeline/api/
+
+* PointHighlightDecorator now uses the width parameter, not CSS.
+  Issue is that the Point Highlight Decorator is centered on the point in time
+  being decorated. So the JS needs to calculate based on the width--therefore
+  don't use CSS for width. Thanks to Christian Thiemann.
+* Revised all examples to use new directory layout. 
+  -- LarryK rev 1729
+
     
 Version 2.2.0 -- September 23, 2008
 * Prep for 2.2.0: updated RELEASE_NOTES -- LarryK rev 1593

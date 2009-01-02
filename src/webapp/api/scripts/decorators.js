@@ -125,6 +125,8 @@ Timeline.PointHighlightDecorator = function(params) {
     this._date = (typeof params.date == "string") ? 
         this._unit.parseFromObject(params.date) : params.date;
     this._width = params.width != null ? params.width : 10;
+      // Since the width is used to calculate placements (see minPixel, below), we
+      // specify width here, not in css.
     this._color = params.color;
     this._cssClass = params.cssClass != null ? params.cssClass : '';
     this._opacity = params.opacity != null ? params.opacity : 100;
@@ -156,8 +158,8 @@ Timeline.PointHighlightDecorator.prototype.paint = function() {
         var doc = this._timeline.getDocument();
     
         var div = doc.createElement("div");
-        div.className='timeline-highlight-point-decorator'
-        div.className += ' ' + this._cssClass
+        div.className='timeline-highlight-point-decorator';
+        div.className += ' ' + this._cssClass;
                     
         if(this._color != null) {
         	  div.style.backgroundColor = this._color;
@@ -169,9 +171,10 @@ Timeline.PointHighlightDecorator.prototype.paint = function() {
             
         if (this._timeline.isHorizontal()) {
             div.style.left = minPixel + "px";
-        
+            div.style.width = this._width;
         } else {
             div.style.top = minPixel + "px";
+            div.style.height = this._width;
         }
     }
     this._layerDiv.style.display = "block";

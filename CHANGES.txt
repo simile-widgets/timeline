@@ -153,6 +153,8 @@ Version 2.3.0
   don't use CSS for width. Thanks to Christian Thiemann.
 * Revised all examples to use new directory layout. 
   -- LarryK rev 1729
+* Added CompactPainter, which allows for large images and can render
+  image stacks. See the new compact-painter example.
 
     
 Version 2.2.0 -- September 23, 2008

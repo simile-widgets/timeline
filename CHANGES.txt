@@ -184,6 +184,9 @@ Version 2.3.0
   http://localhost:9999/timeline - from src/webapp/
   Revised Release Notes for release.
   -- LarryK rev 1825
+* Changed copyright link to be http://code.google.com/p/simile-widgets/
+  -- LarryK rev 1826
+
   
 
     

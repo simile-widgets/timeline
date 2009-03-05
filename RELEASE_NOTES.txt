@@ -1,5 +1,113 @@
 RELEASE_NOTES.txt
 
+Version 2.3.0 -- March 5, 2009
+
+  New Features
+  * AutoWidth. AutoWidth automatically calculates and sets the 'width' for 
+    the Timeline's bands and for the overall Timeline. The 'width,' for horizontal
+    Timelines, is actually the 'height' style of the various divs.
+    
+    The needed width is re-calculated whenever a new set of events
+    are viewed or are about to be viewed. If the new needed width is greater than the
+    current width, the increase is animated. See the example.
+    
+    To use autoWidth:
+    1) You will be modifying the theme's settings in your html file. 
+    2) Set the theme's autoWidth to true
+    3) Optionally update the theme's autoWidthAnimationTime setting.
+    4) Optionally update the autoWidthMargin settings in the Theme. The margin, per
+       band, is used to set how close the bottom of the lowest track is to the 
+       edge of the band's div. The units are total track width. There are two settings,
+       one for overview bands, the second for others.
+    5) After you have loaded your events, call tl.finishedEventLoading() where tl is the 
+       Timeline object returned from Timeline.create. 
+    Demo: examples/test_example2/test_example2.html
+    
+  * Timeline start and end feature. Timelines are still infinite by default, but you can
+    now add a start and end. Add theme.timeline_start, theme.timeline_stop to disable
+    movement of the Timeline beyond the start and/or stop. 
+    The setting affects the entire Timeline and must be set in the theme of the
+    first band. Note: Depending on the relative resolutions of the bands, different
+    amounts of the various bands will be seen when at a start or stop edge, depending
+    on which band was being moved and by how much. In addition to setting the timeline_start
+    and _stop, you may want to add span decorators to cover up the 
+    unused parts of the Timeline. See example2. A Timeline will not be movable
+    past a start/stop edge but it can be initially loaded beyond the edges by using
+    the date parameter of the Band Info.
+
+  * Added CompactPainter, which allows for large images and can render
+    image stacks. See the new compact-painter example.
+
+  * Highlighting event labels: When highlighting events on a Timeline, default is to
+    highlight the event's icon or tape. If theme.event.highlightLabelBackground is true,
+    the label's background will also be changed to the highlight color.
+    See the Jewish timeline example: type a highlight match term in a highlight box.
+
+  * Use new maxHeight param from SimileAjax for setting maxHeight of 
+    bubbles. Added theme.bubble.maxHeight with default of 0 (no maximum).
+
+ 
+  Developer features and changes
+  * Upgraded to jQuery 1.2.6 minimized file
+  * Changed timeline-api to use MIT Simile Ajax v 2.2.0. by default.
+  * New feature tests and demonstrations of features added to test_examples.
+    See the examples directory.  
+  * Per event css classnames. Double class name selectors don't work on 
+    IE so now add context specific prefixes to css classname supplied with an
+    event's definition. Eg if an event has classname attribute 'hot' then 
+    original-painter label divs will have class="hot label-hot timeline-event-label"
+    icon element will have icon-hot and hot, tapes will have tape-hot and hot.
+    Additional prefixes: highlight- for event-highlight,
+    small- for overview painter.
+  * Added tags/latest, a copy of the latest tagged release. Will be used for
+    referring to examples and other source files from the wiki.
+  * Event tape heights now use theme.event.tape.height.
+  * Bullet-proofing: Fix for issue 34. If an event's dates don't make sense then
+    the library will replace the event's label with an error message. Eg 
+    latestStart date after the event's earliestEnd. Or End before Start, etc.
+  * Issue (RFE) 26: Added event attribute trackNum for developers to specify
+    a track number instead of using automatic layout.
+  * Add English day names to en locale
+  * Add formated ids to event tapes, labels, icons to
+    enable a single listener to retrieve state from the id. Added support functions
+    event-utils.js.
+  * Added EventPaintListener hook to original-painter. Enables clients to hook into
+    painting life cycle. See original-painter.js.
+  * Added  track.offset setting to original-painter. Enables specific
+    control over top margin of band event painting. Very useful when a
+    Timeline has multiple event bands or a pseudo event band that is just
+    used for labeling above an event band.  -- LarryK rev 1661
+  * Added instant.impreciseIconMargin to original-painter. Enables specific
+    control over top margin of icon (margin between bottom of tape and 
+    top of icon). Only used if the event has a tape and an icon.
+  * Span decorator improvements: now can have null labels. New param of 
+    inFront. If true, then the span is in front of all layers but the events.
+    Now uses color attribute if present, else css. -- LarryK rev 1677
+  * Span point decorator: Now uses color attribute if present, else css.
+  * When you run run.bat, we now serve
+    http://localhost:9999/ajax/api - from src/webapp/ajax/api/
+    http://localhost:9999/timeline - from src/webapp/
+    http://localhost:9999/timeline/api - from src/webapp/timeline/api/
+  * PointHighlightDecorator now uses the width parameter, not CSS.
+  * Issue (RFE) 60: Added Timeline.version string in timeline.js.
+    Added Timeline.writeVersion -- a helper that writes out the 
+    current version. Updated examples to use it.
+  * Fixed overview painter to use event's classname attribute if present.
+
+      
+  Bug fixes
+  * Issue 13: Event labels wrap on FF 3 on Mac.
+  * Issue 16: Tape color for overview painter now set correctly. Uses event's color
+    attribute, theme.event.duration.color or css color for class timeline-small-event-tape.
+  * Issue 20: Fixed issues caused when events don't have title attribute.
+  * Issue 30: Event labels wrap when 'classname' attribute is added and text is bold. 
+  * Issue 31: added event's classname attribute to div for icons too.
+  * Issue 33: added event attribute durationEvent. 
+  * Event highlighting now working again.  
+    
+  See the CHANGES.txt file for additional details
+  
+
 Version 2.2.0 -- September 23, 2008
 
   Known Issues

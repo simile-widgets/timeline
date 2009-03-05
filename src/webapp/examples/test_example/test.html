@@ -1,7 +1,6 @@
 <html>
 <head>
     <title>SIMILE | Timeline | Examples | Test Example</title>
-    <link rel='stylesheet' href='../styles.css' type='text/css' />
 
     <!-- ############################################################################ -->
     <!-- To use this file on your own system, replace ../../api/timeline-api.js with  -->
@@ -9,6 +8,7 @@
     <!-- (Where 2.3.0 is the current release number.)                                 -->
     <script src="../../api/timeline-api.js?bundle=true" type="text/javascript"></script>
 
+    <link rel='stylesheet' href='../styles.css' type='text/css' /> <!-- load your css after Timeline's -->
     <script>
         var tl;
         function onLoad() {
@@ -90,7 +90,14 @@
             <li>Caption and tapeImage attributes. The striped tape. Hover over the label or tape to view the caption.</li>
             <li>Really long labels. They should not wrap</li>
             <li>Permutations of bad dates. Test that error messages are shown in all browsers including IE</li>
-            <li>Event has classname attribute. CSS used to modify the event's display. For event with classname of special_event, use css selector .timeline-event-tape.special_event for the tape in a main band, .timeline-event-label.special_event for the label, .timeline-small-event-tape.small-special_event for the tape in an overview band</li>
+            <li>Event has classname attribute. CSS is used to modify the event's display. For event with classname of special_event, use css selectors:
+            <ul><li>.tape-special_event for the tape in a main band</li>
+                <li>.label-special_event for the label</li>
+                <li>.icon-special_event for the icon</li>
+                <li>.highlight-special_event for the highlight div</li>
+                <li>In addition to the above, the elements also have a class of just special_event. So the selector .special_event can be used generically for all of the above elements, depending on your goals.</li>
+                <li>The events in the overview band will have class .small-special_event for the tape or tick.</li>
+            </ul>
         </ol>
     Additional features demonstrated:
     <ul>
@@ -99,7 +106,7 @@
     <li>Modified theme: Popup bubble dimensions set explicitly.</li>
     </ul>
     </p>
-    <p>Timeline version <span id='tl_ver' />.</p>
+    <p>Timeline version <span id='tl_ver'></span>.</p>
 <script>Timeline.writeVersion('tl_ver')</script>
     <p>Stripe courtesy of <a href='http://www.stripegenerator.com/'>Stripe Generator</a>
     <div id="tl" class="timeline-default" style="height: 400px;">

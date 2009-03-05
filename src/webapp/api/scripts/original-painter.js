@@ -467,7 +467,7 @@ Timeline.OriginalEventPainter.prototype._paintEventIcon = function(evt, iconTrac
     }
     var img = SimileAjax.Graphics.createTranslucentImage(icon);
     var iconDiv = this._timeline.getDocument().createElement("div");
-    iconDiv.className = this._getElClassName('timeline-event-icon', evt);
+    iconDiv.className = this._getElClassName('timeline-event-icon', evt, 'icon');
     iconDiv.id = this._encodeEventElID('icon', evt);
     iconDiv.style.left = left + "px";
     iconDiv.style.top = top + "px";
@@ -532,7 +532,7 @@ Timeline.OriginalEventPainter.prototype._paintEventTape = function(
     var top = metrics.trackOffset + iconTrack * metrics.trackIncrement;
     
     var tapeDiv = this._timeline.getDocument().createElement("div");
-    tapeDiv.className = this._getElClassName('timeline-event-tape', evt);
+    tapeDiv.className = this._getElClassName('timeline-event-tape', evt, 'tape');
     tapeDiv.id = this._encodeEventElID('tape' + tape_index, evt);
     tapeDiv.style.left = startPixel + "px";
     tapeDiv.style.width = tapeWidth + "px";
@@ -568,12 +568,20 @@ Timeline.OriginalEventPainter.prototype._paintEventTape = function(
 }
 
 Timeline.OriginalEventPainter.prototype._getLabelDivClassName = function(evt) {
-    return this._getElClassName('timeline-event-label', evt);
+    return this._getElClassName('timeline-event-label', evt, 'label');
 };
 
-Timeline.OriginalEventPainter.prototype._getElClassName = function(elClassName, evt) {
-    var evt_classname = evt.getClassName();
-    return elClassName + (evt_classname != null ? (' ' + evt_classname) : '');
+Timeline.OriginalEventPainter.prototype._getElClassName = function(elClassName, evt, prefix) {
+    // Prefix and '_' is added to the event's classname. Set to null for no prefix
+    var evt_classname = evt.getClassName(),
+        pieces = [];
+
+    if (evt_classname) {
+      if (prefix) {pieces.push(prefix + '-' + evt_classname + ' ');}
+      pieces.push(evt_classname + ' ');
+    }
+    pieces.push(elClassName);
+    return(pieces.join(''));
 };
 
 Timeline.OriginalEventPainter.prototype._getHighlightColor = function(highlightIndex, theme) {
@@ -588,7 +596,7 @@ Timeline.OriginalEventPainter.prototype._createHighlightDiv = function(highlight
         var color = this._getHighlightColor(highlightIndex, theme);
         
         div = doc.createElement("div");
-        div.className = this._getElClassName('timeline-event-highlight', evt);
+        div.className = this._getElClassName('timeline-event-highlight', evt, 'highlight');
         div.id = this._encodeEventElID('highlight0', evt); // in future will have other
                                                            // highlight divs for tapes + icons
         div.style.position = "absolute";

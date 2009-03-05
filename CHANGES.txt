@@ -175,8 +175,14 @@ Version 2.3.0
   -- LarryK rev 1821
 * Also need to set mime type to be text/xml for xml src files.
   -- LarryK rev 1822
-* Bug fix: misspelled className as classname -- -- LarryK rev 1823
-  
+* Bug fix: misspelled className as classname -- LarryK rev 1823
+* Fixed IE-only bug. Chokes on <span id='x' />. Changed to <span id='x'></span> and all is well.
+  Another IE only bug: double class name selectors don't work on 
+  IE. Eg <div class 'foo bar' /> should be selected with css selector .foo.bar (or .bar.foo) 
+  Works everywhere but ie. So added label-, icon-, tape- to className plus className by
+  itself in original_painter. Additional prefixes: highlight- for event-highlight,
+  small- for overview painter. Problem was caught by test-example.
+  -- LarryK rev 1824
 
 
     

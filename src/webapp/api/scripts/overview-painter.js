@@ -126,8 +126,8 @@ Timeline.OverviewEventPainter.prototype.paintInstantEvent = function(evt, metric
     var startPixel = Math.round(this._band.dateToPixelOffset(startDate));
     
     var color = evt.getColor(),
-        className = evt.getClassName();
-    if (className) {
+        klassName = evt.getClassName();
+    if (klassName) {
       color = null;
     } else {
       color = color != null ? color : theme.event.duration.color;
@@ -154,21 +154,21 @@ Timeline.OverviewEventPainter.prototype.paintDurationEvent = function(evt, metri
     this._tracks[tapeTrack] = earliestEndPixel;
     
     var color = evt.getColor(),
-        className = evt.getClassName();
-    if (className) {
+        klassName = evt.getClassName();
+    if (klassName) {
       color = null;
     } else {
       color = color != null ? color : theme.event.duration.color;
     }
     
     var tapeElmtData = this._paintEventTape(evt, tapeTrack, latestStartPixel, earliestEndPixel,
-      color, 100, metrics, theme, className);
+      color, 100, metrics, theme, klassName);
     
     this._createHighlightDiv(highlightIndex, tapeElmtData, theme);
 };
 
 Timeline.OverviewEventPainter.prototype._paintEventTape = function(
-    evt, track, left, right, color, opacity, metrics, theme, className) {
+    evt, track, left, right, color, opacity, metrics, theme, klassName) {
     
     var top = metrics.trackOffset + track * metrics.trackIncrement;
     var width = right - left;
@@ -176,7 +176,7 @@ Timeline.OverviewEventPainter.prototype._paintEventTape = function(
     
     var tapeDiv = this._timeline.getDocument().createElement("div");
     tapeDiv.className = 'timeline-small-event-tape'
-    if (className) {tapeDiv.className += ' small-' + className;}
+    if (klassName) {tapeDiv.className += ' small-' + klassName;}
     tapeDiv.style.left = left + "px";
     tapeDiv.style.width = width + "px";
     tapeDiv.style.top = top + "px";
@@ -217,8 +217,8 @@ Timeline.OverviewEventPainter.prototype._paintEventTick = function(
   //  tickDiv.style.backgroundColor = color;
   //  tickDiv.style.overflow = "hidden";
 
-    var className = evt.getClassName()
-    if (className) {tickDiv.className +=' small-' + className};
+    var klassName = evt.getClassName()
+    if (klassName) {tickDiv.className +=' small-' + klassName};
 	
     if(opacity<100) {SimileAjax.Graphics.setOpacity(tickDiv, opacity)};
     

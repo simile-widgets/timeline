@@ -8,7 +8,7 @@
  *  To run from the MIT copy of Timeline:
  *  Include this file in your HTML file as follows:
  *
- *    <script src="http://static.simile.mit.edu/timeline/api-2.0/timeline-api.js" 
+ *    <script src="http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js" 
  *     type="text/javascript"></script>
  *
  *

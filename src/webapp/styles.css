@@ -14,4 +14,4 @@ table {
     border: 1px solid #aaa;
 }
 
-.timeline-event-tape.special_event, .timeline-small-event-tape.small-special_event {background-color: orange;}
+.tape-special_event, .small-special_event {background-color: orange;}

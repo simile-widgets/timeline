@@ -112,6 +112,12 @@
     <copy todir="timeline_${version}/timeline_ajax/images">
       <fileset dir="${ajax_api}images" excludes="**/.svn/**" />
     </copy>
+    <copy todir="timeline_${version}/timeline_ajax/styles">
+      <fileset dir="${ajax_api}styles" excludes="**/.svn/**" />
+    </copy>
+    <copy todir="timeline_${version}/timeline_ajax/content">
+      <fileset dir="${ajax_api}content" excludes="**/.svn/**" />
+    </copy>
 
     <copy file="${ajax_api}scripts/signal.js" todir="timeline_${version}/timeline_ajax/scripts" />
     

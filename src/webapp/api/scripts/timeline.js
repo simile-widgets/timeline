@@ -26,10 +26,19 @@
 
 
 /*==================================================
+ *  Timeline VERSION     
+ *==================================================
+ */
+// Note: version is also stored in the build.xml file
+Timeline.version = 'pre 2.3.0';  // use format 'pre 1.2.3' for trunk versions 
+Timeline.ajax_lib_version = SimileAjax.version;  // Waiting for version string method from Ajax library
+Timeline.display_version = Timeline.version + ' (with Ajax lib ' + Timeline.ajax_lib_version + ')';
+ // cf method Timeline.writeVersion
+
+/*==================================================
  *  Timeline
  *==================================================
  */
-
 Timeline.strings = {}; // localization string tables
 Timeline.HORIZONTAL = 0;
 Timeline.VERTICAL = 1;
@@ -226,6 +235,12 @@ Timeline.loadJSON = function(url, f) {
 Timeline.getTimelineFromID = function(timelineID) {
     return Timeline.timelines[timelineID];
 };
+
+// Write the current Timeline version as the contents of element with id el_id
+Timeline.writeVersion = function(el_id) {
+  document.getElementById(el_id).innerHTML = this.display_version;    
+};
+
 
 
 /*==================================================

@@ -18,16 +18,27 @@
             var d = Timeline.DateTime.parseGregorianDateTime("1900")
             var bandInfos = [
                 Timeline.createBandInfo({
-                    width:          "100%", 
+                    width:          "80%", 
                     intervalUnit:   Timeline.DateTime.DECADE, 
                     intervalPixels: 200,
                     eventSource:    eventSource,
                     date:           d,
                     theme:          theme,
                     layout:         'original'  // original, overview, detailed
+                }),
+                Timeline.createBandInfo({
+                    width:          "20%", 
+                    intervalUnit:   Timeline.DateTime.CENTURY, 
+                    intervalPixels: 200,
+                    eventSource:    eventSource,
+                    date:           d,
+                    theme:          theme,
+                    layout:         'overview'  // original, overview, detailed
                 })
             ];
-            
+            bandInfos[1].syncWith = 0;
+            bandInfos[1].highlight = true;
+                        
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
             // Adding the date to the url stops browser caching of data during testing or if
             // the data source is a dynamic query...
@@ -73,7 +84,7 @@
             <li>Caption and tapeImage attributes. The striped tape. Hover over the label or tape to view the caption.</li>
             <li>Really long labels. They should not wrap</li>
             <li>Permutations of bad dates. Test that error messages are shown in all browsers including IE</li>
-            <li>Event has classname attribute. CSS used to modify the event's display.</li>
+            <li>Event has classname attribute. CSS used to modify the event's display. For event with classname of special_event, use css selector .timeline-event-tape.special_event for the tape in a main band, .timeline-event-label.special_event for the label, .timeline-small-event-tape.small-special_event for the tape in an overview band</li>
         </ol>
     Additional features demonstrated:
     <ul>
@@ -82,6 +93,8 @@
     <li>Modified theme: Popup bubble dimensions set explicitly.</li>
     </ul>
     </p>
+    <p>Timeline version <span id='tl_ver' />.</p>
+<script>Timeline.writeVersion('tl_ver')</script>
     <p>Stripe courtesy of <a href='http://www.stripegenerator.com/'>Stripe Generator</a>
     <div id="tl" class="timeline-default" style="height: 400px;">
     </div>

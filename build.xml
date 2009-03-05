@@ -53,13 +53,13 @@
     <!-- Create versioned timeline dir with lib, src, examples, jetty -->
     <delete dir="timeline_${version}"/>
     <copy todir="timeline_${version}/lib">
-      <fileset dir="lib" excludes="**/.svn/**" />
+      <fileset dir="lib" excludes="**/.svn/**, **/*.bak" />
     </copy>
     <copy todir="timeline_${version}/src">
-      <fileset dir="src" excludes="**/.svn/**" />
+      <fileset dir="src" excludes="**/.svn/**, **/*.bak" />
     </copy>
     <copy todir="timeline_${version}/tools">
-      <fileset dir="tools" excludes="**/.svn/**" />
+      <fileset dir="tools" excludes="**/.svn/**, **/*.bak" />
     </copy>
     
     <copy file=".project" todir="timeline_${version}" />
@@ -97,11 +97,11 @@
     <copy file="LICENSE.txt"                      todir="timeline_${version}" />
 
     <copy todir="timeline_${version}/timeline_js/images">
-      <fileset dir="${webapp_api}images" excludes="**/.svn/**" />
+      <fileset dir="${webapp_api}images" excludes="**/.svn/**, **/*.bak" />
     </copy>
     
     <copy todir="timeline_${version}/timeline_js/scripts/l10n">
-      <fileset dir="${webapp_api}scripts/l10n" excludes="**/.svn/**" />
+      <fileset dir="${webapp_api}scripts/l10n" excludes="**/.svn/**, **/*.bak" />
     </copy>
     
     <!-- ajax files -->
@@ -110,13 +110,13 @@
     <copy file="${ajax_api}simile-ajax-bundle.js" todir="timeline_${version}/timeline_ajax" />
     
     <copy todir="timeline_${version}/timeline_ajax/images">
-      <fileset dir="${ajax_api}images" excludes="**/.svn/**" />
+      <fileset dir="${ajax_api}images" excludes="**/.svn/**, **/*.bak" />
     </copy>
     <copy todir="timeline_${version}/timeline_ajax/styles">
-      <fileset dir="${ajax_api}styles" excludes="**/.svn/**" />
+      <fileset dir="${ajax_api}styles" excludes="**/.svn/**, **/*.bak" />
     </copy>
     <copy todir="timeline_${version}/timeline_ajax/content">
-      <fileset dir="${ajax_api}content" excludes="**/.svn/**" />
+      <fileset dir="${ajax_api}content" excludes="**/.svn/**, **/*.bak" />
     </copy>
 
     <copy file="${ajax_api}scripts/signal.js" todir="timeline_${version}/timeline_ajax/scripts" />

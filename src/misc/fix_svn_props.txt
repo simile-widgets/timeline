@@ -32,3 +32,12 @@ svn propdel svn:executable           test_example/firefox_mac_test_case.html
 svn propset svn:mime-type text/html  test_example/firefox_mac_test_case.html
 svn propdel svn:executable           test_example2/test_example2.html
 svn propset svn:mime-type text/html  test_example2/test_example2.html
+
+# set mime type to be text/xml for xml files
+
+svn propset svn:mime-type text/xml dinosaurs/dinosaurs.xml
+svn propset svn:mime-type text/xml jfk_i18n/jfk.xml
+svn propset svn:mime-type text/xml jfk/jfk.xml
+svn propset svn:mime-type text/xml monet/monet.xml
+svn propset svn:mime-type text/xml religions/christianity.xml
+svn propset svn:mime-type text/xml religions/jewish.xml

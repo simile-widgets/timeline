@@ -173,6 +173,8 @@ Version 2.3.0
   Changed timeline-api to use MIT Simile Ajax v 2.2.0.
   Changed version to 2.3.0 in anticipation of the release.
   -- LarryK rev 1821
+* Also need to set mime type to be text/xml for xml src files.
+  -- LarryK rev 1822
   
 
 

@@ -1,0 +1,142 @@
+<!--+
+    |
+    |           +===========================+
+    |           |   Timeline Build System   |
+    |           +===========================+
+    |
+    | This is just for bundling and minifying javascript and CSS files.
+    |
+    +-->
+
+<project default="all" basedir="." name="Timeline">
+
+  <property name="version" value="2.3.0" />
+  
+  <target name="all" depends="timeline_source.zip, timeline_libraries.zip" />
+
+  <target name="tasks">
+    <taskdef name="jsmin"
+        classname="edu.mit.simile.jsminTask.JSMinTask"
+        classpath="tools/jsminTask.jar"/>
+  </target>
+  	
+  <target name="bundle" depends="tasks">
+    <!-- SimileAjax -->
+    <jsmin output="src/ajax/api/simile-ajax-bundle.js">
+        <fileset dir="src/ajax/api/scripts">
+            <include name="jquery*.js" />
+            <include name="platform.js" />
+        </fileset>
+        <fileset dir="src/ajax/api/scripts">
+            <include name="**/*.js" />
+            <exclude name="signal.js" />
+            <exclude name="jquery*.js" />
+            <exclude name="platform.js" />
+        </fileset>
+    </jsmin>
+  	
+  	<!-- Timeline -->
+    <jsmin output="src/webapp/api/timeline-bundle.js">
+        <fileset dir="src/webapp/api/scripts">
+        	<include name="*.js" />
+        </fileset>
+  	</jsmin>
+  	
+    <concat destfile="src/webapp/api/timeline-bundle.css">
+        <fileset dir="src/webapp/api/styles">
+        	<include name="**/*.css" />
+        </fileset>
+    </concat>
+  </target>
+  
+  <target name="create_output1" depends="bundle">
+    <!-- Create versioned timeline dir with lib, src, examples, jetty -->
+    <delete dir="timeline_${version}"/>
+    <copy todir="timeline_${version}/lib">
+      <fileset dir="lib" excludes="**/.svn/**, **/*.bak" />
+    </copy>
+    <copy todir="timeline_${version}/src">
+      <fileset dir="src" excludes="**/.svn/**, **/*.bak" />
+    </copy>
+    <copy todir="timeline_${version}/tools">
+      <fileset dir="tools" excludes="**/.svn/**, **/*.bak" />
+    </copy>
+    
+    <copy file=".project" todir="timeline_${version}" />
+    <copy file="build.xml" todir="timeline_${version}" />
+    <copy file="CHANGES.txt" todir="timeline_${version}" />
+    <copy file="jetty.xml" todir="timeline_${version}" />
+    <copy file="LICENSE.txt" todir="timeline_${version}" />
+    <copy file="README.txt" todir="timeline_${version}" />
+    <copy file="run" todir="timeline_${version}" />
+    <copy file="run.bat" todir="timeline_${version}" />
+  </target>
+  
+  <target name="timeline_source.zip" depends="create_output1">
+    <!-- Create timeline_source.zip - entire source tree: tools, lib, src -->
+    <delete file="timeline_source.zip" />
+    <zip destfile="timeline_source.zip"
+         basedir="."
+         update="yes"
+         duplicate="fail"
+         includes="timeline_${version}/**"
+    />  
+    <delete dir="timeline_${version}"/>
+  </target>
+
+  <target name="create_output2" depends="bundle">
+    <!-- Create versioned timeline dir with just bundled libraries and support files -->
+
+    <!-- timeline files -->
+    <property name="webapp_api" value="src/webapp/api/" />
+
+    <delete dir="timeline_${version}"/>
+    <copy file="${webapp_api}timeline-api.js"     todir="timeline_${version}/timeline_js" />
+    <copy file="${webapp_api}timeline-bundle.js"  todir="timeline_${version}/timeline_js" />
+    <copy file="${webapp_api}timeline-bundle.css" todir="timeline_${version}/timeline_js" />
+    <copy file="LICENSE.txt"                      todir="timeline_${version}" />
+
+    <copy todir="timeline_${version}/timeline_js/images">
+      <fileset dir="${webapp_api}images" excludes="**/.svn/**, **/*.bak" />
+    </copy>
+    
+    <copy todir="timeline_${version}/timeline_js/scripts/l10n">
+      <fileset dir="${webapp_api}scripts/l10n" excludes="**/.svn/**, **/*.bak" />
+    </copy>
+    
+    <!-- ajax files -->
+    <property name="ajax_api" value="src/ajax/api/"   />
+    <copy file="${ajax_api}simile-ajax-api.js"    todir="timeline_${version}/timeline_ajax" />
+    <copy file="${ajax_api}simile-ajax-bundle.js" todir="timeline_${version}/timeline_ajax" />
+    
+    <copy todir="timeline_${version}/timeline_ajax/images">
+      <fileset dir="${ajax_api}images" excludes="**/.svn/**, **/*.bak" />
+    </copy>
+    <copy todir="timeline_${version}/timeline_ajax/styles">
+      <fileset dir="${ajax_api}styles" excludes="**/.svn/**, **/*.bak" />
+    </copy>
+    <copy todir="timeline_${version}/timeline_ajax/content">
+      <fileset dir="${ajax_api}content" excludes="**/.svn/**, **/*.bak" />
+    </copy>
+
+    <copy file="${ajax_api}scripts/signal.js" todir="timeline_${version}/timeline_ajax/scripts" />
+    
+    <!-- release files -->
+    <copy file="CHANGES.txt" todir="timeline_${version}" />
+    <copy file="LICENSE.txt" todir="timeline_${version}" />
+    <copy file="README.txt" todir="timeline_${version}" />
+  </target>
+  
+  <target name="timeline_libraries.zip" depends="create_output2">
+    <!-- Create timeline_libraries.zip - entire source tree: tools, lib, src -->
+    <delete file="timeline_libraries.zip" />
+    <zip destfile="timeline_libraries.zip"
+         basedir="."
+         update="yes"
+         duplicate="fail"
+         includes="timeline_${version}/**"
+    />  
+    <delete dir="timeline_${version}"/>
+  </target>
+
+</project>

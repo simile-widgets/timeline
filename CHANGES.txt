@@ -175,6 +175,7 @@ Version 2.3.0
   -- LarryK rev 1821
 * Also need to set mime type to be text/xml for xml src files.
   -- LarryK rev 1822
+* Bug fix: misspelled className as classname -- -- LarryK rev 1823
   
 
 

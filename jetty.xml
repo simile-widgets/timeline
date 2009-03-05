@@ -63,7 +63,7 @@
         <Item>
           <New id="aContext" class="org.mortbay.jetty.handler.ContextHandler">
             <Set name="contextPath">/timeline</Set>
-            <Set name="resourceBase">./src/webapp/site/</Set>
+            <Set name="resourceBase">./src/webapp/</Set>
             <Set name="handler">
               <New id="javadocServletHandler" class="org.mortbay.jetty.servlet.ServletHandler">
                 <Set name="servlets">

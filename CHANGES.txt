@@ -59,9 +59,6 @@ Version 2.3.0
   1) You will be modifying the classic theme's settings in your html file. 
   2) Set the theme's autoWidth to true
   3) Optionally update the theme's autoWidthAnimationTime setting.
-     band, is used to set how close the bottom of the lowest track is to the 
-     edge of the band's div. The units are total track width. There are two settings,
-     one for overview bands, the second for others.
   4) Optionally update the autoWidthMargin settings in the Theme. The margin, per
      band, is used to set how close the bottom of the lowest track is to the 
      edge of the band's div. The units are total track width. There are two settings,
@@ -183,7 +180,11 @@ Version 2.3.0
   itself in original_painter. Additional prefixes: highlight- for event-highlight,
   small- for overview painter. Problem was caught by test-example.
   -- LarryK rev 1824
-
+* Updated jetty config file to serve 
+  http://localhost:9999/timeline - from src/webapp/
+  Revised Release Notes for release.
+  -- LarryK rev 1825
+  
 
     
 Version 2.2.0 -- September 23, 2008

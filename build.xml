@@ -10,7 +10,7 @@
 
 <project default="all" basedir="." name="Timeline">
 
-  <property name="version" value="pre2.3.0" />
+  <property name="version" value="2.3.0" />
   
   <target name="all" depends="timeline_source.zip, timeline_libraries.zip" />
 

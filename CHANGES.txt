@@ -159,7 +159,7 @@ Version 2.3.0
   -- David H rev 1759
 * Added Timeline.version string in timeline.js. Issue 60.
   Added Timeline.writeVersion -- a helper that writes out the 
-  current version. Updated examples to include it.
+  current version. Updated examples to use it.
   Updated build.xml to include Ajax new styles directory.
   Fixed overview painter to use event's classname attribute if present.
   Add a test for this to test-example.
@@ -168,6 +168,12 @@ Version 2.3.0
   Moved contents of /site up one level into /webapp -- per David H.
   Fixed library references in all examples to match new dir layout.
   -- LarryK rev 1814
+* Added src/misc/fix_svn_props.txt -- used to correctly set props on
+  example files. Enables them to be run in browser from svn repo. 
+  Changed timeline-api to use MIT Simile Ajax v 2.2.0.
+  Changed version to 2.3.0 in anticipation of the release.
+  -- LarryK rev 1821
+  
 
 
     

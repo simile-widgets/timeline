@@ -2538,7 +2538,7 @@ this.mouseWheel="scroll";
 
 
 /* timeline.js */
-Timeline.version="pre 2.3.0";
+Timeline.version="2.3.0";
 Timeline.ajax_lib_version=SimileAjax.version;
 Timeline.display_version=Timeline.version+" (with Ajax lib "+Timeline.ajax_lib_version+")";
 Timeline.strings={};

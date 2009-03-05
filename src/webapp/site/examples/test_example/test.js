@@ -112,7 +112,7 @@
 
         {'start': '1920', 'end': '1922',
         'title': 'Test 7a: special_event css (bolded)',
-        'description': 'Test 7a: special_event css (bolded)',
+        'description': 'Test 7a: special_event css (bolded label and colored tape)',
         'classname': 'special_event' 
         },
 

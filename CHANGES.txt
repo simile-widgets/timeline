@@ -146,6 +146,7 @@ Version 2.3.0
   http://localhost:9999/ajax/api - from src/webapp/ajax/api/
   http://localhost:9999/timeline - from src/webapp/site/
   http://localhost:9999/timeline/api - from src/webapp/timeline/api/
+  -- David H rev 1705
 
 * PointHighlightDecorator now uses the width parameter, not CSS.
   Issue is that the Point Highlight Decorator is centered on the point in time
@@ -155,6 +156,14 @@ Version 2.3.0
   -- LarryK rev 1729
 * Added CompactPainter, which allows for large images and can render
   image stacks. See the new compact-painter example.
+  -- David H rev 1759
+* Added Timeline.version string in timeline.js. Issue 60.
+  Added Timeline.writeVersion -- a helper that writes out the 
+  current version. Updated examples to include it.
+  Updated build.xml to include Ajax new styles directory.
+  Fixed overview painter to use event's classname attribute if present.
+  Add a test for this to test-example.
+  -- LarryK rev 1813
 
     
 Version 2.2.0 -- September 23, 2008

@@ -164,6 +164,11 @@ Version 2.3.0
   Fixed overview painter to use event's classname attribute if present.
   Add a test for this to test-example.
   -- LarryK rev 1813
+* Fixed build.xml to not include .bak files.
+  Moved contents of /site up one level into /webapp -- per David H.
+  Fixed library references in all examples to match new dir layout.
+  -- LarryK rev 1814
+
 
     
 Version 2.2.0 -- September 23, 2008

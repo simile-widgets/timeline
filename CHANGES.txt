@@ -1,5 +1,7 @@
 CHANGES.txt
 
+Version pre 2.4.0
+
 Version 2.3.0
 * Added test 5, really long labels, to test example page rev 1601, LarryK
 * Added tags/latest, a copy of the latest tagged release. Will be used for
@@ -186,8 +188,9 @@ Version 2.3.0
   -- LarryK rev 1825
 * Changed copyright link to be http://code.google.com/p/simile-widgets/
   -- LarryK rev 1826
+* Rev 1826 is release 2.3.0
+* Added local_example and timeline_local_example.zip. -- LarryK rev 1833
 
-  
 
     
 Version 2.2.0 -- September 23, 2008

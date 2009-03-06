@@ -190,7 +190,8 @@ Version 2.3.0
   -- LarryK rev 1826
 * Rev 1826 is release 2.3.0
 * Added local_example and timeline_local_example.zip. -- LarryK rev 1833
-
+* Revised local_example zip file to be versioned. Now called
+  timeline_local_example_1.0.zip -- LarryK rev 1834
 
     
 Version 2.2.0 -- September 23, 2008

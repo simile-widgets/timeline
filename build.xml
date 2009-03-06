@@ -12,7 +12,8 @@
 
   <property name="version" value="2.3.0" />
   
-  <target name="all" depends="timeline_source.zip, timeline_libraries.zip" />
+  <target name="all" 
+    depends="timeline_source.zip, timeline_libraries.zip, timeline_local_example.zip" />
 
   <target name="tasks">
     <taskdef name="jsmin"
@@ -138,5 +139,28 @@
     />  
     <delete dir="timeline_${version}"/>
   </target>
+
+  <!-- create timeline_local_example -->
+  <target name="create_output3" depends="bundle">
+    <!-- Create versioned timeline dir with local_example -->
+    <delete dir="timeline_${version}"/>
+    <copy todir="timeline_${version}/local_example">
+      <fileset dir="src/webapp/examples/local_example" excludes="**/.svn/**, **/*.bak" />
+    </copy>
+  </target>
+  
+  <target name="timeline_local_example.zip" depends="create_output3">
+    <!-- Create timeline_local_example.zip  -->
+    <delete file="timeline_local_example.zip" />
+    <zip destfile="timeline_local_example.zip"
+         basedir="."
+         update="yes"
+         duplicate="fail"
+         includes="timeline_${version}/**"
+    />  
+    <delete dir="timeline_${version}"/>
+  </target>
+
+  
 
 </project>

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
  "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-<head>
+  <head>
    <!-- See http://developer.yahoo.com/yui/grids/ for info on the grid layout -->
    <title>Local Timeline Example</title>
    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
@@ -11,7 +11,7 @@
    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.7.0/build/base/base-min.css"> 
 
    <!-- Load the Timeline library after reseting the fonts, etc -->
-   <script src="http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=true" type="text/javascript"></script>
+   <script src="http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js?bundle=true" type="text/javascript"></script>
  
    <link rel="stylesheet" href="local_example.css" type="text/css">
 
@@ -64,28 +64,26 @@
             }
         }
    </script>
-
-</head>
-<body onload="onLoad();" onresize="onResize();">
-<div id="doc3" class="yui-t7">
-   <div id="hd" role="banner">
-     <h1>Local Timeline Example</h1>
-     <p>This example reads a local data file from the disk and displays it using the Simile Timeline library. The software library is retrieved from servers via the Internet.</p>
-     <p>The Timeline will grow automatically to fit the events. Scroll towards 2030 to see it grow. Click on an event to see its details.</p>
-   </div>
-   <div id="bd" role="main">
-	   <div class="yui-g">
-	     <div id='tl'></div>
-	     <p>To move the Timeline: use the mouse scroll wheel, the arrow keys or grab and drag the Timeline.</p>
-	   </div>
-	 </div>
-   <div id="ft" role="contentinfo">
-     <p>Thanks to the <a href=''>Simile Timeline project</a> Timeline version <span id='tl_ver'></span></p>
-     <script>Timeline.writeVersion('tl_ver')</script> 
-   </div>
-</div>
-
-</body>
+  </head>
+  <body onload="onLoad();" onresize="onResize();">
+    <div id="doc3" class="yui-t7">
+       <div id="hd" role="banner">
+         <h1>Local Timeline Example</h1>
+         <p>This example reads a local data file from the disk and displays it using the Simile Timeline library. The software library is retrieved from servers via the Internet.</p>
+         <p>The Timeline will grow automatically to fit the events. Scroll towards 2030 to see it grow. Click on an event to see its details.</p>
+       </div>
+       <div id="bd" role="main">
+         <div class="yui-g">
+           <div id='tl'></div>
+           <p>To move the Timeline: use the mouse scroll wheel, the arrow keys or grab and drag the Timeline.</p>
+         </div>
+       </div>
+       <div id="ft" role="contentinfo">
+         <p>Thanks to the <a href=''>Simile Timeline project</a> Timeline version <span id='tl_ver'></span></p>
+         <script>Timeline.writeVersion('tl_ver')</script> 
+       </div>
+    </div>
+  </body>
 </html>
 
 

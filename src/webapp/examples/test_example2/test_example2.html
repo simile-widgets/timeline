@@ -1,12 +1,12 @@
 <html>
-<head>
+  <head>
     <title>SIMILE | Timeline | Examples | Test Example 2</title>
     <link rel='stylesheet' href='../styles.css' type='text/css' />
 
     <!-- ############################################################################ -->
     <!-- To use this file on your own system, replace ../../api/timeline-api.js with  -->
-    <!--     http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js          -->
-    <!-- (Where 2.3.0 is the current release number.)                                 -->
+    <!--     http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js          -->
+    <!-- (where 2.3.1 is the current release number.)                                 -->
     <script src="../../api/timeline-api.js?bundle=true" type="text/javascript"></script>
 
     <script>
@@ -134,49 +134,60 @@
             }
         }
     </script>
-</head>
-<body onload="onLoad();" onresize="onResize();">
-<ul id="path">
-  <li><a href="http://code.google.com/p/simile-widgets/" title="Home">SIMILE</a></li>
-  <li><a href="../../" title="Timeline">Timeline</a></li>
-  <li><a href="../" title="Examples">Examples</a></li>
-  <li><span>Cubism</span></li>
-</ul>
-<div id="body">    
-    <p><b>Demonstrates:</b>
-    <ul>
-    <li>Automatic sizing of the Timeline band "widths." (For a horizontal Timeline, a band's "width"
-    is the height of the band on the screen.)
-      <ul><li>Note how the middle band is automatically made taller since its scale
-    is larger and the event tapes are thicker, thus requiring more space for the events.</li>
-      <li>Use mouse-wheel, arrow keys or links to move to 4400 (additional events which require a larger Timeline).
-      Note how the Timeline enlarges when about 4200 becomes visible on screen. The size increase is animated.</li>
-      </ul>
-    </li>
-    <li>Changing the default theme</li>
-    <li>Loading two different event files sequentially.</li>
-    <li>Timeline starts at 1850 and ends at 4480
+  </head>
+  <body onload="onLoad();" onresize="onResize();">
+    <ul id="path">
+      <li><a href="/" title="Home">SIMILE Widgets</a></li>
+      <li><a href="../../" title="Timeline">Timeline</a></li>
+      <li><a href="../" title="Examples">Examples</a></li>
+      <li><span>Test Example 2</span></li>
     </ul>
-    Move Timeline: &nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:centerTimeline(1900);">1900</a>
-    &nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:centerTimeline(4400);">4400</a>
-    <p>Timeline version <span id='tl_ver'></span>.</p>
-<script>Timeline.writeVersion('tl_ver')</script>
-    <p>
-    
-    
-    <!-- ############################################## -->
-    <!-- ###                                        ### -->
-    <!-- ### NOTE: This Timeline's width will be    ### -->
-    <!-- ###       set automatically. Initial       ### -->
-    <!-- ###       value will be replaced. Start    ### -->
-    <!-- ###       with a min of 200 so "loading"   ### -->
-    <!-- ###       popup can be seen. Or start with ### -->
-    <!-- ###       value near the automatic value   ### -->
-    <!-- ###       to minimize motion on the screen ### -->
-    <!-- ###                                        ### -->
-    <!-- ############################################## -->
-    <div id="tl" class="timeline-default" style="height:300px;" > 
+  
+    <div id="header">
+      <h1>Test Example 2</h1>
     </div>
-</div>
-</body>
+  
+    <div id="content">
+      <p><b>Demonstrates:</b>
+        <ul>
+          <li>Automatic sizing of the Timeline band "widths." (For a horizontal Timeline, a band's "width"
+            is the height of the band on the screen.)
+            <ul>
+              <li>Note how the middle band is automatically made taller since its scale
+                is larger and the event tapes are thicker, thus requiring more space for the events.</li>
+              <li>Use mouse-wheel, arrow keys or links to move to 4400 (additional events which require a larger Timeline).
+                Note how the Timeline enlarges when about 4200 becomes visible on screen. The size increase is animated.</li>
+            </ul>
+          </li>
+          <li>Changing the default theme</li>
+          <li>Loading two different event files sequentially.</li>
+          <li>Timeline starts at 1850 and ends at 4480
+        </ul>
+      
+        Move Timeline: &nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:centerTimeline(1900);">1900</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:centerTimeline(4400);">4400</a>
+      
+        <p>Timeline version <span id='tl_ver'></span>.</p>
+        <script>Timeline.writeVersion('tl_ver')</script>
+      <p>
+    
+    
+      <!-- ############################################## -->
+      <!-- ###                                        ### -->
+      <!-- ### NOTE: This Timeline's width will be    ### -->
+      <!-- ###       set automatically. Initial       ### -->
+      <!-- ###       value will be replaced. Start    ### -->
+      <!-- ###       with a min of 200 so "loading"   ### -->
+      <!-- ###       popup can be seen. Or start with ### -->
+      <!-- ###       value near the automatic value   ### -->
+      <!-- ###       to minimize motion on the screen ### -->
+      <!-- ###                                        ### -->
+      <!-- ############################################## -->
+      <div id="tl" class="timeline-default" style="height:300px;"></div>
+    </div>
+    
+    <div id="footer">
+      Copyright &copy; <a href="http://web.mit.edu/">Massachusetts Institute of Technology</a> and Contributors 2006-2009 ~ Some rights reserved
+    </div>
+  </body>
 </html>

@@ -30,7 +30,7 @@
  *==================================================
  */
 // Note: version is also stored in the build.xml file
-Timeline.version = '2.3.0';  // use format 'pre 1.2.3' for trunk versions 
+Timeline.version = '2.3.1';  // use format 'pre 1.2.3' for trunk versions 
 Timeline.ajax_lib_version = SimileAjax.version;  // Waiting for version string method from Ajax library
 Timeline.display_version = Timeline.version + ' (with Ajax lib ' + Timeline.ajax_lib_version + ')';
  // cf method Timeline.writeVersion

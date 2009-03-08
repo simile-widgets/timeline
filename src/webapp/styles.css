@@ -1,12 +1,4 @@
-@import url("http://simile.mit.edu/styles/default.css");
-
-body {
-    margin-bottom: 20em;
-}
-
-table {
-    font-size: 100%;
-}
+@import url("http://www.simile-widgets.org/styles/common.css");
 
 .timeline-default {
     font-family: Trebuchet MS, Helvetica, Arial, sans serif;
@@ -14,4 +6,4 @@ table {
     border: 1px solid #aaa;
 }
 
-.tape-special_event, .small-special_event {background-color: orange;}
+.tape-special_event, .small-special_event { background-color: orange; }

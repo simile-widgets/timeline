@@ -194,7 +194,7 @@ Timeline.GeochronoEtherMarkerLayout = function(timeline, band, theme, align, sho
         var div = timeline.getDocument().createElement("div");
         div.innerHTML = label.text;
         div.style.position = "absolute";
-        (label.emphasized ? emphasizedLabelStyler : labelStyler)(div);
+        //(label.emphasized ? emphasizedLabelStyler : labelStyler)(div);
         
         this.positionDiv(div, offset);
         markerDiv.appendChild(div);

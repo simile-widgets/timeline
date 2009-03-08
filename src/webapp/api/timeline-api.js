@@ -8,7 +8,7 @@
  *  To run from the MIT copy of Timeline:
  *  Include this file in your HTML file as follows:
  *
- *    <script src="http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js" 
+ *    <script src="http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js" 
  *     type="text/javascript"></script>
  *
  *
@@ -254,7 +254,7 @@
         
         var url = useLocalResources ?
             "http://127.0.0.1:9999/ajax/api/simile-ajax-api.js?bundle=false" :
-            "http://static.simile.mit.edu/ajax/api-2.2.0/simile-ajax-api.js";
+            "http://api.simile-widgets.org/ajax/2.2.1/simile-ajax-api.js";
         if (typeof Timeline_ajax_url == "string") {
            url = Timeline_ajax_url;
         }

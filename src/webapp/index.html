@@ -1,6 +1,6 @@
 <html>
-<head>
-    <title>SIMILE | Timeline</title>
+  <head>
+    <title>SIMILE Widgets | Timeline</title>
     <link rel='stylesheet' href='styles.css' type='text/css' />
     <link rel="alternate" type="application/rdf+xml" href="doap.rdf" />
     
@@ -59,11 +59,7 @@
                 }
             ];
             
-			
-			
             var theme = Timeline.ClassicTheme.create();
-			Timeline.ThemeName = 'dark-theme'
-			
             theme.event.bubble.width = 250;
             
             var date = "Fri Nov 22 1963 13:00:00 GMT-0600"
@@ -103,14 +99,14 @@
                         startLabel: "shot",
                         endLabel:   "t.o.d.",
                        // theme:      theme,
-						cssClass: 't-highlight1'
+                       cssClass: 't-highlight1'
                     }),
                     new Timeline.PointHighlightDecorator({
                         date:       "Fri Nov 22 1963 14:38:00 GMT-0600",
                         color:      "#FFC080",
                         opacity:    50,
                         //theme:      theme,
-						cssClass: 'p-highlight1'
+                        cssClass: 'p-highlight1'
                     }),
                     new Timeline.PointHighlightDecorator({
                         date:       "Sun Nov 24 1963 13:00:00 GMT-0600",
@@ -134,147 +130,111 @@
                 }, 500);
             }
         }
-		
-		
-		function themeSwitch(){
-			var timeline = document.getElementById('tl');		
-			timeline.className = (timeline.className.indexOf('dark-theme') != -1) ? timeline.className.replace('dark-theme', '') : timeline.className += ' dark-theme';
-			
-		}
+        
+        function themeSwitch(){
+          var timeline = document.getElementById('tl');		
+          timeline.className = (timeline.className.indexOf('dark-theme') != -1) ? timeline.className.replace('dark-theme', '') : timeline.className += ' dark-theme';
+
+        }
     </script>
-	<style type="text/css">
-		
-		#switch_theme{margin-left:2em; cursor:pointer; background:#eee; padding:4px 6px; width:120px; text-align:center; font-weight:bold; border:1px solid #999;}
-		
-		.t-highlight1{background-color:#ccf;}
-		.p-highlight1{background-color:#fcc;}
-		
-		.timeline-highlight-label-start .label_t-highlight1{color:#f00;}
-		.timeline-highlight-label-end .label_t-highlight1{color:#aaf;}
-		
-		.timeline-band-events .important{color:#f00;}		
-		.timeline-band-events .small-important{background:#c00;}
-		
-		
-		/*---------------------------------*/
-		
-		.dark-theme {color:#eee;}
-		.dark-theme .timeline-band-0 .timeline-ether-bg{background-color:#333}
-		.dark-theme .timeline-band-1 .timeline-ether-bg{background-color:#111}
-		.dark-theme .timeline-band-2 .timeline-ether-bg{background-color:#222}
-		.dark-theme .timeline-band-3 .timeline-ether-bg{background-color:#444}
-		
-		
-		.dark-theme .t-highlight1{background-color:#003;}
-		.dark-theme .p-highlight1{background-color:#300;}
-		
-		.dark-theme .timeline-highlight-label-start .label_t-highlight1{color:#f00;}
-		.dark-theme .timeline-highlight-label-end .label_t-highlight1{color:#115;}
-		
-		.dark-theme .timeline-band-events .important{color:#c00;}		
-		.dark-theme .timeline-band-events .small-important{background:#c00;}
-		
-		.dark-theme .timeline-date-label-em{color:#fff;}
-		.dark-theme .timeline-ether-lines{border-color:#555; border-style:solid;}
-		.dark-theme .timeline-ether-highlight{background:#555;}
-		
-		.dark-theme .timeline-event-tape,
-		.dark-theme .timeline-small-event-tape{background:#f60;}
-		.dark-theme .timeline-ether-weekends{background:#111;}
-	</style>
-</head>
-<body onload="onLoad();" onresize="onResize();">
-<!--#include virtual="sidebar.html" -->
-<ul id="path">
-  <li><a href="http://code.google.com/p/simile-widgets/" title="Home">SIMILE</a></li>
-  <li><span>Timeline</span></li>
-</ul>
+    <style type="text/css">
+        .t-highlight1 { background-color: #ccf; }
+        .p-highlight1 { background-color: #fcc; }
 
-<div id="body">
-    <h1>Timeline</h1>
-    <p>Timeline is a DHTML-based AJAXy widget for visualizing time-based events.
-        It is like <a href="http://maps.google.com/">Google Maps</a> for time-based information.
-        Below is a live example that you can play with. Pan the timeline by
-        dragging it horizontally or using your mouse-wheel. Click on an event icon or tape 
-        for details on the event. The arrow keys can also be used to navigate the timeline.
-    </p>
+        .timeline-highlight-label-start .label_t-highlight1 { color: #f00; }
+        .timeline-highlight-label-end .label_t-highlight1 { color: #aaf; }
 
-	<div id="switch_theme" onclick="themeSwitch();">Switch theme</div>
-    <div id="tl" class="timeline-default dark-theme" style="height: 350px; margin: 2em;">
+        .timeline-band-events .important { color: #f00; }
+        .timeline-band-events .small-important { background: #c00; }
+
+
+        /*---------------------------------*/
+
+        .dark-theme { color: #eee; }
+        .dark-theme .timeline-band-0 .timeline-ether-bg { background-color: #333 }
+        .dark-theme .timeline-band-1 .timeline-ether-bg { background-color: #111 }
+        .dark-theme .timeline-band-2 .timeline-ether-bg { background-color: #222 }
+        .dark-theme .timeline-band-3 .timeline-ether-bg { background-color: #444 }
+
+        .dark-theme .t-highlight1 { background-color: #003; }
+        .dark-theme .p-highlight1 { background-color: #300; }
+
+        .dark-theme .timeline-highlight-label-start .label_t-highlight1 { color: #f00; }
+        .dark-theme .timeline-highlight-label-end .label_t-highlight1 { color: #115; }
+
+        .dark-theme .timeline-band-events .important { color: #c00; }
+        .dark-theme .timeline-band-events .small-important { background: #c00; }
+
+        .dark-theme .timeline-date-label-em { color: #fff; }
+        .dark-theme .timeline-ether-lines { border-color: #555; border-style: solid; }
+        .dark-theme .timeline-ether-highlight { background: #555; }
+
+        .dark-theme .timeline-event-tape,
+        .dark-theme .timeline-small-event-tape { background: #f60; }
+        .dark-theme .timeline-ether-weekends { background: #111; }
+    </style>
+  </head>
+  <body onload="onLoad();" onresize="onResize();">
+    <ul id="path">
+      <li><a href="/">SIMILE Widgets</a></li>
+      <li><span>Timeline</span></li>
+    </ul>
+
+    <div id="header">
+      <h1>Timeline</h1>
+      <h2>Web Widget for Visualizing Temporal Data</h2>
     </div>
-    
-    <p>Just like Google Maps, Timeline can be used with zero software installation,
-        server-side or client-side. And like Google Maps, you can populate Timeline
-        with data by pointing it to an XML file (here is the 
-        <a href="examples/jfk/jfk.xml">data file</a> for the timeline above).
-        But Timeline is not limited to only that means of loading data; for instance,
-        we have just added <a href="examples/cubism/cubism.html">JSON support</a>.
-    </p>
-    
-    <h2>Live Examples</h2>
-    <ul>
-        <li><a href="examples/religions/religions.html">Religion Timelines</a>:
-            recommended to be viewed on a <em>huge monitor</em>, 
-            2000 years of Jewish and Christianity history, all
-            mashed up, scrolling side-by-side.
-        </li>
-        
-        <!-- 
-        Dinos are no longer working...
-        <li><a href="examples/dinosaurs/dinosaurs2.html">Dinosaurs</a>:
-            recommended to be viewed on a huge monitor, showing Timeline
-            working on geological scale events.
-        </li>
-        -->
-        
-        <li>Additional <a href="examples/">examples</a></li>
-    </ul>
 
-    <h2>Related Projects</h2>
-    <ul>
-        <li><a href="http://simile.mit.edu/exhibit/">Exhibit</a>: a lightweight structured data
-            publishing framework that is entirely Javascript-based&mdash;you can make nice
-            time lines and maps without ever touching a database or even setting up a web server.
-        </li>
-    </ul>
-        
-    <h2>Documentation</h2>
-    <ul>
-        <li>Documentation: read and contribute to Timeline's
-          <a href="http://code.google.com/p/simile-widgets/wiki/Timeline">wiki</a>
-        </li>
-        
-        <li>Older documentation from version 1 is available
-          <a href="docs/">here</a> and <a href="http://simile.mit.edu/wiki/Timeline">here</a>
-         </li>
-        <li><a href="http://code.google.com/p/simile-widgets/source/browse/">Source Code</a>
-          on SVN repository
-        </li>
-    </ul>
+    <div id="content">
+      <table class="spaced-table" width="100%"><tr>
+        <td style="font-size: 150%; color: #888; width: 30em">
+          With this widget, you can make beautiful interactive timelines
+          like the one below. Try dragging it horizontally or using
+          your mouse-wheel. Click on each event for for details.
+        </td>
+        <td valign="bottom" align="right">
+          <button onclick="themeSwitch();">Switch theme</button>
+        </td>
+      </tr></table>
     
-    <h2>Mailing list / Feedback / Contribute</h2>
-    <ul>
-        <li>Send questions/comments/ideas/discussions/etc. to our 
-            <a href="http://groups.google.com/group/simile-widgets/">Google groups mailing list</a>
-        </li>
-        <li>View and add enhancement ideas / bugs / issues in our 
-          <a href="http://code.google.com/p/simile-widgets/issues">issue tracker</a>
-        </li>
-    </ul>
+      <div id="tl" class="timeline-default" style="height: 350px; margin-top: 20px; margin-bottom: 50px;"></div>
     
-    <h2>Licensing</h2>
-    <p>Timeline is open source software and is licensed under the 
-        <a href="http://simile.mit.edu/license.html">BSD license</a>.</p>
-    </p>
-    
-    <h2>Credits</h2>
-    <p>This software is sponsored by <a href="http://mellon.org/">The Andrew W. Mellon Foundation</a>
-        and is maintained by the SIMILE project, in particular:
-        <ul>
-            <li><a href="http://people.csail.mit.edu/people/dfhuynh/">David Fran&ccedil;ois Huynh</a>,
-                dfhuynh at csail.mit.edu
-            </li>
-        </ul>
-    </p>
-</body>
+      <table class="spaced-table"><tr>
+        <td width="300">
+          <h2>Links</h2>
+          <ul>
+            <li><a href="examples/index.html">Many more live examples</a></li>
+            <li><a href="http://code.google.com/p/simile-widgets/wiki/Timeline">Documentation wiki</a></li>
+            <li><a href="http://groups.google.com/group/simile-widgets/">Mailing list</a></li>
+          </ul>
+          <ul>
+            <li><a href="http://code.google.com/p/simile-widgets/source/browse/">Source code</a></li>
+            <li><a href="http://code.google.com/p/simile-widgets/issues">Issue/bug tracker</a></li>
+          </ul>
+          <ul>
+            <li><a href="http://simile.mit.edu/wiki/Timeline">Older documentation wiki</a></li>
+            <li><a href="http://simile.mit.edu/mail/SummarizeList?listId=10">Older mailing list</a></li>
+          </ul>
+        </td>
+        <td width="300">
+          <h2>Licensing</h2>
+          <p>Timeline is open source software and is licensed under the 
+              <a href="http://simile.mit.edu/license.html">BSD license</a>.</p>
+          </p>
+
+          <h2>Credits</h2>
+          <p>This software was originally sponsored by 
+              <a href="http://mellon.org/">The Andrew W. Mellon Foundation</a>
+              as part of the <a href="http://simile.mit.edu/">SIMILE project</a>.
+              Its original author is <a href="http://davidhuynh.net/">David Fran&ccedil;ois Huynh</a>.
+              Now it is being maintained and developed by many members of this open-source community.
+          </p>
+        </td>
+      </tr></table>
+    </div>
+  
+    <div id="footer">
+      Copyright &copy; <a href="http://web.mit.edu/">Massachusetts Institute of Technology</a> and Contributors 2006-2009 ~ Some rights reserved
+    </div>
+  </body>
 </html>

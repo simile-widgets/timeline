@@ -10,7 +10,7 @@
 
 <project default="all" basedir="." name="Timeline">
 
-  <property name="version" value="2.3.1" />
+  <property name="version" value="pre_2.4.0" />      <!-- For trunk versions, use style pre_2.4.0 -->
   <property name="local_example_ver" value="1.0" />
   
   <target name="all" 

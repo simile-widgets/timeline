@@ -4,6 +4,8 @@ Version pre 2.4.0
 * Added tools/excel_to_json perl program. Not yet alpha.
   Changed build ver and timeline ver to 'pre 2.4.0'
   -- LarryK rev 1902
+* Changed copyright to link to www.simile-widgets.org
+  -- LarryK rev 1907
 
 Version 2.3.1
 * timeline-api.js now uses

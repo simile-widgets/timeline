@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+ "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+   <!-- See http://developer.yahoo.com/yui/grids/ for info on the grid layout -->
+   <title>Excel to JSON Converter</title>
+   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+
+   <!-- See http://developer.yahoo.com/yui/ for info on the reset, font and base css -->
+   <link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/reset-fonts-grids/reset-fonts-grids.css" type="text/css">
+   <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.7.0/build/base/base-min.css"> 
+ 
+   <link rel="stylesheet" href="css.css" type="text/css">
+</head>
+<body>
+<div id="doc3" class="yui-t7">
+   <div id="hd" role="banner">
+     <h1>Excel to JSON Converter</h1>
+     <p>Enter the name of an Excel file. It will be converted to a JSON file for use with Timeline</p>
+   </div>
+   <div id="bd" role="main">
+	   <div class="yui-g">
+       <form action="process.pl" method="post" enctype="multipart/form-data">
+         <p>Excel file: <input type="file" name="excel" /></p>
+         <p>The date fields for Timeline data sets are: start, latestStart, earliestEnd, and end. Processing options for these fields:</p>
+         <p>Save Excel date-time values in:
+            <select name='date_format'>
+              <option value='json' selected='selected'>Javascript object format</option>
+              <option value='iso8601'>ISO 8601 format</option>
+              <option value='gregorian'>International Gregorian format</option>
+            </select>
+         </p>
+         <p>If an Excel string value is found instead of an expected date-time value, should this
+            software try to parse the value as a date? 
+            <select name='parse_dates'>
+              <option value='1' selected='selected'>Yes</option>
+              <option value='0'>No</option>
+            </select>
+         </p>
+         
+         <script type="text/javascript"
+            src="http://api.recaptcha.net/challenge?k=6LdPcwUAAAAAAE7LlIcfB5YvrGJoZZSC2QunkNJ4">
+         </script>
+         <noscript>
+            <iframe src="http://api.recaptcha.net/noscript?k=6LdPcwUAAAAAAE7LlIcfB5YvrGJoZZSC2QunkNJ4"
+                height="300" width="500" frameborder="0"></iframe><br>
+            <textarea name="recaptcha_challenge_field" rows="3" cols="40">
+            </textarea>
+            <input type="hidden" name="recaptcha_response_field" 
+                value="manual_challenge">
+         </noscript>
+                  
+         <p><input type="submit" name="Submit" value="Upload and Process" /></p>
+       </form>
+       
+       <h2>Conditions of use</h2>
+       <ul>
+         <li>This software is open source and the conversion service is free.</li>
+         <li>Use of this software is at your own risk.</li>
+         <li><b>We offer NO warranty that your data will remain private.</b> We use a low-cost shared server and do not 
+             have control of its security.</li>
+         <li>The service may not be abused or used in an improper way. All use of the service is tracked, including your IP address.</li>
+         <li>We have no interest in your data and this service does not save your data file, except as a temporary file
+             used to process your data.       
+             Do not upload any private data whose security you are concerned about.
+             Instead, you can run this software on your own computer, source is available.</li>
+       </ul>
+       <h2>Notes</h2>
+       <ul>
+         <li>The file must be saved in Excel 2000 format or prior versions. If you have Excel 2003, store your data in Excel 2000 format.</li>
+         <li>Excel Epoch issues: If you're dealing with dates between 1 Jan 1900 and 1 Mar 1900 and use a Mac then you need to
+          change a setting in Mac Excel. The issue is that
+          Excel files created on a Mac use a method for tracking dates that affects dates during the Jan 1 - Mar 1, 1900 time period.
+          For the dates to be understood correctly, you must set the Mac Excel software to <b>not</b> use the "1904 date system."
+          To do this:
+         <ol type='a'>
+           <li>Start Excel on the Mac</li>
+           <li>Select Excel / Preferences... menu item</li>
+           <li>Select "Calculation" on the left side of the pop-up</li>
+           <li>Uncheck the box "1904 date system" in the Workbook options section of the window.</li>
+           <li>Verify the JSON file from this service to ensure that your dates are being interpreted correctly.</li>
+         </ol>
+         More information about how Excel deals with dates is
+         <a href='http://search.cpan.org/dist/DateTime-Format-Excel/lib/DateTime/Format/Excel.pm#EPOCHS'>available here.</a>
+         </li>
+       </ul>
+         
+	   </div>
+	 </div>
+   <div id="ft" role="contentinfo">
+   </div>
+</div>
+
+</body>
+</html>
+
+

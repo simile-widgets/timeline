@@ -1,6 +1,13 @@
 CHANGES.txt
 
 Version pre 2.4.0
+* Added tools/excel_to_json perl program. Not yet alpha.
+  Changed build ver and timeline ver to 'pre 2.4.0'
+  -- LarryK rev 1902
+
+Version 2.3.1
+* timeline-api.js now uses
+  http://api.simile-widgets.org/ajax/2.2.1/simile-ajax-api.js
 
 Version 2.3.0
 * Added test 5, really long labels, to test example page rev 1601, LarryK

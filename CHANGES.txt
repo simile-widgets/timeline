@@ -6,7 +6,10 @@ Version pre 2.4.0
   -- LarryK rev 1902
 * Changed copyright to link to www.simile-widgets.org
   -- LarryK rev 1907
-
+* Changed timeline-api to have specific var for the ajax version.
+  Added debug instructions for using the unbundled libraries
+  -- LarryK rev 1908
+  
 Version 2.3.1
 * timeline-api.js now uses
   http://api.simile-widgets.org/ajax/2.2.1/simile-ajax-api.js

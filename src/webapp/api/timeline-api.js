@@ -17,19 +17,19 @@
  *      timeline_libraries.zip or timeline_source.zip
  * 
  *   2) Set global js variables used to send parameters to this script:
- *        Timeline_ajax_url -- url for simile-ajax-api.js
- *        Timeline_urlPrefix -- url for the *directory* that contains timeline-api.js
- *          Include trailing slash
- *        Timeline_parameters='bundle=true'; // you must set bundle to true if you are using
- *                                           // timeline_libraries.zip since only the
- *                                           // bundled libraries are included
+ *        var Timeline_ajax_url -- url for simile-ajax-api.js
+ *        var Timeline_urlPrefix -- url for the *directory* that contains timeline-api.js
+ *            Include trailing slash
+ *        var Timeline_parameters='bundle=true'; // you must set bundle to true if you are using
+ *                                               // timeline_libraries.zip since only the
+ *                                               // bundled libraries are included
  *      
  * eg your html page would include
  *
  *   <script>
- *     Timeline_ajax_url="http://YOUR_SERVER/javascripts/timeline/timeline_ajax/simile-ajax-api.js";
- *     Timeline_urlPrefix='http://YOUR_SERVER/javascripts/timeline/timeline_js/';       
- *     Timeline_parameters='bundle=true';
+ *     var Timeline_ajax_url="http://YOUR_SERVER/javascripts/timeline/timeline_ajax/simile-ajax-api.js";
+ *     var Timeline_urlPrefix='http://YOUR_SERVER/javascripts/timeline/timeline_js/';       
+ *     var Timeline_parameters='bundle=true';
  *   </script>
  *   <script src="http://YOUR_SERVER/javascripts/timeline/timeline_js/timeline-api.js"    
  *     type="text/javascript">
@@ -49,10 +49,26 @@
  *   defaultLocale --
  *   forceLocale -- force locale to be a particular value--used for debugging. Normally locale is determined
  *                  by browser's and server's locale settings.
+ * 
+ * DEBUGGING
+ * If you have a problem with Timeline, the first step is to use the unbundled Javascript files. To do so:
+ * To use the unbundled Timeline and Ajax libraries
+ * Change
+ *   <script src="http://api.simile-widgets.org/timeline/2.3.1/api/timeline-api.js?bundle=true" type="text/javascript"></script>
+ * To
+ *   <script>var Timeline_ajax_url = "http://api.simile-widgets.org/ajax/2.2.1/simile-ajax-api.js?bundle=false"</script>
+ *   <script src="http://api.simile-widgets.org/timeline/2.3.1/api/timeline-api.js?bundle=false" type="text/javascript"></script>
+ * 
+ * Note that the Ajax version is usually NOT the same as the Timeline version.
+ * See variable simile_ajax_ver below for the current version
+ *
  *================================================== 
  */
 
 (function() {
+    
+    var simile_ajax_ver = "2.2.1"; // ===========>>>  current Simile-Ajax version
+  
     var useLocalResources = false;
     if (document.location.search.length > 0) {
         var params = document.location.search.substr(1).split("&");
@@ -254,7 +270,7 @@
         
         var url = useLocalResources ?
             "http://127.0.0.1:9999/ajax/api/simile-ajax-api.js?bundle=false" :
-            "http://api.simile-widgets.org/ajax/2.2.1/simile-ajax-api.js";
+            "http://api.simile-widgets.org/ajax/" + simile_ajax_ver + "/simile-ajax-api.js";
         if (typeof Timeline_ajax_url == "string") {
            url = Timeline_ajax_url;
         }

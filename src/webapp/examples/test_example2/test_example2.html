@@ -5,8 +5,15 @@
 
     <!-- ############################################################################ -->
     <!-- To use this file on your own system, replace ../../api/timeline-api.js with  -->
-    <!--     http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js          -->
+    <!--     http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js             -->
     <!-- (where 2.3.1 is the current release number.)                                 -->
+    
+    <!-- Debugging support                                                            -->
+    <!-- To debug Timeline and the Ajax library add
+         <script> Timeline_ajax_url = "http://api.simile-widgets.org/ajax/2.2.1/simile-ajax-api.js?bundle=false"</script>
+         and change the bundle=true to bundle=false in the timeline-api line too
+         -->
+    
     <script src="../../api/timeline-api.js?bundle=true" type="text/javascript"></script>
 
     <script>
@@ -33,7 +40,7 @@
             var d = Timeline.DateTime.parseGregorianDateTime("1900")
             var bandInfos = [
                 Timeline.createBandInfo({
-                    width:          45, // set to a minimum, autoWidth will then adjust
+                    width:          145, // set to a minimum, autoWidth will then adjust
                     intervalUnit:   Timeline.DateTime.DECADE, 
                     intervalPixels: 200,
                     eventSource:    eventSource1,
@@ -183,7 +190,7 @@
       <!-- ###       to minimize motion on the screen ### -->
       <!-- ###                                        ### -->
       <!-- ############################################## -->
-      <div id="tl" class="timeline-default" style="height:300px;"></div>
+      <div id="tl" class="timeline-default" style="height:400px;"></div>
     </div>
     
     <div id="footer">

@@ -1,5 +1,5 @@
 /*==================================================
- *  Original Event Painter
+ *  Compact Event Painter
  *==================================================
  */
 
@@ -12,6 +12,10 @@ Timeline.CompactEventPainter = function(params) {
     this._frc = null;
     
     this._eventIdToElmt = {};
+};
+
+Timeline.CompactEventPainter.prototype.getType = function() {
+    return 'compact';
 };
 
 Timeline.CompactEventPainter.prototype.initialize = function(band, timeline) {

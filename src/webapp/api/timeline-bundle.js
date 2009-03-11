@@ -358,6 +358,8 @@ this._highlightMatcher=null;
 this._frc=null;
 this._eventIdToElmt={};
 };
+Timeline.CompactEventPainter.prototype.getType=function(){return"compact";
+};
 Timeline.CompactEventPainter.prototype.initialize=function(B,A){this._band=B;
 this._timeline=A;
 this._backLayer=null;

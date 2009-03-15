@@ -57,6 +57,7 @@ Timeline._Band = function(timeline, bandInfo, index) {
     this._changing = false;
     this._originalScrollSpeed = 5; // pixels
     this._scrollSpeed = this._originalScrollSpeed;
+    this._viewOrthogonalOffset= 0; // vertical offset if the timeline is horizontal, and vice versa
     this._onScrollListeners = [];
     
     var b = this;
@@ -386,6 +387,14 @@ Timeline._Band.prototype.pixelOffsetToDate = function(pixels) {
     return this._ether.pixelOffsetToDate(pixels + this._viewOffset);
 };
 
+Timeline._Band.prototype.getViewOrthogonalOffset = function() {
+    return this._viewOrthogonalOffset;
+};
+
+Timeline._Band.prototype.setViewOrthogonalOffset = function(offset) {
+    this._viewOrthogonalOffset = Math.max(0, offset);
+};
+
 Timeline._Band.prototype.createLayerDiv = function(zIndex, className) {
     var div = this._timeline.getDocument().createElement("div");
     div.className = "timeline-band-layer" + (typeof className == "string" ? (" " + className) : "");
@@ -463,7 +472,11 @@ Timeline._Band.prototype._onMouseMove = function(innerFrame, evt, target) {
         this._dragX = evt.clientX;
         this._dragY = evt.clientY;
         
-        this._moveEther(this._timeline.isHorizontal() ? diffX : diffY);
+        if (this._timeline.isHorizontal()) {
+            this._moveEther(diffX, diffY);
+        } else {
+            this._moveEther(diffY, diffX);
+        }
         this._positionHighlight();
     }
 };
@@ -607,7 +620,11 @@ Timeline._Band.prototype._autoScroll = function(distance, f) {
     a.run();
 };
 
-Timeline._Band.prototype._moveEther = function(shift) {
+Timeline._Band.prototype._moveEther = function(shift, orthogonalShift) {
+    if (orthogonalShift === undefined) {
+        orthogonalShift = 0;
+    }
+    
     this.closeBubble();
     
     // A positive shift means back in time
@@ -617,6 +634,8 @@ Timeline._Band.prototype._moveEther = function(shift) {
     }
 
     this._viewOffset += shift;
+    this._viewOrthogonalOffset = Math.min(0, this._viewOrthogonalOffset + orthogonalShift);
+    
     this._ether.shiftPixels(-shift);
     if (this._timeline.isHorizontal()) {
         this._div.style.left = this._viewOffset + "px";

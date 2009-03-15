@@ -11,6 +11,10 @@ Version pre 2.4.0
   -- LarryK rev 1908
 * Added CompactEventPainter.prototype.getType. Reported by mmoossen
   -- LarryK rev 1909
+* Added "orthogonal view offset" concept in bands, which is for supporting dragging vertically 
+  on horizontal timelines, and dragging horizontally on vertical timelines. The original
+  event painter and the compact event painter make use of this new concept. The compact painter
+  example is updated to demonstrate this feature.
   
     
 Version 2.3.1

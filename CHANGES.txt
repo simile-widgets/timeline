@@ -15,6 +15,7 @@ Version pre 2.4.0
   on horizontal timelines, and dragging horizontally on vertical timelines. The original
   event painter and the compact event painter make use of this new concept. The compact painter
   example is updated to demonstrate this feature.
+* Added a test for timezones.
   
     
 Version 2.3.1

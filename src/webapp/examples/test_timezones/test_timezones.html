@@ -1,0 +1,176 @@
+<html>
+  <head>
+    <title>SIMILE Widgets | Timeline | Examples | Test: Timezones</title>
+    <link rel='stylesheet' href='../styles.css' type='text/css' />
+
+    <!-- ############################################################################ -->
+    <!-- To use this file on your own system, replace ../../api/timeline-api.js with  -->
+    <!--     http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js          -->
+    <!-- (where 2.3.1 is the current release number.)                                 -->
+    <script src="../../api/timeline-api.js?bundle=true" type="text/javascript"></script>
+
+    <script src="../examples.js" type="text/javascript"></script>
+    <script>
+        var tl;
+        function onLoad() {
+            var date = SimileAjax.DateTime.parseIso8601DateTime("2009-03-18T00:00:00Z"); // GMT midnight
+            var date2 = SimileAjax.DateTime.parseIso8601DateTime("2009-03-18T12:00:00Z"); // GMT noon
+            var eventSource = new Timeline.DefaultEventSource();
+            
+            var bandInfos = [
+                Timeline.createBandInfo({
+                    width:          "20%", 
+                    intervalUnit:   Timeline.DateTime.HOUR, 
+                    intervalPixels: 40,
+                    eventSource:    eventSource,
+                    date:           date
+                }),
+                Timeline.createBandInfo({
+                    width:          "20%", 
+                    intervalUnit:   Timeline.DateTime.HOUR, 
+                    intervalPixels: 40,
+                    eventSource:    eventSource,
+                    date:           date,
+                    timeZone:       -SimileAjax.DateTime.timezoneOffset / 60
+                }),
+                Timeline.createBandInfo({
+                    width:          "20%", 
+                    intervalUnit:   Timeline.DateTime.HOUR, 
+                    intervalPixels: 40,
+                    eventSource:    eventSource,
+                    date:           date,
+                    timeZone:       -8
+                }),
+                Timeline.createBandInfo({
+                    width:          "20%", 
+                    intervalUnit:   Timeline.DateTime.HOUR, 
+                    intervalPixels: 40,
+                    eventSource:    eventSource,
+                    date:           date,
+                    timeZone:       -5
+                }),
+                Timeline.createBandInfo({
+                    width:          "20%", 
+                    intervalUnit:   Timeline.DateTime.HOUR, 
+                    intervalPixels: 40,
+                    eventSource:    eventSource,
+                    date:           date,
+                    timeZone:       0
+                }),
+            ];
+            bandInfos[1].syncWith = 0;
+            bandInfos[2].syncWith = 0;
+            bandInfos[3].syncWith = 0;
+            bandInfos[4].syncWith = 0;
+            
+            bandInfos[0].decorators = [
+                new Timeline.SpanHighlightDecorator({
+                    startDate:  date,
+                    endDate:    date2,
+                    color:      "#FFC080", // set color explicitly
+                    opacity:    30,
+                    startLabel: "Band 0",
+                    endLabel:   "no timezone"
+                })
+            ];
+            bandInfos[1].decorators = [
+                new Timeline.SpanHighlightDecorator({
+                    startDate:  date,
+                    endDate:    date2,
+                    color:      "#FFC080", // set color explicitly
+                    opacity:    30,
+                    startLabel: "Band 1",
+                    endLabel:   "browser's timezone"
+                })
+            ];
+            bandInfos[2].decorators = [
+                new Timeline.SpanHighlightDecorator({
+                    startDate:  date,
+                    endDate:    date2,
+                    color:      "#FFC080", // set color explicitly
+                    opacity:    30,
+                    startLabel: "Band 2",
+                    endLabel:   "-08:00"
+                })
+            ];
+            bandInfos[3].decorators = [
+                new Timeline.SpanHighlightDecorator({
+                    startDate:  date,
+                    endDate:    date2,
+                    color:      "#FFC080", // set color explicitly
+                    opacity:    30,
+                    startLabel: "Band 3",
+                    endLabel:   "-05:00"
+                })
+            ];
+            bandInfos[4].decorators = [
+                new Timeline.SpanHighlightDecorator({
+                    startDate:  date,
+                    endDate:    date2,
+                    color:      "#FFC080", // set color explicitly
+                    opacity:    30,
+                    startLabel: "Band 4",
+                    endLabel:   "00:00"
+                })
+            ];
+            
+            tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
+            eventSource.loadJSON(
+                {
+                    'dateTimeFormat': 'iso8601',
+                    'events': [
+                        {   'start': '2009-03-18',
+                            'title': 'A: 2009-03-18'
+                        },
+                        {   'start': '2009-03-18T00:00:00',
+                            'title': 'B: 2009-03-18T00:00:00'
+                        },
+                        {   'start': '2009-03-18T00:00:00Z',
+                            'title': 'C: 2009-03-18T00:00:00Z'
+                        },
+                        {   'start': '2009-03-18T00:00:00-08:00',
+                            'title': 'D: 2009-03-18T00:00:00-08:00'
+                        }
+                    ]
+                }, 
+                document.location.href
+            );
+        }
+        var resizeTimerID = null;
+        function onResize() {
+            if (resizeTimerID == null) {
+                resizeTimerID = window.setTimeout(function() {
+                    resizeTimerID = null;
+                    tl.layout();
+                }, 500);
+            }
+        }
+    </script>
+    <style>
+        .timeline-band-3 .timeline-ether-bg{background-color:#ddd}
+    </style>
+  </head>
+  <body onload="onLoad();" onresize="onResize();">
+    <ul id="path">
+      <li><a href="/" title="Home">SIMILE Widgets</a></li>
+      <li><a href="../../" title="Timeline">Timeline</a></li>
+      <li><a href="../" title="Examples">Examples</a></li>
+      <li><span>Test: Timezones</span></li>
+    </ul>
+  
+    <div id="header">
+      <h1>Test: Timezones</h1>
+    </div>
+  
+    <div id="content">
+      <p>Timeline version <span id='tl_ver'></span>.</p>
+      <script>Timeline.writeVersion('tl_ver')</script>
+    
+      <div id="tl" class="timeline-default" style="height: 600px;"></div>
+    </div>
+
+    <div id="footer">
+      Copyright &copy; <a href="http://web.mit.edu/">Massachusetts Institute of Technology</a> and Contributors 2006-2009 ~ Some rights reserved
+    </div>
+  </body>
+</html>

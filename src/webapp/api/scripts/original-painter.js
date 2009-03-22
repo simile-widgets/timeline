@@ -82,6 +82,10 @@ Timeline.OriginalEventPainter.prototype.getType = function() {
     return 'original';
 };
 
+Timeline.OriginalEventPainter.prototype.supportsOrthogonalScrolling = function() {
+    return true;
+};
+
 Timeline.OriginalEventPainter.prototype.addOnSelectListener = function(listener) {
     this._onSelectListeners.push(listener);
 };
@@ -169,10 +173,13 @@ Timeline.OriginalEventPainter.prototype.softPaint = function() {
     this._setOrthogonalOffset(this._computeMetrics());
 };
 
+Timeline.OriginalEventPainter.prototype.getOrthogonalExtent = function() {
+    var metrics = this._computeMetrics();
+    return 2 * metrics.trackOffset + this._tracks.length * metrics.trackIncrement;
+};
+
 Timeline.OriginalEventPainter.prototype._setOrthogonalOffset = function(metrics) {
-    var actualViewWidth = 2 * metrics.trackOffset + this._tracks.length * metrics.trackIncrement;
-    var minOrthogonalOffset = Math.min(0, this._band.getViewWidth() - actualViewWidth);
-    var orthogonalOffset = Math.max(minOrthogonalOffset, this._band.getViewOrthogonalOffset());
+    var orthogonalOffset = this._band.getViewOrthogonalOffset();
     
     this._highlightLayer.style.top = 
         this._lineLayer.style.top = 

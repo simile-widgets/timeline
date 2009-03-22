@@ -30,6 +30,10 @@ Timeline.CompactEventPainter.prototype.initialize = function(band, timeline) {
     this._eventIdToElmt = null;
 };
 
+Timeline.CompactEventPainter.prototype.supportsOrthogonalScrolling = function() {
+    return true;
+};
+
 Timeline.CompactEventPainter.prototype.addOnSelectListener = function(listener) {
     this._onSelectListeners.push(listener);
 };
@@ -140,10 +144,13 @@ Timeline.CompactEventPainter.prototype.softPaint = function() {
     this._setOrthogonalOffset(this._computeMetrics());
 };
 
+Timeline.CompactEventPainter.prototype.getOrthogonalExtent = function() {
+    var metrics = this._computeMetrics();
+    return 2 * metrics.trackOffset + this._tracks.length * metrics.trackHeight;
+};
+
 Timeline.CompactEventPainter.prototype._setOrthogonalOffset = function(metrics) {
-    var actualViewWidth = 2 * metrics.trackOffset + this._tracks.length * metrics.trackHeight;
-    var minOrthogonalOffset = Math.min(0, this._band.getViewWidth() - actualViewWidth);
-    var orthogonalOffset = Math.max(minOrthogonalOffset, this._band.getViewOrthogonalOffset());
+    var orthogonalOffset = this._band.getViewOrthogonalOffset();
     
     this._highlightLayer.style.top = 
         this._lineLayer.style.top = 

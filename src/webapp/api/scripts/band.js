@@ -59,11 +59,15 @@ Timeline._Band = function(timeline, bandInfo, index) {
     this._scrollSpeed = this._originalScrollSpeed;
     this._viewOrthogonalOffset = 0; // vertical offset if the timeline is horizontal, and vice versa
     this._onScrollListeners = [];
+    this._onOrthogonalScrollListeners = [];
     
     var b = this;
     this._syncWithBand = null;
     this._syncWithBandHandler = function(band) {
         b._onHighlightBandScroll();
+    };
+    this._syncWithBandOrthogonalScrollHandler = function(band) {
+        b._onHighlightBandOrthogonalScroll();
     };
     this._selectorListener = function(band) {
         b._onHighlightBandScroll();
@@ -175,6 +179,7 @@ Timeline._Band.prototype.dispose = function() {
     
     this._onScrollListeners = null;
     this._syncWithBandHandler = null;
+    this._syncWithBandOrthogonalScrollHandler = null;
     this._selectorListener = null;
     
     this._div = null;
@@ -196,13 +201,28 @@ Timeline._Band.prototype.removeOnScrollListener = function(listener) {
     }
 };
 
+Timeline._Band.prototype.addOnOrthogonalScrollListener = function(listener) {
+    this._onOrthogonalScrollListeners.push(listener);
+};
+
+Timeline._Band.prototype.removeOnOrthogonalScrollListener = function(listener) {
+    for (var i = 0; i < this._onOrthogonalScrollListeners.length; i++) {
+        if (this._onOrthogonalScrollListeners[i] == listener) {
+            this._onOrthogonalScrollListeners.splice(i, 1);
+            break;
+        }
+    }
+};
+
 Timeline._Band.prototype.setSyncWithBand = function(band, highlight) {
     if (this._syncWithBand) {
         this._syncWithBand.removeOnScrollListener(this._syncWithBandHandler);
+        this._syncWithBand.removeOnOrthogonalScrollListener(this._syncWithBandOrthogonalScrollHandler);
     }
     
     this._syncWithBand = band;
     this._syncWithBand.addOnScrollListener(this._syncWithBandHandler);
+    this._syncWithBand.addOnOrthogonalScrollListener(this._syncWithBandOrthogonalScrollHandler);
     this._highlight = highlight;
     this._positionHighlight();
 };
@@ -691,6 +711,12 @@ Timeline._Band.prototype._fireOnScroll = function() {
     }
 };
 
+Timeline._Band.prototype._fireOnOrthogonalScroll = function() {
+    for (var i = 0; i < this._onOrthogonalScrollListeners.length; i++) {
+        this._onOrthogonalScrollListeners[i](this);
+    }
+};
+
 Timeline._Band.prototype._setSyncWithBandDate = function() {
     if (this._syncWithBand) {
         var centerDate = this._ether.pixelOffsetToDate(this.getViewLength() / 2);
@@ -704,12 +730,13 @@ Timeline._Band.prototype._onHighlightBandScroll = function() {
         var centerPixelOffset = this._ether.dateToPixelOffset(centerDate);
         
         this._moveEther(Math.round(this._viewLength / 2 - centerPixelOffset));
-        
-        if (this._highlight) {
-            this._etherPainter.setHighlight(
-                this._syncWithBand.getMinVisibleDate(), 
-                this._syncWithBand.getMaxVisibleDate());
-        }
+        this._positionHighlight();
+    }
+};
+
+Timeline._Band.prototype._onHighlightBandOrthogonalScroll = function() {
+    if (this._syncWithBand) {
+        this._positionHighlight();
     }
 };
 
@@ -727,7 +754,20 @@ Timeline._Band.prototype._positionHighlight = function() {
         var endDate = this._syncWithBand.getMaxVisibleDate();
         
         if (this._highlight) {
-            this._etherPainter.setHighlight(startDate, endDate);
+            var offset = 0; // percent
+            var extent = 1.0; // percent
+            var syncEventPainter = this._syncWithBand.getEventPainter();
+            if ("supportsOrthogonalScrolling" in syncEventPainter && 
+                syncEventPainter.supportsOrthogonalScrolling()) {
+
+                var orthogonalExtent = syncEventPainter.getOrthogonalExtent();
+                var visibleWidth = this._syncWithBand.getViewWidth();
+                var totalWidth = Math.max(visibleWidth, orthogonalExtent);
+                extent = visibleWidth / totalWidth;
+                offset = -this._syncWithBand.getViewOrthogonalOffset() / totalWidth;
+            }
+            
+            this._etherPainter.setHighlight(startDate, endDate, offset, extent);
         }
     }
 };
@@ -746,6 +786,7 @@ Timeline._Band.prototype._recenterDiv = function() {
 
 Timeline._Band.prototype._paintEvents = function() {
     this._eventPainter.paint();
+    this._fireOnOrthogonalScroll();
 };
 
 Timeline._Band.prototype._softPaintEvents = function() {
@@ -790,6 +831,7 @@ Timeline._Band.prototype._bounceBack = function(f) {
                 self._viewOrthogonalOffset = abs;
                 self._eventPainter.softPaint();
                 self._showScrollbar();
+                self._fireOnOrthogonalScroll();
             }, 
             this._viewOrthogonalOffset, 
             target, 

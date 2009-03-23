@@ -35,8 +35,8 @@ Timeline.GregorianEtherPainter.prototype.initialize = function(band, timeline) {
         this._timeline, this._band, this._theme, this._backgroundLayer);
 }
 
-Timeline.GregorianEtherPainter.prototype.setHighlight = function(startDate, endDate) {
-    this._highlight.position(startDate, endDate);
+Timeline.GregorianEtherPainter.prototype.setHighlight = function(startDate, endDate, orthogonalOffset, orthogonalExtent) {
+    this._highlight.position(startDate, endDate, orthogonalOffset, orthogonalExtent);
 }
 
 Timeline.GregorianEtherPainter.prototype.paint = function() {
@@ -557,20 +557,26 @@ Timeline.EtherHighlight = function(timeline, band, theme, backgroundLayer) {
         }
     }
     
-    this.position = function(startDate, endDate) {
+    this.position = function(startDate, endDate, orthogonalOffset, orthogonalExtent) {
+        orthogonalOffset = orthogonalOffset || 0;
+        orthogonalExtent = orthogonalExtent || 1.0;
+        
         this._createHighlightDiv();
         
         var startPixel = Math.round(band.dateToPixelOffset(startDate));
         var endPixel = Math.round(band.dateToPixelOffset(endDate));
         var length = Math.max(endPixel - startPixel, 3);
+        var totalWidth = band.getViewWidth() - 4;
         if (horizontal) {
             this._highlightDiv.style.left = startPixel + "px";
-            this._highlightDiv.style.width = length + "px";           
-            this._highlightDiv.style.height = (band.getViewWidth() - 4) + "px";
+            this._highlightDiv.style.width = length + "px";
+            this._highlightDiv.style.top = Math.round(orthogonalOffset * totalWidth) + "px";
+            this._highlightDiv.style.height = Math.round(orthogonalExtent * totalWidth) + "px";
         } else {
             this._highlightDiv.style.top = startPixel + "px";
             this._highlightDiv.style.height = length + "px";
-            this._highlightDiv.style.width = (band.getViewWidth() - 4) + "px";
+            this._highlightDiv.style.left = Math.round(orthogonalOffset * totalWidth) + "px";
+            this._highlightDiv.style.width = Math.round(orthogonalExtent * totalWidth) + "px";
         }
     }
 };

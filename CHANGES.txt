@@ -14,8 +14,10 @@ Version pre 2.4.0
 * Added "orthogonal view offset" concept in bands, which is for supporting dragging vertically 
   on horizontal timelines, and dragging horizontally on vertical timelines. The original
   event painter and the compact event painter make use of this new concept. The compact painter
-  example is updated to demonstrate this feature.
-* Added a test for timezones.
+  example is updated to demonstrate this feature. -- David H
+* Added a test for timezones. -- David H
+* Turned the highlight rectangle of a band into an overview of the band it's 
+synced with (i.e., indicating the visible offset and extent). -- David H rev 1921
   
     
 Version 2.3.1

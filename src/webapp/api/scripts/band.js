@@ -147,6 +147,7 @@ Timeline._Band = function(timeline, bandInfo, index) {
     
     this._supportsOrthogonalScrolling = ("supportsOrthogonalScrolling" in this._eventPainter) &&
         this._eventPainter.supportsOrthogonalScrolling();
+        
     if (this._supportsOrthogonalScrolling) {
         this._scrollBar = this._timeline.getDocument().createElement("div");
         this._scrollBar.id = "timeline-band-scrollbar-" + index;
@@ -786,6 +787,7 @@ Timeline._Band.prototype._recenterDiv = function() {
 
 Timeline._Band.prototype._paintEvents = function() {
     this._eventPainter.paint();
+    this._showScrollbar();
     this._fireOnOrthogonalScroll();
 };
 
@@ -877,13 +879,18 @@ Timeline._Band.prototype._showScrollbar = function() {
         thumb.style.left = thumbOffset;
         thumb.style.width = thumbWidth;
     }
-    this._scrollBar.style.display = "block";
+    
+    if (ratio >= 1 && this._viewOrthogonalOffset == 0) {
+        this._scrollBar.style.display = "none";
+    } else {
+        this._scrollBar.style.display = "block";
+    }
 };
 
 Timeline._Band.prototype._hideScrollbar = function() {
     if (!this._supportsOrthogonalScrolling) {
         return;
     }
-    this._scrollBar.style.display = "none";
+    //this._scrollBar.style.display = "none";
 };
 

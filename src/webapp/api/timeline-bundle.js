@@ -380,6 +380,7 @@ this._div.style.height=(Timeline._Band.SCROLL_MULTIPLES*this._viewLength)+"px";
 }this.layout();
 };
 Timeline._Band.prototype._paintEvents=function(){this._eventPainter.paint();
+this._showScrollbar();
 this._fireOnOrthogonalScroll();
 };
 Timeline._Band.prototype._softPaintEvents=function(){this._eventPainter.softPaint();
@@ -428,11 +429,11 @@ this._scrollBar.style.bottom="0px";
 this._scrollBar.style.height="10px";
 B.style.left=G;
 B.style.width=E;
-}this._scrollBar.style.display="block";
-};
+}if(F>=1&&this._viewOrthogonalOffset==0){this._scrollBar.style.display="none";
+}else{this._scrollBar.style.display="block";
+}};
 Timeline._Band.prototype._hideScrollbar=function(){if(!this._supportsOrthogonalScrolling){return ;
-}this._scrollBar.style.display="none";
-};
+}};
 
 
 /* compact-painter.js */

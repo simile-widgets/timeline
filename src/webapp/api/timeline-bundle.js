@@ -2848,7 +2848,7 @@ H.className+=" timeline-"+B;
 while(H.firstChild){H.removeChild(H.firstChild);
 }var A=SimileAjax.Graphics.createTranslucentImage(Timeline.urlPrefix+(this.isHorizontal()?"images/copyright-vertical.png":"images/copyright.png"));
 A.className="timeline-copyright";
-A.title="Timeline copyright SIMILE - www.code.google.com/p/simile-widgets/";
+A.title="SIMILE Timeline - http://www.simile-widgets.org/";
 SimileAjax.DOM.registerEvent(A,"click",function(){window.location="http://www.simile-widgets.org/";
 });
 H.appendChild(A);

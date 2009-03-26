@@ -1,13 +1,22 @@
-README.txt
 
-This example loads a local data file as if it were a Javascript library file.
+                          Local Timeline
+                          --------------
+                        
+                        
+This example show how to load a timeline from a local data file.
+
 This trick enables us to read the local data file without needing to run
 any sort of web server.
 
 Installation
-Extract the zip file onto your system. You'll also need a web browser.
+------------
+
+No installation required. Everything is loaded directly from the web.
+
 
 Running
+-------
+
 Open your web browser, then open the local_example.html file.
 
   Instructions for specific browsers:
@@ -27,13 +36,23 @@ Open your web browser, then open the local_example.html file.
 
 You should then see the Timeline displayed in your browser.
 You will need access to the internet to enable your browser to load the 
-Timeline library from the MIT server.
+Timeline library from the server.
+
 
 Problems and Questions
+----------------------
+
 Please use the mailing list for help:
-http://groups.google.com/group/simile-widgets/
+
+  http://groups.google.com/group/simile-widgets/
+
 
 LICENSE
-This software is open source with a permissive license.
-See http://simile-widgets.googlecode.com
-for license details and more information.
+-------
+
+This software is open source with a BSD license. See
+
+  http://www.simile-widgets.org/ 
+  
+for more information.
+

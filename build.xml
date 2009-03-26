@@ -8,22 +8,26 @@
     |
     +-->
 
-<project default="all" basedir="." name="Timeline">
+<project default="bundle" basedir="." name="Timeline">
 
   <property name="version" value="pre_2.4.0" />      <!-- For trunk versions, use style pre_2.4.0 -->
   <property name="local_example_ver" value="1.0" />
+  <property name="full_dest" value="dist/timeline_${version}" />
+  <property name="min_dest" value="htdocs/timeline_${version}" />
   
-  <target name="all" 
-    depends="timeline_source.zip, timeline_libraries.zip, timeline_local_example.zip" />
-
+  <property name="timeline_api" value="src/webapp/api" />
+  <property name="ajax_api" value="src/ajax/api"   />
+  
   <target name="tasks">
     <taskdef name="jsmin"
         classname="edu.mit.simile.jsminTask.JSMinTask"
-        classpath="tools/jsminTask.jar"/>
+        classpath="tools/jsmin-task/jsminTask.jar"/>
   </target>
   	
   <target name="bundle" depends="tasks">
+
     <!-- SimileAjax -->
+    
     <jsmin output="src/ajax/api/simile-ajax-bundle.js">
         <fileset dir="src/ajax/api/scripts">
             <include name="jquery*.js" />
@@ -38,6 +42,7 @@
     </jsmin>
   	
   	<!-- Timeline -->
+  	
     <jsmin output="src/webapp/api/timeline-bundle.js">
         <fileset dir="src/webapp/api/scripts">
         	<include name="*.js" />
@@ -51,117 +56,107 @@
     </concat>
   </target>
   
-  <target name="create_output1" depends="bundle">
-    <!-- Create versioned timeline dir with lib, src, examples, jetty -->
-    <delete dir="timeline_${version}"/>
-    <copy todir="timeline_${version}/lib">
+  <!-- Create full distribution -->
+  <target name="prepare_full_dist" depends="bundle">
+
+    <mkdir dir="${full_dest}"/>
+
+    <copy todir="${full_dest}/lib">
       <fileset dir="lib" excludes="**/.svn/**, **/*.bak" />
     </copy>
-    <copy todir="timeline_${version}/src">
+    <copy todir="${full_dest}/src">
       <fileset dir="src" excludes="**/.svn/**, **/*.bak" />
     </copy>
-    <copy todir="timeline_${version}/tools">
+    <copy todir="${full_dest}/tools">
       <fileset dir="tools" excludes="**/.svn/**, **/*.bak" />
     </copy>
     
-    <copy file=".project" todir="timeline_${version}" />
-    <copy file="build.xml" todir="timeline_${version}" />
-    <copy file="CHANGES.txt" todir="timeline_${version}" />
-    <copy file="jetty.xml" todir="timeline_${version}" />
-    <copy file="LICENSE.txt" todir="timeline_${version}" />
-    <copy file="README.txt" todir="timeline_${version}" />
-    <copy file="run" todir="timeline_${version}" />
-    <copy file="run.bat" todir="timeline_${version}" />
+    <copy file=".project" todir="${full_dest}" />
+    <copy file="build.xml" todir="${full_dest}" />
+    <copy file="CHANGES.txt" todir="${full_dest}" />
+    <copy file="jetty.xml" todir="${full_dest}" />
+    <copy file="LICENSE.txt" todir="${full_dest}" />
+    <copy file="README.txt" todir="${full_dest}" />
+    <copy file="run" todir="${full_dest}" />
+    <copy file="run.bat" todir="${full_dest}" />
   </target>
   
-  <target name="timeline_source.zip" depends="create_output1">
-    <!-- Create timeline_source.zip - entire source tree: tools, lib, src -->
-    <delete file="timeline_source.zip" />
-    <zip destfile="timeline_source.zip"
+  <target name="full_dist" depends="prepare_full_dist">
+    <zip destfile="timeline_${version}.zip"
          basedir="."
          update="yes"
          duplicate="fail"
-         includes="timeline_${version}/**"
+         includes="${full_dest}/**"
     />  
-    <delete dir="timeline_${version}"/>
+    <tar destfile="timeline_${version}.tar.gz" compression="gzip" longfile="gnu"
+         basedir="."
+         includes="${full_dest}/**"
+    />
   </target>
 
-  <target name="create_output2" depends="bundle">
-    <!-- Create versioned timeline dir with just bundled libraries and support files -->
+  <!-- Create versioned timeline dir with just bundled libraries and support files -->
+  <target name="prepare_minimal_dist" depends="bundle">
 
     <!-- timeline files -->
-    <property name="webapp_api" value="src/webapp/api/" />
 
-    <delete dir="timeline_${version}"/>
-    <copy file="${webapp_api}timeline-api.js"     todir="timeline_${version}/timeline_js" />
-    <copy file="${webapp_api}timeline-bundle.js"  todir="timeline_${version}/timeline_js" />
-    <copy file="${webapp_api}timeline-bundle.css" todir="timeline_${version}/timeline_js" />
-    <copy file="LICENSE.txt"                      todir="timeline_${version}" />
+    <copy file="${timeline_api}/timeline-api.js"     todir="${min_dest}" />
+    <copy file="${timeline_api}/timeline-bundle.js"  todir="${min_dest}" />
+    <copy file="${timeline_api}/timeline-bundle.css" todir="${min_dest}" />
 
-    <copy todir="timeline_${version}/timeline_js/images">
-      <fileset dir="${webapp_api}images" excludes="**/.svn/**, **/*.bak" />
+    <copy todir="${min_dest}/images">
+      <fileset dir="${timeline_api}/images" excludes="**/.svn/**, **/*.bak" />
     </copy>
     
-    <copy todir="timeline_${version}/timeline_js/scripts/l10n">
-      <fileset dir="${webapp_api}scripts/l10n" excludes="**/.svn/**, **/*.bak" />
+    <copy todir="${min_dest}/scripts/l10n">
+      <fileset dir="${timeline_api}/scripts/l10n" excludes="**/.svn/**, **/*.bak" />
     </copy>
     
     <!-- ajax files -->
-    <property name="ajax_api" value="src/ajax/api/"   />
-    <copy file="${ajax_api}simile-ajax-api.js"    todir="timeline_${version}/timeline_ajax" />
-    <copy file="${ajax_api}simile-ajax-bundle.js" todir="timeline_${version}/timeline_ajax" />
     
-    <copy todir="timeline_${version}/timeline_ajax/images">
-      <fileset dir="${ajax_api}images" excludes="**/.svn/**, **/*.bak" />
+    <copy file="${ajax_api}/simile-ajax-api.js"    todir="${min_dest}/ajax" />
+    <copy file="${ajax_api}/simile-ajax-bundle.js" todir="${min_dest}/ajax" />
+    
+    <copy todir="${min_dest}/ajax/images">
+      <fileset dir="${ajax_api}/images" excludes="**/.svn/**, **/*.bak" />
     </copy>
-    <copy todir="timeline_${version}/timeline_ajax/styles">
-      <fileset dir="${ajax_api}styles" excludes="**/.svn/**, **/*.bak" />
+    <copy todir="${min_dest}/ajax/styles">
+      <fileset dir="${ajax_api}/styles" excludes="**/.svn/**, **/*.bak" />
     </copy>
-    <copy todir="timeline_${version}/timeline_ajax/content">
-      <fileset dir="${ajax_api}content" excludes="**/.svn/**, **/*.bak" />
+    <copy todir="${min_dest}/ajax/content">
+      <fileset dir="${ajax_api}/content" excludes="**/.svn/**, **/*.bak" />
     </copy>
 
-    <copy file="${ajax_api}scripts/signal.js" todir="timeline_${version}/timeline_ajax/scripts" />
+    <copy file="${ajax_api}/scripts/signal.js" todir="${min_dest}/ajax/scripts" />
     
     <!-- release files -->
-    <copy file="CHANGES.txt" todir="timeline_${version}" />
-    <copy file="LICENSE.txt" todir="timeline_${version}" />
-    <copy file="README.txt" todir="timeline_${version}" />
+    
+    <copy file="CHANGES.txt"     todir="${min_dest}" />
+    <copy file="LICENSE.txt"     todir="${min_dest}" />
+    <copy file="MIN_README.txt"  todir="${min_dest}" />
   </target>
   
-  <target name="timeline_libraries.zip" depends="create_output2">
-    <!-- Create timeline_libraries.zip - entire source tree: tools, lib, src -->
-    <delete file="timeline_libraries.zip" />
-    <zip destfile="timeline_libraries.zip"
+  <target name="minimal_dist" depends="prepare_minimal_dist">
+    <zip destfile="timeline_${version}_minimal.zip"
          basedir="."
          update="yes"
          duplicate="fail"
-         includes="timeline_${version}/**"
+         includes="${min_dest}/**"
     />  
-    <delete dir="timeline_${version}"/>
-  </target>
-
-  <!-- create timeline_local_example -->
-  <target name="create_output3" depends="bundle">
-    <!-- Create versioned timeline dir with local_example -->
-    <delete dir="timeline_local_example_${local_example_ver}"/>
-    <copy todir="timeline_local_example_${local_example_ver}/local_example">
-      <fileset dir="src/webapp/examples/local_example" excludes="**/.svn/**, **/*.bak" />
-    </copy>
-  </target>
-  
-  <target name="timeline_local_example.zip" depends="create_output3">
-    <!-- Create timeline_local_example.zip  -->
-    <delete file="timeline_local_example_${local_example_ver}.zip" />
-    <zip destfile="timeline_local_example_${local_example_ver}.zip"
+    <tar destfile="timeline_${version}_minimal.tar.gz" compression="gzip" longfile="gnu"
          basedir="."
-         update="yes"
-         duplicate="fail"
-         includes="timeline_local_example_${local_example_ver}/**"
-    />  
-    <delete dir="timeline_local_example_${local_example_ver}"/>
+         includes="${min_dest}/**"
+    />
   </target>
 
+  <target name="dist" depends="full_dist, minimal_dist" />
   
-
+  <target name="distclean">
+    <delete dir="dist"/>
+    <delete dir="htdocs"/>
+    <delete>
+        <fileset dir="." includes="*.gz"/>
+        <fileset dir="." includes="*.zip"/>
+    </delete>
+  </target>
+  
 </project>

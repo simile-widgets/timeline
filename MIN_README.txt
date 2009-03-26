@@ -11,45 +11,27 @@
   Timeline is a web widget for visualizing temporal data.
 
 
-  Running Timeline
-  ----------------
+  Installing Timeline
+  -------------------
 
   Timeline consists entirely of static files (javascript libraries,
   image files and css files). All you really need is to
-  serve those resources off a web server without having to install
-  any special server side functionality. Therefore any web server will do.
-
-  Two ways to access the library:
+  serve the files contained in this package off a web server without 
+  having to install any special server side functionality: the software
+  is all executed in the browser.
   
-  1. If you have a web server running your machine:
-  
-     a) install the Java runtime from Sun if your OS doesn't have it already
-        (get it for free at http://www.java.com)
-     b) install Apache Ant (get it for free at http://ant.apache.org)
-     c) Open a shell or command prompt in the same directory of this file and type:
-
-      > ant
-      
-     Ant will use the 'build.xml' configuration file to construct and the script will copy all the required files in the give path.
-     
-  2. No web server? The timeline project includes a small webserver to get you started:
-  
-     a) install the Java runtime from Sun if your OS doesn't have it already
-        (get it for free at http://www.java.com)
-     b) Open a shell or command prompt in the same directory of this file and type:
-  
-      [win32]> run
-      [unix/macosx]> ./run
-
-     and then point your browser to
-  
-      http://127.0.0.1:9999/timeline/
+  So, simply copy the files contained in this package to a location
+  that is served by your web browser, making sure to keep the files
+  in the same folder structure and you're done.
 
   
-  How do I customize Timeline?
-  ----------------------------
-
-  Refer to the Timeline web site at 
+  How do I use Timeline?
+  ----------------------
+  
+  For the impatient, read the comments inside "timeline-api.js" that will
+  get you started.
+  
+  If you want to know more, refer to the Timeline documentation at 
   
     http://www.simile-widgets.org/timeline/
 

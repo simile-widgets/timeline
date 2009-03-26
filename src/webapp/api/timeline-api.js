@@ -1,41 +1,43 @@
 /*==================================================
- *  Timeline API
  *
- *  This file will load all the Javascript files
- *  necessary to make the standard timeline work.
- *  It also detects the default locale.
+ *              Timeline API
+ *              ------------
  *
- *  To run from the MIT copy of Timeline:
- *  Include this file in your HTML file as follows:
+ * This file will load all the Javascript files
+ * necessary to make the standard timeline work.
+ * It also detects the default locale.
  *
- *    <script src="http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js" 
- *     type="text/javascript"></script>
+ * To run Timeline directly from the www.simile-widgets.org server
+ * include this fragment in your HTML file as follows:
+ *
+ *   <script src="http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js" 
+ *    type="text/javascript"></script>
  *
  *
  * To host the Timeline files on your own server:
- *   1) Install the Timeline and Simile-Ajax files onto your webserver using
- *      timeline_libraries.zip or timeline_source.zip
+ *
+ * 1) Install the Timeline files onto your webserver using
+ *    the minimal distribution "timeline_<version>_minimal.(zip|tar.gz)" found at
+ *
+ *        http://code.google.com/p/simile-widgets/downloads/list
  * 
- *   2) Set global js variables used to send parameters to this script:
- *        var Timeline_ajax_url -- url for simile-ajax-api.js
- *        var Timeline_urlPrefix -- url for the *directory* that contains timeline-api.js
- *            Include trailing slash
- *        var Timeline_parameters='bundle=true'; // you must set bundle to true if you are using
- *                                               // timeline_libraries.zip since only the
- *                                               // bundled libraries are included
+ * 2) Set the following global js variable used to send parameters to this script:
+ *     var Timeline_ajax_url  -- URL for simile-ajax-api.js
+ *     var Timeline_urlPrefix -- URL for the *directory* that contains timeline-api.js 
+ *                               on your web site (including the trailing slash!)
  *      
- * eg your html page would include
+ * eg your HTML page would include
  *
  *   <script>
- *     var Timeline_ajax_url="http://YOUR_SERVER/javascripts/timeline/timeline_ajax/simile-ajax-api.js";
- *     var Timeline_urlPrefix='http://YOUR_SERVER/javascripts/timeline/timeline_js/';       
- *     var Timeline_parameters='bundle=true';
+ *     var Timeline_ajax_url="http://YOUR_SERVER/apis/timeline/ajax/simile-ajax-api.js";
+ *     var Timeline_urlPrefix='http://YOUR_SERVER/apis/timeline/';       
  *   </script>
- *   <script src="http://YOUR_SERVER/javascripts/timeline/timeline_js/timeline-api.js"    
+ *   <script src="http://YOUR_SERVER/javascripts/timeline/timeline-api.js"    
  *     type="text/javascript">
  *   </script>
  *
  * SCRIPT PARAMETERS
+ *
  * This script auto-magically figures out locale and has defaults for other parameters 
  * To set parameters explicity, set js global variable Timeline_parameters or include as
  * parameters on the url using GET style. Eg the two next lines pass the same parameters:
@@ -51,6 +53,7 @@
  *                  by browser's and server's locale settings.
  * 
  * DEBUGGING
+ *
  * If you have a problem with Timeline, the first step is to use the unbundled Javascript files. To do so:
  * To use the unbundled Timeline and Ajax libraries
  * Change

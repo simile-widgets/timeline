@@ -1,0 +1,31 @@
+#!/bin/sh
+
+cd src/webapp
+
+# remove all executable flags
+svn -R propdel svn:executable .
+
+# set mime type for HTML files
+for i in `find . -name \*.html`; do
+    svn propset svn:mime-type text/html $i
+done
+
+# set mime type for XML files
+for i in `find . -name \*.xml`; do
+    svn propset svn:mime-type application/xml $i
+done
+
+# set mime type for JS files
+for i in `find . -name \*.js`; do
+    svn propset svn:mime-type text/javascript $i
+done
+
+# set mime type for JPG files
+for i in `find . -name \*.jpg`; do
+    svn propset svn:mime-type image/jpeg $i
+done
+
+# set mime type for PNG files
+for i in `find . -name \*.png`; do
+    svn propset svn:mime-type image/png $i
+done

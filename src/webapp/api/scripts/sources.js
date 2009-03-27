@@ -98,35 +98,49 @@ Timeline.DefaultEventSource.prototype.loadJSON = function(data, url) {
         var parseDateTimeFunction = this._events.getUnit().getParser(dateTimeFormat);
        
         for (var i=0; i < data.events.length; i++){
-            var event = data.events[i];
+            var evnt = data.events[i];
+            
+            // New feature: attribute synonyms. The following attribute names are interchangable.
+            // The shorter names enable smaller load files.
+            //    eid -- eventID
+            //      s -- start
+            //      e -- end
+            //     ls -- latestStart
+            //     ee -- earliestEnd
+            //      d -- description
+            //     de -- durationEvent
+            //      t -- title,
+            //      c -- classname
+
             // Fixing issue 33:
             // instant event: default (for JSON only) is false. Or use values from isDuration or durationEvent
             // isDuration was negated (see issue 33, so keep that interpretation
-            var instant = event.isDuration || (event.durationEvent != null && !event.durationEvent);
-
+            var instant = evnt.isDuration ||
+                          (('durationEvent' in evnt) && !evnt.durationEvent) ||
+                          (('de' in evnt) && !evnt.de);
             var evt = new Timeline.DefaultEventSource.Event({
-                          id: ("id" in event) ? event.id : undefined,
-                       start: parseDateTimeFunction(event.start),
-                         end: parseDateTimeFunction(event.end),
-                 latestStart: parseDateTimeFunction(event.latestStart),
-                 earliestEnd: parseDateTimeFunction(event.earliestEnd),
+                          id: ("id" in evnt) ? evnt.id : undefined,
+                       start: parseDateTimeFunction(evnt.start || evnt.s),
+                         end: parseDateTimeFunction(evnt.end || evnt.e),
+                 latestStart: parseDateTimeFunction(evnt.latestStart || evnt.ls),
+                 earliestEnd: parseDateTimeFunction(evnt.earliestEnd || evnt.ee),
                      instant: instant,
-                        text: event.title,
-                 description: event.description,
-                       image: this._resolveRelativeURL(event.image, base),
-                        link: this._resolveRelativeURL(event.link , base),
-                        icon: this._resolveRelativeURL(event.icon , base),
-                       color: event.color,                                      
-                   textColor: event.textColor,
-                   hoverText: event.hoverText,
-                   classname: event.classname,
-                   tapeImage: event.tapeImage,
-                  tapeRepeat: event.tapeRepeat,
-                     caption: event.caption,
-                     eventID: event.eventID,
-                    trackNum: event.trackNum
+                        text: evnt.title || evnt.t,
+                 description: evnt.description || evnt.d,
+                       image: this._resolveRelativeURL(evnt.image, base),
+                        link: this._resolveRelativeURL(evnt.link , base),
+                        icon: this._resolveRelativeURL(evnt.icon , base),
+                       color: evnt.color,                                      
+                   textColor: evnt.textColor,
+                   hoverText: evnt.hoverText,
+                   classname: evnt.classname || evnt.c,
+                   tapeImage: evnt.tapeImage,
+                  tapeRepeat: evnt.tapeRepeat,
+                     caption: evnt.caption,
+                     eventID: evnt.eventID  || evnt.eid,
+                    trackNum: evnt.trackNum
             });
-            evt._obj = event;
+            evt._obj = evnt;
             evt.getProperty = function(name) {
                 return this._obj[name];
             };

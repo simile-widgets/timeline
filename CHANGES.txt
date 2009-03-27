@@ -18,7 +18,20 @@ Version pre 2.4.0
 * Added a test for timezones. -- David H
 * Turned the highlight rectangle of a band into an overview of the band it's 
 synced with (i.e., indicating the visible offset and extent). -- David H rev 1921
-  
+* Added attribute synonyms for json event data files. The following attribute names are interchangable.
+  The shorter names enable smaller load files. If both are present for an event, the longer attribute name
+  wins. Rationale: decrease load times for large event data sets that use json. 
+  Changed example2 to use the shorter names. 
+     eid -- eventID
+       s -- start
+       e -- end
+      ls -- latestStart
+      ee -- earliestEnd
+       d -- description
+      de -- durationEvent
+       t -- title,
+       c -- classname
+   -- LarryK rev 1954
     
 Version 2.3.1
 * timeline-api.js now uses

@@ -11,8 +11,10 @@ any sort of web server.
 Installation
 ------------
 
-No installation required. Everything is loaded directly from the web.
-
+Install this directory of files anywhere on your computer.
+You do need internet access.
+No local web server is needed, Timeline library is loaded directly from
+the web.
 
 Running
 -------

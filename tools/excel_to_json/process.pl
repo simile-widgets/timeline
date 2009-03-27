@@ -2,6 +2,8 @@
 #
 # This program enables the user to submit an excel file and have it
 # returned as a json representation
+# 
+# Status: in development by Larry K
 #
 
 # Datetime Perl resources http://datetime.perl.org/?Resources

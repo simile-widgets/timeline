@@ -32,6 +32,8 @@ synced with (i.e., indicating the visible offset and extent). -- David H rev 192
        t -- title,
        c -- classname
    -- LarryK rev 1954
+* Added test_example3 which includes tests/demonstrations of using trackNum, classname and other
+  event attributes. -- Jorge Correia rev 1966
     
 Version 2.3.1
 * timeline-api.js now uses

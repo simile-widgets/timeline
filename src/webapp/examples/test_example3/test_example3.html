@@ -1,0 +1,296 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+      <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+      <title>SIMILE | Timeline | Examples | Test Example 2</title>
+      <link rel='stylesheet' href='../styles.css' type='text/css' />
+
+       <!-- ############################################################################ -->
+       <!-- @author : Jorge Correia -->
+       <!-- To use this file on your own system, replace ../../api/timeline-api.js with  -->
+       <!--     http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js             -->
+       <!-- (where 2.3.1 is the current release number.)                                 -->
+
+       <!-- Debugging support                                                            -->
+       <!-- To debug Timeline and the Ajax library add
+         <script> Timeline_ajax_url = "http://api.simile-widgets.org/ajax/2.2.1/simile-ajax-api.js?bundle=false"</script>
+         and change the bundle=true to bundle=false in the timeline-api line too
+         -->
+
+        <script src="../../api/timeline-api.js?bundle=true" type="text/javascript"></script>
+        <script src="../examples.js" type="text/javascript"></script>
+        <script>
+
+            var tl;
+            //in php you can get this 1so8601 date using date("c",$you_date_variable);
+            var startProj = SimileAjax.DateTime.parseIso8601DateTime("2009-03-10T00:00:00");
+            var endProj = SimileAjax.DateTime.parseIso8601DateTime("2009-04-30T00:00:00");
+            
+            var event_data = 
+              {
+              "dateTimeFormat": "iso8601",
+              "events":[
+                        {     "start": "2009-03-10T06:00:00+00:00",
+                                "end": "2009-03-31T22:00:00+00:00",
+                            "instant": false,
+                              "title": "1",
+                              "color": "#7FFFD4",
+                          "textColor": "#000000",
+                            "caption": "1",
+                           "trackNum": 1,
+                          "classname": "special_event2 aquamarine",
+                        "description": "bar 1"},
+                                       
+                             {"start": "2009-03-10T08:00:00+00:00",
+                                "end": "2009-03-17T20:00:00+00:00",
+                            "instant": false,
+                              "title": "1.1",
+                              "color": "#7FFFD4",
+                          "textColor": "#000000",
+                           "trackNum": 2,
+                        "description": "bar 1.1"},
+                                                      
+                             {"start": "2009-03-12T10:00:00+00:00",
+                                "end": "2009-03-13T17:00:00+00:00",
+                            "instant": false,
+                              "title": "1.1.1",
+                              "color": "#7FFFD4",
+                          "textColor": "#000000",
+                           "trackNum": 3,
+                        "description": "bar 1.1.1"},
+                                                      
+                             {"start": "2009-03-14T10:00:00+00:00",
+                                "end": "2009-03-16T17:00:00+00:00",
+                            "instant": false,
+                              "title": "1.1.2",
+                              "color": "#7FFFD4",
+                          "textColor": "#000000",
+                           "trackNum": 4,
+                        "description": "bar 1.1.2"},
+                                                      
+                             {"start": "2009-03-17T10:00:00+00:00",
+                                "end": "2009-03-17T17:00:00+00:00",
+                            "instant": false,
+                              "title": "1.1.3",
+                              "color": "#7FFFD4",
+                          "textColor": "#000000",
+                           "trackNum": 5,
+                        "description": "bar 1.1.3"},
+                                                      
+                             {"start": "2009-03-15T08:00:00+00:00",
+                                "end": "2009-03-18T20:00:00+00:00",
+                            "instant": false,
+                              "title": "1.2",
+                              "color": "#7FFFD4",
+                          "textColor": "#000000",
+                           "trackNum": 6,
+                          "classname": "special_event2",
+                        "description": "bar 1.2"},
+                                                      
+                             {"start": "2009-03-15T10:00:00+00:00",
+                                "end": "2009-03-18T17:00:00+00:00",
+                            "instant": false,
+                              "title": "1.2.1",
+                              "color": "#7FFFD4",
+                          "textColor": "#000000",
+                           "trackNum": 7,
+                          "classname": "backimage",
+                        "description": "bar 1.2.1"},
+                                                    
+                             {"start": "2009-03-16T10:00:00+00:00",
+                                "end": "2009-03-17T17:00:00+00:00",
+                            "instant": false,
+                              "title": "1.2.2",
+                              "color": "#7FFFD4",
+                          "textColor": "#000000",
+                           "trackNum": 8,
+                        "description": "bar 1.2.2"},
+                                                    
+                             {"start": "2009-04-01T06:00:00+00:00",
+                                "end": "2009-04-20T22:00:00+00:00",
+                            "instant": false,
+                              "title": "2",
+                              "color": "#000000",
+                          "textColor": "#000000",
+                           "trackNum": 9,
+                        "description": "bar 2"},
+                                                     
+                             {"start": "2009-03-10T06:00:00+00:00",
+                                "end": "2009-03-12T20:00:00+00:00",
+                            "instant": false,
+                              "title": "3",
+                          "textColor": "#000000",
+                           "trackNum": 10,
+                          "classname": "dashed aquamarine",
+                        "description": "bar 3"},
+                                                
+                             {"start": "2009-03-11T10:00:00+00:00",
+                                "end": "2009-03-12T17:00:00+00:00",
+                            "instant": false,
+                              "title": "3.1",
+                          "textColor": "#000000",
+                           "trackNum": 11,
+                          "classname": "dotted brown",
+                        "description": "bar 3.1"}
+                     ]
+              };
+
+            function onLoad() {
+                var tl_el = document.getElementById("tl");
+                var eventSource = new Timeline.DefaultEventSource();
+                var theme = Timeline.ClassicTheme.create();
+                theme.autoWidth = false; // Set the Timeline's "width" automatically.
+                theme.autoWidthMargin=10;
+                theme.event.bubble.width = 220;
+                theme.event.bubble.height = 120;
+
+                theme.ether.backgroundColors = ["#E6E6E6","#F7F7F7"];
+
+                theme.timeline_start = startProj;
+                theme.timeline_stop  = endProj;
+
+                theme.event.track.height = "20";
+                theme.event.tape.height = 10; // px
+                theme.event.track.height = theme.event.tape.height + 6;
+
+                var d = SimileAjax.DateTime.parseIso8601DateTime("2009-03-15T00:00:00");
+                var bandInfos = [
+
+                    Timeline.createBandInfo({
+                        layout:         'original',// original, overview, detailed
+                        eventSource:    eventSource,
+                        date:           d,
+                        width:          350,
+                        intervalUnit:   Timeline.DateTime.DAY,
+                        intervalPixels: 100,
+                        //trackHeight: 10,
+                        theme :theme
+
+                    }),
+                    Timeline.createBandInfo({
+                        layout:         'overview',
+                        date:           d,
+                        trackHeight:    0.5,
+                        trackGap:       0.2,
+                        eventSource:    eventSource,
+                        width:          50,
+                        intervalUnit:   Timeline.DateTime.MONTH,
+                        //    showEventText:  false,
+                        intervalPixels: 200,
+                        theme :theme
+                    })
+
+                ];
+
+                bandInfos[1].highlight = true;
+                bandInfos[1].syncWith = 0;
+
+
+
+                bandInfos[1].decorators = [
+                    new Timeline.SpanHighlightDecorator({
+                        startDate:  startProj,
+                        endDate:    endProj,
+                        inFront:    false,
+                        color:      "#FFC080",
+                        opacity:    30,
+                        startLabel: "Begin",
+                        endLabel:   "End",
+                        theme:      theme
+                    })
+                ];
+
+
+                tl = Timeline.create(tl_el, bandInfos, Timeline.HORIZONTAL);
+                // show loading message
+                tl.showLoadingMessage();
+
+                eventSource.loadJSON(event_data, document.location.href);
+
+                // dismiss loading message
+                tl.hideLoadingMessage();
+
+                // setup highlight filters
+                setupFilterHighlightControls(document.getElementById("controls"), tl, [0,1], theme);
+
+            }
+            function centerProjStart() {
+                tl.getBand(1).setCenterVisibleDate(startProj);
+            }
+            
+            function centerProjEnd() {
+                tl.getBand(1).setCenterVisibleDate(endProj);
+            }
+
+            var resizeTimerID = null;
+            function onResize() {
+                if(resizeTimerID == null) {
+                    resizeTimerID = window.setTimeout(function() {
+                        resizeTimerID = null;
+                        tl.layout();
+                    }, 500);
+                }
+            }
+        </script>
+        <style type="text/css">
+            .special_event2 {}
+            .tape-dashed, .small-dashed {border-top: dashed 5px ;background-color:transparent;margin-top:3px;}
+            .tape-dotted, .small-dotted {border-top: dotted 9px ;background-color:transparent;margin-top:3px;}
+            .tape-special_event2{border:2px outset;margin-top:-2px;}
+            .tape-backimage{background-image: url("bar.png");}
+            .clear { clear: both; }
+            .aquamarine{color: #7FFFD4;}
+            .brown{color:#A52A2A;}
+
+        </style>
+    </head>
+    <body onload="onLoad();" onresize="onResize();">
+        <ul id="path">
+            <li><a href="/" title="Home">SIMILE Widgets</a></li>
+            <li><a href="../../" title="Timeline">Timeline</a></li>
+            <li><a href="../" title="Examples">Examples</a></li>
+            <li><span>Test: Gantt with TrackNum and CSS override in Bars</span></li>
+        </ul>
+
+        <div id="header">
+            <h1>Test: Gantt with TrackNum and Classname</h1>
+        </div>
+
+        <div id="content">
+            <p><b>Demonstrates:</b>
+            <ul>
+                <li>Events are not laid out automatically. Instead, they are placed into specific tracks, using event attribute TrackNum.
+                <li>Event tape styling changed with css controlled by event attribute Classname.
+                    <ul>
+                        <li>More than one class is used to achieve a 3d effect in bar 1
+                        <li>Bar 2 is equal to Bar 1, except in border color
+                        <li>Bar 1.2.2 has more than one color through a transparent png set in the background image. Change png to achieve other patterns
+                        <li>Bar 3 is dashed with classname override to default bar behaviour
+                        <li>Bar 3.1 is dotted using the same trick as Bar 3
+                    </ul>
+                <li>Events are defined in this file, not in an external file
+                <li>Implicit call of Load Message
+                <li>Force different band backGround Colors
+                <li>Set tape height
+                <li>Using examples.js to add filtering and highlighting controls. Eg, enter 2 into the filter field or a highlight field.
+                <li>Links to specific dates. Click in start and end links at the top of timeline
+                <li>Timeline is bounded with start and stop dates. Note how the Timeline can't be moved before 10 March or after 30 April
+            </ul>
+
+            <p>Timeline version <span id='tl_ver'></span>.</p>
+            <script>Timeline.writeVersion('tl_ver')</script>
+
+        </div>
+
+        <div class="controls" id="controls"></div>
+
+        <div style="float: left;"><a href="javascript:centerProjStart();">Start</a></div>
+        <div style="text-align:right;"><a href="javascript:centerProjEnd();">End</a></div>
+        <div class="clear"> </div>
+        <div id="tl" class="timeline-default" style="height: 400px; border: 1px solid #aaa;"></div>
+        <div id="footer">
+            Copyright &copy; <a href="http://web.mit.edu/">Massachusetts Institute of Technology</a> and Contributors 2006-2009 ~ Some rights reserved
+        </div>
+    </body>
+</html>

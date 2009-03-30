@@ -29,3 +29,8 @@ done
 for i in `find . -name \*.png`; do
     svn propset svn:mime-type image/png $i
 done
+
+# set mime type for CSS files
+for i in `find . -name \*.css`; do
+    svn propset svn:mime-type text/css $i
+done

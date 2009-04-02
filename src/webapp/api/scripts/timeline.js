@@ -65,7 +65,9 @@ Timeline.create = function(elmt, bandInfos, orientation, unit) {
 
 Timeline.createBandInfo = function(params) {
     var theme = ("theme" in params) ? params.theme : Timeline.getDefaultTheme();
-    
+
+    var decorators = ("decorators" in params) ? params.decorators : [];
+        
     var eventSource = ("eventSource" in params) ? params.eventSource : null;
     
     var ether = new Timeline.LinearEther({ 
@@ -125,6 +127,7 @@ Timeline.createBandInfo = function(params) {
         etherPainter:   etherPainter,
         eventPainter:   eventPainter,
         theme:          theme,
+        decorators:     decorators,
         zoomIndex:      ("zoomIndex" in params) ? params.zoomIndex : 0,
         zoomSteps:      ("zoomSteps" in params) ? params.zoomSteps : null
     };

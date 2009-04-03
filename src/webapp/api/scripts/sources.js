@@ -472,7 +472,9 @@ Timeline.DefaultEventSource.Event.prototype = {
     },
     
     fillDescription: function(elmt) {
-        elmt.innerHTML = this._description;
+        if (this._description) {
+            elmt.innerHTML = this._description;
+        }
     },
     fillWikiInfo: function(elmt) {
         // Many bubbles will not support a wiki link. 

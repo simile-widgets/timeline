@@ -57,8 +57,10 @@ Timeline._Band = function(timeline, bandInfo, index) {
     this._changing = false;
     this._originalScrollSpeed = 5; // pixels
     this._scrollSpeed = this._originalScrollSpeed;
-    this._viewOrthogonalOffset = 0; // vertical offset if the timeline is horizontal, and vice versa
     this._onScrollListeners = [];
+    
+    this._orthogonalDragging = false;
+    this._viewOrthogonalOffset = 0; // vertical offset if the timeline is horizontal, and vice versa
     this._onOrthogonalScrollListeners = [];
     
     var b = this;
@@ -94,11 +96,11 @@ Timeline._Band = function(timeline, bandInfo, index) {
     this._div.className = "timeline-band timeline-band-" + index;
     this._timeline.addDiv(this._div);
     
-    SimileAjax.DOM.registerEventWithObject(this._div, "mousedown", this, "_onMouseDown");
-    SimileAjax.DOM.registerEventWithObject(this._div, "mousemove", this, "_onMouseMove");
-    SimileAjax.DOM.registerEventWithObject(this._div, "mouseup", this, "_onMouseUp");
-    SimileAjax.DOM.registerEventWithObject(this._div, "mouseout", this, "_onMouseOut");
     SimileAjax.DOM.registerEventWithObject(this._div, "dblclick", this, "_onDblClick");
+    SimileAjax.DOM.registerEventWithObject(this._div, "mousedown", this, "_onMouseDown");
+    SimileAjax.DOM.registerEventWithObject(document.body, "mousemove", this, "_onMouseMove");
+    SimileAjax.DOM.registerEventWithObject(document.body, "mouseup", this, "_onMouseUp");
+    SimileAjax.DOM.registerEventWithObject(document.body, "mouseout", this, "_onMouseOut");
     
     var mouseWheel = this._theme!= null ? this._theme.mouseWheel : 'scroll'; // theme is not always defined
     if (mouseWheel === 'zoom' || mouseWheel === 'scroll' || this._zoomSteps) {
@@ -155,6 +157,14 @@ Timeline._Band = function(timeline, bandInfo, index) {
         this._timeline.addDiv(this._scrollBar);
         
         this._scrollBar.innerHTML = '<div class="timeline-band-scrollbar-thumb"> </div>'
+        
+        var scrollbarThumb = this._scrollBar.firstChild;
+        if (SimileAjax.Platform.browser.isIE) {
+            scrollbarThumb.style.cursor = "move";
+        } else {
+            scrollbarThumb.style.cursor = "-moz-grab";
+        }
+        SimileAjax.DOM.registerEventWithObject(scrollbarThumb, "mousedown", this, "_onScrollBarMouseDown");
     }
 };
 
@@ -489,7 +499,7 @@ Timeline._Band.prototype.zoom = function(zoomIn, x, y, target) {
   this._moveEther(x);
 };
 
-Timeline._Band.prototype._onMouseDown = function(innerFrame, evt, target) {
+Timeline._Band.prototype._onMouseDown = function(elmt, evt, target) {
     this.closeBubble();
     
     this._dragging = true;
@@ -497,38 +507,71 @@ Timeline._Band.prototype._onMouseDown = function(innerFrame, evt, target) {
     this._dragY = evt.clientY;
 };
 
-Timeline._Band.prototype._onMouseMove = function(innerFrame, evt, target) {
-    if (this._dragging) {
+Timeline._Band.prototype._onMouseMove = function(elmt, evt, target) {
+    if (this._dragging || this._orthogonalDragging) {
         var diffX = evt.clientX - this._dragX;
         var diffY = evt.clientY - this._dragY;
         
         this._dragX = evt.clientX;
         this._dragY = evt.clientY;
-        
+    }
+    
+    if (this._dragging) {
         if (this._timeline.isHorizontal()) {
             this._moveEther(diffX, diffY);
         } else {
             this._moveEther(diffY, diffX);
         }
-        this._positionHighlight();
-        this._showScrollbar();
+    } else if (this._orthogonalDragging) {
+        var viewWidth = this.getViewWidth();
+        var scrollbarThumb = this._scrollBar.firstChild;
+        if (this._timeline.isHorizontal()) {
+            this._moveEther(0, -diffY * viewWidth / scrollbarThumb.offsetHeight);
+        } else {
+            this._moveEther(0, -diffX * viewWidth / scrollbarThumb.offsetWidth);
+        }
+    } else {
+        return;
     }
+    
+    this._positionHighlight();
+    this._showScrollbar();
 };
 
-Timeline._Band.prototype._onMouseUp = function(innerFrame, evt, target) {
-    this._dragging = false;
+Timeline._Band.prototype._onMouseUp = function(elmt, evt, target) {
+    if (this._dragging) {
+        this._dragging = false;
+    } else if (this._orthogonalDragging) {
+        this._orthogonalDragging = false;
+    } else {
+        return;
+    }
     this._keyboardInput.focus();
     this._bounceBack();
 };
 
-Timeline._Band.prototype._onMouseOut = function(innerFrame, evt, target) {
-    var coords = SimileAjax.DOM.getEventRelativeCoordinates(evt, innerFrame);
-    coords.x += this._viewOffset;
-    if (coords.x < 0 || coords.x > innerFrame.offsetWidth ||
-        coords.y < 0 || coords.y > innerFrame.offsetHeight) {
-        this._dragging = false;
+Timeline._Band.prototype._onMouseOut = function(elmt, evt, target) {
+    if (target == document.body) {
+        if (this._dragging) {
+            this._dragging = false;
+        } else if (this._orthogonalDragging) {
+            this._orthogonalDragging = false;
+        } else {
+            return;
+        }
         this._bounceBack();
     }
+};
+
+Timeline._Band.prototype._onScrollBarMouseDown = function(elmt, evt, target) {
+    this.closeBubble();
+    
+    this._orthogonalDragging = true;
+    this._dragX = evt.clientX;
+    this._dragY = evt.clientY;
+    
+    SimileAjax.DOM.cancelEvent(evt);
+    return false;
 };
 
 Timeline._Band.prototype._onMouseScroll = function(innerFrame, evt, target) {
@@ -678,7 +721,11 @@ Timeline._Band.prototype._moveEther = function(shift, orthogonalShift) {
     }
     
     if (this._supportsOrthogonalScrolling) {
-        this._viewOrthogonalOffset = this._viewOrthogonalOffset + orthogonalShift;
+        if (this._eventPainter.getOrthogonalExtent() <= this.getViewWidth()) {
+            this._viewOrthogonalOffset = 0;
+        } else {
+            this._viewOrthogonalOffset = this._viewOrthogonalOffset + orthogonalShift;
+        }
     }
     
     if (this._viewOffset > -this._viewLength * 0.5 ||
@@ -858,6 +905,7 @@ Timeline._Band.prototype._showScrollbar = function() {
     var ratio = (visibleWidth / totalWidth);
     var thumbWidth = Math.round(visibleWidth * ratio) + "px";
     var thumbOffset = Math.round(-this._viewOrthogonalOffset * ratio) + "px";
+    var thumbThickness = 12;
     
     var thumb = this._scrollBar.firstChild;
     if (this._timeline.isHorizontal()) {
@@ -865,7 +913,7 @@ Timeline._Band.prototype._showScrollbar = function() {
         this._scrollBar.style.height = this._div.style.height;
         
         this._scrollBar.style.right = "0px";
-        this._scrollBar.style.width = "10px";
+        this._scrollBar.style.width = thumbThickness + "px";
         
         thumb.style.top = thumbOffset;
         thumb.style.height = thumbWidth;
@@ -874,7 +922,7 @@ Timeline._Band.prototype._showScrollbar = function() {
         this._scrollBar.style.width = this._div.style.width;
         
         this._scrollBar.style.bottom = "0px";
-        this._scrollBar.style.height = "10px";
+        this._scrollBar.style.height = thumbThickness + "px";
         
         thumb.style.left = thumbOffset;
         thumb.style.width = thumbWidth;

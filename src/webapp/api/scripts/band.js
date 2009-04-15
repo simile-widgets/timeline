@@ -500,11 +500,15 @@ Timeline._Band.prototype.zoom = function(zoomIn, x, y, target) {
 };
 
 Timeline._Band.prototype._onMouseDown = function(elmt, evt, target) {
-    this.closeBubble();
+    if (!this._dragging) {
+        this.closeBubble();
     
-    this._dragging = true;
-    this._dragX = evt.clientX;
-    this._dragY = evt.clientY;
+        this._dragging = true;
+        this._dragX = evt.clientX;
+        this._dragY = evt.clientY;
+    
+        return this._cancelEvent(evt);
+    }
 };
 
 Timeline._Band.prototype._onMouseMove = function(elmt, evt, target) {
@@ -536,6 +540,8 @@ Timeline._Band.prototype._onMouseMove = function(elmt, evt, target) {
     
     this._positionHighlight();
     this._showScrollbar();
+    
+    return this._cancelEvent(evt);
 };
 
 Timeline._Band.prototype._onMouseUp = function(elmt, evt, target) {
@@ -548,6 +554,8 @@ Timeline._Band.prototype._onMouseUp = function(elmt, evt, target) {
     }
     this._keyboardInput.focus();
     this._bounceBack();
+    
+    return this._cancelEvent(evt);
 };
 
 Timeline._Band.prototype._onMouseOut = function(elmt, evt, target) {
@@ -560,18 +568,21 @@ Timeline._Band.prototype._onMouseOut = function(elmt, evt, target) {
             return;
         }
         this._bounceBack();
+        
+        return this._cancelEvent(evt);
     }
 };
 
 Timeline._Band.prototype._onScrollBarMouseDown = function(elmt, evt, target) {
-    this.closeBubble();
+    if (!this._orthogonalDragging) {
+        this.closeBubble();
     
-    this._orthogonalDragging = true;
-    this._dragX = evt.clientX;
-    this._dragY = evt.clientY;
+        this._orthogonalDragging = true;
+        this._dragX = evt.clientX;
+        this._dragY = evt.clientY;
     
-    SimileAjax.DOM.cancelEvent(evt);
-    return false;
+        return this._cancelEvent(evt);
+    }
 };
 
 Timeline._Band.prototype._onMouseScroll = function(innerFrame, evt, target) {
@@ -940,5 +951,10 @@ Timeline._Band.prototype._hideScrollbar = function() {
         return;
     }
     //this._scrollBar.style.display = "none";
+};
+
+Timeline._Band.prototype._cancelEvent = function(evt) {
+    SimileAjax.DOM.cancelEvent(evt);
+    return false;
 };
 

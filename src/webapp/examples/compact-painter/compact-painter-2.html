@@ -1,0 +1,100 @@
+<html>
+  <head>
+    <title>SIMILE Widgets | Timeline | Examples | Compact Painter 2</title>
+    <link rel='stylesheet' href='../styles.css' type='text/css' />
+
+    <!-- ############################################################################ -->
+    <!-- To use this file on your own system, replace ../../api/timeline-api.js with  -->
+    <!--     http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js          -->
+    <!-- (where 2.3.1 is the current release number.)                                 -->
+    <script src="../../api/timeline-api.js?bundle=true" type="text/javascript"></script>
+
+    <script>
+        var tl;
+        
+        function onLoad() {
+          var eventSource = new Timeline.DefaultEventSource(0);
+          
+          var theme = Timeline.ClassicTheme.create();
+          theme.event.instant.iconWidth += 4; // Add padding and borders
+          theme.event.instant.iconHeight += 4;
+          
+          var d = Timeline.DateTime.parseGregorianDateTime("1900")
+          var bandInfos = [
+              Timeline.createBandInfo({
+                  width:          "90%", 
+                  intervalUnit:   Timeline.DateTime.DECADE, 
+                  intervalPixels: 150,
+                  eventSource:    eventSource,
+                  date:           d,
+                  theme:          theme,
+                  eventPainter:   Timeline.CompactEventPainter,
+                  eventPainterParams: {
+                      iconWidth:      60,
+                      iconHeight:     60,
+                      iconLabelGap:   3
+                  }
+              }),
+              Timeline.createBandInfo({
+                  width:          "10%", 
+                  intervalUnit:   Timeline.DateTime.CENTURY, 
+                  intervalPixels: 100,
+                  eventSource:    eventSource,
+                  date:           d,
+                  theme:          theme,
+                  layout:         'overview'  // original, overview, detailed
+              })
+          ];
+          bandInfos[1].syncWith = 0;
+          bandInfos[1].highlight = true;
+          
+          tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
+          tl.loadJSON("data2.json?"+ (new Date().getTime()), function(json, url) { eventSource.loadJSON(json, url); });
+        }
+        
+        var resizeTimerID = null;
+        function onResize() {
+            if (resizeTimerID == null) {
+                resizeTimerID = window.setTimeout(function() {
+                    resizeTimerID = null;
+                    tl.layout();
+                }, 500);
+            }
+        }
+    </script>
+    <style>
+        div.timeline-event-icon {
+            border: 1px solid #aaa;
+            padding: 1px;
+            background: white;
+        }
+        div.timeline-event-icon-default {
+            border: none;
+            padding: 0px;
+        }
+    </style>
+  </head>
+  <body onload="onLoad();" onresize="onResize();">
+    <ul id="path">
+      <li><a href="/" title="Home">SIMILE Widgets</a></li>
+      <li><a href="../../" title="Timeline">Timeline</a></li>
+      <li><a href="../" title="Examples">Examples</a></li>
+      <li><span>Compact Painter 2</span></li>
+    </ul>
+  
+    <div id="header">
+      <h1>Compact Painter Example 2</h1>
+    </div>
+  
+    <div id="content">
+      <p>Timeline version <span id='tl_ver'></span>.</p>
+      <script>Timeline.writeVersion('tl_ver');</script>
+    
+      <div id="tl" class="timeline-default" style="height: 600px;"></div>
+    </div>
+    
+    <div id="footer">
+      Copyright &copy; <a href="http://web.mit.edu/">Massachusetts Institute of Technology</a> and Contributors 2006-2009 ~ Some rights reserved
+    </div>
+  </body>
+</html>

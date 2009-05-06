@@ -191,11 +191,11 @@ Timeline.CompactEventPainter.prototype._computeMetrics = function() {
         metrics.compositeIconWidth = metrics.defaultIconWidth;
         metrics.compositeIconHeight = metrics.defaultIconHeight;
     }
-    metrics.defaultStackIcon = "icon" in this._params.stackConcurrentPreciseInstantEvents ?
+    metrics.defaultStackIcon = ("stackConcurrentPreciseInstantEvents" in this._params && "icon" in this._params.stackConcurrentPreciseInstantEvents) ?
         this._params.stackConcurrentPreciseInstantEvents.icon : metrics.defaultIcon;
-    metrics.defaultStackIconWidth = "iconWidth" in this._params.stackConcurrentPreciseInstantEvents ?
+    metrics.defaultStackIconWidth = ("stackConcurrentPreciseInstantEvents" in this._params && "iconWidth" in this._params.stackConcurrentPreciseInstantEvents) ?
         this._params.stackConcurrentPreciseInstantEvents.iconWidth : metrics.defaultIconWidth;
-    metrics.defaultStackIconHeight = "iconHeight" in this._params.stackConcurrentPreciseInstantEvents ?
+    metrics.defaultStackIconHeight = ("stackConcurrentPreciseInstantEvents" in this._params && "iconHeight" in this._params.stackConcurrentPreciseInstantEvents) ?
         this._params.stackConcurrentPreciseInstantEvents.iconHeight : metrics.defaultIconHeight;
     
     return metrics;
@@ -541,6 +541,7 @@ Timeline.CompactEventPainter.prototype.paintImpreciseInstantEvent = function(evt
         end:            evt.getEnd(),
         latestStart:    evt.getLatestStart(),
         earliestEnd:    evt.getEarliestEnd(),
+        color:          evt.getColor() || evt.getTextColor(),
         isInstant:      true
     };
     
@@ -563,7 +564,7 @@ Timeline.CompactEventPainter.prototype.paintImpreciseInstantEvent = function(evt
     var result = this.paintTapeIconLabel(
         evt.getStart(),
         commonData,
-        tapeData, // no tape data
+        tapeData,
         iconData,
         labelData,
         metrics,
@@ -599,6 +600,7 @@ Timeline.CompactEventPainter.prototype.paintPreciseDurationEvent = function(evt,
     var tapeData = {
         start:          evt.getStart(),
         end:            evt.getEnd(),
+        color:          evt.getColor() || evt.getTextColor(),
         isInstant:      false
     };
     
@@ -621,7 +623,7 @@ Timeline.CompactEventPainter.prototype.paintPreciseDurationEvent = function(evt,
     var result = this.paintTapeIconLabel(
         evt.getLatestStart(),
         commonData,
-        tapeData, // no tape data
+        tapeData,
         iconData,
         labelData,
         metrics,
@@ -659,6 +661,7 @@ Timeline.CompactEventPainter.prototype.paintImpreciseDurationEvent = function(ev
         end:            evt.getEnd(),
         latestStart:    evt.getLatestStart(),
         earliestEnd:    evt.getEarliestEnd(),
+        color:          evt.getColor() || evt.getTextColor(),
         isInstant:      false
     };
     
@@ -681,7 +684,7 @@ Timeline.CompactEventPainter.prototype.paintImpreciseDurationEvent = function(ev
     var result = this.paintTapeIconLabel(
         evt.getLatestStart(),
         commonData,
-        tapeData, // no tape data
+        tapeData,
         iconData,
         labelData,
         metrics,

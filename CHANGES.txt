@@ -34,6 +34,8 @@ synced with (i.e., indicating the visible offset and extent). -- David H rev 192
    -- LarryK rev 1954
 * Added test_example3 which includes tests/demonstrations of using trackNum, classname and other
   event attributes. -- Jorge Correia rev 1966
+* Allow decorators to be defined directly during bandInfo construction -- Stefano rev 1986
+* Added pt_BR localization supplied by Edimar Manica -- LarryK rev 2012
     
 Version 2.3.1
 * timeline-api.js now uses

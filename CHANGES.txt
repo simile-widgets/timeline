@@ -35,6 +35,12 @@ synced with (i.e., indicating the visible offset and extent). -- David H rev 192
 * Added test_example3 which includes tests/demonstrations of using trackNum, classname and other
   event attributes. -- Jorge Correia rev 1966
 * Allow decorators to be defined directly during bandInfo construction -- Stefano rev 1986
+* Don't set the innerHTML of the bubble if the description is not provided  -- Stefano rev 1990
+* Made orthogonal scrollbar interact-able, too, rather than just an indicator. -- David H rev 2004
+* Cancel default event handling to avoid text selection.  -- David H rev 2005
+* Fixed bug in compact painter where duration events didn't get painted with
+  specified colors and text colors.
+  Added another example to test compact painter.  -- David H rev 2009
 * Added pt_BR localization supplied by Edimar Manica -- LarryK rev 2012
     
 Version 2.3.1

@@ -72,6 +72,8 @@
     
     var simile_ajax_ver = "2.2.1"; // ===========>>>  current Simile-Ajax version
   
+    var isCompiled = ("Timeline_isCompiled" in window) && window.Timeline_isCompiled;
+    
     var useLocalResources = false;
     if (document.location.search.length > 0) {
         var params = document.location.search.substr(1).split("&");
@@ -195,12 +197,14 @@
             /*
              *  Include non-localized files
              */
-            if (bundle) {
-                includeJavascriptFiles(Timeline.urlPrefix, [ "timeline-bundle.js" ]);
-                includeCssFiles(Timeline.urlPrefix, [ "timeline-bundle.css" ]);
-            } else {
-                includeJavascriptFiles(Timeline.urlPrefix + "scripts/", javascriptFiles);
-                includeCssFiles(Timeline.urlPrefix + "styles/", cssFiles);
+            if (!isCompiled) {
+                if (bundle) {
+                    includeJavascriptFiles(Timeline.urlPrefix, [ "timeline-bundle.js" ]);
+                    includeCssFiles(Timeline.urlPrefix, [ "timeline-bundle.css" ]);
+                } else {
+                    includeJavascriptFiles(Timeline.urlPrefix + "scripts/", javascriptFiles);
+                    includeCssFiles(Timeline.urlPrefix + "styles/", cssFiles);
+                }
             }
             
             /*
@@ -245,11 +249,13 @@
                 }
             }
             
-            for (var l = 0; l < supportedLocales.length; l++) {
-                var locale = supportedLocales[l];
-                if (loadLocale[locale]) {
-                    includeJavascriptFiles(Timeline.urlPrefix + "scripts/l10n/" + locale + "/", localizedJavascriptFiles);
-                    includeCssFiles(Timeline.urlPrefix + "styles/l10n/" + locale + "/", localizedCssFiles);
+            if (!isCompiled) {
+                for (var l = 0; l < supportedLocales.length; l++) {
+                    var locale = supportedLocales[l];
+                    if (loadLocale[locale]) {
+                        includeJavascriptFiles(Timeline.urlPrefix + "scripts/l10n/" + locale + "/", localizedJavascriptFiles);
+                        includeCssFiles(Timeline.urlPrefix + "styles/l10n/" + locale + "/", localizedCssFiles);
+                    }
                 }
             }
             
@@ -268,7 +274,7 @@
     /*
      *  Load SimileAjax if it's not already loaded
      */
-    if (typeof SimileAjax == "undefined") {
+    if (typeof SimileAjax == "undefined" && !isCompiled) {
         window.SimileAjax_onLoad = loadMe;
         
         var url = useLocalResources ?

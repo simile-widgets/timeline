@@ -8,7 +8,7 @@
     |
     +-->
 
-<project default="bundle" basedir="." name="Timeline">
+<project default="compile" basedir="." name="Timeline">
 
   <property name="version" value="pre_2.4.0" />      <!-- For trunk versions, use style pre_2.4.0 -->
   <property name="local_example_ver" value="1.0" />
@@ -17,18 +17,19 @@
   
   <property name="timeline_api" value="src/webapp/api" />
   <property name="ajax_api" value="src/ajax/api"   />
+  <property name="timeline_compilations" value="src/webapp/api/compilations" />
   
   <target name="tasks">
     <taskdef name="jsmin"
         classname="edu.mit.simile.jsminTask.JSMinTask"
         classpath="tools/jsmin-task/jsminTask.jar"/>
   </target>
-  	
-  <target name="bundle" depends="tasks">
+    
+  <target name="parameterized-bundle" depends="tasks">
 
     <!-- SimileAjax -->
     
-    <jsmin output="src/ajax/api/simile-ajax-bundle.js">
+    <jsmin output="src/ajax/api/simile-ajax-bundle${suffix}.js" obfuscate="${obfuscate}">
         <fileset dir="src/ajax/api/scripts">
             <include name="jquery*.js" />
             <include name="platform.js" />
@@ -43,17 +44,84 @@
   	
   	<!-- Timeline -->
   	
-    <jsmin output="src/webapp/api/timeline-bundle.js">
+    <jsmin output="src/webapp/api/timeline-bundle${suffix}.js" obfuscate="${obfuscate}">
         <fileset dir="src/webapp/api/scripts">
         	<include name="*.js" />
         </fileset>
   	</jsmin>
   	
-    <concat destfile="src/webapp/api/timeline-bundle.css">
+    <concat destfile="src/webapp/api/timeline-bundle${suffix}.css">
         <fileset dir="src/webapp/api/styles">
         	<include name="**/*.css" />
         </fileset>
     </concat>
+  </target>
+  
+  <target name="bundle" depends="tasks">
+    <antcall target="parameterized-bundle">
+      <param name="obfuscate" value="true" />
+      <param name="suffix" value="" />
+    </antcall>
+    <antcall target="parameterized-bundle">
+      <param name="obfuscate" value="false" />
+      <param name="suffix" value="-debug" />
+    </antcall>
+  </target>
+  
+  <target name="compile-ajax">
+    <jsmin output="${ajax_api}/compilations/simile-ajax-compilation${suffix}.js" obfuscate="${obfuscate}">
+        <fileset file="${ajax_api}/compile-prolog.js" />
+        <fileset file="${ajax_api}/simile-ajax-api.js" />
+        <fileset file="${ajax_api}/simile-ajax-bundle${suffix}.js" />
+        <fileset file="${ajax_api}/compile-epilog.js" />
+    </jsmin>
+    <concat destfile="${ajax_api}/compilations/simile-ajax-compilation${suffix}.css">
+        <fileset dir="${ajax_api}/styles">
+        	<include name="**/*.css" />
+        </fileset>
+    </concat>
+  </target>
+  
+  <target name="compile-timeline">
+    <jsmin output="${timeline_compilations}/timeline-${locale}-compilation${suffix}.js" obfuscate="${obfuscate}">
+        <fileset file="${timeline_api}/compile-prolog.js" />
+        <fileset file="${timeline_api}/timeline-api.js" />
+        <fileset file="${timeline_api}/timeline-bundle${suffix}.js" />
+        <fileset dir="${timeline_api}/scripts/l10n/${locale}">
+            <include name="*.js" />
+        </fileset>
+        <fileset file="${timeline_api}/compile-epilog.js" />
+    </jsmin>
+    
+    <copy file="${timeline_api}/timeline-bundle${suffix}.css" tofile="${timeline_compilations}/timeline-${locale}-compilation${suffix}.css" />
+  </target>
+  
+  <target name="compile-timeline-locale">
+    <antcall target="compile-timeline">
+        <param name="locale" value="${locale}" />
+        <param name="suffix" value="" />
+        <param name="obfuscate" value="true" />
+    </antcall>
+    <antcall target="compile-timeline">
+        <param name="locale" value="${locale}" />
+        <param name="suffix" value="-debug" />
+        <param name="obfuscate" value="false" />
+    </antcall>
+  </target>
+  
+  <target name="compile" depends="bundle">
+    <!-- SimileAjax -->
+    <antcall target="compile-ajax">
+        <param name="suffix" value="" />
+        <param name="obfuscate" value="true" />
+    </antcall>
+    <antcall target="compile-ajax">
+        <param name="suffix" value="-debug" />
+        <param name="obfuscate" value="false" />
+    </antcall>
+    
+    <!-- Timeline -->
+    <antcall target="compile-timeline-locale"><param name="locale" value="en" /></antcall>
   </target>
   
   <!-- Create full distribution -->

@@ -3031,9 +3031,9 @@ Timeline.strings["en"]={wikiLinkLabel:"Discuss"};
 
 /* compile-epilog.js */
 (function(){var f=null;
-if(typeof Timeline_onLoad=="string"){f=eval(Timeline_onLoad);
-Timeline_onLoad=null;
-}else{if(typeof Timeline_onLoad=="function"){f=Timeline_onLoad;
-Timeline_onLoad=null;
-}}if(f!=null){f();
+if("SimileWidgets_onLoad" in window){if(typeof SimileWidgets_onLoad=="string"){f=eval(SimileWidgets_onLoad);
+SimileWidgets_onLoad=null;
+}else{if(typeof SimileWidgets_onLoad=="function"){f=SimileWidgets_onLoad;
+SimileWidgets_onLoad=null;
+}}}if(f!=null){f();
 }})();

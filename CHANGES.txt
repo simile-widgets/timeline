@@ -43,6 +43,8 @@ synced with (i.e., indicating the visible offset and extent). -- David H rev 192
   Added another example to test compact painter.  -- David H rev 2009
 * Added pt_BR localization supplied by Edimar Manica -- LarryK rev 2012
 * Fixed pt_BR localization -- LarryK rev 2015
+* Added "compilations" to build system to support dynamic loading of the API - David H
+* Added 2 examples to illustrate dynamic loading - David H
     
 Version 2.3.1
 * timeline-api.js now uses

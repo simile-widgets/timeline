@@ -106,8 +106,7 @@
             "detailed-painter.js",
             "overview-painter.js",
             "compact-painter.js",
-            "decorators.js",
-            "units.js"
+            "decorators.js"
         ];
         var cssFiles = [
             "timeline.css",

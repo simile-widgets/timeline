@@ -130,6 +130,7 @@
             "fr",       // French
             "it",       // Italian
             "nl",       // Dutch (The Netherlands)
+            "pl",       // Polish
             "ru",       // Russian
             "se",       // Swedish
             "tr",       // Turkish

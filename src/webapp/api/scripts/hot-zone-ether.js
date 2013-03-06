@@ -1,94 +1,17 @@
 /*==================================================
- *  An "ether" is a object that maps date/time to pixel coordinates.
- *==================================================
- */
-
-/*==================================================
- *  Linear Ether
- *==================================================
- */
- 
-Timeline.LinearEther = function(params) {
-    this._params = params;
-    this._interval = params.interval;
-    this._pixelsPerInterval = params.pixelsPerInterval;
-};
-
-Timeline.LinearEther.prototype.initialize = function(band, timeline) {
-    this._band = band;
-    this._timeline = timeline;
-    this._unit = timeline.getUnit();
-    
-    if ("startsOn" in this._params) {
-        this._start = this._unit.parseFromObject(this._params.startsOn);
-    } else if ("endsOn" in this._params) {
-        this._start = this._unit.parseFromObject(this._params.endsOn);
-        this.shiftPixels(-this._timeline.getPixelLength());
-    } else if ("centersOn" in this._params) {
-        this._start = this._unit.parseFromObject(this._params.centersOn);
-        this.shiftPixels(-this._timeline.getPixelLength() / 2);
-    } else {
-        this._start = this._unit.makeDefaultValue();
-        this.shiftPixels(-this._timeline.getPixelLength() / 2);
-    }
-};
-
-Timeline.LinearEther.prototype.setDate = function(date) {
-    this._start = this._unit.cloneValue(date);
-};
-
-Timeline.LinearEther.prototype.shiftPixels = function(pixels) {
-    var numeric = this._interval * pixels / this._pixelsPerInterval;
-    this._start = this._unit.change(this._start, numeric);
-};
-
-Timeline.LinearEther.prototype.dateToPixelOffset = function(date) {
-    var numeric = this._unit.compare(date, this._start);
-    return this._pixelsPerInterval * numeric / this._interval;
-};
-
-Timeline.LinearEther.prototype.pixelOffsetToDate = function(pixels) {
-    var numeric = pixels * this._interval / this._pixelsPerInterval;
-    return this._unit.change(this._start, numeric);
-};
-
-Timeline.LinearEther.prototype.zoom = function(zoomIn) {
-  var netIntervalChange = 0;
-  var currentZoomIndex = this._band._zoomIndex;
-  var newZoomIndex = currentZoomIndex;
-
-  if (zoomIn && (currentZoomIndex > 0)) {
-    newZoomIndex = currentZoomIndex - 1;
-  }
-  
-  if (!zoomIn && (currentZoomIndex < (this._band._zoomSteps.length - 1))) {
-    newZoomIndex = currentZoomIndex + 1;
-  }
-
-  this._band._zoomIndex = newZoomIndex;  
-  this._interval = 
-    SimileAjax.DateTime.gregorianUnitLengths[this._band._zoomSteps[newZoomIndex].unit];
-  this._pixelsPerInterval = this._band._zoomSteps[newZoomIndex].pixelsPerInterval;
-  netIntervalChange = this._band._zoomSteps[newZoomIndex].unit - 
-    this._band._zoomSteps[currentZoomIndex].unit;
-
-  return netIntervalChange;
-};
-
-
-/*==================================================
  *  Hot Zone Ether
  *==================================================
  */
- 
-Timeline.HotZoneEther = function(params) {
+
+define(["simile-ajax"], function(SimileAjax) { 
+var HotZoneEther = function(params) {
     this._params = params;
     this._interval = params.interval;
     this._pixelsPerInterval = params.pixelsPerInterval;
     this._theme = params.theme;
 };
 
-Timeline.HotZoneEther.prototype.initialize = function(band, timeline) {
+HotZoneEther.prototype.initialize = function(band, timeline) {
     this._band = band;
     this._timeline = timeline;
     this._unit = timeline.getUnit();
@@ -151,23 +74,23 @@ Timeline.HotZoneEther.prototype.initialize = function(band, timeline) {
     }
 };
 
-Timeline.HotZoneEther.prototype.setDate = function(date) {
+HotZoneEther.prototype.setDate = function(date) {
     this._start = this._unit.cloneValue(date);
 };
 
-Timeline.HotZoneEther.prototype.shiftPixels = function(pixels) {
+HotZoneEther.prototype.shiftPixels = function(pixels) {
     this._start = this.pixelOffsetToDate(pixels);
 };
 
-Timeline.HotZoneEther.prototype.dateToPixelOffset = function(date) {
+HotZoneEther.prototype.dateToPixelOffset = function(date) {
     return this._dateDiffToPixelOffset(this._start, date);
 };
 
-Timeline.HotZoneEther.prototype.pixelOffsetToDate = function(pixels) {
+HotZoneEther.prototype.pixelOffsetToDate = function(pixels) {
     return this._pixelOffsetToDate(pixels, this._start);
 };
 
-Timeline.HotZoneEther.prototype.zoom = function(zoomIn) {
+HotZoneEther.prototype.zoom = function(zoomIn) {
   var netIntervalChange = 0;
   var currentZoomIndex = this._band._zoomIndex;
   var newZoomIndex = currentZoomIndex;
@@ -190,7 +113,7 @@ Timeline.HotZoneEther.prototype.zoom = function(zoomIn) {
   return netIntervalChange;
 };
 
-Timeline.HotZoneEther.prototype._dateDiffToPixelOffset = function(fromDate, toDate) {
+HotZoneEther.prototype._dateDiffToPixelOffset = function(fromDate, toDate) {
     var scale = this._getScale();
     var fromTime = fromDate;
     var toTime = toDate;
@@ -236,7 +159,7 @@ Timeline.HotZoneEther.prototype._dateDiffToPixelOffset = function(fromDate, toDa
     return pixels;
 };
 
-Timeline.HotZoneEther.prototype._pixelOffsetToDate = function(pixels, fromDate) {
+HotZoneEther.prototype._pixelOffsetToDate = function(pixels, fromDate) {
     var scale = this._getScale();
     var time = fromDate;
     if (pixels > 0) {
@@ -300,6 +223,9 @@ Timeline.HotZoneEther.prototype._pixelOffsetToDate = function(pixels, fromDate) 
     return time;
 };
 
-Timeline.HotZoneEther.prototype._getScale = function() {
+HotZoneEther.prototype._getScale = function() {
     return this._interval / this._pixelsPerInterval;
 };
+
+    return HotZoneEther;
+});

@@ -3,7 +3,8 @@
  *==================================================
  */
 
-Timeline.CompactEventPainter = function(params) {
+define(["simile-ajax"], function(SimileAjax) {
+var CompactEventPainter = function(params) {
     this._params = params;
     this._onSelectListeners = [];
     
@@ -14,11 +15,11 @@ Timeline.CompactEventPainter = function(params) {
     this._eventIdToElmt = {};
 };
 
-Timeline.CompactEventPainter.prototype.getType = function() {
+CompactEventPainter.prototype.getType = function() {
     return 'compact';
 };
 
-Timeline.CompactEventPainter.prototype.initialize = function(band, timeline) {
+CompactEventPainter.prototype.initialize = function(band, timeline) {
     this._band = band;
     this._timeline = timeline;
     
@@ -30,15 +31,15 @@ Timeline.CompactEventPainter.prototype.initialize = function(band, timeline) {
     this._eventIdToElmt = null;
 };
 
-Timeline.CompactEventPainter.prototype.supportsOrthogonalScrolling = function() {
+CompactEventPainter.prototype.supportsOrthogonalScrolling = function() {
     return true;
 };
 
-Timeline.CompactEventPainter.prototype.addOnSelectListener = function(listener) {
+CompactEventPainter.prototype.addOnSelectListener = function(listener) {
     this._onSelectListeners.push(listener);
 };
 
-Timeline.CompactEventPainter.prototype.removeOnSelectListener = function(listener) {
+CompactEventPainter.prototype.removeOnSelectListener = function(listener) {
     for (var i = 0; i < this._onSelectListeners.length; i++) {
         if (this._onSelectListeners[i] == listener) {
             this._onSelectListeners.splice(i, 1);
@@ -47,23 +48,23 @@ Timeline.CompactEventPainter.prototype.removeOnSelectListener = function(listene
     }
 };
 
-Timeline.CompactEventPainter.prototype.getFilterMatcher = function() {
+CompactEventPainter.prototype.getFilterMatcher = function() {
     return this._filterMatcher;
 };
 
-Timeline.CompactEventPainter.prototype.setFilterMatcher = function(filterMatcher) {
+CompactEventPainter.prototype.setFilterMatcher = function(filterMatcher) {
     this._filterMatcher = filterMatcher;
 };
 
-Timeline.CompactEventPainter.prototype.getHighlightMatcher = function() {
+CompactEventPainter.prototype.getHighlightMatcher = function() {
     return this._highlightMatcher;
 };
 
-Timeline.CompactEventPainter.prototype.setHighlightMatcher = function(highlightMatcher) {
+CompactEventPainter.prototype.setHighlightMatcher = function(highlightMatcher) {
     this._highlightMatcher = highlightMatcher;
 };
 
-Timeline.CompactEventPainter.prototype.paint = function() {
+CompactEventPainter.prototype.paint = function() {
     var eventSource = this._band.getEventSource();
     if (eventSource == null) {
         return;
@@ -140,16 +141,16 @@ Timeline.CompactEventPainter.prototype.paint = function() {
     this._setOrthogonalOffset(metrics);
 };
 
-Timeline.CompactEventPainter.prototype.softPaint = function() {
+CompactEventPainter.prototype.softPaint = function() {
     this._setOrthogonalOffset(this._computeMetrics());
 };
 
-Timeline.CompactEventPainter.prototype.getOrthogonalExtent = function() {
+CompactEventPainter.prototype.getOrthogonalExtent = function() {
     var metrics = this._computeMetrics();
     return 2 * metrics.trackOffset + this._tracks.length * metrics.trackHeight;
 };
 
-Timeline.CompactEventPainter.prototype._setOrthogonalOffset = function(metrics) {
+CompactEventPainter.prototype._setOrthogonalOffset = function(metrics) {
     var orthogonalOffset = this._band.getViewOrthogonalOffset();
     
     this._highlightLayer.style.top = 
@@ -158,7 +159,7 @@ Timeline.CompactEventPainter.prototype._setOrthogonalOffset = function(metrics) 
                 orthogonalOffset + "px";
 };
 
-Timeline.CompactEventPainter.prototype._computeMetrics = function() {
+CompactEventPainter.prototype._computeMetrics = function() {
     var theme = this._params.theme;
     var eventTheme = theme.event;
     
@@ -201,7 +202,7 @@ Timeline.CompactEventPainter.prototype._computeMetrics = function() {
     return metrics;
 };
 
-Timeline.CompactEventPainter.prototype._prepareForPainting = function() {
+CompactEventPainter.prototype._prepareForPainting = function() {
     var band = this._band;
         
     if (this._backLayer == null) {
@@ -235,7 +236,7 @@ Timeline.CompactEventPainter.prototype._prepareForPainting = function() {
     this._eventLayer.style.display = "none";
 };
 
-Timeline.CompactEventPainter.prototype.paintEvent = function(evt, metrics, theme, highlightIndex) {
+CompactEventPainter.prototype.paintEvent = function(evt, metrics, theme, highlightIndex) {
     if (evt.isInstant()) {
         this.paintInstantEvent(evt, metrics, theme, highlightIndex);
     } else {
@@ -243,7 +244,7 @@ Timeline.CompactEventPainter.prototype.paintEvent = function(evt, metrics, theme
     }
 };
     
-Timeline.CompactEventPainter.prototype.paintInstantEvent = function(evt, metrics, theme, highlightIndex) {
+CompactEventPainter.prototype.paintInstantEvent = function(evt, metrics, theme, highlightIndex) {
     if (evt.isImprecise()) {
         this.paintImpreciseInstantEvent(evt, metrics, theme, highlightIndex);
     } else {
@@ -251,7 +252,7 @@ Timeline.CompactEventPainter.prototype.paintInstantEvent = function(evt, metrics
     }
 }
 
-Timeline.CompactEventPainter.prototype.paintDurationEvent = function(evt, metrics, theme, highlightIndex) {
+CompactEventPainter.prototype.paintDurationEvent = function(evt, metrics, theme, highlightIndex) {
     if (evt.isImprecise()) {
         this.paintImpreciseDurationEvent(evt, metrics, theme, highlightIndex);
     } else {
@@ -259,7 +260,7 @@ Timeline.CompactEventPainter.prototype.paintDurationEvent = function(evt, metric
     }
 }
     
-Timeline.CompactEventPainter.prototype.paintPreciseInstantEvent = function(evt, metrics, theme, highlightIndex) {
+CompactEventPainter.prototype.paintPreciseInstantEvent = function(evt, metrics, theme, highlightIndex) {
     var commonData = {
         tooltip: evt.getProperty("tooltip") || evt.getText()
     };
@@ -304,7 +305,7 @@ Timeline.CompactEventPainter.prototype.paintPreciseInstantEvent = function(evt, 
     this._eventIdToElmt[evt.getID()] = result.iconElmtData.elmt;
 };
 
-Timeline.CompactEventPainter.prototype.paintCompositePreciseInstantEvents = function(events, metrics, theme, highlightIndex) {
+CompactEventPainter.prototype.paintCompositePreciseInstantEvents = function(events, metrics, theme, highlightIndex) {
     var evt = events[0];
     
     var tooltips = [];
@@ -350,7 +351,7 @@ Timeline.CompactEventPainter.prototype.paintCompositePreciseInstantEvents = func
     }
 };
 
-Timeline.CompactEventPainter.prototype.paintStackedPreciseInstantEvents = function(events, metrics, theme, highlightIndex) {
+CompactEventPainter.prototype.paintStackedPreciseInstantEvents = function(events, metrics, theme, highlightIndex) {
     var limit = "limit" in this._params.stackConcurrentPreciseInstantEvents ? 
         this._params.stackConcurrentPreciseInstantEvents.limit : 10;
     var moreMessageTemplate = "moreMessageTemplate" in this._params.stackConcurrentPreciseInstantEvents ? 
@@ -531,7 +532,7 @@ Timeline.CompactEventPainter.prototype.paintStackedPreciseInstantEvents = functi
     //this._createHighlightDiv(highlightIndex, iconElmtData, theme);
 };
 
-Timeline.CompactEventPainter.prototype.paintImpreciseInstantEvent = function(evt, metrics, theme, highlightIndex) {
+CompactEventPainter.prototype.paintImpreciseInstantEvent = function(evt, metrics, theme, highlightIndex) {
     var commonData = {
         tooltip: evt.getProperty("tooltip") || evt.getText()
     };
@@ -592,7 +593,7 @@ Timeline.CompactEventPainter.prototype.paintImpreciseInstantEvent = function(evt
     }
 };
 
-Timeline.CompactEventPainter.prototype.paintPreciseDurationEvent = function(evt, metrics, theme, highlightIndex) {
+CompactEventPainter.prototype.paintPreciseDurationEvent = function(evt, metrics, theme, highlightIndex) {
     var commonData = {
         tooltip: evt.getProperty("tooltip") || evt.getText()
     };
@@ -651,7 +652,7 @@ Timeline.CompactEventPainter.prototype.paintPreciseDurationEvent = function(evt,
     }
 };
 
-Timeline.CompactEventPainter.prototype.paintImpreciseDurationEvent = function(evt, metrics, theme, highlightIndex) {
+CompactEventPainter.prototype.paintImpreciseDurationEvent = function(evt, metrics, theme, highlightIndex) {
     var commonData = {
         tooltip: evt.getProperty("tooltip") || evt.getText()
     };
@@ -712,7 +713,7 @@ Timeline.CompactEventPainter.prototype.paintImpreciseDurationEvent = function(ev
     }
 };
 
-Timeline.CompactEventPainter.prototype.paintTapeIconLabel = function(
+CompactEventPainter.prototype.paintTapeIconLabel = function(
     anchorDate, 
     commonData,
     tapeData, 
@@ -849,7 +850,7 @@ Timeline.CompactEventPainter.prototype.paintTapeIconLabel = function(
     return result;
 };
 
-Timeline.CompactEventPainter.prototype._fitTracks = function(anchorPixel, newTracks) {
+CompactEventPainter.prototype._fitTracks = function(anchorPixel, newTracks) {
     var firstTrack;
     for (firstTrack = 0; firstTrack < this._tracks.length; firstTrack++) {
         var fit = true;
@@ -874,7 +875,7 @@ Timeline.CompactEventPainter.prototype._fitTracks = function(anchorPixel, newTra
 };
 
 
-Timeline.CompactEventPainter.prototype._paintEventIcon = function(commonData, iconData, top, left, metrics, theme) {
+CompactEventPainter.prototype._paintEventIcon = function(commonData, iconData, top, left, metrics, theme) {
     var img = SimileAjax.Graphics.createTranslucentImage(iconData.url);
     var iconDiv = this._timeline.getDocument().createElement("div");
     iconDiv.className = 'timeline-event-icon' + ("className" in iconData ? (" " + iconData.className) : "");
@@ -897,7 +898,7 @@ Timeline.CompactEventPainter.prototype._paintEventIcon = function(commonData, ic
     };
 };
 
-Timeline.CompactEventPainter.prototype._paintEventLabel = function(commonData, labelData, left, top, width, height, theme) {
+CompactEventPainter.prototype._paintEventLabel = function(commonData, labelData, left, top, width, height, theme) {
     var doc = this._timeline.getDocument();
     
     var labelDiv = doc.createElement("div");
@@ -929,7 +930,7 @@ Timeline.CompactEventPainter.prototype._paintEventLabel = function(commonData, l
     };
 };
 
-Timeline.CompactEventPainter.prototype._paintEventTape = function(
+CompactEventPainter.prototype._paintEventTape = function(
     commonData, tapeData, height, top, startPixel, endPixel, color, opacity, metrics, theme) {
     
     var width = endPixel - startPixel;
@@ -973,7 +974,7 @@ Timeline.CompactEventPainter.prototype._paintEventTape = function(
     };
 }
 
-Timeline.CompactEventPainter.prototype._createHighlightDiv = function(highlightIndex, dimensions, theme) {
+CompactEventPainter.prototype._createHighlightDiv = function(highlightIndex, dimensions, theme) {
     if (highlightIndex >= 0) {
         var doc = this._timeline.getDocument();
         var eventTheme = theme.event;
@@ -993,7 +994,7 @@ Timeline.CompactEventPainter.prototype._createHighlightDiv = function(highlightI
     }
 };
 
-Timeline.CompactEventPainter.prototype._onClickMultiplePreciseInstantEvent = function(icon, domEvt, events) {
+CompactEventPainter.prototype._onClickMultiplePreciseInstantEvent = function(icon, domEvt, events) {
     var c = SimileAjax.DOM.getPageCoordinates(icon);
     this._showBubble(
         c.left + Math.ceil(icon.offsetWidth / 2), 
@@ -1013,7 +1014,7 @@ Timeline.CompactEventPainter.prototype._onClickMultiplePreciseInstantEvent = fun
     return false;
 };
 
-Timeline.CompactEventPainter.prototype._onClickInstantEvent = function(icon, domEvt, evt) {
+CompactEventPainter.prototype._onClickInstantEvent = function(icon, domEvt, evt) {
     var c = SimileAjax.DOM.getPageCoordinates(icon);
     this._showBubble(
         c.left + Math.ceil(icon.offsetWidth / 2), 
@@ -1027,7 +1028,7 @@ Timeline.CompactEventPainter.prototype._onClickInstantEvent = function(icon, dom
     return false;
 };
 
-Timeline.CompactEventPainter.prototype._onClickDurationEvent = function(target, domEvt, evt) {
+CompactEventPainter.prototype._onClickDurationEvent = function(target, domEvt, evt) {
     if ("pageX" in domEvt) {
         var x = domEvt.pageX;
         var y = domEvt.pageY;
@@ -1044,7 +1045,7 @@ Timeline.CompactEventPainter.prototype._onClickDurationEvent = function(target, 
     return false;
 };
 
-Timeline.CompactEventPainter.prototype.showBubble = function(evt) {
+CompactEventPainter.prototype.showBubble = function(evt) {
     var elmt = this._eventIdToElmt[evt.getID()];
     if (elmt) {
         var c = SimileAjax.DOM.getPageCoordinates(elmt);
@@ -1052,7 +1053,7 @@ Timeline.CompactEventPainter.prototype.showBubble = function(evt) {
     }
 };
 
-Timeline.CompactEventPainter.prototype._showBubble = function(x, y, evts) {
+CompactEventPainter.prototype._showBubble = function(x, y, evts) {
     var div = document.createElement("div");
     
     evts = ("fillInfoBubble" in evts) ? [evts] : evts;
@@ -1067,8 +1068,11 @@ Timeline.CompactEventPainter.prototype._showBubble = function(x, y, evts) {
     SimileAjax.Graphics.createBubbleForContentAndPoint(div, x, y, this._params.theme.event.bubble.width);
 };
 
-Timeline.CompactEventPainter.prototype._fireOnSelect = function(eventIDs) {
+CompactEventPainter.prototype._fireOnSelect = function(eventIDs) {
     for (var i = 0; i < this._onSelectListeners.length; i++) {
         this._onSelectListeners[i](eventIDs);
     }
 };
+
+    return CompactEventPainter;
+});

@@ -68,12 +68,50 @@
  *================================================== 
  */
 
-(function() {
-    
-    var simile_ajax_ver = "2.2.1"; // ===========>>>  current Simile-Ajax version
-  
-    var isCompiled = ("Timeline_isCompiled" in window) && window.Timeline_isCompiled;
-    
+define([
+    "simile-ajax",
+    "timeline",
+    "event-utils",
+    "labellers",
+    "themes",
+    "span-decorator",
+    "point-decorator",
+    "overview-painter",
+    "hot-zone-ether",
+    "linear-ether",
+    "sources",
+    "detailed-painter",
+    "compact-painer",
+    "ether-highlight",
+    "ether-interval-marker-layout",
+    "gregorian-ether-painter",
+    "hot-zone-gregorian-ether-painter",
+    "quarterly-ether-painter",
+    "year-count-ether-painter",
+    "original-event-painter",
+    "band"
+], function(SimileAjax, Timeline, EventUtils, GregorianDateLabeller, ClassicTheme, SpanHighlightDecorator, PointHighlightDecorator, OverviewEventPainter, HotZoneEther, LinearEther, DefaultEventSource, DetailedEventPainter, CompactEventPainter, EtherHighlight, EtherIntervalMarkerLayout, GregorianEtherPainter, HotZoneGregorianEtherPainter, QuarterlyEtherPainter, YearCountEtherPainter, OriginalEventPainter, Band) {
+    Timeline.DateTime = SimileAjax.DateTime;
+    Timeline.EventUtils = EventUtils;
+    Timeline.GregorianDateLabeller = GregorianDateLabeller;
+    Timeline.ClassicTheme = ClassicTheme;
+    Timeline.SpanHighlightDecorator = SpanHighlightDecorator;
+    Timeline.PointHighlightDecorator = PointHighlightDecorator;
+    Timeilne.OverviewEventPainter = OverviewEventPainter;
+    Timeline.HotZoneEther = HotZoneEther;
+    Timeline.LinearEther = LinearEther;
+    Timeline.DefaultEventSource = DefaultEventSource;
+    Timeline.DetailedEventPainter = DetailedEventPainter;
+    Timeline.CompactEventPainter = CompactEventPainter;
+    Timeline.EtherHighlight = EtherHighlight;
+    Timeline.EtherIntervalMarkerLayout = EtherIntervalMarkerLayout;
+    Timeline.GregorianEtherPainter = GregorianEtherPainter;
+    Timeline.HotZoneGregorianEtherPainter = HotZoneGregorianEtherPainter;
+    Timeline.QuarterlyEtherPainter = QuarterlyEtherPainter;
+    Timeline.YearCountEtherPainter = YearCountEtherPainter;
+    Timeline.OriginalEventPainter = OriginalEventPainter;
+    Timeline._Band = Band;
+
     var useLocalResources = false;
     if (document.location.search.length > 0) {
         var params = document.location.search.substr(1).split("&");
@@ -84,30 +122,7 @@
         }
     };
     
-    var loadMe = function() {
-        if ("Timeline" in window) {
-            return;
-        }
-        
-        window.Timeline = new Object();
-        window.Timeline.DateTime = window.SimileAjax.DateTime; // for backward compatibility
-    
-        var bundle = false;
-        var javascriptFiles = [
-            "timeline.js",
-            "band.js",
-            "themes.js",
-            "ethers.js",
-            "ether-painters.js",
-            "event-utils.js",
-            "labellers.js",
-            "sources.js",
-            "original-painter.js",
-            "detailed-painter.js",
-            "overview-painter.js",
-            "compact-painter.js",
-            "decorators.js"
-        ];
+    Timeline.load = function() {
         var cssFiles = [
             "timeline.css",
             "ethers.css",
@@ -154,8 +169,6 @@
                     } else if (pair[0] == "forceLocale") {
                         forceLocale = pair[1];
                         desiredLocales = desiredLocales.concat(pair[1].split(","));                        
-                    } else if (pair[0] == "bundle") {
-                        bundle = pair[1] != "false";
                     }
                 }
             };
@@ -197,15 +210,7 @@
             /*
              *  Include non-localized files
              */
-            if (!isCompiled) {
-                if (bundle) {
-                    includeJavascriptFiles(Timeline.urlPrefix, [ "timeline-bundle.js" ]);
-                    includeCssFiles(Timeline.urlPrefix, [ "timeline-bundle.css" ]);
-                } else {
-                    includeJavascriptFiles(Timeline.urlPrefix + "scripts/", javascriptFiles);
-                    includeCssFiles(Timeline.urlPrefix + "styles/", cssFiles);
-                }
-            }
+            includeCssFiles(Timeline.urlPrefix + "styles/", cssFiles);
             
             /*
              *  Include localized files
@@ -249,13 +254,11 @@
                 }
             }
             
-            if (!isCompiled) {
-                for (var l = 0; l < supportedLocales.length; l++) {
-                    var locale = supportedLocales[l];
-                    if (loadLocale[locale]) {
-                        includeJavascriptFiles(Timeline.urlPrefix + "scripts/l10n/" + locale + "/", localizedJavascriptFiles);
-                        includeCssFiles(Timeline.urlPrefix + "styles/l10n/" + locale + "/", localizedCssFiles);
-                    }
+            for (var l = 0; l < supportedLocales.length; l++) {
+                var locale = supportedLocales[l];
+                if (loadLocale[locale]) {
+                    includeJavascriptFiles(Timeline.urlPrefix + "scripts/l10n/" + locale + "/", localizedJavascriptFiles);
+                    includeCssFiles(Timeline.urlPrefix + "styles/l10n/" + locale + "/", localizedCssFiles);
                 }
             }
             
@@ -271,35 +274,5 @@
         }
     };
     
-    /*
-     *  Load SimileAjax if it's not already loaded
-     */
-    if (typeof SimileAjax == "undefined" && !isCompiled) {
-        window.SimileAjax_onLoad = loadMe;
-        
-        var url = useLocalResources ?
-            "http://127.0.0.1:9999/ajax/api/simile-ajax-api.js?bundle=false" :
-            "http://api.simile-widgets.org/ajax/" + simile_ajax_ver + "/simile-ajax-api.js";
-        if (typeof Timeline_ajax_url == "string") {
-           url = Timeline_ajax_url;
-        }
-        var createScriptElement = function() {
-            var script = document.createElement("script");
-            script.type = "text/javascript";
-            script.language = "JavaScript";
-            script.src = url;
-            document.getElementsByTagName("head")[0].appendChild(script);
-        }
-        if (document.body == null) {
-            try {
-                document.write("<script src='" + url + "' type='text/javascript'></script>");
-            } catch (e) {
-                createScriptElement();
-            }
-        } else {
-            createScriptElement();
-        }
-    } else {
-        loadMe();
-    }
-})();
+    return Timeline;
+});

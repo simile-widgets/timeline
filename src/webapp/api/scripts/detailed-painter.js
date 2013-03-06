@@ -7,7 +7,8 @@
 //       are not yet implemented in detailed painter.
 //       Eg classname, id attributes for icons, labels, tapes
 
-Timeline.DetailedEventPainter = function(params) {
+define(["simile-ajax"], function(SimileAjax) {
+var DetailedEventPainter = function(params) {
     this._params = params;
     this._onSelectListeners = [];
     
@@ -18,7 +19,7 @@ Timeline.DetailedEventPainter = function(params) {
     this._eventIdToElmt = {};
 };
 
-Timeline.DetailedEventPainter.prototype.initialize = function(band, timeline) {
+DetailedEventPainter.prototype.initialize = function(band, timeline) {
     this._band = band;
     this._timeline = timeline;
     
@@ -30,15 +31,15 @@ Timeline.DetailedEventPainter.prototype.initialize = function(band, timeline) {
     this._eventIdToElmt = null;
 };
 
-Timeline.DetailedEventPainter.prototype.getType = function() {
+DetailedEventPainter.prototype.getType = function() {
     return 'detailed';
 };
 
-Timeline.DetailedEventPainter.prototype.addOnSelectListener = function(listener) {
+DetailedEventPainter.prototype.addOnSelectListener = function(listener) {
     this._onSelectListeners.push(listener);
 };
 
-Timeline.DetailedEventPainter.prototype.removeOnSelectListener = function(listener) {
+DetailedEventPainter.prototype.removeOnSelectListener = function(listener) {
     for (var i = 0; i < this._onSelectListeners.length; i++) {
         if (this._onSelectListeners[i] == listener) {
             this._onSelectListeners.splice(i, 1);
@@ -47,23 +48,23 @@ Timeline.DetailedEventPainter.prototype.removeOnSelectListener = function(listen
     }
 };
 
-Timeline.DetailedEventPainter.prototype.getFilterMatcher = function() {
+DetailedEventPainter.prototype.getFilterMatcher = function() {
     return this._filterMatcher;
 };
 
-Timeline.DetailedEventPainter.prototype.setFilterMatcher = function(filterMatcher) {
+DetailedEventPainter.prototype.setFilterMatcher = function(filterMatcher) {
     this._filterMatcher = filterMatcher;
 };
 
-Timeline.DetailedEventPainter.prototype.getHighlightMatcher = function() {
+DetailedEventPainter.prototype.getHighlightMatcher = function() {
     return this._highlightMatcher;
 };
 
-Timeline.DetailedEventPainter.prototype.setHighlightMatcher = function(highlightMatcher) {
+DetailedEventPainter.prototype.setHighlightMatcher = function(highlightMatcher) {
     this._highlightMatcher = highlightMatcher;
 };
 
-Timeline.DetailedEventPainter.prototype.paint = function() {
+DetailedEventPainter.prototype.paint = function() {
     var eventSource = this._band.getEventSource();
     if (eventSource == null) {
         return;
@@ -111,10 +112,10 @@ Timeline.DetailedEventPainter.prototype.paint = function() {
                                  metrics.trackIncrement); 
 };
 
-Timeline.DetailedEventPainter.prototype.softPaint = function() {
+DetailedEventPainter.prototype.softPaint = function() {
 };
 
-Timeline.DetailedEventPainter.prototype._prepareForPainting = function() {
+DetailedEventPainter.prototype._prepareForPainting = function() {
     var band = this._band;
         
     if (this._backLayer == null) {
@@ -149,7 +150,7 @@ Timeline.DetailedEventPainter.prototype._prepareForPainting = function() {
     this._eventLayer.style.display = "none";
 };
 
-Timeline.DetailedEventPainter.prototype.paintEvent = function(evt, metrics, theme, highlightIndex) {
+DetailedEventPainter.prototype.paintEvent = function(evt, metrics, theme, highlightIndex) {
     if (evt.isInstant()) {
         this.paintInstantEvent(evt, metrics, theme, highlightIndex);
     } else {
@@ -157,7 +158,7 @@ Timeline.DetailedEventPainter.prototype.paintEvent = function(evt, metrics, them
     }
 };
     
-Timeline.DetailedEventPainter.prototype.paintInstantEvent = function(evt, metrics, theme, highlightIndex) {
+DetailedEventPainter.prototype.paintInstantEvent = function(evt, metrics, theme, highlightIndex) {
     if (evt.isImprecise()) {
         this.paintImpreciseInstantEvent(evt, metrics, theme, highlightIndex);
     } else {
@@ -165,7 +166,7 @@ Timeline.DetailedEventPainter.prototype.paintInstantEvent = function(evt, metric
     }
 }
 
-Timeline.DetailedEventPainter.prototype.paintDurationEvent = function(evt, metrics, theme, highlightIndex) {
+DetailedEventPainter.prototype.paintDurationEvent = function(evt, metrics, theme, highlightIndex) {
     if (evt.isImprecise()) {
         this.paintImpreciseDurationEvent(evt, metrics, theme, highlightIndex);
     } else {
@@ -173,7 +174,7 @@ Timeline.DetailedEventPainter.prototype.paintDurationEvent = function(evt, metri
     }
 }
     
-Timeline.DetailedEventPainter.prototype.paintPreciseInstantEvent = function(evt, metrics, theme, highlightIndex) {
+DetailedEventPainter.prototype.paintPreciseInstantEvent = function(evt, metrics, theme, highlightIndex) {
     var doc = this._timeline.getDocument();
     var text = evt.getText();
     
@@ -221,7 +222,7 @@ Timeline.DetailedEventPainter.prototype.paintPreciseInstantEvent = function(evt,
     this._eventIdToElmt[evt.getID()] = iconElmtData.elmt;
 };
 
-Timeline.DetailedEventPainter.prototype.paintImpreciseInstantEvent = function(evt, metrics, theme, highlightIndex) {
+DetailedEventPainter.prototype.paintImpreciseInstantEvent = function(evt, metrics, theme, highlightIndex) {
     var doc = this._timeline.getDocument();
     var text = evt.getText();
     
@@ -276,7 +277,7 @@ Timeline.DetailedEventPainter.prototype.paintImpreciseInstantEvent = function(ev
     this._eventIdToElmt[evt.getID()] = iconElmtData.elmt;
 };
 
-Timeline.DetailedEventPainter.prototype.paintPreciseDurationEvent = function(evt, metrics, theme, highlightIndex) {
+DetailedEventPainter.prototype.paintPreciseDurationEvent = function(evt, metrics, theme, highlightIndex) {
     var doc = this._timeline.getDocument();
     var text = evt.getText();
     
@@ -319,7 +320,7 @@ Timeline.DetailedEventPainter.prototype.paintPreciseDurationEvent = function(evt
     this._eventIdToElmt[evt.getID()] = tapeElmtData.elmt;
 };
 
-Timeline.DetailedEventPainter.prototype.paintImpreciseDurationEvent = function(evt, metrics, theme, highlightIndex) {
+DetailedEventPainter.prototype.paintImpreciseDurationEvent = function(evt, metrics, theme, highlightIndex) {
     var doc = this._timeline.getDocument();
     var text = evt.getText();
     
@@ -369,7 +370,7 @@ Timeline.DetailedEventPainter.prototype.paintImpreciseDurationEvent = function(e
     this._eventIdToElmt[evt.getID()] = tapeElmtData.elmt;
 };
 
-Timeline.DetailedEventPainter.prototype._findFreeTrackForSolid = function(solidEdge, softEdge) {
+DetailedEventPainter.prototype._findFreeTrackForSolid = function(solidEdge, softEdge) {
     for (var i = 0; true; i++) {
         if (i < this._lowerTracks.length) {
             var t = this._lowerTracks[i];
@@ -403,7 +404,7 @@ Timeline.DetailedEventPainter.prototype._findFreeTrackForSolid = function(solidE
     }
 };
 
-Timeline.DetailedEventPainter.prototype._findFreeTrackForText = function(fromTrack, edge, occupiedTrackVisitor) {
+DetailedEventPainter.prototype._findFreeTrackForText = function(fromTrack, edge, occupiedTrackVisitor) {
     var extendUp;
     var index;
     var firstIndex;
@@ -464,7 +465,7 @@ Timeline.DetailedEventPainter.prototype._findFreeTrackForText = function(fromTra
     return result;
 };
 
-Timeline.DetailedEventPainter.prototype._findFreeLowerTrackForText = function(index, edge) {
+DetailedEventPainter.prototype._findFreeLowerTrackForText = function(index, edge) {
     for (; index < this._lowerTracks.length; index++) {
         var t = this._lowerTracks[index];
         if (Math.min(t.solid, t.text) >= edge) {
@@ -474,7 +475,7 @@ Timeline.DetailedEventPainter.prototype._findFreeLowerTrackForText = function(in
     return index;
 };
 
-Timeline.DetailedEventPainter.prototype._findFreeUpperTrackForText = function(index, edge) {
+DetailedEventPainter.prototype._findFreeUpperTrackForText = function(index, edge) {
     for (; index < this._upperTracks.length; index++) {
         var t = this._upperTracks[index];
         if (Math.min(t.solid, t.text) >= edge) {
@@ -484,11 +485,11 @@ Timeline.DetailedEventPainter.prototype._findFreeUpperTrackForText = function(in
     return index;
 };
 
-Timeline.DetailedEventPainter.prototype._getTrackData = function(index) {
+DetailedEventPainter.prototype._getTrackData = function(index) {
     return (index < 0) ? this._upperTracks[-index - 1] : this._lowerTracks[index];
 };
 
-Timeline.DetailedEventPainter.prototype._paintEventLine = function(evt, left, startTrack, endTrack, metrics, theme) {
+DetailedEventPainter.prototype._paintEventLine = function(evt, left, startTrack, endTrack, metrics, theme) {
     var top = Math.round(metrics.trackOffset + startTrack * metrics.trackIncrement + metrics.trackHeight / 2);
     var height = Math.round(Math.abs(endTrack - startTrack) * metrics.trackIncrement);
     
@@ -509,7 +510,7 @@ Timeline.DetailedEventPainter.prototype._paintEventLine = function(evt, left, st
     this._lineLayer.appendChild(lineDiv);
 };
 
-Timeline.DetailedEventPainter.prototype._paintEventIcon = function(evt, iconTrack, left, metrics, theme) {
+DetailedEventPainter.prototype._paintEventIcon = function(evt, iconTrack, left, metrics, theme) {
     var icon = evt.getIcon();
     icon = icon != null ? icon : metrics.icon;
     
@@ -538,7 +539,7 @@ Timeline.DetailedEventPainter.prototype._paintEventIcon = function(evt, iconTrac
     };
 };
 
-Timeline.DetailedEventPainter.prototype._paintEventLabel = function(evt, text, left, top, width, height, theme) {
+DetailedEventPainter.prototype._paintEventLabel = function(evt, text, left, top, width, height, theme) {
     var doc = this._timeline.getDocument();
     
     var labelBackgroundDiv = doc.createElement("div");
@@ -581,7 +582,7 @@ Timeline.DetailedEventPainter.prototype._paintEventLabel = function(evt, text, l
     };
 };
 
-Timeline.DetailedEventPainter.prototype._paintEventTape = function(
+DetailedEventPainter.prototype._paintEventTape = function(
     evt, iconTrack, startPixel, endPixel, color, opacity, metrics, theme) {
     
     var tapeWidth = endPixel - startPixel;
@@ -615,7 +616,7 @@ Timeline.DetailedEventPainter.prototype._paintEventTape = function(
     };
 }
 
-Timeline.DetailedEventPainter.prototype._createHighlightDiv = function(highlightIndex, dimensions, theme) {
+DetailedEventPainter.prototype._createHighlightDiv = function(highlightIndex, dimensions, theme) {
     if (highlightIndex >= 0) {
         var doc = this._timeline.getDocument();
         var eventTheme = theme.event;
@@ -635,7 +636,7 @@ Timeline.DetailedEventPainter.prototype._createHighlightDiv = function(highlight
     }
 };
 
-Timeline.DetailedEventPainter.prototype._onClickInstantEvent = function(icon, domEvt, evt) {
+DetailedEventPainter.prototype._onClickInstantEvent = function(icon, domEvt, evt) {
     var c = SimileAjax.DOM.getPageCoordinates(icon);
     this._showBubble(
         c.left + Math.ceil(icon.offsetWidth / 2), 
@@ -649,7 +650,7 @@ Timeline.DetailedEventPainter.prototype._onClickInstantEvent = function(icon, do
     return false;
 };
 
-Timeline.DetailedEventPainter.prototype._onClickDurationEvent = function(target, domEvt, evt) {
+DetailedEventPainter.prototype._onClickDurationEvent = function(target, domEvt, evt) {
     if ("pageX" in domEvt) {
         var x = domEvt.pageX;
         var y = domEvt.pageY;
@@ -666,7 +667,7 @@ Timeline.DetailedEventPainter.prototype._onClickDurationEvent = function(target,
     return false;
 };
 
-Timeline.DetailedEventPainter.prototype.showBubble = function(evt) {
+DetailedEventPainter.prototype.showBubble = function(evt) {
     var elmt = this._eventIdToElmt[evt.getID()];
     if (elmt) {
         var c = SimileAjax.DOM.getPageCoordinates(elmt);
@@ -674,7 +675,7 @@ Timeline.DetailedEventPainter.prototype.showBubble = function(evt) {
     }
 };
 
-Timeline.DetailedEventPainter.prototype._showBubble = function(x, y, evt) {
+DetailedEventPainter.prototype._showBubble = function(x, y, evt) {
     var div = document.createElement("div");
     var themeBubble = this._params.theme.event.bubble;
     evt.fillInfoBubble(div, this._params.theme, this._band.getLabeller());
@@ -684,8 +685,11 @@ Timeline.DetailedEventPainter.prototype._showBubble = function(x, y, evt) {
        themeBubble.width, null, themeBubble.maxHeight);
 };
 
-Timeline.DetailedEventPainter.prototype._fireOnSelect = function(eventID) {
+DetailedEventPainter.prototype._fireOnSelect = function(eventID) {
     for (var i = 0; i < this._onSelectListeners.length; i++) {
         this._onSelectListeners[i](eventID);
     }
 };
+
+    return DetailedEventPainter;
+});

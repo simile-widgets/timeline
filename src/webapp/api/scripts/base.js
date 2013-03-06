@@ -8,9 +8,8 @@ define(["simile-ajax"], function(SimileAjax) {
         "VERTICAL": 1,
         "_defaultTheme": null,
         "urlPrefix": null,
-        "serverLocale": ,
-        "clientLocale": ,
-        "strings": {},
+        "serverLocale": null,
+        "clientLocale": null,
         "timelines": null
     };
 

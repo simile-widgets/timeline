@@ -129,10 +129,6 @@ define([
             "events.css"
         ];
         
-        var localizedJavascriptFiles = [
-            "timeline.js",
-            "labellers.js"
-        ];
         var localizedCssFiles = [
         ];
         
@@ -257,7 +253,6 @@ define([
             for (var l = 0; l < supportedLocales.length; l++) {
                 var locale = supportedLocales[l];
                 if (loadLocale[locale]) {
-                    includeJavascriptFiles(Timeline.urlPrefix + "scripts/l10n/" + locale + "/", localizedJavascriptFiles);
                     includeCssFiles(Timeline.urlPrefix + "styles/l10n/" + locale + "/", localizedCssFiles);
                 }
             }

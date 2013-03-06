@@ -3,7 +3,7 @@
  *==================================================
  */
 
-define(["base", "event-utils"], function(Timeline, EventUtils) {
+define(["base", "event-utils", "i18n!nls/timeline"], function(Timeline, EventUtils, Locale) {
 DefaultEventSource = function(eventIndex) {
     this._events = (eventIndex instanceof Object) ? eventIndex : new SimileAjax.EventIndex();
     this._listeners = [];
@@ -504,8 +504,7 @@ DefaultEventSource.Event.prototype = {
         var a = document.createElement("a");
         a.href = url;
         a.target = "new";
-        // @@@ will need a proper i18n device here
-        a.innerHTML = Timeline.strings[Timeline.clientLocale].wikiLinkLabel;
+        a.innerHTML = Locale.wikiLinkLabel;
         
         elmt.appendChild(document.createTextNode("["));
         elmt.appendChild(a);

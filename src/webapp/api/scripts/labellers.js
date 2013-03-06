@@ -2,7 +2,11 @@
  *  Gregorian Date Labeller
  *==================================================
  */
-define(["simile-ajax"], function(SimileAjax) {
+define([
+    "simile-ajax",
+    "i18n!nls/months",
+    "i18n!nls/timeline"
+], function(SimileAjax, Months, Locale) {
 var GregorianDateLabeller = function(locale, timeZone) {
     this._locale = locale;
     this._timeZone = timeZone;
@@ -12,8 +16,12 @@ GregorianDateLabeller.monthNames = [];
 GregorianDateLabeller.dayNames = [];
 GregorianDateLabeller.labelIntervalFunctions = [];
 
+// @@@ With a switch to RequireJS i18n, this will excusively
+//     return the user agent's localization.  Should this change?
+//     The rest of the structure outside of string localizing is
+//     still in place if this feature needs to be restored.
 GregorianDateLabeller.getMonthName = function(month, locale) {
-    return GregorianDateLabeller.monthNames[locale][month];
+    return Months[month.toString()];
 };
 
 GregorianDateLabeller.prototype.labelInterval = function(date, intervalUnit) {
@@ -57,10 +65,30 @@ GregorianDateLabeller.prototype.defaultLabelInterval = function(date, intervalUn
         text = date.getUTCHours() + "hr";
         break;
     case SimileAjax.DateTime.DAY:
-        text = GregorianDateLabeller.getMonthName(date.getUTCMonth(), this._locale) + " " + date.getUTCDate();
+        if (Locale.dateStyle === "cs") {
+            text = date.getUTCDate() + ". " + (date.getUTCMonth() + 1) + ".";
+        } else if (Locale.dateStyle === "vi") {
+            text = date.getUTCDate() + "/" + (date.getUTCMonth() + 1);
+        } else if (Locale.dateStyle === "de") {
+            text = date.getUTCDate() + ". " + GregorianDateLabeller.getMonthName(date.getUTCMonth(), this._locale);
+        } else if (Locale.dateStyle === "zh") {
+            text = GregorianDateLabeller.getMonthName(date.getUTCMonth(), this._locale) + date.getUTCDate() + "日";
+        } else {
+            text = GregorianDateLabeller.getMonthName(date.getUTCMonth(), this._locale) + " " + date.getUTCDate();
+        }
         break;
     case SimileAjax.DateTime.WEEK:
-        text = GregorianDateLabeller.getMonthName(date.getUTCMonth(), this._locale) + " " + date.getUTCDate();
+        if (Locale.dateStyle === "cs") {
+            text = date.getUTCDate() + ". " + (date.getUTCMonth() + 1) + ".";
+        } else if (Locale.dateStyle === "vi") {
+            text = date.getUTCDate() + "/" + (date.getUTCMonth() + 1);
+        } else if (Locale.dateStyle === "de") {
+            text = date.getUTCDate() + ". " + GregorianDateLabeller.getMonthName(date.getUTCMonth(), this._locale);
+        } else if (Locale.dateStyle === "zh") {
+            text = GregorianDateLabeller.getMonthName(date.getUTCMonth(), this._locale) + date.getUTCDate() + "日";
+        } else {
+            text = GregorianDateLabeller.getMonthName(date.getUTCMonth(), this._locale) + " " + date.getUTCDate();
+        }
         break;
     case SimileAjax.DateTime.MONTH:
         var m = date.getUTCMonth();

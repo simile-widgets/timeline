@@ -3,7 +3,7 @@
  *==================================================
  */
 define([
-    "simile-ajax",
+    "simile-ajax/simile-ajax-api",
     "./base",
     "./band"
 ], function(SimileAjax, Timeline, Band) {

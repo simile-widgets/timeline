@@ -3,7 +3,7 @@
  *==================================================
  */
 
-define(["simile-ajax"], function(SimileAjax) {
+define(["simile-ajax/simile-ajax-api"], function(SimileAjax) {
 var EtherHighlight = function(timeline, band, theme, backgroundLayer) {
     var horizontal = timeline.isHorizontal();
     

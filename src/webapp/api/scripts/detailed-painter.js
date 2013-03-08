@@ -7,7 +7,7 @@
 //       are not yet implemented in detailed painter.
 //       Eg classname, id attributes for icons, labels, tapes
 
-define(["simile-ajax"], function(SimileAjax) {
+define(["simile-ajax/simile-ajax-api"], function(SimileAjax) {
 var DetailedEventPainter = function(params) {
     this._params = params;
     this._onSelectListeners = [];

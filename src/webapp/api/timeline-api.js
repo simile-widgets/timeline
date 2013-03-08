@@ -69,8 +69,9 @@
  */
 
 define([
-    "simile-ajax",
+    "simile-ajax/simile-ajax-api",
     "./scripts/timeline",
+    "./scripts/timeline-impl",
     "./scripts/event-utils",
     "./scripts/labellers",
     "./scripts/themes",
@@ -81,23 +82,24 @@ define([
     "./scripts/linear-ether",
     "./scripts/sources",
     "./scripts/detailed-painter",
-    "./scripts/compact-painer",
+    "./scripts/compact-painter",
     "./scripts/ether-highlight",
     "./scripts/ether-interval-marker-layout",
     "./scripts/gregorian-ether-painter",
     "./scripts/hot-zone-gregorian-ether-painter",
     "./scripts/quarterly-ether-painter",
     "./scripts/year-count-ether-painter",
-    "./scripts/original-event-painter",
+    "./scripts/original-painter",
     "./scripts/band"
-], function(SimileAjax, Timeline, EventUtils, GregorianDateLabeller, ClassicTheme, SpanHighlightDecorator, PointHighlightDecorator, OverviewEventPainter, HotZoneEther, LinearEther, DefaultEventSource, DetailedEventPainter, CompactEventPainter, EtherHighlight, EtherIntervalMarkerLayout, GregorianEtherPainter, HotZoneGregorianEtherPainter, QuarterlyEtherPainter, YearCountEtherPainter, OriginalEventPainter, Band) {
+], function(SimileAjax, Timeline, TimelineImpl, EventUtils, GregorianDateLabeller, ClassicTheme, SpanHighlightDecorator, PointHighlightDecorator, OverviewEventPainter, HotZoneEther, LinearEther, DefaultEventSource, DetailedEventPainter, CompactEventPainter, EtherHighlight, EtherIntervalMarkerLayout, GregorianEtherPainter, HotZoneGregorianEtherPainter, QuarterlyEtherPainter, YearCountEtherPainter, OriginalEventPainter, Band) {
     Timeline.DateTime = SimileAjax.DateTime;
+    Timeline._Impl = TimelineImpl;
     Timeline.EventUtils = EventUtils;
     Timeline.GregorianDateLabeller = GregorianDateLabeller;
     Timeline.ClassicTheme = ClassicTheme;
     Timeline.SpanHighlightDecorator = SpanHighlightDecorator;
     Timeline.PointHighlightDecorator = PointHighlightDecorator;
-    Timeilne.OverviewEventPainter = OverviewEventPainter;
+    Timeline.OverviewEventPainter = OverviewEventPainter;
     Timeline.HotZoneEther = HotZoneEther;
     Timeline.LinearEther = LinearEther;
     Timeline.DefaultEventSource = DefaultEventSource;
@@ -123,6 +125,9 @@ define([
     };
     
     Timeline.load = function() {
+        SimileAjax.load();
+        window.SimileAjax = SimileAjax;
+
         var cssFiles = [
             "timeline.css",
             "ethers.css",

@@ -4,7 +4,7 @@
  */
 
 define([
-    "simile-ajax",
+    "simile-ajax/simile-ajax-api",
     "./ether-interval-marker-layout",
     "./ether-highlight"
 ], function(SimileAjax, EtherIntervalMarkerLayout, EtherHighlight) {
@@ -164,5 +164,5 @@ HotZoneGregorianEtherPainter.prototype.zoom = function(netIntervalChange) {
   }
 };
 
-    return HotZoneGregorianEtherPainer;
+    return HotZoneGregorianEtherPainter;
 });

@@ -3,7 +3,7 @@
  *==================================================
  */
 
-define(["simile-ajax"], function(SimileAjax) { 
+define(["simile-ajax/simile-ajax-api"], function(SimileAjax) { 
 var EtherIntervalMarkerLayout = function(timeline, band, theme, align, showLine) {
     var horizontal = timeline.isHorizontal();
     if (horizontal) {

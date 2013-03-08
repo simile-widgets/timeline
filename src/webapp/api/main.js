@@ -1,14 +1,20 @@
-// Example development configuration for loading SimileAjax
-requirejs.config({
-    "baseUrl": "http://localhost/~ryanlee/dev/timeline/scripts/",
-    "urlArgs": "bust=" + (new Date()).getTime(),
-    "paths": {
-        "simile-ajax": "http://localhost/~ryanlee/dev/simile-ajax/scripts/simile-ajax-api.js"
-    }
+var tlreq = requirejs.config({
+    "baseUrl": "/timeline/api/",
+    "packages": [
+        {
+            "name": "simile-ajax",
+            "location": "/ajax/api"
+        },
+        {
+            "name": "i18n",
+            "location": "/ajax/api/lib",
+            "main": "i18n"
+        }
+    ]
 });
 
-requirejs(
-    ["require", "../timeline-api"],
+tlreq(
+    ["require", "./timeline-api"],
     function(require, Timeline) {
         Timeline.load();
         // part of the point of Timeline is being available everywhere

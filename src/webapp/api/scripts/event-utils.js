@@ -2,9 +2,10 @@
  *  Event Utils
  *==================================================
  */
-Timeline.EventUtils = {};
+define(["./base"], function(Timeline) {
+var EventUtils = {};
 
-Timeline.EventUtils.getNewEventID = function() {
+EventUtils.getNewEventID = function() {
     // global across page
     if (this._lastEventID == null) {
         this._lastEventID = 0;
@@ -14,7 +15,7 @@ Timeline.EventUtils.getNewEventID = function() {
     return "e" + this._lastEventID;
 };
 
-Timeline.EventUtils.decodeEventElID = function(elementID) {
+EventUtils.decodeEventElID = function(elementID) {
     /*==================================================
      * 
      * Use this function to decode an event element's id on a band (label div,
@@ -57,8 +58,11 @@ Timeline.EventUtils.decodeEventElID = function(elementID) {
     return {band: band, evt: evt};
 };
 
-Timeline.EventUtils.encodeEventElID = function(timeline, band, elType, evt) {
+EventUtils.encodeEventElID = function(timeline, band, elType, evt) {
     // elType should be one of {label | icon | tapeN | highlightN}
     return elType + "-tl-" + timeline.timelineID + 
        "-" + band.getIndex() + "-" + evt.getID();
 };
+
+    return EventUtils;
+});

@@ -2,36 +2,44 @@
  *  Gregorian Date Labeller
  *==================================================
  */
-
-Timeline.GregorianDateLabeller = function(locale, timeZone) {
+define([
+    "simile-ajax",
+    "i18n!../nls/months",
+    "i18n!../nls/timeline"
+], function(SimileAjax, Months, Locale) {
+var GregorianDateLabeller = function(locale, timeZone) {
     this._locale = locale;
     this._timeZone = timeZone;
 };
 
-Timeline.GregorianDateLabeller.monthNames = [];
-Timeline.GregorianDateLabeller.dayNames = [];
-Timeline.GregorianDateLabeller.labelIntervalFunctions = [];
+GregorianDateLabeller.monthNames = [];
+GregorianDateLabeller.dayNames = [];
+GregorianDateLabeller.labelIntervalFunctions = [];
 
-Timeline.GregorianDateLabeller.getMonthName = function(month, locale) {
-    return Timeline.GregorianDateLabeller.monthNames[locale][month];
+// @@@ With a switch to RequireJS i18n, this will excusively
+//     return the user agent's localization.  Should this change?
+//     The rest of the structure outside of string localizing is
+//     still in place if this feature needs to be restored.
+GregorianDateLabeller.getMonthName = function(month, locale) {
+    return Months[month.toString()];
 };
 
-Timeline.GregorianDateLabeller.prototype.labelInterval = function(date, intervalUnit) {
-    var f = Timeline.GregorianDateLabeller.labelIntervalFunctions[this._locale];
+GregorianDateLabeller.prototype.labelInterval = function(date, intervalUnit) {
+    var f = GregorianDateLabeller.labelIntervalFunctions[this._locale];
     if (f == null) {
-        f = Timeline.GregorianDateLabeller.prototype.defaultLabelInterval;
+        f = GregorianDateLabeller.prototype.defaultLabelInterval;
     }
     return f.call(this, date, intervalUnit);
 };
 
-Timeline.GregorianDateLabeller.prototype.labelPrecise = function(date) {
+GregorianDateLabeller.prototype.labelPrecise = function(date) {
     return SimileAjax.DateTime.removeTimeZoneOffset(
         date, 
         this._timeZone //+ (new Date().getTimezoneOffset() / 60)
     ).toUTCString();
 };
 
-Timeline.GregorianDateLabeller.prototype.defaultLabelInterval = function(date, intervalUnit) {
+GregorianDateLabeller.prototype.defaultLabelInterval = function(date, intervalUnit) {
     var text;
     var emphasized = false;
     
@@ -57,15 +65,35 @@ Timeline.GregorianDateLabeller.prototype.defaultLabelInterval = function(date, i
         text = date.getUTCHours() + "hr";
         break;
     case SimileAjax.DateTime.DAY:
-        text = Timeline.GregorianDateLabeller.getMonthName(date.getUTCMonth(), this._locale) + " " + date.getUTCDate();
+        if (Locale.dateStyle === "cs") {
+            text = date.getUTCDate() + ". " + (date.getUTCMonth() + 1) + ".";
+        } else if (Locale.dateStyle === "vi") {
+            text = date.getUTCDate() + "/" + (date.getUTCMonth() + 1);
+        } else if (Locale.dateStyle === "de") {
+            text = date.getUTCDate() + ". " + GregorianDateLabeller.getMonthName(date.getUTCMonth(), this._locale);
+        } else if (Locale.dateStyle === "zh") {
+            text = GregorianDateLabeller.getMonthName(date.getUTCMonth(), this._locale) + date.getUTCDate() + "日";
+        } else {
+            text = GregorianDateLabeller.getMonthName(date.getUTCMonth(), this._locale) + " " + date.getUTCDate();
+        }
         break;
     case SimileAjax.DateTime.WEEK:
-        text = Timeline.GregorianDateLabeller.getMonthName(date.getUTCMonth(), this._locale) + " " + date.getUTCDate();
+        if (Locale.dateStyle === "cs") {
+            text = date.getUTCDate() + ". " + (date.getUTCMonth() + 1) + ".";
+        } else if (Locale.dateStyle === "vi") {
+            text = date.getUTCDate() + "/" + (date.getUTCMonth() + 1);
+        } else if (Locale.dateStyle === "de") {
+            text = date.getUTCDate() + ". " + GregorianDateLabeller.getMonthName(date.getUTCMonth(), this._locale);
+        } else if (Locale.dateStyle === "zh") {
+            text = GregorianDateLabeller.getMonthName(date.getUTCMonth(), this._locale) + date.getUTCDate() + "日";
+        } else {
+            text = GregorianDateLabeller.getMonthName(date.getUTCMonth(), this._locale) + " " + date.getUTCDate();
+        }
         break;
     case SimileAjax.DateTime.MONTH:
         var m = date.getUTCMonth();
         if (m != 0) {
-            text = Timeline.GregorianDateLabeller.getMonthName(m, this._locale);
+            text = GregorianDateLabeller.getMonthName(m, this._locale);
             break;
         } // else, fall through
     case SimileAjax.DateTime.YEAR:
@@ -89,3 +117,5 @@ Timeline.GregorianDateLabeller.prototype.defaultLabelInterval = function(date, i
     return { text: text, emphasized: emphasized };
 }
 
+    return GregorianDateLabeller;
+});

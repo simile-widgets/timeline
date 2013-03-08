@@ -2,8 +2,8 @@
  *  Overview Event Painter
  *==================================================
  */
-
-Timeline.OverviewEventPainter = function(params) {
+define(["simile-ajax"], function(SimileAjax) {
+var OverviewEventPainter = function(params) {
     this._params = params;
     this._onSelectListeners = [];
     
@@ -11,7 +11,7 @@ Timeline.OverviewEventPainter = function(params) {
     this._highlightMatcher = null;
 };
 
-Timeline.OverviewEventPainter.prototype.initialize = function(band, timeline) {
+OverviewEventPainter.prototype.initialize = function(band, timeline) {
     this._band = band;
     this._timeline = timeline;
     
@@ -19,15 +19,15 @@ Timeline.OverviewEventPainter.prototype.initialize = function(band, timeline) {
     this._highlightLayer = null;
 };
 
-Timeline.OverviewEventPainter.prototype.getType = function() {
+OverviewEventPainter.prototype.getType = function() {
     return 'overview';
 };
 
-Timeline.OverviewEventPainter.prototype.addOnSelectListener = function(listener) {
+OverviewEventPainter.prototype.addOnSelectListener = function(listener) {
     this._onSelectListeners.push(listener);
 };
 
-Timeline.OverviewEventPainter.prototype.removeOnSelectListener = function(listener) {
+OverviewEventPainter.prototype.removeOnSelectListener = function(listener) {
     for (var i = 0; i < this._onSelectListeners.length; i++) {
         if (this._onSelectListeners[i] == listener) {
             this._onSelectListeners.splice(i, 1);
@@ -36,23 +36,23 @@ Timeline.OverviewEventPainter.prototype.removeOnSelectListener = function(listen
     }
 };
 
-Timeline.OverviewEventPainter.prototype.getFilterMatcher = function() {
+OverviewEventPainter.prototype.getFilterMatcher = function() {
     return this._filterMatcher;
 };
 
-Timeline.OverviewEventPainter.prototype.setFilterMatcher = function(filterMatcher) {
+OverviewEventPainter.prototype.setFilterMatcher = function(filterMatcher) {
     this._filterMatcher = filterMatcher;
 };
 
-Timeline.OverviewEventPainter.prototype.getHighlightMatcher = function() {
+OverviewEventPainter.prototype.getHighlightMatcher = function() {
     return this._highlightMatcher;
 };
 
-Timeline.OverviewEventPainter.prototype.setHighlightMatcher = function(highlightMatcher) {
+OverviewEventPainter.prototype.setHighlightMatcher = function(highlightMatcher) {
     this._highlightMatcher = highlightMatcher;
 };
 
-Timeline.OverviewEventPainter.prototype.paint = function() {
+OverviewEventPainter.prototype.paint = function() {
     var eventSource = this._band.getEventSource();
     if (eventSource == null) {
         return;
@@ -92,10 +92,10 @@ Timeline.OverviewEventPainter.prototype.paint = function() {
     this._band.updateEventTrackInfo(this._tracks.length, metrics.trackIncrement); 
 };
 
-Timeline.OverviewEventPainter.prototype.softPaint = function() {
+OverviewEventPainter.prototype.softPaint = function() {
 };
 
-Timeline.OverviewEventPainter.prototype._prepareForPainting = function() {
+OverviewEventPainter.prototype._prepareForPainting = function() {
     var band = this._band;
         
     this._tracks = [];
@@ -113,7 +113,7 @@ Timeline.OverviewEventPainter.prototype._prepareForPainting = function() {
     this._eventLayer.style.display = "none";
 };
 
-Timeline.OverviewEventPainter.prototype.paintEvent = function(evt, metrics, theme, highlightIndex) {
+OverviewEventPainter.prototype.paintEvent = function(evt, metrics, theme, highlightIndex) {
     if (evt.isInstant()) {
         this.paintInstantEvent(evt, metrics, theme, highlightIndex);
     } else {
@@ -121,7 +121,7 @@ Timeline.OverviewEventPainter.prototype.paintEvent = function(evt, metrics, them
     }
 };
 
-Timeline.OverviewEventPainter.prototype.paintInstantEvent = function(evt, metrics, theme, highlightIndex) {
+OverviewEventPainter.prototype.paintInstantEvent = function(evt, metrics, theme, highlightIndex) {
     var startDate = evt.getStart();
     var startPixel = Math.round(this._band.dateToPixelOffset(startDate));
     
@@ -138,7 +138,7 @@ Timeline.OverviewEventPainter.prototype.paintInstantEvent = function(evt, metric
     this._createHighlightDiv(highlightIndex, tickElmtData, theme);
 };
 
-Timeline.OverviewEventPainter.prototype.paintDurationEvent = function(evt, metrics, theme, highlightIndex) {
+OverviewEventPainter.prototype.paintDurationEvent = function(evt, metrics, theme, highlightIndex) {
     var latestStartDate = evt.getLatestStart();
     var earliestEndDate = evt.getEarliestEnd();
     
@@ -167,7 +167,7 @@ Timeline.OverviewEventPainter.prototype.paintDurationEvent = function(evt, metri
     this._createHighlightDiv(highlightIndex, tapeElmtData, theme);
 };
 
-Timeline.OverviewEventPainter.prototype._paintEventTape = function(
+OverviewEventPainter.prototype._paintEventTape = function(
     evt, track, left, right, color, opacity, metrics, theme, klassName) {
     
     var top = metrics.trackOffset + track * metrics.trackIncrement;
@@ -200,7 +200,7 @@ Timeline.OverviewEventPainter.prototype._paintEventTape = function(
     };
 }
 
-Timeline.OverviewEventPainter.prototype._paintEventTick = function(
+OverviewEventPainter.prototype._paintEventTick = function(
     evt, left, color, opacity, metrics, theme) {
     
     var height = theme.event.overviewTrack.tickHeight;
@@ -233,7 +233,7 @@ Timeline.OverviewEventPainter.prototype._paintEventTick = function(
     };
 }
 
-Timeline.OverviewEventPainter.prototype._createHighlightDiv = function(highlightIndex, dimensions, theme) {
+OverviewEventPainter.prototype._createHighlightDiv = function(highlightIndex, dimensions, theme) {
     if (highlightIndex >= 0) {
         var doc = this._timeline.getDocument();
         var eventTheme = theme.event;
@@ -253,6 +253,9 @@ Timeline.OverviewEventPainter.prototype._createHighlightDiv = function(highlight
     }
 };
 
-Timeline.OverviewEventPainter.prototype.showBubble = function(evt) {
+OverviewEventPainter.prototype.showBubble = function(evt) {
     // not implemented
 };
+
+    return OverviewEventPainter;
+});

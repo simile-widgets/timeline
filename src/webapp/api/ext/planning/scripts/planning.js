@@ -3,20 +3,28 @@
  *==================================================
  */
 
-Timeline.Planning = new Object();
+define([
+    "../../../scripts/base",
+    "../../../scripts/linear-ether",
+    "../../../scripts/overview-painter",
+    "../../../scripts/detailed-painter",
+    "./units",
+    "./ether-painters"
+], function(Timeline, LinearEther, OverviewPainter, DetailedPainter, PlanningUnit, PlanningEtherPainter) {
+var Planning = new Object();
 
-Timeline.Planning.createBandInfo = function(params) {
+Planning.createBandInfo = function(params) {
     var theme = ("theme" in params) ? params.theme : Timeline.getDefaultTheme();
     
     var eventSource = ("eventSource" in params) ? params.eventSource : null;
     
-    var ether = new Timeline.LinearEther({ 
-        centersOn:          ("date" in params) ? params.date : Timeline.PlanningUnit.makeDefaultValue(),
+    var ether = new LinearEther({ 
+        centersOn:          ("date" in params) ? params.date : PlanningUnit.makeDefaultValue(),
         interval:           1,
         pixelsPerInterval:  params.intervalPixels
     });
     
-    var etherPainter = new Timeline.PlanningEtherPainter({
+    var etherPainter = new PlanningEtherPainter({
         intervalUnit:       params.intervalUnit, 
         multiple:           ("multiple" in params) ? params.multiple : 1,
         align:              params.align,
@@ -33,8 +41,8 @@ Timeline.Planning.createBandInfo = function(params) {
         eventPainterParams.trackGap = params.trackGap;
     }
     var eventPainter = ("overview" in params && params.overview) ?
-        new Timeline.OverviewEventPainter(eventPainterParams) :
-        new Timeline.DetailedEventPainter(eventPainterParams);
+        new OverviewEventPainter(eventPainterParams) :
+        new DetailedEventPainter(eventPainterParams);
     
     return {   
         width:          params.width,
@@ -45,3 +53,6 @@ Timeline.Planning.createBandInfo = function(params) {
         eventPainter:   eventPainter
     };
 };
+
+    return Planning;
+});

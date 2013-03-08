@@ -2,7 +2,7 @@
  *  Event Utils
  *==================================================
  */
-define(["base"], function(Timeline) {
+define(["./base"], function(Timeline) {
 var EventUtils = {};
 
 EventUtils.getNewEventID = function() {

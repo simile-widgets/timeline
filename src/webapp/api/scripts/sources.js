@@ -3,7 +3,11 @@
  *==================================================
  */
 
-define(["base", "event-utils", "i18n!nls/timeline"], function(Timeline, EventUtils, Locale) {
+define([
+    "base",
+    "./event-utils",
+    "i18n!../nls/timeline"
+], function(Timeline, EventUtils, Locale) {
 DefaultEventSource = function(eventIndex) {
     this._events = (eventIndex instanceof Object) ? eventIndex : new SimileAjax.EventIndex();
     this._listeners = [];

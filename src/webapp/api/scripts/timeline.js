@@ -36,16 +36,16 @@
  */
 define([
     "simile-ajax",
-    "base",
-    "timeline-impl",
-    "linear-ether",
-    "gregorian-ether-painter",
-    "hot-zone-gregorian-ether-painter",
-    "overview-painter",
-    "detailed-painter",
-    "original-painter",
-    "hot-zone-ether",
-    "themes"
+    "./base",
+    "./timeline-impl",
+    "./linear-ether",
+    "./gregorian-ether-painter",
+    "./hot-zone-gregorian-ether-painter",
+    "./overview-painter",
+    "./detailed-painter",
+    "./original-painter",
+    "./hot-zone-ether",
+    "./themes"
 ], function(SimileAjax, Timeline, TimelineImpl, LinearEther, GregorianEtherPainter, HotZoneGregorianEtherPainter, OverviewEventPainter, DetailedEventPainter, OriginalEventPainter, HotZoneEther, ClassicTheme) {
 Timeline.create = function(elmt, bandInfos, orientation, unit) {
     if (Timeline.timelines == null) {

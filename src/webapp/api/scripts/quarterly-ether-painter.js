@@ -5,8 +5,8 @@
  
 define([
     "simile-ajax",
-    "ether-interval-marker-layout",
-    "ether-highlight"
+    "./ether-interval-marker-layout",
+    "./ether-highlight"
 ], function(SimileAjax, EtherIntervalMarkerLayout, EtherHighlight) {
 var QuarterlyEtherPainter = function(params) {
     this._params = params;

@@ -2,7 +2,7 @@
  *  Classic Theme
  *==================================================
  */
-define(["base"], function(Timeline) {
+define(["./base"], function(Timeline) {
 var ClassicTheme = new Object();
 
 ClassicTheme.implementations = [];

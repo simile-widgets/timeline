@@ -2,7 +2,11 @@
  *  Timeline Implementation object
  *==================================================
  */
-define(["simile-ajax", "base", "band"], function(SimileAjax, Timeline, Band) {
+define([
+    "simile-ajax",
+    "./base",
+    "./band"
+], function(SimileAjax, Timeline, Band) {
 var TimelineImpl = function(elmt, bandInfos, orientation, unit, timelineID) {
     SimileAjax.WindowManager.initialize();
     

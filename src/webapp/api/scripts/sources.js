@@ -4,10 +4,11 @@
  */
 
 define([
-    "base",
+    "simile-ajax/simile-ajax-api",
+    "./base",
     "./event-utils",
-    "i18n!../nls/timeline"
-], function(Timeline, EventUtils, Locale) {
+    "i18n!nls/timeline"
+], function(SimileAjax, Timeline, EventUtils, Locale) {
 DefaultEventSource = function(eventIndex) {
     this._events = (eventIndex instanceof Object) ? eventIndex : new SimileAjax.EventIndex();
     this._listeners = [];

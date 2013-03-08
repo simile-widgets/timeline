@@ -3,7 +3,7 @@
  *==================================================
  */
 
-define(function() {
+define(["simile-ajax/simile-ajax-api"], function(SimileAjax) {
 var SpanHighlightDecorator = function(params) {
     // When evaluating params, test against null. Not "p in params". Testing against
     // null enables caller to explicitly request the default. Testing against "in" means

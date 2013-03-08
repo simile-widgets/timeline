@@ -3,9 +3,9 @@
  *==================================================
  */
 define([
-    "simile-ajax",
-    "i18n!../nls/months",
-    "i18n!../nls/timeline"
+    "simile-ajax/simile-ajax-api",
+    "i18n!nls/months",
+    "i18n!nls/timeline"
 ], function(SimileAjax, Months, Locale) {
 var GregorianDateLabeller = function(locale, timeZone) {
     this._locale = locale;

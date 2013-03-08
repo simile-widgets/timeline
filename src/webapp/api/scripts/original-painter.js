@@ -54,7 +54,10 @@
  *      or passed the filter.
  */
 
-define(["simile-ajax", "./event-utils"], function(SimileAjax, EventUtils) {
+define([
+    "simile-ajax/simile-ajax-api",
+    "./event-utils"
+], function(SimileAjax, EventUtils) {
 var OriginalEventPainter = function(params) {
     this._params = params;
     this._onSelectListeners = [];

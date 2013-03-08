@@ -30,7 +30,7 @@
  *==================================================
  */
 define([
-    "simile-ajax",
+    "simile-ajax/simile-ajax-api",
     "./base",
     "./labellers"
 ], function(SimileAjax, Timeline, GregorianDateLabeller) {

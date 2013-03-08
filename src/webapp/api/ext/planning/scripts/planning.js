@@ -8,8 +8,8 @@ define([
     "../../../scripts/linear-ether",
     "../../../scripts/overview-painter",
     "../../../scripts/detailed-painter",
-    "units",
-    "ether-painters"
+    "./units",
+    "./ether-painters"
 ], function(Timeline, LinearEther, OverviewPainter, DetailedPainter, PlanningUnit, PlanningEtherPainter) {
 var Planning = new Object();
 

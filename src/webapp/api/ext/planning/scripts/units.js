@@ -3,7 +3,7 @@
  *==================================================
  */
 
-define(["labellers"], function(PlanningLabeller) {
+define(["./labellers"], function(PlanningLabeller) {
 var PlanningUnit = new Object();
 
 PlanningUnit.DAY     = 0;

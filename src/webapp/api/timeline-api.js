@@ -274,5 +274,7 @@ define([
         }
     };
     
+    Timeline.load();
+
     return Timeline;
 });

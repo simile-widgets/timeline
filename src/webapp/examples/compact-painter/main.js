@@ -1,22 +1,5 @@
-requirejs.config({
-    "urlArgs": "bust=" + (new Date()).getTime(),
-    "baseUrl": "/timeline/api/",
-    "packages": [
-        {
-            "name": "simile-ajax",
-            "location": "/ajax/api",
-            "main": "local-config"
-        },
-        {
-            "name": "i18n",
-            "location": "/ajax/api/lib",
-            "main": "i18n"
-        }
-    ]
-});
-
-requirejs(
-    ["timeline-api"],
+require(["require", "../../api/local-config"], function(require, config) {
+    require(["timeline-api"],
     function(Timeline) {
         var tl;
         
@@ -83,4 +66,4 @@ requirejs(
         };
         window.onresize = onResize;
     }
-);
+)});

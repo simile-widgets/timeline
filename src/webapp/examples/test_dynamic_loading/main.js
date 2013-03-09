@@ -1,8 +1,7 @@
-var tl;
-
-function createTimeline() {
-    Timeline.writeVersion('tl_ver');
-    
+require(["require", "../../api/local-config"], function(require, config) {
+    require(["timeline-api"],
+    function(Timeline) {
+        var tl;
     var eventSource = new Timeline.DefaultEventSource(0);
     
     var theme = Timeline.ClassicTheme.create();
@@ -52,14 +51,18 @@ function createTimeline() {
     
     tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
     tl.loadJSON("data.json?"+ (new Date().getTime()), function(json, url) { eventSource.loadJSON(json, url); });
-}
 
-var resizeTimerID = null;
-function onResize() {
-    if (resizeTimerID == null) {
-        resizeTimerID = window.setTimeout(function() {
-            resizeTimerID = null;
-            tl.layout();
-        }, 500);
+        Timeline.writeVersion('tl_ver');
+
+        var resizeTimerID = null;
+        var onResize = function() {
+            if (resizeTimerID == null) {
+                resizeTimerID = window.setTimeout(function() {
+                    resizeTimerID = null;
+                    tl.layout();
+                }, 500);
+            }
+        };
+        window.onresize = onResize;
     }
-}
+)});

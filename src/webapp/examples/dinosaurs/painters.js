@@ -2,8 +2,11 @@
  *  Thumbnail Event Painter
  *==================================================
  */
-
-Timeline.ThumbnailEventPainter = function(params) {
+define([
+    "simile-ajax",
+    "./layouts.js"
+], function(SimileAjax, ThumbnailMultiTrackBasedLayout) {
+var ThumbnailEventPainter = function(params) {
     this._params = params;
     this._theme = params.theme;
     
@@ -18,12 +21,12 @@ Timeline.ThumbnailEventPainter = function(params) {
     this._highlightMatcher = null;
 };
 
-Timeline.ThumbnailEventPainter.prototype.initialize = function(band, timeline) {
+ThumbnailEventPainter.prototype.initialize = function(band, timeline) {
     this._band = band;
     this._timeline = timeline;
     
     this._layout = ("layout" in this._params) ? this._params.layout : 
-        new Timeline.ThumbnailMultiTrackBasedLayout({
+        new ThumbnailMultiTrackBasedLayout({
             thumbnailWidth:     this._thumbnailWidth,
             thumbnailHeight:    this._thumbnailHeight,
             labelWidth:         this._labelWidth,
@@ -38,31 +41,31 @@ Timeline.ThumbnailEventPainter.prototype.initialize = function(band, timeline) {
     this._highlightLayer = null;
 };
 
-Timeline.ThumbnailEventPainter.prototype.getLayout = function() {
+ThumbnailEventPainter.prototype.getLayout = function() {
     return this._layout;
 };
 
-Timeline.ThumbnailEventPainter.prototype.setLayout = function(layout) {
+ThumbnailEventPainter.prototype.setLayout = function(layout) {
     this._layout = layout;
 };
 
-Timeline.ThumbnailEventPainter.prototype.getFilterMatcher = function() {
+ThumbnailEventPainter.prototype.getFilterMatcher = function() {
     return this._filterMatcher;
 };
 
-Timeline.ThumbnailEventPainter.prototype.setFilterMatcher = function(filterMatcher) {
+ThumbnailEventPainter.prototype.setFilterMatcher = function(filterMatcher) {
     this._filterMatcher = filterMatcher;
 };
 
-Timeline.ThumbnailEventPainter.prototype.getHighlightMatcher = function() {
+ThumbnailEventPainter.prototype.getHighlightMatcher = function() {
     return this._highlightMatcher;
 };
 
-Timeline.ThumbnailEventPainter.prototype.setHighlightMatcher = function(highlightMatcher) {
+ThumbnailEventPainter.prototype.setHighlightMatcher = function(highlightMatcher) {
     this._highlightMatcher = highlightMatcher;
 };
 
-Timeline.ThumbnailEventPainter.prototype.paint = function() {
+ThumbnailEventPainter.prototype.paint = function() {
     var eventSource = this._band.getEventSource();
     if (eventSource == null) {
         return;
@@ -162,10 +165,10 @@ Timeline.ThumbnailEventPainter.prototype.paint = function() {
     this._eventLayer.style.display = "block";
 };
 
-Timeline.ThumbnailEventPainter.prototype.softPaint = function() {
+ThumbnailEventPainter.prototype.softPaint = function() {
 };
 
-Timeline.ThumbnailEventPainter.prototype._onClickInstantEvent = function(icon, domEvt, evt) {
+ThumbnailEventPainter.prototype._onClickInstantEvent = function(icon, domEvt, evt) {
     domEvt.cancelBubble = true;
     
     var c = SimileAjax.DOM.getPageCoordinates(icon);
@@ -176,25 +179,22 @@ Timeline.ThumbnailEventPainter.prototype._onClickInstantEvent = function(icon, d
     );
 };
 
-Timeline.ThumbnailEventPainter.prototype._onClickDurationEvent = function(domEvt, evt, target) {
+ThumbnailEventPainter.prototype._onClickDurationEvent = function(domEvt, evt, target) {
     domEvt.cancelBubble = true;
     if ("pageX" in domEvt) {
         var x = domEvt.pageX;
         var y = domEvt.pageY;
     } else {
-        var c = Timeline.DOM.getPageCoordinates(target);
+        var c = SimileAjax.DOM.getPageCoordinates(target);
         var x = domEvt.offsetX + c.left;
         var y = domEvt.offsetY + c.top;
     }
     this._showBubble(x, y, evt);
 };
 
-Timeline.ThumbnailEventPainter.prototype._showBubble = function(x, y, evt) {
-    var div = this._band.openBubbleForPoint(
-        x, y,
-        this._theme.event.bubble.width,
-        this._theme.event.bubble.height
-    );
+ThumbnailEventPainter.prototype._showBubble = function(x, y, evt) {
+    var div = document.createElement("div");
+    var themeBubble = this._theme.event.bubble;
     
     var doc = this._timeline.getDocument();
     
@@ -238,4 +238,11 @@ Timeline.ThumbnailEventPainter.prototype._showBubble = function(x, y, evt) {
     this._theme.event.bubble.wikiStyler(divWiki);
     div.appendChild(divWiki);
 
+    SimileAjax.WindowManager.cancelPopups();
+    SimileAjax.Graphics.createBubbleForContentAndPoint(div, x, y,
+                                                       themeBubble.width, null, themeBubble.maxHeight);
+    
 };
+
+    return ThumbnailEventPainter;
+});

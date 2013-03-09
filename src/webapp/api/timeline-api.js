@@ -69,7 +69,7 @@
  */
 
 define([
-    "simile-ajax/simile-ajax-api",
+    "simile-ajax",
     "./scripts/timeline",
     "./scripts/timeline-impl",
     "./scripts/event-utils",

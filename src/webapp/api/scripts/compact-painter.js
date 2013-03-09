@@ -3,7 +3,7 @@
  *==================================================
  */
 
-define(["simile-ajax/simile-ajax-api"], function(SimileAjax) {
+define(["simile-ajax"], function(SimileAjax) {
 var CompactEventPainter = function(params) {
     this._params = params;
     this._onSelectListeners = [];

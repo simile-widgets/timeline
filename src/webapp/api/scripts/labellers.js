@@ -3,7 +3,7 @@
  *==================================================
  */
 define([
-    "simile-ajax/simile-ajax-api",
+    "simile-ajax",
     "i18n!nls/months",
     "i18n!nls/timeline"
 ], function(SimileAjax, Months, Locale) {

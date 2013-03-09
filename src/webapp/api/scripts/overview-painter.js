@@ -2,7 +2,7 @@
  *  Overview Event Painter
  *==================================================
  */
-define(["simile-ajax/simile-ajax-api"], function(SimileAjax) {
+define(["simile-ajax"], function(SimileAjax) {
 var OverviewEventPainter = function(params) {
     this._params = params;
     this._onSelectListeners = [];

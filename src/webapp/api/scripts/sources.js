@@ -4,7 +4,7 @@
  */
 
 define([
-    "simile-ajax/simile-ajax-api",
+    "simile-ajax",
     "./base",
     "./event-utils",
     "i18n!nls/timeline"

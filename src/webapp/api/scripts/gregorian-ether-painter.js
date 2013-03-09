@@ -4,7 +4,7 @@
  */
  
 define([
-    "simile-ajax/simile-ajax-api",
+    "simile-ajax",
     "./ether-interval-marker-layout",
     "./ether-highlight"
 ], function(SimileAjax, EtherIntervalMarkerLayout, EtherHighlight) {

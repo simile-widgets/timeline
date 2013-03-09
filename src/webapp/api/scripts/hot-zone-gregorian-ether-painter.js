@@ -77,10 +77,10 @@ HotZoneGregorianEtherPainter.prototype.initialize = function(band, timeline) {
     var showLine = ("showLine" in this._params) ? this._params.showLine : 
         this._theme.ether.interval.line.show;
         
-    this._intervalMarkerLayout = new Timeline.EtherIntervalMarkerLayout(
+    this._intervalMarkerLayout = new EtherIntervalMarkerLayout(
         this._timeline, this._band, this._theme, align, showLine);
         
-    this._highlight = new Timeline.EtherHighlight(
+    this._highlight = new EtherHighlight(
         this._timeline, this._band, this._theme, this._backgroundLayer);
 }
 

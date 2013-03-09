@@ -3,16 +3,15 @@
 // put Timeline up via local HTTP.
 requirejs.config({
     "baseUrl": "/timeline/api/",
+    "paths": {
+        "jquery": "/ajax/api/lib/jquery",
+        "i18n": "/ajax/api/lib/i18n"
+    },
     "packages": [
         {
             "name": "simile-ajax",
             "location": "/ajax/api",
-            "main": "local-config"
-        },
-        {
-            "name": "i18n",
-            "location": "/ajax/api/lib",
-            "main": "i18n"
+            "main": "simile-ajax-api"
         }
     ]
 });

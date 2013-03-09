@@ -198,9 +198,7 @@
     
     <!-- release files -->
     
-    <copy file="CHANGES.txt"     todir="${min_dest}" />
     <copy file="LICENSE.txt"     todir="${min_dest}" />
-    <copy file="MIN_README.txt"  todir="${min_dest}" />
   </target>
   
   <target name="minimal_dist" depends="prepare_minimal_dist">

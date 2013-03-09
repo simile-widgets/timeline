@@ -11,9 +11,13 @@ define([
     "i18n!../nls/epochs",
     "i18n!../nls/ages"
 ], function(GeochronoUnit, Timespans, Eons, Eras, Periods, Epochs, Ages) {
-var GeochronoLabeller = function(locale) {
-    this._locale = locale;
-};
+    var GeochronoLabeller = function(locale) {
+        this._locale = locale;
+    };
+
+    GeochronoUnit.createLabeller = function(locale, timeZone) {
+        return new GeochronoLabeller(locale);
+    };
 
     var makeNamesList = function(spans, names) {
         var key, i, r = [];

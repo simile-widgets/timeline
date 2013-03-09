@@ -1,7 +1,7 @@
 define(["simile-ajax/simile-ajax-api"], function(SimileAjax) {
     var Timeline = {
         // Note: version is also stored in the build.xml file
-        "version": "pre 2.4.0",  // use format 'pre 1.2.3' for trunk versions
+        "version": "3.0.0",  // use format 'pre 1.2.3' for trunk versions
         "ajax_lib_version": SimileAjax.version,
         "display_version": null,
         "HORIZONTAL": 0,

@@ -324,7 +324,7 @@ CompactEventPainter.prototype.paintCompositePreciseInstantEvents = function(even
     };
     
     var labelData = {
-        text: String.substitute(this._params.compositeEventLabelTemplate, [ events.length ])
+        text: SimileAjax.StringUtils.substitute(this._params.compositeEventLabelTemplate, [ events.length ])
     };
     
     var result = this.paintTapeIconLabel(
@@ -409,7 +409,7 @@ CompactEventPainter.prototype.paintStackedPreciseInstantEvents = function(events
         totalIconHeight = Math.max(totalIconHeight, record.top + iconData.height);
     }
     if (showMoreMessage) {
-        var moreMessage = String.substitute(moreMessageTemplate, [ events.length - limit ]);
+        var moreMessage = SimileAjax.StringUtils.substitute(moreMessageTemplate, [ events.length - limit ]);
     
         var moreMessageLabelSize = this._frc.computeSize(moreMessage);
         var moreMessageLabelLeft = firstIconData.width + (limit - 1) * horizontalIncrement + metrics.iconLabelGap;

@@ -2,7 +2,7 @@
  *  Geochrono Unit
  *==================================================
  */
-define(["./labellers"], function(GeochronoLabeller) {
+define(function() {
 var GeochronoUnit = new Object();
 
 GeochronoUnit.MA     = 0;
@@ -14,10 +14,6 @@ GeochronoUnit.EON    = 5;
 
 GeochronoUnit.getParser = function(format) {
     return GeochronoUnit.parseFromObject;
-};
-
-GeochronoUnit.createLabeller = function(locale, timeZone) {
-    return new GeochronoLabeller(locale);
 };
 
 GeochronoUnit.wrapMA = function (n) {

@@ -5,8 +5,9 @@
 define([
     "../../../scripts/ether-highlight",
     "./layout",
-    "./units"
-], function(EtherHighlight, GeochronoEtherMarkerLayout, GeochronoUnit) { 
+    "./units",
+    "./labellers"
+], function(EtherHighlight, GeochronoEtherMarkerLayout, GeochronoUnit, GeochronoLabeller) { 
 var GeochronoEtherPainter = function(params, band, timeline) {
     this._params = params;
     this._intervalUnit = params.intervalUnit;
@@ -63,18 +64,18 @@ GeochronoEtherPainter.prototype.paint = function() {
     var hasMore;
     (function(intervalUnit, multiple) {
         var dates;
-        
+
         switch (intervalUnit) {
         case GeochronoUnit.AGE:
-            dates = Geochrono.ages; break;
+            dates = GeochronoLabeller.ageNames; break;
         case GeochronoUnit.EPOCH:
-            dates = Geochrono.epoches; break;
+            dates = GeochronoLabeller.epochNames; break;
         case GeochronoUnit.PERIOD:
-            dates = Geochrono.periods; break;
+            dates = GeochronoLabeller.periodNames; break;
         case GeochronoUnit.ERA:
-            dates = Geochrono.eras; break;
+            dates = GeochronoLabeller.eraNames; break;
         case GeochronoUnit.EON:
-            dates = Geochrono.eons; break;
+            dates = GeochronoLabeller.eonNames; break;
         default:
             hasMore = function() {
                 return minDate > 0 && minDate > maxDate;
@@ -84,7 +85,7 @@ GeochronoEtherPainter.prototype.paint = function() {
             };
             return;
         }
-        
+
         var startIndex = dates.length - 1;
         while (startIndex > 0) {
             if (minDate <= dates[startIndex].start) {

@@ -11,7 +11,7 @@ define([
     "./units",
     "./ether-painters",
     "./labellers"
-], function(Timeline, LinearEther, OverviewPainter, DetailedPainter, Timespans, GeochronoUnit, GeochronoEtherPainter, GeochronoLabeller) {
+], function(Timeline, LinearEther, OverviewEventPainter, DetailedEventPainter, Timespans, GeochronoUnit, GeochronoEtherPainter, GeochronoLabeller) {
 var Geochrono = new Object();
 
     Geochrono.eons = GeochronoLabeller.eons;
@@ -20,6 +20,7 @@ var Geochrono = new Object();
     Geochrono.epochs = GeochronoLabeller.epochs;
     Geochrono.epoches = Geochrono.epochs; // compatibility
     Geochrono.ages = GeochronoLabeller.ages;
+    Geochrono.Unit = GeochronoUnit;
 
 Geochrono.createBandInfo = function(params) {
     var theme = ("theme" in params) ? params.theme : Timeline.getDefaultTheme();

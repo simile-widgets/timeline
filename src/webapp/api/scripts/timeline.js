@@ -35,7 +35,7 @@
  *==================================================
  */
 define([
-    "simile-ajax/simile-ajax-api",
+    "simile-ajax",
     "./base",
     "./timeline-impl",
     "./linear-ether",

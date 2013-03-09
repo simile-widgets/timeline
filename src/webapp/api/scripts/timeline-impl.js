@@ -3,10 +3,11 @@
  *==================================================
  */
 define([
-    "simile-ajax/simile-ajax-api",
+    "jquery",
+    "simile-ajax",
     "./base",
     "./band"
-], function(SimileAjax, Timeline, Band) {
+], function($, SimileAjax, Timeline, Band) {
 var TimelineImpl = function(elmt, bandInfos, orientation, unit, timelineID) {
     SimileAjax.WindowManager.initialize();
     
@@ -184,8 +185,7 @@ TimelineImpl.prototype._autoWidthCheck = function(okToShrink) {
         	  timeline._autoResizing = true;
         	  var animateParam ={};
         	  animateParam[widthStyle] = newWidth + 'px';
-        	  
-        	  SimileAjax.jQuery(timeline._containerDiv).animate(
+        	  $(timeline._containerDiv).animate(
         	      animateParam, timeline.autoWidthAnimationTime,
         	      'linear', function(){timeline._autoResizing = false;});
         }

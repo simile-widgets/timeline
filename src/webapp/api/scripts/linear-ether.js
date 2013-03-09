@@ -8,7 +8,7 @@
  *==================================================
  */
 
-define(["simile-ajax/simile-ajax-api"], function(SimileAjax) { 
+define(["simile-ajax"], function(SimileAjax) { 
 var LinearEther = function(params) {
     this._params = params;
     this._interval = params.interval;

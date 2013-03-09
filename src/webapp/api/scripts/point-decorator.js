@@ -3,7 +3,7 @@
  *==================================================
  */
 
-define(["simile-ajax/simile-ajax-api"], function(SimileAjax) {
+define(["simile-ajax"], function(SimileAjax) {
 var PointHighlightDecorator = function(params) {
     this._unit = params.unit != null ? params.unit : SimileAjax.NativeDateUnit;
     this._date = (typeof params.date == "string") ? 

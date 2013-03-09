@@ -55,13 +55,14 @@
  */
 
 define([
-    "simile-ajax/simile-ajax-api",
+    "simile-ajax",
     "./event-utils"
 ], function(SimileAjax, EventUtils) {
 var OriginalEventPainter = function(params) {
     this._params = params;
     this._onSelectListeners = [];
     this._eventPaintListeners = [];
+    this._tracks = [];
     
     this._filterMatcher = null;
     this._highlightMatcher = null;
@@ -80,6 +81,17 @@ OriginalEventPainter.prototype.initialize = function(band, timeline) {
     this._highlightLayer = null;
     
     this._eventIdToElmt = null;
+
+    if (this._backLayer == null) {
+        this._backLayer = this._band.createLayerDiv(0, "timeline-band-events");
+        this._backLayer.style.visibility = "hidden";
+        
+        var eventLabelPrototype = document.createElement("span");
+        eventLabelPrototype.className = "timeline-event-label";
+        this._backLayer.appendChild(eventLabelPrototype);
+        this._frc = SimileAjax.Graphics.getFontRenderingContext(eventLabelPrototype);
+    }
+    this._frc.update();
 };
 
 OriginalEventPainter.prototype.getType = function() {
@@ -143,7 +155,7 @@ OriginalEventPainter.prototype.paint = function() {
     this._eventIdToElmt = {};
     this._fireEventPaintListeners('paintStarting', null, null);
     this._prepareForPainting();
-    
+
     var metrics = this._computeMetrics();
     var minDate = this._band.getMinDate();
     var maxDate = this._band.getMaxDate();
@@ -216,16 +228,6 @@ OriginalEventPainter.prototype._prepareForPainting = function() {
     // Prepare blank layers for painting. 
     var band = this._band;
         
-    if (this._backLayer == null) {
-        this._backLayer = this._band.createLayerDiv(0, "timeline-band-events");
-        this._backLayer.style.visibility = "hidden";
-        
-        var eventLabelPrototype = document.createElement("span");
-        eventLabelPrototype.className = "timeline-event-label";
-        this._backLayer.appendChild(eventLabelPrototype);
-        this._frc = SimileAjax.Graphics.getFontRenderingContext(eventLabelPrototype);
-    }
-    this._frc.update();
     this._tracks = [];
     
     if (this._highlightLayer != null) {

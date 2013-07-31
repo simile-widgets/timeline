@@ -196,11 +196,13 @@ OriginalEventPainter.prototype.getOrthogonalExtent = function() {
 
 OriginalEventPainter.prototype._setOrthogonalOffset = function(metrics) {
     var orthogonalOffset = this._band.getViewOrthogonalOffset();
-    
-    this._highlightLayer.style.top = 
-        this._lineLayer.style.top = 
-            this._eventLayer.style.top = 
-                orthogonalOffset + "px";
+    var layers = ["_highlightLayer", "_lineLayer", "_eventLayer"], j, layer;
+    for (j = 0; j < layers.length; j++) {
+        layer = this[layers[j]];
+        if (layer !== null) {
+            layer.style.top = orthogonalOffset + "px";
+        }
+    }
 };
 
 OriginalEventPainter.prototype._computeMetrics = function() {

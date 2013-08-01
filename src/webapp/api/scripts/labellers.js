@@ -16,7 +16,7 @@ GregorianDateLabeller.monthNames = [];
 GregorianDateLabeller.dayNames = [];
 GregorianDateLabeller.labelIntervalFunctions = [];
 
-// @@@ With a switch to RequireJS i18n, this will excusively
+// @@@ With a switch to RequireJS i18n, this will exclusively
 //     return the user agent's localization.  Should this change?
 //     The rest of the structure outside of string localizing is
 //     still in place if this feature needs to be restored.
@@ -115,7 +115,7 @@ GregorianDateLabeller.prototype.defaultLabelInterval = function(date, intervalUn
         text = date.toUTCString();
     }
     return { text: text, emphasized: emphasized };
-}
+};
 
     return GregorianDateLabeller;
 });

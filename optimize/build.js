@@ -9,7 +9,6 @@
         "endFile": "end.frag"
     },
     "paths": {
-        "jquery": "lib/jquery",
         "i18n": "lib/i18n",
         "simile-ajax": "../../ajax/api/simile-ajax-api"
     },

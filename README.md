@@ -35,11 +35,23 @@ and then point your browser to ` http://127.0.0.1:9999/timeline/`
 Developing Timeline
 -------------------
 
-You once needed [Java](http://www.java.com/) and [Apache Ant](http://ant.apache.org) in order to work with Timeline.  This will probably change in the future, but this release does not include any bundling or compression mechanisms, so you can ignore it - you'll just need a web server and the supporting SimileAjax library to get started.  Familiarity with [RequireJS](http://requirejs.org/) is strongly suggested.
+You need [Java](http://www.java.com/) and [Apache Ant](http://ant.apache.org) and [Node.js](http://nodejs.org/) in order to work with Timeline.  You'll also need a web server (if you don't want to use the one bundled in this project) and a clone of the repository for the supporting SimileAjax library to get started.  Familiarity with [RequireJS](http://requirejs.org/) is strongly suggested.
+
+You should symlink SimileAjax's `/src/webapp` into Timeline's `src/` as `src/ajax/` in order to build properly.  Run `ant` in SimileAjax to generate the built, concatenated bundles for it.
+
+* dev/
+ * simile-ajax/
+  * src/
+   * webapp/
+ * timeline/
+  * src/
+   * ajax -> ../../simile-ajax/src/webapp/
+
+Run `ant` in Timeline in order to generate its built, concatenated bundles.
 
 Mailing List and Forum
 ----------------------
-  
+
 Join the community by joining the [Google Group SIMILE Widgets](http://groups.google.com/group/simile-widgets/).
 
 Licensing
@@ -47,21 +59,29 @@ Licensing
 
 Timeline is open source software and is licensed under the modified BSD license in the LICENSE.txt file located in the same directory as this README.
 
-This code contains libraries found in `lib/` and `tools/` that support development that are covered by their own licenses.
+ * [RequireJS](http://requirejs.org/) is covered by the [modified BSD license](https://github.com/jrburke/requirejs/blob/master/LICENSE).
+ * The RequireJS [domReady plugin](http://requirejs.org/docs/api.html#pageload) is covered by the [modified BSD license](https://github.com/requirejs/domReady/blob/master/LICENSE).
+ * The RequireJS [i18n plugin](http://requirejs.org/docs/api.html#i18n) is covered by the [modified BSD license](https://github.com/requirejs/i18n/blob/master/LICENSE).
+ * [almond](https://github.com/jrburke/almond) is covered by the [modified BSD license](https://github.com/jrburke/almond/blob/master/LICENSE).
+
+This code contains libraries found in `lib/`, `tools/`, and `optimize/` that support development that are covered by their own licenses.
 
  * [Jetty](http://jetty.codehaus.org/) is covered by the [Apache 2.0 License](http://jetty.codehaus.org/jetty/license.html)
  * [JSMin Task](https://code.google.com/p/jsmin-ant-task/) is covered by the [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0)
+ * [r.js](http://requirejs.org/docs/optimization.html) is covered by the [modified BSD license](https://github.com/jrburke/r.js/blob/master/LICENSE).
 
 Latest Release - 3.0.0
 ----------------------
 
-Released March 8, 2013.
+Released August, 2013.
 
  * Forked source to https://github.com/zepheira/timeline/
+ * Uses RequireJS.
  * Uses SimileAjax 3.0.0.
- * Removed all files related to loading and original bundling / compression.
- * Bundling and compression are not currently available in this release.
- * Parameters cannot be provided through RequireJS as they were before, no parameters will be respected or used in this release.
+ * Removed all files related to loading and original bundling / compression, substituted with RequireJS optimizer builds.
+ * Removed several parameters around locales (now handled by RequireJS); `defaultLocale`, `forceLocale`, and `locales` do not work; to simulate the behavior in development, use RequireJS to set the locale.
+ * Added an `ajax` parameter to be set in order to find the SimileAjax stylesheet; it should be able to be located if Timeline and SimileAjax are deployed on the same server, but set if not.
+ * General usage remains backwards compatible, but users should consider changing use-paradigm to RequireJS instead if any flexibility in loading or otherwise is needed.
  * Minor bug fixes.
  * See https://github.com/zepheira/timeline/compare/2.3.1...3.0.0 for all commits.
 

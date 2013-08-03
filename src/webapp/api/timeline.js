@@ -1,51 +1,78 @@
-/*==================================================
+/* ==================================================
  *
  *              Timeline API
  *              ------------
  *
- * This file will load all the Javascript files
- * necessary to make the standard timeline work.
- * It also detects the default locale.
+ * This is the base file for Timeline.  It handles front matter like
+ * loading stylesheets.  In fact, that's all it really does besides
+ * tie its supporting files together in a backwards-compatible fashion.
  *
  * To run Timeline directly from the www.simile-widgets.org server
  * include this fragment in your HTML file as follows:
  *
- *   <script src="http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js" 
+ * <script src="http://api.simile-widgets.org/timeline/x.x.x/timeline-api.js" 
  *    type="text/javascript"></script>
  *
+ * where the 'x.x.x' is your preferred version.
  *
- * You can set the following global js variable used to send parameters to this script:
- *     var Timeline_urlPrefix -- URL for the *directory* that contains timeline-api.js 
- *                               on your web site (including the trailing slash!)
- *     Timeline_ajax_url is *deprecated* - the library is either included in
- *     the bundle or you'll be setting it through RequireJS.
+ * You can set the following global Javascript variable used to send parameters
+ * to this script, though you should only use this as a last resort.  Globals
+ * are evil; these are usually set automatically and correctly, so bother with
+ * them only if chaos is attacking you from every side:
+ *
+ *     var Timeline_urlPrefix = ""; // URL for the *directory* that contains
+ *                                  // timeline-api.js on your site; include
+ *                                  // the trailing slash.
+ *     var Timeline_ajax_url = "";  // URL for the *directory* that contains
+ *                                  // simile-ajax-api.js on your site. Not
+ *                                  // that it gets loaded here.  This is only
+ *                                  // for SimileAjax stylesheets and images.
  *      
- * eg your HTML page would include
+ * e.g., your HTML page would include:
  *
  *   <script>
- *     var Timeline_urlPrefix='http://YOUR_SERVER/apis/timeline/';       
+ *     var Timeline_urlPrefix = "http://YOUR_SERVER/apis/timeline/api/";
+ *     var Timeline_ajax_url = "http://YOUR_SERVER/apis/ajax/api/";
  *   </script>
- *   <script src="http://YOUR_SERVER/javascripts/timeline/timeline-api.js"    
+ *   <script src="http://YOUR_SERVER/apis/timeline/api/timeline-api.js"
  *     type="text/javascript">
  *   </script>
  *
- * SCRIPT PARAMETERS
  *
- * To set parameters explicity, set js global variable Timeline_parameters or include as
- * parameters on the url using GET style. Eg the two next lines pass the same parameters:
- *     Timeline_parameters='bundle=true';                    // pass parameter via js variable
- *     <script src="http://....timeline-api.js?bundle=true"  // pass parameter via url
+ * Script Parameters
+ * -----------------
+ *
+ * To set parameters explicity, you can provide parameters within the
+ * script tag you use to include Timeline:
+ *
+ *  <script src="timeline-api.js?bundle=false&ajax=/ajax/"></script>
+ *
+ * If for some reason you can't use this method but you can set globals -
+ * but remember what we established above: EVIL - you can also set the
+ * parameters using the global variable:
+ *
+ * <script>
+ *  var Timeline_parameters = "bundle=false&ajax=/ajax/";
+ * </script>
+ *
+ * which is equivalent to the script tag.
+ *
  * 
- * Parameters 
- *   bundle -- true: use the single js bundle file; false: load individual files (for debugging)
- * 
- * DEBUGGING
+ * Available parameters:
  *
- * If you have a problem with Timeline, use the RequireJS development version.
- * Bundled files are not appropriate for debugging.  See the README.md for how
- * to use RequireJS.
+ *     bundle=(true|false) - whether the stylesheets are sent as one or many
  *
- *================================================== 
+ *     ajax=<String> - the URL at which to find SimileAjax (for its CSS)
+ *
+ *
+ * Debugging
+ * ---------
+ *
+ * See the README.md in the root of this project for more, that's too much
+ * to cover in head comments.  Suffice to say if you've resorted to reading
+ * this far, good, but start somewhere else.
+ *
+ * ================================================== 
  */
 
 define([

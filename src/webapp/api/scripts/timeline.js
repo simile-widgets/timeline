@@ -47,6 +47,14 @@ define([
     "./hot-zone-ether",
     "./themes"
 ], function(SimileAjax, Timeline, TimelineImpl, LinearEther, GregorianEtherPainter, HotZoneGregorianEtherPainter, OverviewEventPainter, DetailedEventPainter, OriginalEventPainter, HotZoneEther, ClassicTheme) {
+    Timeline.getDefaultLocale = function() {
+        return Timeline.clientLocale;
+    };
+
+    Timeline.getTimelineFromID = function(timelineID) {
+        return Timeline.timelines[timelineID];
+    };
+
 Timeline.create = function(elmt, bandInfos, orientation, unit) {
     if (Timeline.timelines == null) {
         Timeline.timelines = [];

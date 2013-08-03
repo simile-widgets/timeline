@@ -4,14 +4,9 @@
 requirejs.config({
     "baseUrl": "/timeline/api/",
     "paths": {
-        "jquery": "/ajax/api/lib/jquery",
-        "i18n": "/ajax/api/lib/i18n"
-    },
-    "packages": [
-        {
-            "name": "simile-ajax",
-            "location": "/ajax/api",
-            "main": "simile-ajax-api"
-        }
-    ]
+        "jquery": "lib/jquery",
+        "i18n": "lib/i18n",
+        "timeline": "timeline-require-bundle",
+        "simile-ajax": "/ajax/api/simile-ajax-require-bundle"
+    }
 });

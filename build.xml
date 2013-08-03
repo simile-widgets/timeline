@@ -8,16 +8,58 @@
     |
     +-->
 
-<project default="compile" basedir="." name="Timeline">
+<project default="publish-local" basedir="." name="Timeline">
 
+  <property name="webapp.dir"  value="src/webapp"/>
+  <property name="api.dir"     value="${webapp.dir}/api"/>
+  <property name="site.dir"    value="${webapp.dir}/site"/>
+  <property name="scripts.dir" value="${api.dir}/scripts"/>
+  <property name="rjs.dir"     value="optimize"/>
+  <property name="build.dir"   value="build"/>
+
+  <target name="bundle">
+    <exec dir="." executable="node">
+      <arg line="${rjs.dir}/r.js -o ${rjs.dir}/build.js"/>
+    </exec>
+  </target>
+
+  <target name="bundle-require">
+    <exec dir="." executable="node">
+      <arg line="${rjs.dir}/r.js -o ${rjs.dir}/build-require.js"/>
+    </exec>
+  </target>
+
+  <target name="bundle-css">
+    <exec dir="." executable="node">
+      <arg line="${rjs.dir}/r.js -o ${rjs.dir}/build-css.js"/>
+    </exec>
+  </target>
+
+  <target name="bundle-all" depends="bundle,bundle-require,bundle-css">
+  </target>
+
+  <target name="publish-local" depends="bundle-all">
+    <copy file="${build.dir}/timeline-api.js" todir="${api.dir}"/>
+    <copy file="${build.dir}/timeline-bundle.js" todir="${api.dir}"/>
+    <copy file="${build.dir}/timeline-bundle.css" todir="${api.dir}/styles"/>
+  </target>
+
+  <target name="clean">
+    <delete dir="${build.dir}"/>
+    <delete file="${api.dir}/timeline-api.js"/>
+    <delete file="${api.dir}/timeline-bundle.js"/>
+    <delete file="${api.dir}/styles/timeline-bundle.css"/>
+  </target>
+
+  <!--                                   -->
+  <!-- JSMin-based tasks below this line -->
+  <!--                                   -->
   <property name="version" value="pre_2.4.0" />      <!-- For trunk versions, use style pre_2.4.0 -->
-  <property name="local_example_ver" value="1.0" />
   <property name="full_dest" value="dist/timeline_${version}" />
   <property name="min_dest" value="htdocs/timeline_${version}" />
   
   <property name="timeline_api" value="src/webapp/api" />
   <property name="ajax_api" value="src/ajax/api"   />
-  <property name="timeline_compilations" value="src/webapp/api/compilations" />
   
   <target name="tasks">
     <taskdef name="jsmin"
@@ -57,7 +99,7 @@
     </concat>
   </target>
   
-  <target name="bundle" depends="tasks">
+  <target name="bundle-old" depends="tasks">
     <antcall target="parameterized-bundle">
       <param name="obfuscate" value="true" />
       <param name="suffix" value="" />
@@ -68,64 +110,8 @@
     </antcall>
   </target>
   
-  <target name="compile-ajax">
-    <jsmin output="${ajax_api}/compilations/simile-ajax-compilation${suffix}.js" obfuscate="${obfuscate}">
-        <fileset file="${ajax_api}/compile-prolog.js" />
-        <fileset file="${ajax_api}/simile-ajax-api.js" />
-        <fileset file="${ajax_api}/simile-ajax-bundle${suffix}.js" />
-        <fileset file="${ajax_api}/compile-epilog.js" />
-    </jsmin>
-    <concat destfile="${ajax_api}/compilations/simile-ajax-compilation${suffix}.css">
-        <fileset dir="${ajax_api}/styles">
-        	<include name="**/*.css" />
-        </fileset>
-    </concat>
-  </target>
-  
-  <target name="compile-timeline">
-    <jsmin output="${timeline_compilations}/timeline-${locale}-compilation${suffix}.js" obfuscate="${obfuscate}">
-        <fileset file="${timeline_api}/compile-prolog.js" />
-        <fileset file="${timeline_api}/timeline-api.js" />
-        <fileset file="${timeline_api}/timeline-bundle${suffix}.js" />
-        <fileset dir="${timeline_api}/scripts/l10n/${locale}">
-            <include name="*.js" />
-        </fileset>
-        <fileset file="${timeline_api}/compile-epilog.js" />
-    </jsmin>
-    
-    <copy file="${timeline_api}/timeline-bundle${suffix}.css" tofile="${timeline_compilations}/timeline-${locale}-compilation${suffix}.css" />
-  </target>
-  
-  <target name="compile-timeline-locale">
-    <antcall target="compile-timeline">
-        <param name="locale" value="${locale}" />
-        <param name="suffix" value="" />
-        <param name="obfuscate" value="true" />
-    </antcall>
-    <antcall target="compile-timeline">
-        <param name="locale" value="${locale}" />
-        <param name="suffix" value="-debug" />
-        <param name="obfuscate" value="false" />
-    </antcall>
-  </target>
-  
-  <target name="compile" depends="bundle">
-    <!-- SimileAjax -->
-    <antcall target="compile-ajax">
-        <param name="suffix" value="" />
-        <param name="obfuscate" value="true" />
-    </antcall>
-    <antcall target="compile-ajax">
-        <param name="suffix" value="-debug" />
-        <param name="obfuscate" value="false" />
-    </antcall>
-    
-    <!-- Timeline -->
-    <antcall target="compile-timeline-locale"><param name="locale" value="en" /></antcall>
-  </target>
-  
   <!-- Create full distribution -->
-  <target name="prepare_full_dist" depends="bundle">
+  <target name="prepare_full_dist" depends="bundle-old">
 
     <mkdir dir="${full_dest}"/>
 
@@ -163,7 +149,7 @@
   </target>
 
   <!-- Create versioned timeline dir with just bundled libraries and support files -->
-  <target name="prepare_minimal_dist" depends="bundle">
+  <target name="prepare_minimal_dist" depends="bundle-old">
 
     <!-- timeline files -->
 

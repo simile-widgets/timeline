@@ -1,6 +1,5 @@
 ({
     "baseUrl": "../src/webapp/api/",
-    "optimize": "none",
     "name": "lib/almond",
     "include": ["timeline"],
     "out": "../build/timeline-api.js",
@@ -9,6 +8,7 @@
         "endFile": "end.frag"
     },
     "paths": {
+        "jquery": "lib/jquery",
         "i18n": "lib/i18n",
         "simile-ajax": "../../ajax/api/simile-ajax-api"
     },

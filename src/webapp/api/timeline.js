@@ -77,6 +77,7 @@
 
 define([
     "./lib/domReady",
+    "module",
     "simile-ajax",
     "./scripts/timeline",
     "./scripts/timeline-impl",
@@ -99,7 +100,7 @@ define([
     "./scripts/year-count-ether-painter",
     "./scripts/original-painter",
     "./scripts/band"
-], function(domReady, SimileAjax, Timeline, TimelineImpl, EventUtils, GregorianDateLabeller, ClassicTheme, SpanHighlightDecorator, PointHighlightDecorator, OverviewEventPainter, HotZoneEther, LinearEther, DefaultEventSource, DetailedEventPainter, CompactEventPainter, EtherHighlight, EtherIntervalMarkerLayout, GregorianEtherPainter, HotZoneGregorianEtherPainter, QuarterlyEtherPainter, YearCountEtherPainter, OriginalEventPainter, Band) {
+], function(domReady, module, SimileAjax, Timeline, TimelineImpl, EventUtils, GregorianDateLabeller, ClassicTheme, SpanHighlightDecorator, PointHighlightDecorator, OverviewEventPainter, HotZoneEther, LinearEther, DefaultEventSource, DetailedEventPainter, CompactEventPainter, EtherHighlight, EtherIntervalMarkerLayout, GregorianEtherPainter, HotZoneGregorianEtherPainter, QuarterlyEtherPainter, YearCountEtherPainter, OriginalEventPainter, Band) {
     Timeline.DateTime = SimileAjax.DateTime;
     Timeline._Impl = TimelineImpl;
     Timeline.EventUtils = EventUtils;
@@ -140,6 +141,7 @@ define([
         var url = null;
         var cssFiles = ["main.css"];
         var bundledCssFile = "timeline-bundle.css";
+        var conf = module.config();
         
         // ISO-639 language codes, ISO-3166 country codes (2 characters)
         var supportedLocales = [
@@ -161,6 +163,8 @@ define([
         try {
             if (typeof Timeline_urlPrefix == "string") {
                 Timeline.urlPrefix = Timeline_urlPrefix;
+            } else if (conf.hasOwnProperty("prefix")) {
+                Timeline.urlPrefix = conf.prefix;
             } else {
                 var targets = ["timeline-api.js", "timeline-bundle.js"];
                 for (var i = 0; i < targets.length; i++) {
@@ -180,11 +184,21 @@ define([
             var params;
             if (typeof Timeline_parameters === "string") {
                 params = SimileAjax.parseURLParameters("?" + Timeline_parameters, Timeline.params, Timeline.paramTypes);
-            } else {
+            } else if (url !== null) {
                 params = SimileAjax.parseURLParameters(url, Timeline.params, Timeline.paramTypes);
+            } else {
+                params = Timeline.params;
             }
 
-            if (Timeline.params.bundle) {
+            if (conf.hasOwnProperty("bundle")) {
+                params.bundle = conf.bundle;
+            }
+
+            if (conf.hasOwnProperty("ajax")) {
+                params.ajax = conf.ajax;
+            }
+            
+            if (params.bundle) {
                 SimileAjax.includeCssFile(document, Timeline.urlPrefix + "styles/" + bundledCssFile);
             } else {
                 SimileAjax.includeCssFiles(document, Timeline.urlPrefix + "styles/", cssFiles);
@@ -216,7 +230,7 @@ define([
             }
 
             if (ajax !== null) {
-                if (!SimileAjax.urlPrefix) {
+                if (typeof SimileAjax.urlPrefix === "undefined") {
                     SimileAjax.urlPrefix = ajax;
                 }
                 SimileAjax.loadCSS();

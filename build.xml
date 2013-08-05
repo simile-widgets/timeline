@@ -10,19 +10,33 @@
 
 <project default="publish-local" basedir="." name="Timeline">
 
+  <!-- For trunk versions, use style pre_2.4.0 -->
+  <property name="version" value="3.0.0" />      
+
   <property name="webapp.dir"  value="src/webapp"/>
   <property name="api.dir"     value="${webapp.dir}/api"/>
   <property name="site.dir"    value="${webapp.dir}/site"/>
   <property name="scripts.dir" value="${api.dir}/scripts"/>
   <property name="rjs.dir"     value="optimize"/>
   <property name="build.dir"   value="build"/>
+  <property name="dist.dir"    value="dist"/>
 
+  <property name="full.dir" value="${dist.dir}/full/timeline-${version}" />
+  <property name="min.dir" value="${dist.dir}/minimal/timeline-${version}" />
+  <property name="ajax.dir" value="src/ajax/api"/>
+  
   <target name="bundle">
     <exec dir="." executable="node">
       <arg line="${rjs.dir}/r.js -o ${rjs.dir}/build.js"/>
     </exec>
   </target>
 
+  <target name="bundle-debug">
+    <exec dir="." executable="node">
+      <arg line="${rjs.dir}/r.js -o ${rjs.dir}/build.js optimize=none out=build/timeline-api-debug.js"/>
+    </exec>
+  </target>
+  
   <target name="bundle-require">
     <exec dir="." executable="node">
       <arg line="${rjs.dir}/r.js -o ${rjs.dir}/build-require.js"/>
@@ -35,8 +49,7 @@
     </exec>
   </target>
 
-  <target name="bundle-all" depends="bundle,bundle-require,bundle-css">
-  </target>
+  <target name="bundle-all" depends="bundle,bundle-require,bundle-css" />
 
   <target name="publish-local" depends="bundle-all">
     <copy file="${build.dir}/timeline-api.js" todir="${api.dir}"/>
@@ -51,164 +64,105 @@
     <delete file="${api.dir}/styles/timeline-bundle.css"/>
   </target>
 
-  <!--                                   -->
-  <!-- JSMin-based tasks below this line -->
-  <!--                                   -->
-  <property name="version" value="pre_2.4.0" />      <!-- For trunk versions, use style pre_2.4.0 -->
-  <property name="full_dest" value="dist/timeline_${version}" />
-  <property name="min_dest" value="htdocs/timeline_${version}" />
-  
-  <property name="timeline_api" value="src/webapp/api" />
-  <property name="ajax_api" value="src/ajax/api"   />
-  
-  <target name="tasks">
-    <taskdef name="jsmin"
-        classname="edu.mit.simile.jsminTask.JSMinTask"
-        classpath="tools/jsmin-task/jsminTask.jar"/>
-  </target>
-    
-  <target name="parameterized-bundle" depends="tasks">
-
-    <!-- SimileAjax -->
-    
-    <jsmin output="src/ajax/api/simile-ajax-bundle${suffix}.js" obfuscate="${obfuscate}">
-        <fileset dir="src/ajax/api/scripts">
-            <include name="jquery*.js" />
-            <include name="platform.js" />
-        </fileset>
-        <fileset dir="src/ajax/api/scripts">
-            <include name="**/*.js" />
-            <exclude name="signal.js" />
-            <exclude name="jquery*.js" />
-            <exclude name="platform.js" />
-        </fileset>
-    </jsmin>
-  	
-  	<!-- Timeline -->
-  	
-    <jsmin output="src/webapp/api/timeline-bundle${suffix}.js" obfuscate="${obfuscate}">
-        <fileset dir="src/webapp/api/scripts">
-        	<include name="*.js" />
-        </fileset>
-  	</jsmin>
-  	
-    <concat destfile="src/webapp/api/timeline-bundle${suffix}.css">
-        <fileset dir="src/webapp/api/styles">
-        	<include name="**/*.css" />
-        </fileset>
-    </concat>
-  </target>
-  
-  <target name="bundle-old" depends="tasks">
-    <antcall target="parameterized-bundle">
-      <param name="obfuscate" value="true" />
-      <param name="suffix" value="" />
-    </antcall>
-    <antcall target="parameterized-bundle">
-      <param name="obfuscate" value="false" />
-      <param name="suffix" value="-debug" />
-    </antcall>
-  </target>
-  
   <!-- Create full distribution -->
-  <target name="prepare_full_dist" depends="bundle-old">
+  <target name="prepare-full-dist" depends="bundle-debug,publish-local">
 
-    <mkdir dir="${full_dest}"/>
+    <mkdir dir="${full.dir}"/>
 
-    <copy todir="${full_dest}/lib">
-      <fileset dir="lib" excludes="**/.svn/**, **/*.bak" />
+    <copy todir="${full.dir}/lib">
+      <fileset dir="lib" />
     </copy>
-    <copy todir="${full_dest}/src">
-      <fileset dir="src" excludes="**/.svn/**, **/*.bak" />
+    <copy todir="${full.dir}/src">
+      <fileset dir="src" />
     </copy>
-    <copy todir="${full_dest}/tools">
-      <fileset dir="tools" excludes="**/.svn/**, **/*.bak" />
+    <copy todir="${full.dir}/tools">
+      <fileset dir="tools" />
     </copy>
+    <copy todir="${full.dir}/optimize">
+      <fileset dir="optimize" />
+    </copy>
+
+    <copy file="${build.dir}/timeline-api-debug.js" todir="${full.dir}/${api.dir}" />
     
-    <copy file=".project" todir="${full_dest}" />
-    <copy file="build.xml" todir="${full_dest}" />
-    <copy file="CHANGES.txt" todir="${full_dest}" />
-    <copy file="jetty.xml" todir="${full_dest}" />
-    <copy file="LICENSE.txt" todir="${full_dest}" />
-    <copy file="README.txt" todir="${full_dest}" />
-    <copy file="run" todir="${full_dest}" />
-    <copy file="run.bat" todir="${full_dest}" />
+    <copy file=".project" todir="${full.dir}" />
+    <copy file="build.xml" todir="${full.dir}" />
+    <copy file="jetty.xml" todir="${full.dir}" />
+    <copy file="LICENSE.txt" todir="${full.dir}" />
+    <copy file="README.md" todir="${full.dir}" />
+    <copy file="run" todir="${full.dir}" />
+    <copy file="run.bat" todir="${full.dir}" />
   </target>
   
-  <target name="full_dist" depends="prepare_full_dist">
-    <zip destfile="timeline_${version}.zip"
-         basedir="."
+  <target name="full-dist" depends="prepare-full-dist">
+    <zip destfile="timeline-${version}.zip"
+         basedir="${dist.dir}/full"
          update="yes"
          duplicate="fail"
-         includes="${full_dest}/**"
     />  
-    <tar destfile="timeline_${version}.tar.gz" compression="gzip" longfile="gnu"
-         basedir="."
-         includes="${full_dest}/**"
+    <tar destfile="timeline-${version}.tar.gz"
+         compression="gzip"
+         longfile="gnu"
+         basedir="${dist.dir}/full"
     />
   </target>
 
   <!-- Create versioned timeline dir with just bundled libraries and support files -->
-  <target name="prepare_minimal_dist" depends="bundle-old">
+  <target name="prepare-minimal-dist" depends="bundle-debug,publish-local">
 
     <!-- timeline files -->
 
-    <copy file="${timeline_api}/timeline-api.js"     todir="${min_dest}" />
-    <copy file="${timeline_api}/timeline-bundle.js"  todir="${min_dest}" />
-    <copy file="${timeline_api}/timeline-bundle.css" todir="${min_dest}" />
+    <copy file="${api.dir}/timeline-api.js" todir="${min.dir}/timeline" />
+    <copy file="${api.dir}/timeline-bundle.js" todir="${min.dir}/timeline" />
+    <copy file="${build.dir}/timeline-api-debug.js" todir="${min.dir}/timeline" />
+    <copy file="${api.dir}/styles/timeline-bundle.css" todir="${min.dir}/timeline/styles" />
 
-    <copy todir="${min_dest}/images">
-      <fileset dir="${timeline_api}/images" excludes="**/.svn/**, **/*.bak" />
-    </copy>
-    
-    <copy todir="${min_dest}/scripts/l10n">
-      <fileset dir="${timeline_api}/scripts/l10n" excludes="**/.svn/**, **/*.bak" />
+    <copy todir="${min.dir}/timeline/images">
+      <fileset dir="${api.dir}/images" />
     </copy>
     
     <!-- ajax files -->
     
-    <copy file="${ajax_api}/simile-ajax-api.js"    todir="${min_dest}/ajax" />
-    <copy file="${ajax_api}/simile-ajax-bundle.js" todir="${min_dest}/ajax" />
+    <copy file="${ajax.dir}/simile-ajax-api.js" todir="${min.dir}/ajax" />
+    <copy file="${ajax.dir}/simile-ajax-bundle.js" todir="${min.dir}/ajax" />
     
-    <copy todir="${min_dest}/ajax/images">
-      <fileset dir="${ajax_api}/images" excludes="**/.svn/**, **/*.bak" />
+    <copy todir="${min.dir}/ajax/images">
+      <fileset dir="${ajax.dir}/images" />
     </copy>
-    <copy todir="${min_dest}/ajax/styles">
-      <fileset dir="${ajax_api}/styles" excludes="**/.svn/**, **/*.bak" />
+    <copy todir="${min.dir}/ajax/styles">
+      <fileset dir="${ajax.dir}/styles" />
     </copy>
-    <copy todir="${min_dest}/ajax/content">
-      <fileset dir="${ajax_api}/content" excludes="**/.svn/**, **/*.bak" />
+    <copy todir="${min.dir}/ajax/content">
+      <fileset dir="${ajax.dir}/content" />
     </copy>
 
-    <copy file="${ajax_api}/scripts/signal.js" todir="${min_dest}/ajax/scripts" />
-    
     <!-- release files -->
     
-    <copy file="LICENSE.txt"     todir="${min_dest}" />
+    <copy file="LICENSE.txt"     todir="${min.dir}" />
   </target>
   
-  <target name="minimal_dist" depends="prepare_minimal_dist">
-    <zip destfile="timeline_${version}_minimal.zip"
-         basedir="."
+  <target name="minimal-dist" depends="prepare-minimal-dist">
+    <zip destfile="timeline-${version}-minimal.zip"
+         basedir="${dist.dir}/minimal"
          update="yes"
          duplicate="fail"
-         includes="${min_dest}/**"
     />  
-    <tar destfile="timeline_${version}_minimal.tar.gz" compression="gzip" longfile="gnu"
-         basedir="."
-         includes="${min_dest}/**"
+    <tar destfile="timeline-${version}-minimal.tar.gz"
+         compression="gzip"
+         longfile="gnu"
+         basedir="${dist.dir}/minimal"
     />
   </target>
 
-  <target name="dist" depends="full_dist, minimal_dist" />
+  <target name="dist" depends="full-dist,minimal-dist" />
   
   <target name="distclean">
-    <delete dir="dist"/>
-    <delete dir="htdocs"/>
+    <delete dir="${dist.dir}"/>
     <delete>
         <fileset dir="." includes="*.gz"/>
         <fileset dir="." includes="*.zip"/>
     </delete>
   </target>
+
+  <target name="clean-all" depends="clean,distclean"/>
   
 </project>

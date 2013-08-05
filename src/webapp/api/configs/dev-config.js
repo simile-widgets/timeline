@@ -4,6 +4,16 @@
  * development, it pulls in files individually for debugging purposes.
  * Assumes you've mounted /timeline and /ajax on a server.
  *
+ * Surround your Timeline code with the following, substituting the path
+ * as appropriate.
+ * 
+ * require(["path/to/this/file-without-js"], function() {
+ *     require(["timeline"], function(Timeline) {
+ *         window.Timeline = Timeline;
+ *         // Your Timeline code here.
+ *     });
+ * });
+ *
  */
 
 requirejs.config({
@@ -18,11 +28,13 @@ requirejs.config({
         //     "locale": "zh"
         // },
         "simile-ajax": {
-            "bundle": false
+            "bundle": false,
+            "prefix": "/ajax/api/"
         },
         "timeline": {
             "bundle": false,
-            "ajax": "/ajax/api/"
+            "prefix": "/timeline/api/",
+            "ajax": "/ajax/api"
         }
     },
     "packages": [
@@ -32,8 +44,4 @@ requirejs.config({
             "location": "/ajax/api/"
         }
     ]
-});
-
-require(["timeline"], function(Timeline) {
-    window.Timeline = Timeline;
 });

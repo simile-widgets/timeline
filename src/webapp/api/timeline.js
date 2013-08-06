@@ -232,8 +232,8 @@ define([
             if (ajax !== null) {
                 if (typeof SimileAjax.urlPrefix === "undefined") {
                     SimileAjax.urlPrefix = ajax;
+                    SimileAjax.loadCSS();
                 }
-                SimileAjax.loadCSS();
             }
             
             if (params.locales) {

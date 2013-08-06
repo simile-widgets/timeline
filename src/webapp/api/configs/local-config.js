@@ -11,7 +11,17 @@ requirejs.config({
     "paths": {
         "jquery": "lib/jquery",
         "i18n": "lib/i18n",
-        "timeline": "timeline-bundle",
-        "simile-ajax": "/ajax/api/simile-ajax-bundle"
+        "simile-ajax": "/ajax/api/simile-ajax-bundle",
+        "timeline": "timeline-bundle"
+    },
+    "config": {
+        "simile-ajax": {
+            "bundle": true,
+            "prefix": "/ajax/api/"
+        },
+        "timeline": {
+            "bundle": true,
+            "prefix": "/timeline/api/"
+        }
     }
 });

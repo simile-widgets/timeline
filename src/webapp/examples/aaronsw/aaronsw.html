@@ -1,0 +1,97 @@
+<html>
+  <head>
+    <title>SIMILE Widgets | Timeline | Examples | Aaron Swartz</title>
+    <link rel='stylesheet' href='../styles.css' type='text/css' />
+
+    <style>
+      .timeline-small-event-icon {
+        background-color: #c11 !important;
+      }
+    </style>
+    <script src="../../api/lib/require.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        require(['../../api/configs/dev-config'],function(){
+        require(['timeline'], function(Timeline) {
+        var tl;
+        var onLoad = function() {
+            var eventSource = new Timeline.DefaultEventSource(0);
+            
+            var theme = Timeline.ClassicTheme.create();
+            theme.event.bubble.width = 320;
+            theme.event.bubble.height = 220;
+            theme.event.instant.icon = Timeline.urlPrefix + "images/red-circle.png";
+            theme.event.instant.color = "#cc1111";
+            theme.event.duration.color = "#cc1111";
+            theme.event.duration.impreciseColor = "#cc1111";
+            theme.event.label.lineColor = "#cc1111";
+            theme.ether.backgroundColors[1] = theme.ether.backgroundColors[0];
+            var d = Timeline.DateTime.parseGregorianDateTime("2011")
+            var bandInfos = [
+                Timeline.createBandInfo({
+                    width:          "75%", 
+                    intervalUnit:   Timeline.DateTime.WEEK,
+                    intervalPixels: 200,
+                    eventSource:    eventSource,
+                    date:           d,
+                    theme:          theme
+                }),
+                Timeline.createBandInfo({
+                    overview:       true,
+                    width:          "25%",
+                    intervalUnit:   Timeline.DateTime.YEAR,
+                    intervalPixels: 200,
+                    eventSource:    eventSource,
+                    date:           d,
+                    showEventText:  false,
+                    theme:          theme
+                })
+            ];
+            bandInfos[1].syncWith = 0;
+            bandInfos[1].highlight = true;
+            
+            tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
+            tl.loadXML("aaronsw.xml", function(xml, url) {
+                eventSource.loadXML(xml, url);
+            });
+            Timeline.writeVersion('tl_ver');
+        };
+
+        var resizeTimerID = null;
+        var onResize = function() {
+            if (resizeTimerID == null) {
+                resizeTimerID = window.setTimeout(function() {
+                    resizeTimerID = null;
+                    tl.layout();
+                }, 500);
+            }
+        };
+
+        onLoad();
+        document.onresize = onResize;
+        })});
+    </script>
+  </head>
+  <body>
+    <ul id="path">
+      <li><a href="/" title="Home">SIMILE Widgets</a></li>
+      <li><a href="../../" title="Timeline">Timeline</a></li>
+      <li><a href="../" title="Examples">Examples</a></li>
+      <li><span>Aaron Swartz</span></li>
+    </ul>
+  
+    <div id="header">
+      <h1>Aaron Swartz</h1>
+    </div>
+  
+    <div id="content">
+      <p>The content of this timeline is derived from the MIT Review Panel's <a href="http://swartz-report.mit.edu/docs/report-to-the-president.pdf">Report to the President (PDF)</a>, a Creative Commons work, and <a href="aaronsw.xml">the content</a> is covered under the same <a href="https://creativecommons.org/licenses/by/3.0/deed.en_US">license</a>.  Much of the material covering MIT's legal interactions is bypassed here for the moment.  Swartz himself tends to disappear from the report's timeline as it progresses; other sources of material more focused on his final two years may be more pertinent to add.</p>
+      <p>About this Timeline: Timeline version <span id='tl_ver'></span>.  This instance uses the RequireJS development method for including Timeline in a page.  View the source to see how it's done.</p>
+    
+      <div id="tl" class="timeline-default" style="height: 400px"></div>
+    </div>
+    
+    <div id="footer">
+      Copyright &copy; <a href="http://web.mit.edu/">Massachusetts Institute of Technology</a> and Contributors 2006-2009 ~ Some rights reserved
+    </div>
+  </body>
+</html>

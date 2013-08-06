@@ -33,8 +33,9 @@
 
   <target name="bundle-debug">
     <exec dir="." executable="node">
-      <arg line="${rjs.dir}/r.js -o ${rjs.dir}/build.js optimize=none out=build/timeline-api-debug.js"/>
+      <arg line="${rjs.dir}/r.js -o ${rjs.dir}/build.js optimize=none out=build/timeline-api-debug.js paths.simile-ajax=../../ajax/api/simile-ajax-api-debug"/>
     </exec>
+    <copy file="${build.dir}/timeline-api-debug.js" todir="${api.dir}"/>
   </target>
   
   <target name="bundle-require">

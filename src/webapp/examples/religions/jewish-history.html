@@ -3,7 +3,101 @@
     <title>SIMILE Widgets | Timeline | Examples | Jewish History</title>
     <link rel='stylesheet' href='../styles.css' type='text/css' />
 
-    <script data-main="jewish" src="../../../ajax/api/lib/require.js" type="text/javascript"></script>
+    <script src="../../api/lib/require.js" type="text/javascript"></script>
+    <script>
+require(["../../api/configs/local-config"], function() {
+    require(["timeline", "../examples.js"], function(Timeline, Helpers) {
+        var tl;
+        var onLoad = function() {
+            var eventSource = new Timeline.DefaultEventSource(0);
+            
+            var theme = Timeline.ClassicTheme.create();
+            // demonstrate highlighting of labels (in addition to icons and tapes)
+            theme.event.highlightLabelBackground = true;
+            theme.event.bubble.width = 320;
+            
+            var zones = [
+                {   start:    "1700",
+                    end:      "2100",
+                    magnify:  5,
+                    unit:     Timeline.DateTime.DECADE
+                },
+                {   start:    "1800",
+                    end:      "2100",
+                    magnify:  3,
+                    unit:     Timeline.DateTime.YEAR,
+                    multiple: 5
+                }
+            ];
+            var zones2 = [
+                {   start:    "1700",
+                    end:      "2100",
+                    magnify:  5,
+                    unit:     Timeline.DateTime.DECADE
+                },
+                {   start:    "1800",
+                    end:      "2100",
+                    magnify:  3,
+                    unit:     Timeline.DateTime.YEAR,
+                    multiple: 10
+                }
+            ];
+            
+            var d = Timeline.DateTime.parseGregorianDateTime("1000");
+            var bandInfos = [
+                Timeline.createHotZoneBandInfo({
+                    width:          "75%", 
+                    intervalUnit:   Timeline.DateTime.CENTURY, 
+                    intervalPixels: 250,
+                    zones:          zones,
+                    eventSource:    eventSource,
+                    date:           d,
+                    timeZone:       -6,
+                    theme:          theme
+                }),
+                Timeline.createHotZoneBandInfo({
+                    width:          "25%", 
+                    intervalUnit:   Timeline.DateTime.CENTURY, 
+                    intervalPixels: 70,
+                    zones:          zones2,
+                    eventSource:    eventSource,
+                    date:           d,
+                    overview:       true,
+                    theme:          theme
+                })
+            ];
+            bandInfos[1].syncWith = 0;
+            bandInfos[1].highlight = true;
+            
+            tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
+            tl.loadXML("jewish.xml", function(xml, url) {
+                eventSource.loadXML(xml, url);
+            });
+            
+            Timeline.writeVersion('tl_ver');
+            Helpers.setupFilterHighlightControls(document.getElementById("controls"), tl, [0,1], theme);
+        };
+
+        window.centerTimeline = function(year) {
+            tl.getBand(0).setCenterVisibleDate(new Date(year, 0, 1));
+        };
+
+
+        var resizeTimerID = null;
+        var onResize = function() {
+            if (resizeTimerID == null) {
+                resizeTimerID = window.setTimeout(function() {
+                    resizeTimerID = null;
+                    tl.layout();
+                }, 500);
+            }
+        };
+
+        onLoad();
+        document.onresize = onResize;
+    });
+});
+    </script>
   </head>
   <body>
     <ul id="path">

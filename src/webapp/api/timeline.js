@@ -76,8 +76,6 @@
  */
 
 define([
-    "./lib/domReady",
-    "module",
     "simile-ajax",
     "./scripts/timeline",
     "./scripts/timeline-impl",
@@ -99,8 +97,10 @@ define([
     "./scripts/quarterly-ether-painter",
     "./scripts/year-count-ether-painter",
     "./scripts/original-painter",
-    "./scripts/band"
-], function(domReady, module, SimileAjax, Timeline, TimelineImpl, EventUtils, GregorianDateLabeller, ClassicTheme, SpanHighlightDecorator, PointHighlightDecorator, OverviewEventPainter, HotZoneEther, LinearEther, DefaultEventSource, DetailedEventPainter, CompactEventPainter, EtherHighlight, EtherIntervalMarkerLayout, GregorianEtherPainter, HotZoneGregorianEtherPainter, QuarterlyEtherPainter, YearCountEtherPainter, OriginalEventPainter, Band) {
+    "./scripts/band",
+    "./lib/domReady",
+    "module"
+], function(SimileAjax, Timeline, TimelineImpl, EventUtils, GregorianDateLabeller, ClassicTheme, SpanHighlightDecorator, PointHighlightDecorator, OverviewEventPainter, HotZoneEther, LinearEther, DefaultEventSource, DetailedEventPainter, CompactEventPainter, EtherHighlight, EtherIntervalMarkerLayout, GregorianEtherPainter, HotZoneGregorianEtherPainter, QuarterlyEtherPainter, YearCountEtherPainter, OriginalEventPainter, Band, domReady, module) {
     Timeline.DateTime = SimileAjax.DateTime;
     Timeline._Impl = TimelineImpl;
     Timeline.EventUtils = EventUtils;
@@ -138,6 +138,10 @@ define([
     };
 
     Timeline.load = function() {
+        if (!SimileAjax.loaded) {
+            SimileAjax.load();
+        }
+        
         var url = null;
         var cssFiles = ["main.css"];
         var bundledCssFile = "timeline-bundle.css";
@@ -179,6 +183,10 @@ define([
                     throw new Error("Failed to derive URL prefix for Timeline API code files");
                     return;
                 }
+            }
+
+            if (Timeline.urlPrefix.substr(-1) !== "/") {
+                Timeline.urlPrefix += "/";
             }
 
             var params;
@@ -230,10 +238,7 @@ define([
             }
 
             if (ajax !== null) {
-                if (typeof SimileAjax.urlPrefix === "undefined") {
-                    SimileAjax.urlPrefix = ajax;
-                    SimileAjax.loadCSS();
-                }
+                SimileAjax.setPrefix(ajax);
             }
             
             if (params.locales) {

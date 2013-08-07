@@ -7,5 +7,5 @@
         "i18n": "lib/i18n",
         "simile-ajax": "empty:"
     },
-    "exclude": ["i18n"]
+    "exclude": ["jquery", "i18n"]
 })

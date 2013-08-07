@@ -18,6 +18,7 @@
 
 requirejs.config({
     "baseUrl": "/timeline/api/",
+    "urlArgs": "bust=" + (new Date()).getTime(),
     "paths": {
         "jquery": "lib/jquery",
         "i18n": "lib/i18n"

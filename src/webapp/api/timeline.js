@@ -142,6 +142,7 @@ define([
             SimileAjax.load();
         }
         
+        var ajax = null;
         var url = null;
         var cssFiles = ["main.css"];
         var bundledCssFile = "timeline-bundle.css";
@@ -204,6 +205,7 @@ define([
 
             if (conf.hasOwnProperty("ajax")) {
                 params.ajax = conf.ajax;
+                ajax = conf.ajax;
             }
             
             if (params.bundle) {
@@ -212,12 +214,9 @@ define([
                 SimileAjax.includeCssFiles(document, Timeline.urlPrefix + "styles/", cssFiles);
             }
 
-            var ajax = null;
             if (typeof Timeline_ajax_url === "string") {
                 ajax = Timeline_ajax_url;
-            } else if (params.ajax) {
-                ajax = params.ajax
-            } else {
+            } else if (ajax === null) {
                 var current, base = null;
                 var mount = "timeline";
                 var targets = ["timeline-api.js", "timeline-bundle.js"];
@@ -238,6 +237,7 @@ define([
             }
 
             if (ajax !== null) {
+                params.ajax = ajax;
                 SimileAjax.setPrefix(ajax);
             }
             
@@ -253,6 +253,10 @@ define([
                 handleDeprecated("defaultLocale", "Timeline either includes all localizations when bundled or retrieves them at need, specifying a baseline default is unnecessary.  This shortcut setting is no longer available.");
             }
 
+            Timeline.params = params;
+
+            // All of this locale material is vestigial.  It is apparently
+            // fundamental to the way themes work but shouldn't be.
             var tryExactLocale = function(locale) {
                 for (var l = 0; l < supportedLocales.length; l++) {
                     if (locale == supportedLocales[l]) {

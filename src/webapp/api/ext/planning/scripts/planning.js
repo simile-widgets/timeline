@@ -4,7 +4,7 @@
  */
 
 define([
-    "../../../scripts/base",
+    "../../../scripts/timeline-base",
     "../../../scripts/linear-ether",
     "../../../scripts/overview-painter",
     "../../../scripts/detailed-painter",

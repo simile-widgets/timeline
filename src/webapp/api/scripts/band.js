@@ -31,7 +31,7 @@
  */
 define([
     "simile-ajax",
-    "./base",
+    "./timeline-base",
     "./labellers"
 ], function(SimileAjax, Timeline, GregorianDateLabeller) {
 var Band = function(timeline, bandInfo, index) {

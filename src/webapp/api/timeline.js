@@ -77,7 +77,7 @@
 
 define([
     "simile-ajax",
-    "./scripts/timeline",
+    "./scripts/timeline-core",
     "./scripts/timeline-impl",
     "./scripts/event-utils",
     "./scripts/labellers",

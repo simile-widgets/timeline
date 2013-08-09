@@ -5,7 +5,7 @@
 
 define([
     "simile-ajax",
-    "./base",
+    "./timeline-base",
     "./event-utils",
     "i18n!nls/timeline"
 ], function(SimileAjax, Timeline, EventUtils, Locale) {

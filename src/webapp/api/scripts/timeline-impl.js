@@ -5,7 +5,7 @@
 define([
     "jquery",
     "simile-ajax",
-    "./base",
+    "./timeline-base",
     "./band"
 ], function($, SimileAjax, Timeline, Band) {
 var TimelineImpl = function(elmt, bandInfos, orientation, unit, timelineID) {

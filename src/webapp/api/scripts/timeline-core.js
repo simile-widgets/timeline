@@ -36,7 +36,7 @@
  */
 define([
     "simile-ajax",
-    "./base",
+    "./timeline-base",
     "./timeline-impl",
     "./linear-ether",
     "./gregorian-ether-painter",

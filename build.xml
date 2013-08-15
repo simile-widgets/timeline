@@ -26,14 +26,24 @@
   <property name="ajax.dir" value="src/ajax/api"/>
   
   <target name="bundle">
+    <fileset dir="${api.dir}/nls/" includes="**/*.js" id="locales"/>
+    <pathconvert dirsep="/" refid="locales" property="localelist" pathsep=",">
+      <map from="${basedir}/${api.dir}/" to=""/>
+      <globmapper from="*.js" to="*"/>
+    </pathconvert>
     <exec dir="." executable="node">
-      <arg line="${rjs.dir}/r.js -o ${rjs.dir}/build.js"/>
+      <arg line="${rjs.dir}/r.js -o ${rjs.dir}/build.js deps=${localelist}"/>
     </exec>
   </target>
 
   <target name="bundle-debug">
+    <fileset dir="${api.dir}/nls/" includes="**/*.js" id="locales"/>
+    <pathconvert dirsep="/" refid="locales" property="localelist" pathsep=",">
+      <map from="${basedir}/${api.dir}/" to=""/>
+      <globmapper from="*.js" to="*"/>
+    </pathconvert>
     <exec dir="." executable="node">
-      <arg line="${rjs.dir}/r.js -o ${rjs.dir}/build.js optimize=none out=build/timeline-api-debug.js paths.simile-ajax=../../ajax/api/simile-ajax-api-debug"/>
+      <arg line="${rjs.dir}/r.js -o ${rjs.dir}/build.js optimize=none out=build/timeline-api-debug.js paths.simile-ajax=../../ajax/api/simile-ajax-api-debug deps=${localelist}"/>
     </exec>
     <copy file="${build.dir}/timeline-api-debug.js" todir="${api.dir}"/>
   </target>

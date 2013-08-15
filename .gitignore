@@ -4,5 +4,6 @@ src/ajax
 src/webapp/api/timeline-api.js
 src/webapp/api/timeline-bundle.js
 src/webapp/api/styles/timeline-bundle.css
+src/webapp/api/timeline-api-debug.js
 timeline-*.tar.gz
 timeline-*.zip

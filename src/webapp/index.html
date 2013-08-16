@@ -41,7 +41,7 @@
     </style>
     <script>
 require(['api/configs/dev-config'],function(){
-require(['timeline'], function(Timeline) {
+  require(['timeline', 'jquery'], function(Timeline, $) {
     var tl;
     var onLoad = function() {
         var eventSource = new Timeline.DefaultEventSource();
@@ -174,7 +174,7 @@ require(['timeline'], function(Timeline) {
         };
         document.getElementById("switcher").onclick = themeSwitch;
 
-        onLoad();
+        $(document).ready(onLoad);
      });
 });
     </script>

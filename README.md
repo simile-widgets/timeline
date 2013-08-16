@@ -60,7 +60,6 @@ Licensing
 Timeline is open source software and is licensed under the modified BSD license in the LICENSE.txt file located in the same directory as this README.
 
  * [RequireJS](http://requirejs.org/) is covered by the [modified BSD license](https://github.com/jrburke/requirejs/blob/master/LICENSE).
- * The RequireJS [domReady plugin](http://requirejs.org/docs/api.html#pageload) is covered by the [modified BSD license](https://github.com/requirejs/domReady/blob/master/LICENSE).
  * The RequireJS [i18n plugin](http://requirejs.org/docs/api.html#i18n) is covered by the [modified BSD license](https://github.com/requirejs/i18n/blob/master/LICENSE).
  * [almond](https://github.com/jrburke/almond) is covered by the [modified BSD license](https://github.com/jrburke/almond/blob/master/LICENSE).
 

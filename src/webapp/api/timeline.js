@@ -98,9 +98,9 @@ define([
     "./scripts/year-count-ether-painter",
     "./scripts/original-painter",
     "./scripts/band",
-    "./lib/domReady",
+    "jquery",
     "module"
-], function(SimileAjax, Timeline, TimelineImpl, EventUtils, GregorianDateLabeller, ClassicTheme, SpanHighlightDecorator, PointHighlightDecorator, OverviewEventPainter, HotZoneEther, LinearEther, DefaultEventSource, DetailedEventPainter, CompactEventPainter, EtherHighlight, EtherIntervalMarkerLayout, GregorianEtherPainter, HotZoneGregorianEtherPainter, QuarterlyEtherPainter, YearCountEtherPainter, OriginalEventPainter, Band, domReady, module) {
+], function(SimileAjax, Timeline, TimelineImpl, EventUtils, GregorianDateLabeller, ClassicTheme, SpanHighlightDecorator, PointHighlightDecorator, OverviewEventPainter, HotZoneEther, LinearEther, DefaultEventSource, DetailedEventPainter, CompactEventPainter, EtherHighlight, EtherIntervalMarkerLayout, GregorianEtherPainter, HotZoneGregorianEtherPainter, QuarterlyEtherPainter, YearCountEtherPainter, OriginalEventPainter, Band, $, module) {
     Timeline.DateTime = SimileAjax.DateTime;
     Timeline._Impl = TimelineImpl;
     Timeline.EventUtils = EventUtils;
@@ -138,32 +138,15 @@ define([
     };
 
     Timeline.load = function() {
-        if (!SimileAjax.loaded) {
-            SimileAjax.load();
+        if (Timeline.loaded) {
+            return;
+        } else {
+            Timeline.loaded = true;
         }
-        
+
         var ajax = null;
         var url = null;
-        var cssFiles = ["main.css"];
-        var bundledCssFile = "timeline-bundle.css";
         var conf = module.config();
-        
-        // ISO-639 language codes, ISO-3166 country codes (2 characters)
-        var supportedLocales = [
-            "cs",       // Czech
-            "de",       // German
-            "en",       // English
-            "es",       // Spanish
-            "fr",       // French
-            "it",       // Italian
-            "nl",       // Dutch (The Netherlands)
-            "pl",       // Polish
-            "ru",       // Russian
-            "se",       // Swedish
-            "tr",       // Turkish
-            "vi",       // Vietnamese
-            "zh"        // Chinese
-        ];
         
         try {
             if (typeof Timeline_urlPrefix == "string") {
@@ -209,9 +192,9 @@ define([
             }
             
             if (params.bundle) {
-                SimileAjax.includeCssFile(document, Timeline.urlPrefix + "styles/" + bundledCssFile);
+                SimileAjax.includeCssFile(document, Timeline.urlPrefix + Timeline.bundledCssFile);
             } else {
-                SimileAjax.includeCssFiles(document, Timeline.urlPrefix + "styles/", cssFiles);
+                SimileAjax.includeCssFiles(document, Timeline.urlPrefix, Timeline.cssFiles);
             }
 
             if (typeof Timeline_ajax_url === "string") {
@@ -238,7 +221,10 @@ define([
 
             if (ajax !== null) {
                 params.ajax = ajax;
+                SimileAjax.load();
                 SimileAjax.setPrefix(ajax);
+            } else {
+                SimileAjax.load();
             }
             
             if (params.locales) {
@@ -258,8 +244,8 @@ define([
             // All of this locale material is vestigial.  It is apparently
             // fundamental to the way themes work but shouldn't be.
             var tryExactLocale = function(locale) {
-                for (var l = 0; l < supportedLocales.length; l++) {
-                    if (locale == supportedLocales[l]) {
+                for (var l = 0; l < Timeline.supportedLocales.length; l++) {
+                    if (locale == Timeline.supportedLocales[l]) {
                         return true;
                     }
                 }
@@ -294,8 +280,8 @@ define([
             SimileAjax.Debug.warn(e);
         }
     };
-    
-    domReady(Timeline.load);
 
+    $(document).ready(Timeline.load);
+    
     return Timeline;
 });

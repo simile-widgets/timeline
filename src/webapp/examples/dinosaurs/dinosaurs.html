@@ -6,7 +6,7 @@
     <script src="../../api/lib/require.js" type="text/javascript"></script>
     <script>
 require(["../../api/configs/local-config"], function() {
-    require(["simile-ajax", "timeline", "ext/geochrono/scripts/geochrono", "./painters.js", "../examples.js"], function(SimileAjax, Timeline, Geochrono, ThumbnailEventPainter, Helpers) {
+    require(["simile-ajax", "timeline", "ext/geochrono/scripts/geochrono", "./painters.js", "../examples.js", "jquery"], function(SimileAjax, Timeline, Geochrono, ThumbnailEventPainter, Helpers, $) {
         var tl;
         var onLoad = function() {
             var theme = Timeline.ClassicTheme.create();
@@ -113,7 +113,7 @@ require(["../../api/configs/local-config"], function() {
             }
         };
 
-        onLoad();
+        $(document).ready(onLoad);
         window.onresize = onResize;
     });
 });

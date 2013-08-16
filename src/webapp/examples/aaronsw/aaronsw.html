@@ -10,8 +10,8 @@
     </style>
     <script src="../../api/lib/require.js" type="text/javascript" charset="utf-8"></script>
     <script>
-        require(['../../api/configs/dev-config'],function(){
-        require(['timeline'], function(Timeline) {
+require(['require', '../../api/configs/dev-config'], function(require){
+    require(['timeline', 'jquery'], function(Timeline, $) {
         var tl;
         var onLoad = function() {
             var eventSource = new Timeline.DefaultEventSource(0);
@@ -60,15 +60,16 @@
         var onResize = function() {
             if (resizeTimerID == null) {
                 resizeTimerID = window.setTimeout(function() {
-                    resizeTimerID = null;
+                    resizeTimerrID = null;
                     tl.layout();
                 }, 500);
             }
         };
 
-        onLoad();
+        $(document).ready(onLoad);
         document.onresize = onResize;
-        })});
+    });
+});
     </script>
   </head>
   <body>

@@ -6,7 +6,7 @@
     <script src="../../api/lib/require.js" type="text/javascript"></script>
     <script>
 require(["../../api/configs/local-config"], function() {
-    require(["timeline"], function(Timeline, Helpers) {
+    require(["timeline", "jquery"], function(Timeline, $) {
         var tl;
         var onLoad = function() {
             var date = Timeline.DateTime.parseIso8601DateTime("2009-03-18T00:00:00Z"); // GMT midnight
@@ -144,7 +144,7 @@ require(["../../api/configs/local-config"], function() {
             }
         };
 
-        onLoad();
+        $(document).ready(onLoad);
         document.onresize = onResize;
     });
 });

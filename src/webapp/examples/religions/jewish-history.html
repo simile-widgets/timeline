@@ -6,7 +6,7 @@
     <script src="../../api/lib/require.js" type="text/javascript"></script>
     <script>
 require(["../../api/configs/local-config"], function() {
-    require(["timeline", "../examples.js"], function(Timeline, Helpers) {
+    require(["timeline", "../examples.js", "jquery"], function(Timeline, Helpers, $) {
         var tl;
         var onLoad = function() {
             var eventSource = new Timeline.DefaultEventSource(0);
@@ -93,7 +93,7 @@ require(["../../api/configs/local-config"], function() {
             }
         };
 
-        onLoad();
+        $(document).ready(onLoad);
         document.onresize = onResize;
     });
 });

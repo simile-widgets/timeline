@@ -2,6 +2,7 @@
  *  Japanese Era Date Labeller
  *==================================================
  */
+<<<<<<< HEAD
 
 Timeline.JapaneseEraDateLabeller = function(locale, timeZone, useRomanizedName) {
     var o = new Timeline.GregorianDateLabeller(locale, timeZone);
@@ -9,10 +10,23 @@ Timeline.JapaneseEraDateLabeller = function(locale, timeZone, useRomanizedName) 
     o._useRomanizedName = (useRomanizedName);
     o._oldLabelInterval = o.labelInterval;
     o.labelInterval = Timeline.JapaneseEraDateLabeller._labelInterval;
+=======
+define([
+    "simile-ajax",
+    "../labellers"
+], function(SimileAjax, GregorianDateLabeller) {
+var JapaneseEraDateLabeller = function(locale, timeZone, useRomanizedName) {
+    var o = new GregorianDateLabeller(locale, timeZone);
+    
+    o._useRomanizedName = (useRomanizedName);
+    o._oldLabelInterval = o.labelInterval;
+    o.labelInterval = JapaneseEraDateLabeller._labelInterval;
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     
     return o;
 };
 
+<<<<<<< HEAD
 Timeline.JapaneseEraDateLabeller._labelInterval = function(date, intervalUnit) {
     var text;
     var emphasized = false;
@@ -41,6 +55,36 @@ Timeline.JapaneseEraDateLabeller._labelInterval = function(date, intervalUnit) {
             
             text = (this._useRomanizedName ? era.romanizedName : era.japaneseName) + " " + (y - era.startingYear + 1);
             emphasized = intervalUnit == Timeline.DateTime.YEAR && y == era.startingYear;
+=======
+JapaneseEraDateLabeller._labelInterval = function(date, intervalUnit) {
+    var text;
+    var emphasized = false;
+    
+    var date2 = SimileAjax.DateTime.removeTimeZoneOffset(date, this._timeZone);
+    
+    switch(intervalUnit) {
+    case SimileAjax.DateTime.YEAR:
+    case SimileAjax.DateTime.DECADE:
+    case SimileAjax.DateTime.CENTURY:
+    case SimileAjax.DateTime.MILLENNIUM:
+        var y = date2.getUTCFullYear();
+        if (y >= JapaneseEraDateLabeller._eras.elementAt(0).startingYear) {
+            var eraIndex = JapaneseEraDateLabeller._eras.find(function(era) {
+                    return era.startingYear - y;
+                }
+            );
+            if (eraIndex < JapaneseEraDateLabeller._eras.length()) {
+                var era = JapaneseEraDateLabeller._eras.elementAt(eraIndex);
+                if (y < era.startingYear) {
+                    era = JapaneseEraDateLabeller._eras.elementAt(eraIndex - 1);
+                }
+            } else {
+                var era = JapaneseEraDateLabeller._eras.elementAt(eraIndex - 1);
+            }
+            
+            text = (this._useRomanizedName ? era.romanizedName : era.japaneseName) + " " + (y - era.startingYear + 1);
+            emphasized = intervalUnit == SimileAjax.DateTime.YEAR && y == era.startingYear;
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
             break;
         } // else, fall through
     default:
@@ -50,6 +94,7 @@ Timeline.JapaneseEraDateLabeller._labelInterval = function(date, intervalUnit) {
     return { text: text, emphasized: emphasized };
 };
 
+<<<<<<< HEAD
 /*==================================================
  *  Japanese Era Ether Painter
  *==================================================
@@ -140,6 +185,9 @@ Timeline.JapaneseEraEtherPainter.prototype.softPaint = function() {
 
 
 Timeline.JapaneseEraDateLabeller._eras = new Timeline.SortedArray(
+=======
+JapaneseEraDateLabeller._eras = new SimileAjax.SortedArray(
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     function(e1, e2) {
         return e1.startingYear - e2.startingYear;
     },
@@ -393,3 +441,8 @@ Timeline.JapaneseEraDateLabeller._eras = new Timeline.SortedArray(
         { startingYear: 1989, japaneseName: '平成', romanizedName: "Heisei" }
     ]
 );
+<<<<<<< HEAD
+=======
+    return JapaneseEraDateLabeller;
+});
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e

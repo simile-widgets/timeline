@@ -1,16 +1,34 @@
+<<<<<<< HEAD
 ﻿/*==================================================
  *  Geochrono Ether Painter
  *==================================================
  */
  
 Timeline.GeochronoEtherPainter = function(params, band, timeline) {
+=======
+/*==================================================
+ *  Geochrono Ether Painter
+ *==================================================
+ */
+define([
+    "../../../scripts/ether-highlight",
+    "./layout",
+    "./units",
+    "./labellers"
+], function(EtherHighlight, GeochronoEtherMarkerLayout, GeochronoUnit, GeochronoLabeller) { 
+var GeochronoEtherPainter = function(params, band, timeline) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     this._params = params;
     this._intervalUnit = params.intervalUnit;
     this._multiple = ("multiple" in params) ? params.multiple : 1;
     this._theme = params.theme;
 };
 
+<<<<<<< HEAD
 Timeline.GeochronoEtherPainter.prototype.initialize = function(band, timeline) {
+=======
+GeochronoEtherPainter.prototype.initialize = function(band, timeline) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     this._band = band;
     this._timeline = timeline;
     
@@ -26,6 +44,7 @@ Timeline.GeochronoEtherPainter.prototype.initialize = function(band, timeline) {
     var showLine = ("showLine" in this._params) ? this._params.showLine : 
         this._theme.ether.interval.line.show;
         
+<<<<<<< HEAD
     this._intervalMarkerLayout = new Timeline.GeochronoEtherMarkerLayout(
         this._timeline, this._band, this._theme, align, showLine);
         
@@ -38,6 +57,20 @@ Timeline.GeochronoEtherPainter.prototype.setHighlight = function(startDate, endD
 }
 
 Timeline.GeochronoEtherPainter.prototype.paint = function() {
+=======
+    this._intervalMarkerLayout = new GeochronoEtherMarkerLayout(
+        this._timeline, this._band, this._theme, align, showLine);
+        
+    this._highlight = new EtherHighlight(
+        this._timeline, this._band, this._theme, this._backgroundLayer);
+}
+
+GeochronoEtherPainter.prototype.setHighlight = function(startDate, endDate) {
+    this._highlight.position(startDate, endDate);
+}
+
+GeochronoEtherPainter.prototype.paint = function() {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     if (this._markerLayer) {
         this._band.removeLayerDiv(this._markerLayer);
     }
@@ -52,13 +85,19 @@ Timeline.GeochronoEtherPainter.prototype.paint = function() {
     this._lineLayer.setAttribute("name", "ether-lines"); // for debugging
     this._lineLayer.style.display = "none";
     
+<<<<<<< HEAD
     var minDate = Math.ceil(Timeline.GeochronoUnit.toNumber(this._band.getMinDate()));
     var maxDate = Math.floor(Timeline.GeochronoUnit.toNumber(this._band.getMaxDate()));
+=======
+    var minDate = Math.ceil(GeochronoUnit.toNumber(this._band.getMinDate()));
+    var maxDate = Math.floor(GeochronoUnit.toNumber(this._band.getMaxDate()));
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     
     var increment;
     var hasMore;
     (function(intervalUnit, multiple) {
         var dates;
+<<<<<<< HEAD
         
         switch (intervalUnit) {
         case Timeline.GeochronoUnit.AGE:
@@ -71,6 +110,20 @@ Timeline.GeochronoEtherPainter.prototype.paint = function() {
             dates = Timeline.Geochrono.eras; break;
         case Timeline.GeochronoUnit.EON:
             dates = Timeline.Geochrono.eons; break;
+=======
+
+        switch (intervalUnit) {
+        case GeochronoUnit.AGE:
+            dates = GeochronoLabeller.ageNames; break;
+        case GeochronoUnit.EPOCH:
+            dates = GeochronoLabeller.epochNames; break;
+        case GeochronoUnit.PERIOD:
+            dates = GeochronoLabeller.periodNames; break;
+        case GeochronoUnit.ERA:
+            dates = GeochronoLabeller.eraNames; break;
+        case GeochronoUnit.EON:
+            dates = GeochronoLabeller.eonNames; break;
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
         default:
             hasMore = function() {
                 return minDate > 0 && minDate > maxDate;
@@ -80,7 +133,11 @@ Timeline.GeochronoEtherPainter.prototype.paint = function() {
             };
             return;
         }
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
         var startIndex = dates.length - 1;
         while (startIndex > 0) {
             if (minDate <= dates[startIndex].start) {
@@ -102,7 +159,11 @@ Timeline.GeochronoEtherPainter.prototype.paint = function() {
     var labeller = this._band.getLabeller();
     while (true) {
         this._intervalMarkerLayout.createIntervalMarker(
+<<<<<<< HEAD
             Timeline.GeochronoUnit.fromNumber(minDate), 
+=======
+            GeochronoUnit.fromNumber(minDate), 
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
             labeller, 
             this._intervalUnit, 
             this._markerLayer, 
@@ -118,6 +179,7 @@ Timeline.GeochronoEtherPainter.prototype.paint = function() {
     this._lineLayer.style.display = "block";
 };
 
+<<<<<<< HEAD
 Timeline.GeochronoEtherPainter.prototype.softPaint = function() {
 };
 
@@ -202,3 +264,10 @@ Timeline.GeochronoEtherMarkerLayout = function(timeline, band, theme, align, sho
         return div;
     };
 };
+=======
+GeochronoEtherPainter.prototype.softPaint = function() {
+};
+
+    return GeochronoEtherPainter;
+});
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e

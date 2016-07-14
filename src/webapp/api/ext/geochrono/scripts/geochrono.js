@@ -2,6 +2,7 @@
  *  Geochrono
  *==================================================
  */
+<<<<<<< HEAD
 Timeline.Geochrono = new Object();
 Timeline.Geochrono.eons = [
     {   name: "Proterozoic",
@@ -477,17 +478,49 @@ Timeline.Geochrono.ages = [
 ];
 
 Timeline.Geochrono.createBandInfo = function(params) {
+=======
+define([
+    "../../../scripts/timeline-base",
+    "../../../scripts/linear-ether",
+    "../../../scripts/overview-painter",
+    "../../../scripts/detailed-painter",
+    "./timespans",
+    "./units",
+    "./ether-painters",
+    "./labellers"
+], function(Timeline, LinearEther, OverviewEventPainter, DetailedEventPainter, Timespans, GeochronoUnit, GeochronoEtherPainter, GeochronoLabeller) {
+var Geochrono = new Object();
+
+    Geochrono.eons = GeochronoLabeller.eons;
+    Geochrono.eras = GeochronoLabeller.eras;
+    Geochrono.periods = GeochronoLabeller.periods;
+    Geochrono.epochs = GeochronoLabeller.epochs;
+    Geochrono.epoches = Geochrono.epochs; // compatibility
+    Geochrono.ages = GeochronoLabeller.ages;
+    Geochrono.Unit = GeochronoUnit;
+
+Geochrono.createBandInfo = function(params) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     var theme = ("theme" in params) ? params.theme : Timeline.getDefaultTheme();
     
     var eventSource = ("eventSource" in params) ? params.eventSource : null;
     
+<<<<<<< HEAD
     var ether = new Timeline.LinearEther({ 
         centersOn:          ("date" in params) ? params.date : Timeline.GeochronoUnit.makeDefaultValue(),
+=======
+    var ether = new LinearEther({ 
+        centersOn:          ("date" in params) ? params.date : GeochronoUnit.makeDefaultValue(),
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
         interval:           1,
         pixelsPerInterval:  params.intervalPixels
     });
     
+<<<<<<< HEAD
     var etherPainter = new Timeline.GeochronoEtherPainter({
+=======
+    var etherPainter = new GeochronoEtherPainter({
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
         intervalUnit:       params.intervalUnit, 
         multiple:           ("multiple" in params) ? params.multiple : 1,
         align:              params.align,
@@ -504,8 +537,13 @@ Timeline.Geochrono.createBandInfo = function(params) {
         eventPainterParams.trackGap = params.trackGap;
     }
     var eventPainter = ("overview" in params && params.overview) ?
+<<<<<<< HEAD
         new Timeline.OverviewEventPainter(eventPainterParams) :
         new Timeline.DetailedEventPainter(eventPainterParams);
+=======
+        new OverviewEventPainter(eventPainterParams) :
+        new DetailedEventPainter(eventPainterParams);
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     
     return {   
         width:          params.width,
@@ -515,4 +553,11 @@ Timeline.Geochrono.createBandInfo = function(params) {
         etherPainter:   etherPainter,
         eventPainter:   eventPainter
     };
+<<<<<<< HEAD
 };
+=======
+};
+
+    return Geochrono;
+});
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e

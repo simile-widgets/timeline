@@ -2,9 +2,14 @@
  *  Thumbnail Multi Track Based Layout
  *==================================================
  */
+<<<<<<< HEAD
 
 
 Timeline.ThumbnailMultiTrackBasedLayout = function(params) {
+=======
+define(function() {
+var ThumbnailMultiTrackBasedLayout = function(params) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     this._eventSource = params.eventSource;
     this._ether = params.ether;
     this._theme = params.theme;
@@ -27,11 +32,19 @@ Timeline.ThumbnailMultiTrackBasedLayout = function(params) {
     }
 };
 
+<<<<<<< HEAD
 Timeline.ThumbnailMultiTrackBasedLayout.prototype.initialize = function(timeline) {
     this._timeline = timeline;
 };
 
 Timeline.ThumbnailMultiTrackBasedLayout.prototype.getTrack = function(evt) {
+=======
+ThumbnailMultiTrackBasedLayout.prototype.initialize = function(timeline) {
+    this._timeline = timeline;
+};
+
+ThumbnailMultiTrackBasedLayout.prototype.getTrack = function(evt) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     if (!this._laidout) {
         this._tracks = [];
         this._layout();
@@ -40,7 +53,11 @@ Timeline.ThumbnailMultiTrackBasedLayout.prototype.getTrack = function(evt) {
     return this._tracks[evt.getID()];
 };
 
+<<<<<<< HEAD
 Timeline.ThumbnailMultiTrackBasedLayout.prototype.getTrackCount = function() {
+=======
+ThumbnailMultiTrackBasedLayout.prototype.getTrackCount = function() {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     if (!this._laidout) {
         this._tracks = [];
         this._layout();
@@ -49,7 +66,11 @@ Timeline.ThumbnailMultiTrackBasedLayout.prototype.getTrackCount = function() {
     return this._trackCount;
 };
 
+<<<<<<< HEAD
 Timeline.ThumbnailMultiTrackBasedLayout.prototype._layout = function() {
+=======
+ThumbnailMultiTrackBasedLayout.prototype._layout = function() {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     if (this._eventSource == null) {
         return;
     }
@@ -110,4 +131,11 @@ Timeline.ThumbnailMultiTrackBasedLayout.prototype._layout = function() {
     }
     
     this._trackCount = streams.length;
+<<<<<<< HEAD
 };
+=======
+};
+
+    return ThumbnailMultiTrackBasedLayout;
+});
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e

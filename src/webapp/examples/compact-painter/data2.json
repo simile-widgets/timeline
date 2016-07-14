@@ -19,7 +19,11 @@
             "start":      "1912-05-01",
             "end":        "1973-02-22",
             "durationEvent": true,
+<<<<<<< HEAD
             "icon":       "http://www.freebase.com/api/trans/image_thumb/wikipedia/images/en_id/304854?maxheight=56&mode=fillcrop&maxwidth=56"
+=======
+            "icon":       "https://www.googleapis.com/freebase/v1/image/wikipedia/images/en_id/304854?maxheight=56&mode=fillcrop&maxwidth=56"
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
         },
         {
             "title":      "John D. Rockefeller",
@@ -27,7 +31,11 @@
             "start":      "1839-07-08",
             "end":        "1937-05-23",
             "durationEvent": true,
+<<<<<<< HEAD
             "icon":       "http://www.freebase.com/api/trans/image_thumb/wikipedia/images/commons_id/2491759?maxheight=56&mode=fillcrop&maxwidth=56"
+=======
+            "icon":       "https://www.googleapis.com/freebase/v1/image/wikipedia/images/commons_id/2491759?maxheight=56&mode=fillcrop&maxwidth=56"
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
         },
         {
             "title":      "Elizabeth Rockefeller Strong",
@@ -42,7 +50,11 @@
             "start":      "1874-01-29",
             "end":        "1960-05-11",
             "durationEvent": true,
+<<<<<<< HEAD
             "icon":       "http://www.freebase.com/api/trans/image_thumb/guid/9202a8c04000641f8000000004b6b069?maxheight=56&mode=fillcrop&maxwidth=56"
+=======
+            "icon":       "https://www.googleapis.com/freebase/v1/image/guid/9202a8c04000641f8000000004b6b069?maxheight=56&mode=fillcrop&maxwidth=56"
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
         },
         {
             "title": "Marion Rockefeller Weber",
@@ -55,7 +67,11 @@
             "start":      "1908",
             "end":        "1930-08-29",
             "durationEvent": true,
+<<<<<<< HEAD
             "icon":       "http://www.freebase.com/api/trans/image_thumb/wikipedia/images/en_id/11492354?maxheight=56&mode=fillcrop&maxwidth=56"
+=======
+            "icon":       "https://www.googleapis.com/freebase/v1/image/wikipedia/images/en_id/11492354?maxheight=56&mode=fillcrop&maxwidth=56"
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
         },
         {
             "title":      "Laurance Rockefeller",
@@ -63,7 +79,11 @@
             "start":      "1910-05-26",
             "end":        "2004-07-11",
             "durationEvent": true,
+<<<<<<< HEAD
             "icon":       "http://www.freebase.com/api/trans/image_thumb/wikipedia/images/commons_id/1308044?maxheight=56&mode=fillcrop&maxwidth=56"
+=======
+            "icon":       "https://www.googleapis.com/freebase/v1/image/wikipedia/images/commons_id/1308044?maxheight=56&mode=fillcrop&maxwidth=56"
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
         },
         {
             "title":      "Geraldine Rockefeller Dodge",
@@ -71,7 +91,11 @@
             "start":      "1882-04-03",
             "end":        "1973",
             "durationEvent": true,
+<<<<<<< HEAD
             "icon":       "http://www.freebase.com/api/trans/image_thumb/wikipedia/images/en_id/11491516?maxheight=56&mode=fillcrop&maxwidth=56"
+=======
+            "icon":       "https://www.googleapis.com/freebase/v1/image/wikipedia/images/en_id/11491516?maxheight=56&mode=fillcrop&maxwidth=56"
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
         },
         {
             "title": "Laura Rockefeller Chasin",
@@ -89,7 +113,11 @@
             "start":      "1948-09-17",
             "end":        "2006-07-16",
             "durationEvent": true,
+<<<<<<< HEAD
             "icon":       "http://www.freebase.com/api/trans/image_thumb/wikipedia/images/commons_id/3269898?maxheight=56&mode=fillcrop&maxwidth=56"
+=======
+            "icon":       "https://www.googleapis.com/freebase/v1/image/wikipedia/images/commons_id/3269898?maxheight=56&mode=fillcrop&maxwidth=56"
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
         },
         {
             "title": "Eileen Rockefeller Growald",
@@ -116,7 +144,11 @@
             "title": "David Rockefeller",
             "id":    "/en/david_rockefeller",
             "start": "1915-06-12",
+<<<<<<< HEAD
             "icon":  "http://www.freebase.com/api/trans/image_thumb/wikipedia/images/commons_id/1381704?maxheight=56&mode=fillcrop&maxwidth=56"
+=======
+            "icon":  "https://www.googleapis.com/freebase/v1/image/wikipedia/images/commons_id/1381704?maxheight=56&mode=fillcrop&maxwidth=56"
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
         },
         {
             "title":      "John Rockefeller Prentice",
@@ -165,7 +197,11 @@
             "title": "Jay Rockefeller",
             "id":    "/en/jay_rockefeller",
             "start": "1937-06-18",
+<<<<<<< HEAD
             "icon":  "http://www.freebase.com/api/trans/image_thumb/wikipedia/images/commons_id/815736?maxheight=56&mode=fillcrop&maxwidth=56"
+=======
+            "icon":  "https://www.googleapis.com/freebase/v1/image/wikipedia/images/commons_id/815736?maxheight=56&mode=fillcrop&maxwidth=56"
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
         },
         {
             "title":      "Michael Rockefeller",
@@ -194,7 +230,11 @@
             "start":      "1908-07-08",
             "end":        "1979-01-26",
             "durationEvent": true,
+<<<<<<< HEAD
             "icon":       "http://www.freebase.com/api/trans/image_thumb/wikipedia/images/commons_id/426909?maxheight=56&mode=fillcrop&maxwidth=56"
+=======
+            "icon":       "https://www.googleapis.com/freebase/v1/image/wikipedia/images/commons_id/426909?maxheight=56&mode=fillcrop&maxwidth=56"
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
         },
         {
             "title": "Avery Rockefeller",

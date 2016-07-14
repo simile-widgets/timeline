@@ -2,8 +2,16 @@
  *  Thumbnail Event Painter
  *==================================================
  */
+<<<<<<< HEAD
 
 Timeline.ThumbnailEventPainter = function(params) {
+=======
+define([
+    "simile-ajax",
+    "./layouts.js"
+], function(SimileAjax, ThumbnailMultiTrackBasedLayout) {
+var ThumbnailEventPainter = function(params) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     this._params = params;
     this._theme = params.theme;
     
@@ -18,12 +26,20 @@ Timeline.ThumbnailEventPainter = function(params) {
     this._highlightMatcher = null;
 };
 
+<<<<<<< HEAD
 Timeline.ThumbnailEventPainter.prototype.initialize = function(band, timeline) {
+=======
+ThumbnailEventPainter.prototype.initialize = function(band, timeline) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     this._band = band;
     this._timeline = timeline;
     
     this._layout = ("layout" in this._params) ? this._params.layout : 
+<<<<<<< HEAD
         new Timeline.ThumbnailMultiTrackBasedLayout({
+=======
+        new ThumbnailMultiTrackBasedLayout({
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
             thumbnailWidth:     this._thumbnailWidth,
             thumbnailHeight:    this._thumbnailHeight,
             labelWidth:         this._labelWidth,
@@ -38,6 +54,7 @@ Timeline.ThumbnailEventPainter.prototype.initialize = function(band, timeline) {
     this._highlightLayer = null;
 };
 
+<<<<<<< HEAD
 Timeline.ThumbnailEventPainter.prototype.getLayout = function() {
     return this._layout;
 };
@@ -63,6 +80,33 @@ Timeline.ThumbnailEventPainter.prototype.setHighlightMatcher = function(highligh
 };
 
 Timeline.ThumbnailEventPainter.prototype.paint = function() {
+=======
+ThumbnailEventPainter.prototype.getLayout = function() {
+    return this._layout;
+};
+
+ThumbnailEventPainter.prototype.setLayout = function(layout) {
+    this._layout = layout;
+};
+
+ThumbnailEventPainter.prototype.getFilterMatcher = function() {
+    return this._filterMatcher;
+};
+
+ThumbnailEventPainter.prototype.setFilterMatcher = function(filterMatcher) {
+    this._filterMatcher = filterMatcher;
+};
+
+ThumbnailEventPainter.prototype.getHighlightMatcher = function() {
+    return this._highlightMatcher;
+};
+
+ThumbnailEventPainter.prototype.setHighlightMatcher = function(highlightMatcher) {
+    this._highlightMatcher = highlightMatcher;
+};
+
+ThumbnailEventPainter.prototype.paint = function() {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     var eventSource = this._band.getEventSource();
     if (eventSource == null) {
         return;
@@ -162,10 +206,17 @@ Timeline.ThumbnailEventPainter.prototype.paint = function() {
     this._eventLayer.style.display = "block";
 };
 
+<<<<<<< HEAD
 Timeline.ThumbnailEventPainter.prototype.softPaint = function() {
 };
 
 Timeline.ThumbnailEventPainter.prototype._onClickInstantEvent = function(icon, domEvt, evt) {
+=======
+ThumbnailEventPainter.prototype.softPaint = function() {
+};
+
+ThumbnailEventPainter.prototype._onClickInstantEvent = function(icon, domEvt, evt) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     domEvt.cancelBubble = true;
     
     var c = SimileAjax.DOM.getPageCoordinates(icon);
@@ -176,25 +227,39 @@ Timeline.ThumbnailEventPainter.prototype._onClickInstantEvent = function(icon, d
     );
 };
 
+<<<<<<< HEAD
 Timeline.ThumbnailEventPainter.prototype._onClickDurationEvent = function(domEvt, evt, target) {
+=======
+ThumbnailEventPainter.prototype._onClickDurationEvent = function(domEvt, evt, target) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     domEvt.cancelBubble = true;
     if ("pageX" in domEvt) {
         var x = domEvt.pageX;
         var y = domEvt.pageY;
     } else {
+<<<<<<< HEAD
         var c = Timeline.DOM.getPageCoordinates(target);
+=======
+        var c = SimileAjax.DOM.getPageCoordinates(target);
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
         var x = domEvt.offsetX + c.left;
         var y = domEvt.offsetY + c.top;
     }
     this._showBubble(x, y, evt);
 };
 
+<<<<<<< HEAD
 Timeline.ThumbnailEventPainter.prototype._showBubble = function(x, y, evt) {
     var div = this._band.openBubbleForPoint(
         x, y,
         this._theme.event.bubble.width,
         this._theme.event.bubble.height
     );
+=======
+ThumbnailEventPainter.prototype._showBubble = function(x, y, evt) {
+    var div = document.createElement("div");
+    var themeBubble = this._theme.event.bubble;
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     
     var doc = this._timeline.getDocument();
     
@@ -238,4 +303,15 @@ Timeline.ThumbnailEventPainter.prototype._showBubble = function(x, y, evt) {
     this._theme.event.bubble.wikiStyler(divWiki);
     div.appendChild(divWiki);
 
+<<<<<<< HEAD
 };
+=======
+    SimileAjax.WindowManager.cancelPopups();
+    SimileAjax.Graphics.createBubbleForContentAndPoint(div, x, y,
+                                                       themeBubble.width, null, themeBubble.maxHeight);
+    
+};
+
+    return ThumbnailEventPainter;
+});
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e

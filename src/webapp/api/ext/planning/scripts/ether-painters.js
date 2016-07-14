@@ -2,15 +2,28 @@
  *  Planning Ether Painter
  *==================================================
  */
+<<<<<<< HEAD
  
 Timeline.PlanningEtherPainter = function(params, band, timeline) {
+=======
+define([
+    "../../../scripts/ether-highlight",
+    "./layout",
+    "./units"
+], function(EtherHiglight, PlanningEtherMarkerLayout, PlanningUnit) { 
+var PlanningEtherPainter = function(params, band, timeline) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     this._params = params;
     this._intervalUnit = params.intervalUnit;
     this._multiple = ("multiple" in params) ? params.multiple : 1;
     this._theme = params.theme;
 };
 
+<<<<<<< HEAD
 Timeline.PlanningEtherPainter.prototype.initialize = function(band, timeline) {
+=======
+PlanningEtherPainter.prototype.initialize = function(band, timeline) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     this._band = band;
     this._timeline = timeline;
     
@@ -26,18 +39,30 @@ Timeline.PlanningEtherPainter.prototype.initialize = function(band, timeline) {
     var showLine = ("showLine" in this._params) ? this._params.showLine : 
         this._theme.ether.interval.line.show;
         
+<<<<<<< HEAD
     this._intervalMarkerLayout = new Timeline.PlanningEtherMarkerLayout(
+=======
+    this._intervalMarkerLayout = new PlanningEtherMarkerLayout(
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
         this._timeline, this._band, this._theme, align, showLine);
         
     this._highlight = new Timeline.EtherHighlight(
         this._timeline, this._band, this._theme, this._backgroundLayer);
 }
 
+<<<<<<< HEAD
 Timeline.PlanningEtherPainter.prototype.setHighlight = function(startDate, endDate) {
     this._highlight.position(startDate, endDate);
 }
 
 Timeline.PlanningEtherPainter.prototype.paint = function() {
+=======
+PlanningEtherPainter.prototype.setHighlight = function(startDate, endDate) {
+    this._highlight.position(startDate, endDate);
+}
+
+PlanningEtherPainter.prototype.paint = function() {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     if (this._markerLayer) {
         this._band.removeLayerDiv(this._markerLayer);
     }
@@ -52,8 +77,13 @@ Timeline.PlanningEtherPainter.prototype.paint = function() {
     this._lineLayer.setAttribute("name", "ether-lines"); // for debugging
     this._lineLayer.style.display = "none";
     
+<<<<<<< HEAD
     var minDate = Math.max(0, Math.ceil(Timeline.PlanningUnit.toNumber(this._band.getMinDate())));
     var maxDate = Math.floor(Timeline.PlanningUnit.toNumber(this._band.getMaxDate()));
+=======
+    var minDate = Math.max(0, Math.ceil(PlanningUnit.toNumber(this._band.getMinDate())));
+    var maxDate = Math.floor(PlanningUnit.toNumber(this._band.getMaxDate()));
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     
     var hasMore = function() {
         return minDate < maxDate;
@@ -61,11 +91,19 @@ Timeline.PlanningEtherPainter.prototype.paint = function() {
     var change = 1;
     var multiple = this._multiple;
     switch (this._intervalUnit) {
+<<<<<<< HEAD
         case Timeline.PlanningUnit.DAY:     change = 1; break;
         case Timeline.PlanningUnit.WEEK:    change = 7; break;
         case Timeline.PlanningUnit.MONTH:   change = 28; break;
         case Timeline.PlanningUnit.QUARTER: change = 28 * 3; break;
         case Timeline.PlanningUnit.YEAR:    change = 28 * 12; break;
+=======
+        case PlanningUnit.DAY:     change = 1; break;
+        case PlanningUnit.WEEK:    change = 7; break;
+        case PlanningUnit.MONTH:   change = 28; break;
+        case PlanningUnit.QUARTER: change = 28 * 3; break;
+        case PlanningUnit.YEAR:    change = 28 * 12; break;
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     }
     var increment = function() {
         minDate += change * multiple;
@@ -74,7 +112,11 @@ Timeline.PlanningEtherPainter.prototype.paint = function() {
     var labeller = this._band.getLabeller();
     while (true) {
         this._intervalMarkerLayout.createIntervalMarker(
+<<<<<<< HEAD
             Timeline.PlanningUnit.fromNumber(minDate), 
+=======
+            PlanningUnit.fromNumber(minDate), 
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
             labeller, 
             this._intervalUnit, 
             this._markerLayer, 
@@ -90,6 +132,7 @@ Timeline.PlanningEtherPainter.prototype.paint = function() {
     this._lineLayer.style.display = "block";
 };
 
+<<<<<<< HEAD
 Timeline.PlanningEtherPainter.prototype.softPaint = function() {
 };
 
@@ -174,3 +217,10 @@ Timeline.PlanningEtherMarkerLayout = function(timeline, band, theme, align, show
         return div;
     };
 };
+=======
+PlanningEtherPainter.prototype.softPaint = function() {
+};
+
+    return PlanningEtherPainter;
+});
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e

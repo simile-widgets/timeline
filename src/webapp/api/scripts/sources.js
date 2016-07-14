@@ -3,17 +3,35 @@
  *==================================================
  */
 
+<<<<<<< HEAD
 
 Timeline.DefaultEventSource = function(eventIndex) {
+=======
+define([
+    "simile-ajax",
+    "./timeline-base",
+    "./event-utils",
+    "i18n!nls/timeline"
+], function(SimileAjax, Timeline, EventUtils, Locale) {
+DefaultEventSource = function(eventIndex) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     this._events = (eventIndex instanceof Object) ? eventIndex : new SimileAjax.EventIndex();
     this._listeners = [];
 };
 
+<<<<<<< HEAD
 Timeline.DefaultEventSource.prototype.addListener = function(listener) {
     this._listeners.push(listener);
 };
 
 Timeline.DefaultEventSource.prototype.removeListener = function(listener) {
+=======
+DefaultEventSource.prototype.addListener = function(listener) {
+    this._listeners.push(listener);
+};
+
+DefaultEventSource.prototype.removeListener = function(listener) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     for (var i = 0; i < this._listeners.length; i++) {
         if (this._listeners[i] == listener) {
             this._listeners.splice(i, 1);
@@ -22,7 +40,11 @@ Timeline.DefaultEventSource.prototype.removeListener = function(listener) {
     }
 };
 
+<<<<<<< HEAD
 Timeline.DefaultEventSource.prototype.loadXML = function(xml, url) {
+=======
+DefaultEventSource.prototype.loadXML = function(xml, url) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     var base = this._getBaseURL(url);
     
     var wikiURL = xml.documentElement.getAttribute("wiki-url");
@@ -45,7 +67,11 @@ Timeline.DefaultEventSource.prototype.loadXML = function(xml, url) {
                           node.getAttribute("isDuration") == "false" ||
                           node.getAttribute("durationEvent") == "false";
             
+<<<<<<< HEAD
             var evt = new Timeline.DefaultEventSource.Event( {
+=======
+            var evt = new DefaultEventSource.Event( {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
                           id: node.getAttribute("id"),
                        start: parseDateTimeFunction(node.getAttribute("start")),
                          end: parseDateTimeFunction(node.getAttribute("end")),
@@ -87,7 +113,11 @@ Timeline.DefaultEventSource.prototype.loadXML = function(xml, url) {
 };
 
 
+<<<<<<< HEAD
 Timeline.DefaultEventSource.prototype.loadJSON = function(data, url) {
+=======
+DefaultEventSource.prototype.loadJSON = function(data, url) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     var base = this._getBaseURL(url);
     var added = false;  
     if (data && data.events){
@@ -118,7 +148,11 @@ Timeline.DefaultEventSource.prototype.loadJSON = function(data, url) {
             var instant = evnt.isDuration ||
                           (('durationEvent' in evnt) && !evnt.durationEvent) ||
                           (('de' in evnt) && !evnt.de);
+<<<<<<< HEAD
             var evt = new Timeline.DefaultEventSource.Event({
+=======
+            var evt = new DefaultEventSource.Event({
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
                           id: ("id" in evnt) ? evnt.id : undefined,
                        start: parseDateTimeFunction(evnt.start || evnt.s),
                          end: parseDateTimeFunction(evnt.end || evnt.e),
@@ -159,7 +193,11 @@ Timeline.DefaultEventSource.prototype.loadJSON = function(data, url) {
 /*
  *  Contributed by Morten Frederiksen, http://www.wasab.dk/morten/
  */
+<<<<<<< HEAD
 Timeline.DefaultEventSource.prototype.loadSPARQL = function(xml, url) {
+=======
+DefaultEventSource.prototype.loadSPARQL = function(xml, url) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     var base = this._getBaseURL(url);
     
     var dateTimeFormat = 'iso8601';
@@ -212,7 +250,11 @@ Timeline.DefaultEventSource.prototype.loadSPARQL = function(xml, url) {
                           bindings["isDuration"] == "false" ||
                           bindings["durationEvent"] == "false";
 
+<<<<<<< HEAD
             var evt = new Timeline.DefaultEventSource.Event({
+=======
+            var evt = new DefaultEventSource.Event({
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
                           id: bindings["id"],
                        start: parseDateTimeFunction(bindings["start"]),
                          end: parseDateTimeFunction(bindings["end"]),
@@ -251,23 +293,36 @@ Timeline.DefaultEventSource.prototype.loadSPARQL = function(xml, url) {
     }
 };
 
+<<<<<<< HEAD
 Timeline.DefaultEventSource.prototype.add = function(evt) {
+=======
+DefaultEventSource.prototype.add = function(evt) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     this._events.add(evt);
     this._fire("onAddOne", [evt]);
 };
 
+<<<<<<< HEAD
 Timeline.DefaultEventSource.prototype.addMany = function(events) {
+=======
+DefaultEventSource.prototype.addMany = function(events) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     for (var i = 0; i < events.length; i++) {
         this._events.add(events[i]);
     }
     this._fire("onAddMany", []);
 };
 
+<<<<<<< HEAD
 Timeline.DefaultEventSource.prototype.clear = function() {
+=======
+DefaultEventSource.prototype.clear = function() {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     this._events.removeAll();
     this._fire("onClear", []);
 };
 
+<<<<<<< HEAD
 Timeline.DefaultEventSource.prototype.getEvent = function(id) {
     return this._events.getEvent(id);
 };
@@ -297,6 +352,37 @@ Timeline.DefaultEventSource.prototype.getLatestDate = function() {
 };
 
 Timeline.DefaultEventSource.prototype._fire = function(handlerName, args) {
+=======
+DefaultEventSource.prototype.getEvent = function(id) {
+    return this._events.getEvent(id);
+};
+
+DefaultEventSource.prototype.getEventIterator = function(startDate, endDate) {
+    return this._events.getIterator(startDate, endDate);
+};
+
+DefaultEventSource.prototype.getEventReverseIterator = function(startDate, endDate) {
+    return this._events.getReverseIterator(startDate, endDate);
+};
+
+DefaultEventSource.prototype.getAllEventIterator = function() {
+    return this._events.getAllIterator();
+};
+
+DefaultEventSource.prototype.getCount = function() {
+    return this._events.getCount();
+};
+
+DefaultEventSource.prototype.getEarliestDate = function() {
+    return this._events.getEarliestDate();
+};
+
+DefaultEventSource.prototype.getLatestDate = function() {
+    return this._events.getLatestDate();
+};
+
+DefaultEventSource.prototype._fire = function(handlerName, args) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     for (var i = 0; i < this._listeners.length; i++) {
         var listener = this._listeners[i];
         if (handlerName in listener) {
@@ -309,7 +395,11 @@ Timeline.DefaultEventSource.prototype._fire = function(handlerName, args) {
     }
 };
 
+<<<<<<< HEAD
 Timeline.DefaultEventSource.prototype._getBaseURL = function(url) {
+=======
+DefaultEventSource.prototype._getBaseURL = function(url) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     if (url.indexOf("://") < 0) {
         var url2 = this._getBaseURL(document.location.href);
         if (url.substr(0,1) == "/") {
@@ -327,7 +417,11 @@ Timeline.DefaultEventSource.prototype._getBaseURL = function(url) {
     }
 };
 
+<<<<<<< HEAD
 Timeline.DefaultEventSource.prototype._resolveRelativeURL = function(url, base) {
+=======
+DefaultEventSource.prototype._resolveRelativeURL = function(url, base) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     if (url == null || url == "") {
         return url;
     } else if (url.indexOf("://") > 0) {
@@ -340,7 +434,11 @@ Timeline.DefaultEventSource.prototype._resolveRelativeURL = function(url, base) 
 };
 
 
+<<<<<<< HEAD
 Timeline.DefaultEventSource.Event = function(args) {
+=======
+DefaultEventSource.Event = function(args) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
   //
   // Attention developers!
   // If you add a new event attribute, please be sure to add it to
@@ -377,7 +475,11 @@ Timeline.DefaultEventSource.Event = function(args) {
   }
    
   var id = args.id ? args.id.trim() : "";
+<<<<<<< HEAD
   this._id = id.length > 0 ? id : Timeline.EventUtils.getNewEventID();
+=======
+  this._id = id.length > 0 ? id : EventUtils.getNewEventID();
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
   
   this._instant = args.instant || (args.end == null);
   
@@ -437,7 +539,11 @@ Timeline.DefaultEventSource.Event = function(args) {
   this._wikiSection = null;
 };
 
+<<<<<<< HEAD
 Timeline.DefaultEventSource.Event.prototype = {
+=======
+DefaultEventSource.Event.prototype = {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     getID:          function() { return this._id; },
     
     isInstant:      function() { return this._instant; },
@@ -504,7 +610,11 @@ Timeline.DefaultEventSource.Event.prototype = {
         var a = document.createElement("a");
         a.href = url;
         a.target = "new";
+<<<<<<< HEAD
         a.innerHTML = Timeline.strings[Timeline.clientLocale].wikiLinkLabel;
+=======
+        a.innerHTML = Locale.wikiLinkLabel;
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
         
         elmt.appendChild(document.createTextNode("["));
         elmt.appendChild(a);
@@ -580,4 +690,9 @@ Timeline.DefaultEventSource.Event.prototype = {
     }
 };
 
+<<<<<<< HEAD
 
+=======
+    return DefaultEventSource;
+});
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e

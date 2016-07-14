@@ -54,10 +54,22 @@
  *      or passed the filter.
  */
 
+<<<<<<< HEAD
 Timeline.OriginalEventPainter = function(params) {
     this._params = params;
     this._onSelectListeners = [];
     this._eventPaintListeners = [];
+=======
+define([
+    "simile-ajax",
+    "./event-utils"
+], function(SimileAjax, EventUtils) {
+var OriginalEventPainter = function(params) {
+    this._params = params;
+    this._onSelectListeners = [];
+    this._eventPaintListeners = [];
+    this._tracks = [];
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     
     this._filterMatcher = null;
     this._highlightMatcher = null;
@@ -66,7 +78,11 @@ Timeline.OriginalEventPainter = function(params) {
     this._eventIdToElmt = {};
 };
 
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype.initialize = function(band, timeline) {
+=======
+OriginalEventPainter.prototype.initialize = function(band, timeline) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     this._band = band;
     this._timeline = timeline;
     
@@ -76,6 +92,7 @@ Timeline.OriginalEventPainter.prototype.initialize = function(band, timeline) {
     this._highlightLayer = null;
     
     this._eventIdToElmt = null;
+<<<<<<< HEAD
 };
 
 Timeline.OriginalEventPainter.prototype.getType = function() {
@@ -91,6 +108,34 @@ Timeline.OriginalEventPainter.prototype.addOnSelectListener = function(listener)
 };
 
 Timeline.OriginalEventPainter.prototype.removeOnSelectListener = function(listener) {
+=======
+
+    if (this._backLayer == null) {
+        this._backLayer = this._band.createLayerDiv(0, "timeline-band-events");
+        this._backLayer.style.visibility = "hidden";
+        
+        var eventLabelPrototype = document.createElement("span");
+        eventLabelPrototype.className = "timeline-event-label";
+        this._backLayer.appendChild(eventLabelPrototype);
+        this._frc = SimileAjax.Graphics.getFontRenderingContext(eventLabelPrototype);
+    }
+    this._frc.update();
+};
+
+OriginalEventPainter.prototype.getType = function() {
+    return 'original';
+};
+
+OriginalEventPainter.prototype.supportsOrthogonalScrolling = function() {
+    return true;
+};
+
+OriginalEventPainter.prototype.addOnSelectListener = function(listener) {
+    this._onSelectListeners.push(listener);
+};
+
+OriginalEventPainter.prototype.removeOnSelectListener = function(listener) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     for (var i = 0; i < this._onSelectListeners.length; i++) {
         if (this._onSelectListeners[i] == listener) {
             this._onSelectListeners.splice(i, 1);
@@ -99,11 +144,19 @@ Timeline.OriginalEventPainter.prototype.removeOnSelectListener = function(listen
     }
 };
 
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype.addEventPaintListener = function(listener) {
     this._eventPaintListeners.push(listener);
 };
 
 Timeline.OriginalEventPainter.prototype.removeEventPaintListener = function(listener) {
+=======
+OriginalEventPainter.prototype.addEventPaintListener = function(listener) {
+    this._eventPaintListeners.push(listener);
+};
+
+OriginalEventPainter.prototype.removeEventPaintListener = function(listener) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     for (var i = 0; i < this._eventPaintListeners.length; i++) {
         if (this._eventPaintListeners[i] == listener) {
             this._eventPaintListeners.splice(i, 1);
@@ -112,6 +165,7 @@ Timeline.OriginalEventPainter.prototype.removeEventPaintListener = function(list
     }
 };
 
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype.getFilterMatcher = function() {
     return this._filterMatcher;
 };
@@ -129,6 +183,25 @@ Timeline.OriginalEventPainter.prototype.setHighlightMatcher = function(highlight
 };
 
 Timeline.OriginalEventPainter.prototype.paint = function() {
+=======
+OriginalEventPainter.prototype.getFilterMatcher = function() {
+    return this._filterMatcher;
+};
+
+OriginalEventPainter.prototype.setFilterMatcher = function(filterMatcher) {
+    this._filterMatcher = filterMatcher;
+};
+
+OriginalEventPainter.prototype.getHighlightMatcher = function() {
+    return this._highlightMatcher;
+};
+
+OriginalEventPainter.prototype.setHighlightMatcher = function(highlightMatcher) {
+    this._highlightMatcher = highlightMatcher;
+};
+
+OriginalEventPainter.prototype.paint = function() {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     // Paints the events for a given section of the band--what is
     // visible on screen and some extra.
     var eventSource = this._band.getEventSource();
@@ -139,7 +212,11 @@ Timeline.OriginalEventPainter.prototype.paint = function() {
     this._eventIdToElmt = {};
     this._fireEventPaintListeners('paintStarting', null, null);
     this._prepareForPainting();
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     var metrics = this._computeMetrics();
     var minDate = this._band.getMinDate();
     var maxDate = this._band.getMaxDate();
@@ -169,15 +246,24 @@ Timeline.OriginalEventPainter.prototype.paint = function() {
     this._setOrthogonalOffset(metrics);
 };
 
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype.softPaint = function() {
     this._setOrthogonalOffset(this._computeMetrics());
 };
 
 Timeline.OriginalEventPainter.prototype.getOrthogonalExtent = function() {
+=======
+OriginalEventPainter.prototype.softPaint = function() {
+    this._setOrthogonalOffset(this._computeMetrics());
+};
+
+OriginalEventPainter.prototype.getOrthogonalExtent = function() {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     var metrics = this._computeMetrics();
     return 2 * metrics.trackOffset + this._tracks.length * metrics.trackIncrement;
 };
 
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype._setOrthogonalOffset = function(metrics) {
     var orthogonalOffset = this._band.getViewOrthogonalOffset();
     
@@ -188,6 +274,20 @@ Timeline.OriginalEventPainter.prototype._setOrthogonalOffset = function(metrics)
 };
 
 Timeline.OriginalEventPainter.prototype._computeMetrics = function() {
+=======
+OriginalEventPainter.prototype._setOrthogonalOffset = function(metrics) {
+    var orthogonalOffset = this._band.getViewOrthogonalOffset();
+    var layers = ["_highlightLayer", "_lineLayer", "_eventLayer"], j, layer;
+    for (j = 0; j < layers.length; j++) {
+        layer = this[layers[j]];
+        if (layer !== null) {
+            layer.style.top = orthogonalOffset + "px";
+        }
+    }
+};
+
+OriginalEventPainter.prototype._computeMetrics = function() {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
      var eventTheme = this._params.theme.event;
      var trackHeight = Math.max(eventTheme.track.height, eventTheme.tape.height + 
                          this._frc.getLineHeight());
@@ -207,11 +307,16 @@ Timeline.OriginalEventPainter.prototype._computeMetrics = function() {
      return metrics;
 };
 
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype._prepareForPainting = function() {
+=======
+OriginalEventPainter.prototype._prepareForPainting = function() {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     // Remove everything previously painted: highlight, line and event layers.
     // Prepare blank layers for painting. 
     var band = this._band;
         
+<<<<<<< HEAD
     if (this._backLayer == null) {
         this._backLayer = this._band.createLayerDiv(0, "timeline-band-events");
         this._backLayer.style.visibility = "hidden";
@@ -222,6 +327,8 @@ Timeline.OriginalEventPainter.prototype._prepareForPainting = function() {
         this._frc = SimileAjax.Graphics.getFontRenderingContext(eventLabelPrototype);
     }
     this._frc.update();
+=======
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     this._tracks = [];
     
     if (this._highlightLayer != null) {
@@ -243,7 +350,11 @@ Timeline.OriginalEventPainter.prototype._prepareForPainting = function() {
     this._eventLayer.style.display = "none";
 };
 
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype.paintEvent = function(evt, metrics, theme, highlightIndex) {
+=======
+OriginalEventPainter.prototype.paintEvent = function(evt, metrics, theme, highlightIndex) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     if (evt.isInstant()) {
         this.paintInstantEvent(evt, metrics, theme, highlightIndex);
     } else {
@@ -251,7 +362,11 @@ Timeline.OriginalEventPainter.prototype.paintEvent = function(evt, metrics, them
     }
 };
     
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype.paintInstantEvent = function(evt, metrics, theme, highlightIndex) {
+=======
+OriginalEventPainter.prototype.paintInstantEvent = function(evt, metrics, theme, highlightIndex) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     if (evt.isImprecise()) {
         this.paintImpreciseInstantEvent(evt, metrics, theme, highlightIndex);
     } else {
@@ -259,7 +374,11 @@ Timeline.OriginalEventPainter.prototype.paintInstantEvent = function(evt, metric
     }
 }
 
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype.paintDurationEvent = function(evt, metrics, theme, highlightIndex) {
+=======
+OriginalEventPainter.prototype.paintDurationEvent = function(evt, metrics, theme, highlightIndex) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     if (evt.isImprecise()) {
         this.paintImpreciseDurationEvent(evt, metrics, theme, highlightIndex);
     } else {
@@ -267,7 +386,11 @@ Timeline.OriginalEventPainter.prototype.paintDurationEvent = function(evt, metri
     }
 }
     
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype.paintPreciseInstantEvent = function(evt, metrics, theme, highlightIndex) {
+=======
+OriginalEventPainter.prototype.paintPreciseInstantEvent = function(evt, metrics, theme, highlightIndex) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     var doc = this._timeline.getDocument();
     var text = evt.getText();
     
@@ -309,7 +432,11 @@ Timeline.OriginalEventPainter.prototype.paintPreciseInstantEvent = function(evt,
     this._tracks[track] = iconLeftEdge;
 };
 
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype.paintImpreciseInstantEvent = function(evt, metrics, theme, highlightIndex) {
+=======
+OriginalEventPainter.prototype.paintImpreciseInstantEvent = function(evt, metrics, theme, highlightIndex) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     var doc = this._timeline.getDocument();
     var text = evt.getText();
     
@@ -359,7 +486,11 @@ Timeline.OriginalEventPainter.prototype.paintImpreciseInstantEvent = function(ev
     this._tracks[track] = iconLeftEdge;
 };
 
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype.paintPreciseDurationEvent = function(evt, metrics, theme, highlightIndex) {
+=======
+OriginalEventPainter.prototype.paintPreciseDurationEvent = function(evt, metrics, theme, highlightIndex) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     var doc = this._timeline.getDocument();
     var text = evt.getText();
     
@@ -401,7 +532,11 @@ Timeline.OriginalEventPainter.prototype.paintPreciseDurationEvent = function(evt
     this._tracks[track] = startPixel;
 };
 
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype.paintImpreciseDurationEvent = function(evt, metrics, theme, highlightIndex) {
+=======
+OriginalEventPainter.prototype.paintImpreciseDurationEvent = function(evt, metrics, theme, highlightIndex) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     var doc = this._timeline.getDocument();
     var text = evt.getText();
     
@@ -456,11 +591,19 @@ Timeline.OriginalEventPainter.prototype.paintImpreciseDurationEvent = function(e
     this._tracks[track] = startPixel;
 };
 
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype._encodeEventElID = function(elType, evt) {
     return Timeline.EventUtils.encodeEventElID(this._timeline, this._band, elType, evt);
 };
 
 Timeline.OriginalEventPainter.prototype._findFreeTrack = function(event, rightEdge) {
+=======
+OriginalEventPainter.prototype._encodeEventElID = function(elType, evt) {
+    return EventUtils.encodeEventElID(this._timeline, this._band, elType, evt);
+};
+
+OriginalEventPainter.prototype._findFreeTrack = function(event, rightEdge) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     var trackAttribute = event.getTrackNum();
     if (trackAttribute != null) {
         return trackAttribute; // early return since event includes track number
@@ -476,7 +619,11 @@ Timeline.OriginalEventPainter.prototype._findFreeTrack = function(event, rightEd
     return i;
 };
 
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype._paintEventIcon = function(evt, iconTrack, left, metrics, theme, tapeHeight) {
+=======
+OriginalEventPainter.prototype._paintEventIcon = function(evt, iconTrack, left, metrics, theme, tapeHeight) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     // If no tape, then paint the icon in the middle of the track.
     // If there is a tape, paint the icon below the tape + impreciseIconMargin
     var icon = evt.getIcon();
@@ -513,7 +660,11 @@ Timeline.OriginalEventPainter.prototype._paintEventIcon = function(evt, iconTrac
     };
 };
 
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype._paintEventLabel = function(evt, text, left, top, width,
+=======
+OriginalEventPainter.prototype._paintEventLabel = function(evt, text, left, top, width,
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     height, theme, labelDivClassName, highlightIndex) {
     var doc = this._timeline.getDocument();
     
@@ -550,7 +701,11 @@ Timeline.OriginalEventPainter.prototype._paintEventLabel = function(evt, text, l
     };
 };
 
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype._paintEventTape = function(
+=======
+OriginalEventPainter.prototype._paintEventTape = function(
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     evt, iconTrack, startPixel, endPixel, color, opacity, metrics, theme, tape_index) {
     
     var tapeWidth = endPixel - startPixel;
@@ -593,11 +748,19 @@ Timeline.OriginalEventPainter.prototype._paintEventTape = function(
     };
 }
 
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype._getLabelDivClassName = function(evt) {
     return this._getElClassName('timeline-event-label', evt, 'label');
 };
 
 Timeline.OriginalEventPainter.prototype._getElClassName = function(elClassName, evt, prefix) {
+=======
+OriginalEventPainter.prototype._getLabelDivClassName = function(evt) {
+    return this._getElClassName('timeline-event-label', evt, 'label');
+};
+
+OriginalEventPainter.prototype._getElClassName = function(elClassName, evt, prefix) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     // Prefix and '_' is added to the event's classname. Set to null for no prefix
     var evt_classname = evt.getClassName(),
         pieces = [];
@@ -610,12 +773,20 @@ Timeline.OriginalEventPainter.prototype._getElClassName = function(elClassName, 
     return(pieces.join(''));
 };
 
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype._getHighlightColor = function(highlightIndex, theme) {
+=======
+OriginalEventPainter.prototype._getHighlightColor = function(highlightIndex, theme) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     var highlightColors = theme.event.highlightColors;    
     return highlightColors[Math.min(highlightIndex, highlightColors.length - 1)];
 };
 
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype._createHighlightDiv = function(highlightIndex, dimensions, theme, evt) {
+=======
+OriginalEventPainter.prototype._createHighlightDiv = function(highlightIndex, dimensions, theme, evt) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     var div = null;
     if (highlightIndex >= 0) {
         var doc = this._timeline.getDocument();        
@@ -638,7 +809,11 @@ Timeline.OriginalEventPainter.prototype._createHighlightDiv = function(highlight
     return div;
 };
 
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype._onClickInstantEvent = function(icon, domEvt, evt) {
+=======
+OriginalEventPainter.prototype._onClickInstantEvent = function(icon, domEvt, evt) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     var c = SimileAjax.DOM.getPageCoordinates(icon);
     this._showBubble(
         c.left + Math.ceil(icon.offsetWidth / 2), 
@@ -652,7 +827,11 @@ Timeline.OriginalEventPainter.prototype._onClickInstantEvent = function(icon, do
     return false;
 };
 
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype._onClickDurationEvent = function(target, domEvt, evt) {
+=======
+OriginalEventPainter.prototype._onClickDurationEvent = function(target, domEvt, evt) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     if ("pageX" in domEvt) {
         var x = domEvt.pageX;
         var y = domEvt.pageY;
@@ -669,7 +848,11 @@ Timeline.OriginalEventPainter.prototype._onClickDurationEvent = function(target,
     return false;
 };
 
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype.showBubble = function(evt) {
+=======
+OriginalEventPainter.prototype.showBubble = function(evt) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     var elmt = this._eventIdToElmt[evt.getID()];
     if (elmt) {
         var c = SimileAjax.DOM.getPageCoordinates(elmt);
@@ -677,7 +860,11 @@ Timeline.OriginalEventPainter.prototype.showBubble = function(evt) {
     }
 };
 
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype._showBubble = function(x, y, evt) {
+=======
+OriginalEventPainter.prototype._showBubble = function(x, y, evt) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     var div = document.createElement("div");
     var themeBubble = this._params.theme.event.bubble;
     evt.fillInfoBubble(div, this._params.theme, this._band.getLabeller());
@@ -687,14 +874,28 @@ Timeline.OriginalEventPainter.prototype._showBubble = function(x, y, evt) {
         themeBubble.width, null, themeBubble.maxHeight);
 };
 
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype._fireOnSelect = function(eventID) {
+=======
+OriginalEventPainter.prototype._fireOnSelect = function(eventID) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     for (var i = 0; i < this._onSelectListeners.length; i++) {
         this._onSelectListeners[i](eventID);
     }
 };
 
+<<<<<<< HEAD
 Timeline.OriginalEventPainter.prototype._fireEventPaintListeners = function(op, evt, els) {
+=======
+OriginalEventPainter.prototype._fireEventPaintListeners = function(op, evt, els) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     for (var i = 0; i < this._eventPaintListeners.length; i++) {
         this._eventPaintListeners[i](this._band, op, evt, els);
     }
 };
+<<<<<<< HEAD
+=======
+
+    return OriginalEventPainter;
+});
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e

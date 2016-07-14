@@ -2,6 +2,7 @@
  *  Classic Theme
  *==================================================
  */
+<<<<<<< HEAD
 
 
 
@@ -10,18 +11,36 @@ Timeline.ClassicTheme = new Object();
 Timeline.ClassicTheme.implementations = [];
 
 Timeline.ClassicTheme.create = function(locale) {
+=======
+define(["./timeline-base"], function(Timeline) {
+var ClassicTheme = new Object();
+
+ClassicTheme.implementations = [];
+
+ClassicTheme.create = function(locale) {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     if (locale == null) {
         locale = Timeline.getDefaultLocale();
     }
     
+<<<<<<< HEAD
     var f = Timeline.ClassicTheme.implementations[locale];
     if (f == null) {
         f = Timeline.ClassicTheme._Impl;
+=======
+    var f = ClassicTheme.implementations[locale];
+    if (f == null) {
+        f = ClassicTheme._Impl;
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     }
     return new f();
 };
 
+<<<<<<< HEAD
 Timeline.ClassicTheme._Impl = function() {
+=======
+ClassicTheme._Impl = function() {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     this.firstDayOfWeek = 0; // Sunday
           
     // Note: Many styles previously set here are now set using CSS
@@ -177,4 +196,11 @@ Timeline.ClassicTheme._Impl = function() {
     };
     
     this.mouseWheel = 'scroll'; // 'default', 'zoom', 'scroll'
+<<<<<<< HEAD
 };
+=======
+};
+
+    return ClassicTheme;
+});
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e

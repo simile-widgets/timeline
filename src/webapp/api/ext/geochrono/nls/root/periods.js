@@ -1,0 +1,23 @@
+define({
+    "siderian": "Siderian",
+    "rhyacian": "Rhyacian",
+    "orosirian": "Orosirian",
+    "statherian": "Statherian",
+    "calymmian": "Calymmian",
+    "ectasian": "Ectasian",
+    "stenian": "Stenian",
+    "tonian": "Tonian",
+    "cryogenian": "Cryogenian",
+    "ediacaran": "Ediacaran",
+    "cambrian": "Cambrian",
+    "ordovician": "Ordovician",
+    "silurian": "Silurian",
+    "devonian": "Devonian",
+    "carboniferous": "Carboniferous",
+    "permian": "Permian",
+    "triassic": "Triassic",
+    "jurassic": "Jurassic",
+    "cretaceous": "Cretaceous",
+    "paleogene": "Paleogene",
+    "neogene": "Neogene"
+});

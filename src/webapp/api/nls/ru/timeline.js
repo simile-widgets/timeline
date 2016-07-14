@@ -1,0 +1,5 @@
+define({
+    "wikiLinkLabel": "обсудите"
+});
+
+

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!--+
     |
     |           +===========================+
@@ -221,10 +222,189 @@
   <target name="distclean">
     <delete dir="dist"/>
     <delete dir="htdocs"/>
+=======
+<!--+
+    |
+    |           +===========================+
+    |           |   Timeline Build System   |
+    |           +===========================+
+    |
+    | This is just for bundling and minifying javascript and CSS files.
+    |
+    +-->
+
+<project default="publish-local" basedir="." name="Timeline">
+
+  <!-- For trunk versions, use style pre_2.4.0 -->
+  <property name="version" value="3.0.0" />      
+
+  <property name="webapp.dir"  value="src/webapp"/>
+  <property name="api.dir"     value="${webapp.dir}/api"/>
+  <property name="site.dir"    value="${webapp.dir}/site"/>
+  <property name="scripts.dir" value="${api.dir}/scripts"/>
+  <property name="rjs.dir"     value="optimize"/>
+  <property name="build.dir"   value="build"/>
+  <property name="dist.dir"    value="dist"/>
+
+  <property name="full.dir" value="${dist.dir}/full/timeline-${version}" />
+  <property name="min.dir" value="${dist.dir}/minimal/timeline-${version}" />
+  <property name="ajax.dir" value="src/ajax/api"/>
+  
+  <target name="bundle">
+    <fileset dir="${api.dir}/nls/" includes="**/*.js" id="locales"/>
+    <pathconvert dirsep="/" refid="locales" property="localelist" pathsep=",">
+      <map from="${basedir}/${api.dir}/" to=""/>
+      <globmapper from="*.js" to="*"/>
+    </pathconvert>
+    <exec dir="." executable="node">
+      <arg line="${rjs.dir}/r.js -o ${rjs.dir}/build.js deps=${localelist}"/>
+    </exec>
+  </target>
+
+  <target name="bundle-debug">
+    <fileset dir="${api.dir}/nls/" includes="**/*.js" id="locales"/>
+    <pathconvert dirsep="/" refid="locales" property="localelist" pathsep=",">
+      <map from="${basedir}/${api.dir}/" to=""/>
+      <globmapper from="*.js" to="*"/>
+    </pathconvert>
+    <exec dir="." executable="node">
+      <arg line="${rjs.dir}/r.js -o ${rjs.dir}/build.js optimize=none out=build/timeline-api-debug.js paths.simile-ajax=../../ajax/api/simile-ajax-api-debug deps=${localelist}"/>
+    </exec>
+    <copy file="${build.dir}/timeline-api-debug.js" todir="${api.dir}"/>
+  </target>
+  
+  <target name="bundle-require">
+    <exec dir="." executable="node">
+      <arg line="${rjs.dir}/r.js -o ${rjs.dir}/build-require.js"/>
+    </exec>
+  </target>
+
+  <target name="bundle-css">
+    <exec dir="." executable="node">
+      <arg line="${rjs.dir}/r.js -o ${rjs.dir}/build-css.js"/>
+    </exec>
+  </target>
+
+  <target name="bundle-all" depends="bundle,bundle-require,bundle-css" />
+
+  <target name="publish-local" depends="bundle-all">
+    <copy file="${build.dir}/timeline-api.js" todir="${api.dir}"/>
+    <copy file="${build.dir}/timeline-bundle.js" todir="${api.dir}"/>
+    <copy file="${build.dir}/timeline-bundle.css" todir="${api.dir}/styles"/>
+  </target>
+
+  <target name="clean">
+    <delete dir="${build.dir}"/>
+    <delete file="${api.dir}/timeline-api.js"/>
+    <delete file="${api.dir}/timeline-bundle.js"/>
+    <delete file="${api.dir}/styles/timeline-bundle.css"/>
+  </target>
+
+  <!-- Create full distribution -->
+  <target name="prepare-full-dist" depends="bundle-debug,publish-local">
+
+    <mkdir dir="${full.dir}"/>
+
+    <copy todir="${full.dir}/lib">
+      <fileset dir="lib" />
+    </copy>
+    <copy todir="${full.dir}/src">
+      <fileset dir="src" />
+    </copy>
+    <copy todir="${full.dir}/tools">
+      <fileset dir="tools" />
+    </copy>
+    <copy todir="${full.dir}/optimize">
+      <fileset dir="optimize" />
+    </copy>
+
+    <copy file="${build.dir}/timeline-api-debug.js" todir="${full.dir}/${api.dir}" />
+    
+    <copy file=".project" todir="${full.dir}" />
+    <copy file="build.xml" todir="${full.dir}" />
+    <copy file="jetty.xml" todir="${full.dir}" />
+    <copy file="LICENSE.txt" todir="${full.dir}" />
+    <copy file="README.md" todir="${full.dir}" />
+    <copy file="run" todir="${full.dir}" />
+    <copy file="run.bat" todir="${full.dir}" />
+  </target>
+  
+  <target name="full-dist" depends="prepare-full-dist">
+    <zip destfile="timeline-${version}.zip"
+         basedir="${dist.dir}/full"
+         update="yes"
+         duplicate="fail"
+    />  
+    <tar destfile="timeline-${version}.tar.gz"
+         compression="gzip"
+         longfile="gnu"
+         basedir="${dist.dir}/full"
+    />
+  </target>
+
+  <!-- Create versioned timeline dir with just bundled libraries and support files -->
+  <target name="prepare-minimal-dist" depends="bundle-debug,publish-local">
+
+    <!-- timeline files -->
+
+    <copy file="${api.dir}/timeline-api.js" todir="${min.dir}/timeline" />
+    <copy file="${api.dir}/timeline-bundle.js" todir="${min.dir}/timeline" />
+    <copy file="${build.dir}/timeline-api-debug.js" todir="${min.dir}/timeline" />
+    <copy file="${api.dir}/styles/timeline-bundle.css" todir="${min.dir}/timeline/styles" />
+
+    <copy todir="${min.dir}/timeline/images">
+      <fileset dir="${api.dir}/images" />
+    </copy>
+    
+    <!-- ajax files -->
+    
+    <copy file="${ajax.dir}/simile-ajax-api.js" todir="${min.dir}/ajax" />
+    <copy file="${ajax.dir}/simile-ajax-bundle.js" todir="${min.dir}/ajax" />
+    
+    <copy todir="${min.dir}/ajax/images">
+      <fileset dir="${ajax.dir}/images" />
+    </copy>
+    <copy todir="${min.dir}/ajax/styles">
+      <fileset dir="${ajax.dir}/styles" />
+    </copy>
+    <copy todir="${min.dir}/ajax/content">
+      <fileset dir="${ajax.dir}/content" />
+    </copy>
+
+    <!-- release files -->
+    
+    <copy file="LICENSE.txt"     todir="${min.dir}" />
+  </target>
+  
+  <target name="minimal-dist" depends="prepare-minimal-dist">
+    <zip destfile="timeline-${version}-minimal.zip"
+         basedir="${dist.dir}/minimal"
+         update="yes"
+         duplicate="fail"
+    />  
+    <tar destfile="timeline-${version}-minimal.tar.gz"
+         compression="gzip"
+         longfile="gnu"
+         basedir="${dist.dir}/minimal"
+    />
+  </target>
+
+  <target name="dist" depends="full-dist,minimal-dist" />
+  
+  <target name="distclean">
+    <delete dir="${dist.dir}"/>
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     <delete>
         <fileset dir="." includes="*.gz"/>
         <fileset dir="." includes="*.zip"/>
     </delete>
   </target>
+<<<<<<< HEAD
   
 </project>
+=======
+
+  <target name="clean-all" depends="clean,distclean"/>
+  
+</project>
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e

@@ -3,6 +3,7 @@
     <title>SIMILE Widgets | Timeline | Examples | Compact Painter</title>
     <link rel='stylesheet' href='../styles.css' type='text/css' />
 
+<<<<<<< HEAD
     <!-- ############################################################################ -->
     <!-- To use this file on your own system, replace ../../api/timeline-api.js with  -->
     <!--     http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js          -->
@@ -12,6 +13,11 @@
     <script>
         var tl;
         
+=======
+    <script src="../../api/timeline-api.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        var tl;
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
         function onLoad() {
             var eventSource = new Timeline.DefaultEventSource(0);
             
@@ -62,17 +68,29 @@
             
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
             tl.loadJSON("data.json?"+ (new Date().getTime()), function(json, url) { eventSource.loadJSON(json, url); });
+<<<<<<< HEAD
         }
         
         var resizeTimerID = null;
         function onResize() {
+=======
+            Timeline.writeVersion('tl_ver');
+        };
+
+        var resizeTimerID = null;
+        var onResize = function() {
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
             if (resizeTimerID == null) {
                 resizeTimerID = window.setTimeout(function() {
                     resizeTimerID = null;
                     tl.layout();
                 }, 500);
             }
+<<<<<<< HEAD
         }
+=======
+        };
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     </script>
     <style>
         div.timeline-event-icon {
@@ -100,7 +118,10 @@
   
     <div id="content">
       <p>Timeline version <span id='tl_ver'></span>.</p>
+<<<<<<< HEAD
       <script>Timeline.writeVersion('tl_ver');</script>
+=======
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e
     
       <div id="tl" class="timeline-default" style="height: 400px;"></div>
     </div>
@@ -109,4 +130,8 @@
       Copyright &copy; <a href="http://web.mit.edu/">Massachusetts Institute of Technology</a> and Contributors 2006-2009 ~ Some rights reserved
     </div>
   </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> d280ccdd141023d4ce634db7280d2108f103046e

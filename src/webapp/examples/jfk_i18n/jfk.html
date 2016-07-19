@@ -3,16 +3,12 @@
     <title>SIMILE Widgets | Timeline | Examples | The JFK Assassination Timeline with Dutch Timeline Labels</title>
     <link rel='stylesheet' href='../styles.css' type='text/css' />
 
-    <!-- ############################################################################ -->
-    <!-- To use this file on your own system, replace ../../api/timeline-api.js with  -->
-    <!--     http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js          -->
-    <!-- (where 2.3.1 is the current release number.)                                 -->
-    <script src="../../api/timeline-api.js?bundle=true&amp;forceLocale=nl" type="text/javascript"></script>
-
-    <script src="../examples.js" type="text/javascript"></script>
+    <script src="../../api/lib/require.js" type="text/javascript"></script>
     <script>
+require(["./nl-config.js"], function() {
+    require(["timeline", "../examples.js", "jquery"], function(Timeline, Helpers, $) {
         var tl;
-        function onLoad() {
+        var onLoad = function() {
             var eventSource = new Timeline.DefaultEventSource();
             
             var zones = [
@@ -99,7 +95,7 @@
                     new Timeline.SpanHighlightDecorator({
                         startDate:  "Fri Nov 22 1963 12:30:00 GMT-0600",
                         endDate:    "Fri Nov 22 1963 13:00:00 GMT-0600",
-                        color:      "#FFC080",
+                        color:      "#FFC080", // set color explicitly
                         opacity:    50,
                         startLabel: "shot",
                         endLabel:   "t.o.d.",
@@ -107,15 +103,15 @@
                     }),
                     new Timeline.PointHighlightDecorator({
                         date:       "Fri Nov 22 1963 14:38:00 GMT-0600",
-                        color:      "#FFC080",
                         opacity:    50,
                         theme:      theme
+                        // use the color from the css file
                     }),
                     new Timeline.PointHighlightDecorator({
                         date:       "Sun Nov 24 1963 13:00:00 GMT-0600",
-                        color:      "#FFC080",
                         opacity:    50,
                         theme:      theme
+                        // use the color from the css file
                     })
                 ];
             }
@@ -123,20 +119,27 @@
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
             tl.loadXML("jfk.xml", function(xml, url) { eventSource.loadXML(xml, url); });
             
-            setupFilterHighlightControls(document.getElementById("controls"), tl, [0,1], theme);
-        }
+            Timeline.writeVersion('tl_ver');
+            Helpers.setupFilterHighlightControls(document.getElementById("controls"), tl, [0,1], theme);
+        };
+
         var resizeTimerID = null;
-        function onResize() {
+        var onResize = function() {
             if (resizeTimerID == null) {
                 resizeTimerID = window.setTimeout(function() {
                     resizeTimerID = null;
                     tl.layout();
                 }, 500);
             }
-        }
+        };
+
+        $(document).ready(onLoad);
+        window.onresize = onResize;
+    });
+});
     </script>
   </head>
-  <body onload="onLoad();" onresize="onResize();">
+  <body>
     <ul id="path">
       <li><a href="/" title="Home">SIMILE Widgets</a></li>
       <li><a href="../../" title="Timeline">Timeline</a></li>
@@ -162,7 +165,6 @@
       </p>
       
       <p>Timeline version <span id='tl_ver'></span>.</p>
-      <script>Timeline.writeVersion('tl_ver')</script>
     
       <div id="tl" class="timeline-default" style="height: 300px;"></div>
       <div class="footnotes">

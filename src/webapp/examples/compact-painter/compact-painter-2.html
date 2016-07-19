@@ -3,16 +3,12 @@
     <title>SIMILE Widgets | Timeline | Examples | Compact Painter 2</title>
     <link rel='stylesheet' href='../styles.css' type='text/css' />
 
-    <!-- ############################################################################ -->
-    <!-- To use this file on your own system, replace ../../api/timeline-api.js with  -->
-    <!--     http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js          -->
-    <!-- (where 2.3.1 is the current release number.)                                 -->
-    <script src="../../api/timeline-api.js?bundle=true" type="text/javascript"></script>
-
+    <script src="../../api/lib/require.js" type="text/javascript"></script>
     <script>
+require(["../../api/configs/local-config"], function() {
+    require(["timeline", "jquery"], function(Timeline, $) {
         var tl;
-        
-        function onLoad() {
+        var onLoad = function() {
           var eventSource = new Timeline.DefaultEventSource(0);
           
           var theme = Timeline.ClassicTheme.create();
@@ -50,17 +46,23 @@
           
           tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
           tl.loadJSON("data2.json?"+ (new Date().getTime()), function(json, url) { eventSource.loadJSON(json, url); });
-        }
-        
+          Timeline.writeVersion('tl_ver');
+        };
+
         var resizeTimerID = null;
-        function onResize() {
+        var onResize = function() {
             if (resizeTimerID == null) {
                 resizeTimerID = window.setTimeout(function() {
                     resizeTimerID = null;
                     tl.layout();
                 }, 500);
             }
-        }
+        };
+
+        $(document).ready(onLoad);
+        document.onresize = onResize;
+    });
+});
     </script>
     <style>
         div.timeline-event-icon {
@@ -74,7 +76,7 @@
         }
     </style>
   </head>
-  <body onload="onLoad();" onresize="onResize();">
+  <body>
     <ul id="path">
       <li><a href="/" title="Home">SIMILE Widgets</a></li>
       <li><a href="../../" title="Timeline">Timeline</a></li>
@@ -88,7 +90,6 @@
   
     <div id="content">
       <p>Timeline version <span id='tl_ver'></span>.</p>
-      <script>Timeline.writeVersion('tl_ver');</script>
     
       <div id="tl" class="timeline-default" style="height: 600px;"></div>
     </div>

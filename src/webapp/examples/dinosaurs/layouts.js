@@ -2,9 +2,8 @@
  *  Thumbnail Multi Track Based Layout
  *==================================================
  */
-
-
-Timeline.ThumbnailMultiTrackBasedLayout = function(params) {
+define(function() {
+var ThumbnailMultiTrackBasedLayout = function(params) {
     this._eventSource = params.eventSource;
     this._ether = params.ether;
     this._theme = params.theme;
@@ -27,11 +26,11 @@ Timeline.ThumbnailMultiTrackBasedLayout = function(params) {
     }
 };
 
-Timeline.ThumbnailMultiTrackBasedLayout.prototype.initialize = function(timeline) {
+ThumbnailMultiTrackBasedLayout.prototype.initialize = function(timeline) {
     this._timeline = timeline;
 };
 
-Timeline.ThumbnailMultiTrackBasedLayout.prototype.getTrack = function(evt) {
+ThumbnailMultiTrackBasedLayout.prototype.getTrack = function(evt) {
     if (!this._laidout) {
         this._tracks = [];
         this._layout();
@@ -40,7 +39,7 @@ Timeline.ThumbnailMultiTrackBasedLayout.prototype.getTrack = function(evt) {
     return this._tracks[evt.getID()];
 };
 
-Timeline.ThumbnailMultiTrackBasedLayout.prototype.getTrackCount = function() {
+ThumbnailMultiTrackBasedLayout.prototype.getTrackCount = function() {
     if (!this._laidout) {
         this._tracks = [];
         this._layout();
@@ -49,7 +48,7 @@ Timeline.ThumbnailMultiTrackBasedLayout.prototype.getTrackCount = function() {
     return this._trackCount;
 };
 
-Timeline.ThumbnailMultiTrackBasedLayout.prototype._layout = function() {
+ThumbnailMultiTrackBasedLayout.prototype._layout = function() {
     if (this._eventSource == null) {
         return;
     }
@@ -111,3 +110,6 @@ Timeline.ThumbnailMultiTrackBasedLayout.prototype._layout = function() {
     
     this._trackCount = streams.length;
 };
+
+    return ThumbnailMultiTrackBasedLayout;
+});

@@ -1,16 +1,21 @@
-﻿/*==================================================
+/*==================================================
  *  Geochrono Ether Painter
  *==================================================
  */
- 
-Timeline.GeochronoEtherPainter = function(params, band, timeline) {
+define([
+    "../../../scripts/ether-highlight",
+    "./layout",
+    "./units",
+    "./labellers"
+], function(EtherHighlight, GeochronoEtherMarkerLayout, GeochronoUnit, GeochronoLabeller) { 
+var GeochronoEtherPainter = function(params, band, timeline) {
     this._params = params;
     this._intervalUnit = params.intervalUnit;
     this._multiple = ("multiple" in params) ? params.multiple : 1;
     this._theme = params.theme;
 };
 
-Timeline.GeochronoEtherPainter.prototype.initialize = function(band, timeline) {
+GeochronoEtherPainter.prototype.initialize = function(band, timeline) {
     this._band = band;
     this._timeline = timeline;
     
@@ -26,18 +31,18 @@ Timeline.GeochronoEtherPainter.prototype.initialize = function(band, timeline) {
     var showLine = ("showLine" in this._params) ? this._params.showLine : 
         this._theme.ether.interval.line.show;
         
-    this._intervalMarkerLayout = new Timeline.GeochronoEtherMarkerLayout(
+    this._intervalMarkerLayout = new GeochronoEtherMarkerLayout(
         this._timeline, this._band, this._theme, align, showLine);
         
-    this._highlight = new Timeline.EtherHighlight(
+    this._highlight = new EtherHighlight(
         this._timeline, this._band, this._theme, this._backgroundLayer);
 }
 
-Timeline.GeochronoEtherPainter.prototype.setHighlight = function(startDate, endDate) {
+GeochronoEtherPainter.prototype.setHighlight = function(startDate, endDate) {
     this._highlight.position(startDate, endDate);
 }
 
-Timeline.GeochronoEtherPainter.prototype.paint = function() {
+GeochronoEtherPainter.prototype.paint = function() {
     if (this._markerLayer) {
         this._band.removeLayerDiv(this._markerLayer);
     }
@@ -52,25 +57,25 @@ Timeline.GeochronoEtherPainter.prototype.paint = function() {
     this._lineLayer.setAttribute("name", "ether-lines"); // for debugging
     this._lineLayer.style.display = "none";
     
-    var minDate = Math.ceil(Timeline.GeochronoUnit.toNumber(this._band.getMinDate()));
-    var maxDate = Math.floor(Timeline.GeochronoUnit.toNumber(this._band.getMaxDate()));
+    var minDate = Math.ceil(GeochronoUnit.toNumber(this._band.getMinDate()));
+    var maxDate = Math.floor(GeochronoUnit.toNumber(this._band.getMaxDate()));
     
     var increment;
     var hasMore;
     (function(intervalUnit, multiple) {
         var dates;
-        
+
         switch (intervalUnit) {
-        case Timeline.GeochronoUnit.AGE:
-            dates = Timeline.Geochrono.ages; break;
-        case Timeline.GeochronoUnit.EPOCH:
-            dates = Timeline.Geochrono.epoches; break;
-        case Timeline.GeochronoUnit.PERIOD:
-            dates = Timeline.Geochrono.periods; break;
-        case Timeline.GeochronoUnit.ERA:
-            dates = Timeline.Geochrono.eras; break;
-        case Timeline.GeochronoUnit.EON:
-            dates = Timeline.Geochrono.eons; break;
+        case GeochronoUnit.AGE:
+            dates = GeochronoLabeller.ageNames; break;
+        case GeochronoUnit.EPOCH:
+            dates = GeochronoLabeller.epochNames; break;
+        case GeochronoUnit.PERIOD:
+            dates = GeochronoLabeller.periodNames; break;
+        case GeochronoUnit.ERA:
+            dates = GeochronoLabeller.eraNames; break;
+        case GeochronoUnit.EON:
+            dates = GeochronoLabeller.eonNames; break;
         default:
             hasMore = function() {
                 return minDate > 0 && minDate > maxDate;
@@ -80,7 +85,7 @@ Timeline.GeochronoEtherPainter.prototype.paint = function() {
             };
             return;
         }
-        
+
         var startIndex = dates.length - 1;
         while (startIndex > 0) {
             if (minDate <= dates[startIndex].start) {
@@ -102,7 +107,7 @@ Timeline.GeochronoEtherPainter.prototype.paint = function() {
     var labeller = this._band.getLabeller();
     while (true) {
         this._intervalMarkerLayout.createIntervalMarker(
-            Timeline.GeochronoUnit.fromNumber(minDate), 
+            GeochronoUnit.fromNumber(minDate), 
             labeller, 
             this._intervalUnit, 
             this._markerLayer, 
@@ -118,87 +123,8 @@ Timeline.GeochronoEtherPainter.prototype.paint = function() {
     this._lineLayer.style.display = "block";
 };
 
-Timeline.GeochronoEtherPainter.prototype.softPaint = function() {
+GeochronoEtherPainter.prototype.softPaint = function() {
 };
 
-
-/*==================================================
- *  Geochrono Ether Marker Layout
- *==================================================
- */
- 
-Timeline.GeochronoEtherMarkerLayout = function(timeline, band, theme, align, showLine) {
-    var horizontal = timeline.isHorizontal();
-    if (horizontal) {
-        if (align == "Top") {
-            this.positionDiv = function(div, offset) {
-                div.style.left = offset + "px";
-                div.style.top = "0px";
-            };
-        } else {
-            this.positionDiv = function(div, offset) {
-                div.style.left = offset + "px";
-                div.style.bottom = "0px";
-            };
-        }
-    } else {
-        if (align == "Left") {
-            this.positionDiv = function(div, offset) {
-                div.style.top = offset + "px";
-                div.style.left = "0px";
-            };
-        } else {
-            this.positionDiv = function(div, offset) {
-                div.style.top = offset + "px";
-                div.style.right = "0px";
-            };
-        }
-    }
-    
-    var markerTheme = theme.ether.interval.marker;
-    var lineTheme = theme.ether.interval.line;
-    
-    var stylePrefix = (horizontal ? "h" : "v") + align;
-    var labelStyler = markerTheme[stylePrefix + "Styler"];
-    var emphasizedLabelStyler = markerTheme[stylePrefix + "EmphasizedStyler"];
-    
-    this.createIntervalMarker = function(date, labeller, unit, markerDiv, lineDiv) {
-        var offset = Math.round(band.dateToPixelOffset(date));
-
-        if (showLine) {
-            var divLine = timeline.getDocument().createElement("div");
-            divLine.style.position = "absolute";
-            
-            if (lineTheme.opacity < 100) {
-                SimileAjax.Graphics.setOpacity(divLine, lineTheme.opacity);
-            }
-            
-            if (horizontal) {
-                divLine.style.borderLeft = "1px solid " + lineTheme.color;
-                divLine.style.left = offset + "px";
-                divLine.style.width = "1px";
-                divLine.style.top = "0px";
-                divLine.style.height = "100%";
-            } else {
-                divLine.style.borderTop = "1px solid " + lineTheme.color;
-                divLine.style.top = offset + "px";
-                divLine.style.height = "1px";
-                divLine.style.left = "0px";
-                divLine.style.width = "100%";
-            }
-            lineDiv.appendChild(divLine);
-        }
-        
-        var label = labeller.labelInterval(date, unit);
-        
-        var div = timeline.getDocument().createElement("div");
-        div.innerHTML = label.text;
-        div.style.position = "absolute";
-        //(label.emphasized ? emphasizedLabelStyler : labelStyler)(div);
-        
-        this.positionDiv(div, offset);
-        markerDiv.appendChild(div);
-        
-        return div;
-    };
-};
+    return GeochronoEtherPainter;
+});

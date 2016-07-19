@@ -6,26 +6,15 @@
       <title>SIMILE | Timeline | Examples | Test Example 2</title>
       <link rel='stylesheet' href='../styles.css' type='text/css' />
 
-       <!-- ############################################################################ -->
-       <!-- @author : Jorge Correia -->
-       <!-- To use this file on your own system, replace ../../api/timeline-api.js with  -->
-       <!--     http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js             -->
-       <!-- (where 2.3.1 is the current release number.)                                 -->
-
-       <!-- Debugging support                                                            -->
-       <!-- To debug Timeline and the Ajax library add
-         <script> Timeline_ajax_url = "http://api.simile-widgets.org/ajax/2.2.1/simile-ajax-api.js?bundle=false"</script>
-         and change the bundle=true to bundle=false in the timeline-api line too
-         -->
-
-        <script src="../../api/timeline-api.js?bundle=true" type="text/javascript"></script>
-        <script src="../examples.js" type="text/javascript"></script>
-        <script>
-
-            var tl;
+      <script src="../../api/lib/require.js" type="text/javascript"></script>
+      <script>
+require(["../../api/configs/local-config"], function() {
+    require(["timeline", "../examples.js", "jquery"], function(Timeline, Helpers, $) {
+        var tl;
+        var onLoad = function() {
             //in php you can get this 1so8601 date using date("c",$you_date_variable);
-            var startProj = SimileAjax.DateTime.parseIso8601DateTime("2009-03-10T00:00:00");
-            var endProj = SimileAjax.DateTime.parseIso8601DateTime("2009-04-30T00:00:00");
+            var startProj = Timeline.DateTime.parseIso8601DateTime("2009-03-10T00:00:00");
+            var endProj = Timeline.DateTime.parseIso8601DateTime("2009-04-30T00:00:00");
             
             var event_data = 
               {
@@ -136,7 +125,6 @@
                      ]
               };
 
-            function onLoad() {
                 var tl_el = document.getElementById("tl");
                 var eventSource = new Timeline.DefaultEventSource();
                 var theme = Timeline.ClassicTheme.create();
@@ -154,7 +142,7 @@
                 theme.event.tape.height = 10; // px
                 theme.event.track.height = theme.event.tape.height + 6;
 
-                var d = SimileAjax.DateTime.parseIso8601DateTime("2009-03-15T00:00:00");
+                var d = Timeline.DateTime.parseIso8601DateTime("2009-03-15T00:00:00");
                 var bandInfos = [
 
                     Timeline.createBandInfo({
@@ -211,28 +199,36 @@
                 // dismiss loading message
                 tl.hideLoadingMessage();
 
+                Timeline.writeVersion('tl_ver');
+
                 // setup highlight filters
-                setupFilterHighlightControls(document.getElementById("controls"), tl, [0,1], theme);
+                Helpers.setupFilterHighlightControls(document.getElementById("controls"), tl, [0,1], theme);
+            };
 
-            }
-            function centerProjStart() {
+            window.centerProjStart = function() {
                 tl.getBand(1).setCenterVisibleDate(startProj);
-            }
+            };
             
-            function centerProjEnd() {
+            window.centerProjEnd = function() {
                 tl.getBand(1).setCenterVisibleDate(endProj);
-            }
+            };
 
-            var resizeTimerID = null;
-            function onResize() {
-                if(resizeTimerID == null) {
-                    resizeTimerID = window.setTimeout(function() {
-                        resizeTimerID = null;
-                        tl.layout();
-                    }, 500);
-                }
+
+        var resizeTimerID = null;
+        var onResize = function() {
+            if (resizeTimerID == null) {
+                resizeTimerID = window.setTimeout(function() {
+                    resizeTimerID = null;
+                    tl.layout();
+                }, 500);
             }
-        </script>
+        };
+
+        $(document).ready(onLoad);
+        document.onresize = onResize;
+    });
+});
+      </script>
         <style type="text/css">
             .special_event2 {}
             .tape-dashed, .small-dashed {border-top: dashed 5px ;background-color:transparent;margin-top:3px;}
@@ -245,7 +241,7 @@
 
         </style>
     </head>
-    <body onload="onLoad();" onresize="onResize();">
+    <body>
         <ul id="path">
             <li><a href="/" title="Home">SIMILE Widgets</a></li>
             <li><a href="../../" title="Timeline">Timeline</a></li>
@@ -279,7 +275,6 @@
             </ul>
 
             <p>Timeline version <span id='tl_ver'></span>.</p>
-            <script>Timeline.writeVersion('tl_ver')</script>
 
         </div>
 

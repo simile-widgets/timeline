@@ -1,0 +1,309 @@
+<data>
+
+    <!-- Source:
+        http://swartz-report.mit.edu/docs/report-to-the-president.pdf
+    -->
+    <event start="Sep 25 2010 17:00:00 EST" end="Sep 26 2010 04:00:00 EST"
+           durationEvent="true" title="First anomalous JSTOR downloads"
+        >
+      JSTOR engineers notice an extremely large number of requests for
+      downloads originating from MIT.  They observe 450,000 articles from
+      560 journals downloaded during this period.
+        </event>
+
+    <event start="Sep 26 2010"
+        title="JSTOR closes access to offending IP class"
+        >
+      The Class C network within MIT's allocation is blocked by JSTOR from
+      accessing its resources.  Access is restored after discussion between
+      MIT Libraries and JSTOR resolves that an unknown network visitor was
+      responsible and unlikely to return.
+        </event>
+
+    <event start="Oct 09 2010"
+        title="Second anomalous JSTOR downloads"
+        >
+      A network visitor downloads about 8,000 articles, wreaking havoc
+      amongst JSTOR services but caught quickly by already watchful engineers.
+      </event>
+
+    <event start="Oct 09 2010 23:15:00 EST" end="Oct 12 2010"
+           durationEvent="true"
+           title="JSTOR blocks a broad swath of MIT addresses"
+        >
+      In response to the second attack, JSTOR blocks an entire Class A
+      network, covering a significant part of campus, from its services,
+      lifted in part because this massive download attempt was caught quickly.
+      </event>
+
+    <event start="Nov 28 2010" end="Jan 6, 2011" durationEvent="true"
+        title="Third and final batch of JSTOR downloads"
+         >
+      Swartz initiates a less obvious, long-running download job by setting
+      up his laptop and a disk drive in an MIT infrastructure closet.  JSTOR
+      catches on to this attempt a month later and discovers it resulted in
+      obtaining 4.3 million articles.  Swartz has made about 4.8 million
+      downloads in total, about 80% of JSTOR's database.
+      </event>
+
+    <event start="Dec 26, 2010" end="Dec 27, 2010" durationEvent="true"
+        title="JSTOR informs MIT"
+        >
+      JSTOR engineers contact MIT over email and request assistance,
+      having potentially discovered where on campus the much larger
+      download came from.  They try twice but fail to reach anybody
+      as all but a skeleton crew are on furlough at the end of the year.
+      </event>
+
+    <event start="Jan 3, 2011" end="Jan 4, 2011" durationEvent="true"
+        title="MIT responds to JSTOR"
+        >
+      MIT see the messages when furlough ends and responds the next day
+      that identifying the culprit based on the information gleaned so
+      far is unlikely.
+      </event>
+
+    <event start="Jan 4, 2011 03:00:00 EST" end="Jan 4, 2011 08:00:00 EST"
+        durationEvent="true" title="Network engineers discover laptop"
+        >
+      MIT IS&amp;T network engineers try to find the exact location of
+      the computer associated with the IP address.  One sees the
+      cardboard box covering a cable connected to the network switch and
+      discovers the laptop underneath.
+      </event>
+
+    <event start="Jan 4, 2011 09:45:00 EST"
+           title="MIT, Cambridge Police notified">
+      IS&amp;T management notify MIT Police of the intrusion, and minutes
+      later officers arrive and are posted in the hallway.  At the same time,
+      network engineer staff connect to the same switch to observe network
+      traffic flowing to the laptop.  Photographs are taken; the MIT Police
+      call in their colleague from the Cambridge Police Department who
+      normally works with them on computer-related crimes.
+      </event>
+
+    <event start="Jan 4, 2011 11:00:00 EST"
+           title="Cambridge detective and Secret Service agent arrive">
+      The Cambridge detective is part of the New England Electronic Crimes
+      Task Force which includes both state and federal officers.  The
+      detective brought in the special agent of his own choosing, not
+      by any outside request.
+      </event>
+
+    <event start="Jan 4, 2011 15:00:00 EST"
+           title="Camera installed in closet">
+      In order to attempt to identify and apprehend the culprit, a
+      surveillance camera is installed in the closet and everything
+      else is restored to the way it was found.  Officers and staff
+      depart.
+      </event>
+
+    <event start="Jan 4, 2011 15:30:00 EST"
+           title="Suspect stops by to swtich drives">
+      Someone stops by not long after to swap out the current disk
+      drive with a new one, taking the old with.  He is captured on
+      video but not recognized.  Still photos are distributed to MIT
+      Police.  They arrive too late to the closet to apprehend him.
+      </event>
+
+    <event start="Jan 5, 2011"
+           title="Federal criminal investigation opened">
+      The U.S. Attorney's Office opens its criminal investigation, directed
+      by Assistant U.S. Attorney Stephen Heymann, head of the Internet and
+      Compuer Crimes Unit within the USAO.
+    </event>
+
+    <event start="Jan 6, 2011 12:30:00 EST"
+           title="Suspect removes all equipment from closet">
+      Someone stops by, with a bike helmet covering his face, to
+      remove the laptop and hard drive, taking them with as he
+      departs.  The person responsible for monitoring the status
+      of the network port is not on campus but notifies co-workers
+      and police that the laptop is disconnected.  They arrive too
+      late to the closet to apprehend him.  However, they note that
+      the laptop re-appears on the Student Center network later
+      that afternoon, in the offices of the student computing group.
+      </event>
+
+    <event start="Jan 6, 2011 14:00:00 EST"
+           title="Police identify suspect and arrest him">
+      An officer on patrol by car sees Swartz cycling past and matches
+      his clothing and backpack to descriptions and stills of the
+      suspect he knew was being sought.  After making a stop, Swartz
+      refuses to cooperate and runs.  With assistance, two officers
+      and the special agent catch up to him in a parking lot and
+      handcuff him.
+      </event>
+
+    <event start="Jan 6, 2011 15:00:00 EST"
+           title="Suspect identified as Aaron Swartz">
+      Swartz is taken to the Cambridge Police Department for booking
+      where he is identifies to the police.  He calls his friend to
+      arrange bail money, and an attorney arrives shortly to complete his
+      bail paperwork, departing with Swartz.  He is charged with two
+      felony counts of breaking and entering for his recorded incursions
+      into the network closet. (time imprecise)
+      </event>
+
+    <event start="Jan 6, 2011 17:00:00 EST"
+           title="Laptop confiscated">
+      Network engineers, MIT Police, and the special agent search
+      the student computing group's offices and locate the laptop and
+      hard drive, confiscating them for evidence. (time imprecise)
+      </event>
+
+    <event start="Jan 9, 2011"
+           title="MIT Counsel learns about Swartz">
+      The MIT Office of the General Counsel searches for information
+      on Aaron Swartz on the Internet and learns about his background.
+      (time imprecise)
+      </event>
+
+    <event start="Jan 9, 2011"
+           title="MIT adopts neutrality">
+      "Very early in this post-arrest preiod, MIT decided to 'remian
+      neutral,' as between the government and Aaaron Swartz, in the
+      investigation and eventual prosecution.  Initially this meant
+      simply that MIT would not take a public position on the prosecution.
+      Throughout the following (almost) two years, MIT’s decisions were
+      mostly guided by this posture of neutrality." - page 52 (time imprecise)
+      </event>
+
+    <event start="Jan 10, 2011"
+           title="JSTOR access at MIT severly reduced">
+      Before these events, JSTOR and MIT were in talks to increase barriers
+      to access JSTOR content.  The efforts were expedited and put into place
+      not long after Swartz is arrested.  JSTOR can only be accessed from
+      certain workstations in the libraries.
+      </event>
+
+    <event start="Mar 15, 2011"
+           title="MIT Counsel learns about prosecution">
+      The lead prosecutor telephones the MIT OGC to inform them that
+      the government is actively prosecuting Swartz. (time imprecise)
+      </event>
+
+    <event start="Jun 3, 2011"
+           title="Swartz settles with JSTOR">
+      Swartz turns over his copy of the JSTOR data, assuring that there
+      are no other copies in existence and none to be released to the
+      public.  With that assurance, JSTOR drops any further pursuit of
+      civil charges.  In addition, Swartz paid $26,500 to JSTOR, $1,500
+      for damages, and $25,000 for attorneys' fees and costs.
+      </event>
+
+    <event start="Jun 21, 2011"
+           title="Federal lead prosecutor discusses investigation with MIT">
+      During a phone call with the lead prosecutor, the OGC is informed
+      of the state of the investigation, which is that an indictment might
+      come down based on the prosecutor's supervisors' decision of how
+      to proceed.  His stance is to give MIT information as it pertains
+      and arrives.  MIT concludes that MIT's opinions were unlikely to have
+      an effect on the prosecution as their views appeared to have already
+      been taken into account.  Also, if JSTOR considered the matter closed
+      and yet prosecution was proceeding, MIT's opinions would have no
+      impact either.
+      </event>
+
+    <event start="Jul 14, 2011" end="Sep 12, 2012" durationEvent="true"
+           title="Federal indictment returned by grand jury">
+      A federal grand jury in Boston hands up an indictment charging Swartz
+      on four felony counts, one for wire fraud and three for violating the
+      Computer Fraud and Abuse Act.
+    </event>
+
+    <event start="Jul 19, 2011"
+           title="Swartz arraigned in federal court">
+      The indictment is unsealed.  This is the first MIT learns of it through
+      a phone call from the prosecutor to MIT's Office of the General Counsel.
+      Swartz was informed the day before, and his attorney arranged for him
+      to be present, after which he was, by normal procedure, arrested and
+      taken to lockup for processing.
+    </event>
+
+    <event start="Jul 19, 2011"
+           title="Demand Progress petition begins">
+      Demand Progress begins a campaign in support of Swartz, ultimately
+      garnering 35,000 signatures on its petition.
+    </event>
+
+    <event start="Jul 19, 2011"
+           title="JSTOR issues press release">
+      JSTOR issues a press release describing its involvemnt in the case
+      against Swartz while noting that the pursuit of criminal prosecution
+      is the government's choice, not JSTOR's, further noting that all
+      civil matters are concluded and it has no interest in making it
+      an ongoing legal matter.
+    </event>
+
+    <event start="Nov 6, 2011" end="Mar 12, 2012" durationEvent="true"
+           title="State indictment issued">
+      In Superior Court for Middlesex County, an indictment against
+      Swarz for six felony counts is issued: two counts of breaking and
+      entering with the intent to commit a felony, three counts of
+      accessing a computer without authorization, and one count of larceny.
+      This is the court used for "more serious" cases, instead of the
+      Cambridge District Court.
+    </event>
+
+    <event start="Nov 17, 2011"
+           title="MIT learns of state indictment">
+      From the Cambridge District Attorney's Office press release; MIT
+      is not involved in this case in any material fashion.
+      </event>
+    
+    <event start="Mar 12, 2012"
+           title="State charges dismissed">
+      Because the state cannot obtain vital evidence from the Boston
+      General Attorney's Office as its held for the federal case, the
+      state charges are all dismissed.
+    </event>
+
+    <event start="Sep 12, 2012" end="Jan 11, 2013" durationEvent="true"
+           title="Superseding federal indictment returned">
+      A second grand jury in Boston hands up a superseding indictment
+      with 13 felony counts, two for wire fraud and 11 for violating
+      the CFAA.
+    </event>
+
+    <event start="Oct 5, 2012"
+           title="Defense files motions to suppress evidence">
+      Swartz's defense team files five motions to suppress evidence
+      and one to dismiss the indictment, arguing that the government
+      and MIT violated the fourth amendment and privacy expectations.
+    </event>
+
+    <event start="Nov 16, 2012"
+           title="Government files opposition to motions to suppress">
+    </event>
+
+    <event start="Dec 14, 2012"
+           title="Hearing for motions to dismiss and suppress scheduled">
+      A hearing is scheduled for January 25, 2013.
+    </event>
+
+    <event start="Jan 11 2013"
+        title="Suicide"
+        link="http://en.wikipedia.org/wiki/Aaron_Swartz"
+        >
+      Aaron Swartz is found dead in the Brooklyn, New York apartment he
+      shared with his partner.  He was 26.
+        </event>
+
+    <event start="Jan 13 2013"
+        title="MIT panel convened"
+        link=""
+        >
+      MIT President Rafael Reif convenes a panel to review MIT's involvement
+      in the events leading up to Swartz's death, to culminate in a public
+      report on its findings.
+        </event>
+
+    <event start="Jul 26 2013"
+        title="MIT panel's report released"
+        link="http://swartz-report.mit.edu/docs/report-to-the-president.pdf"
+        >
+      The MIT review panel releases its findings.
+        </event>
+
+</data>

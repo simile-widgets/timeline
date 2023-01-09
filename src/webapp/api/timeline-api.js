@@ -279,7 +279,7 @@
         
         var url = useLocalResources ?
             "http://127.0.0.1:9999/ajax/api/simile-ajax-api.js?bundle=false" :
-            "http://api.simile-widgets.org/ajax/" + simile_ajax_ver + "/simile-ajax-api.js";
+            "//api.simile-widgets.org/ajax/" + simile_ajax_ver + "/simile-ajax-api.js";
         if (typeof Timeline_ajax_url == "string") {
            url = Timeline_ajax_url;
         }
